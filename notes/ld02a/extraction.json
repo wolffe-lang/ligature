@@ -1,0 +1,13 @@
+{
+  "recommendation": "R-ld02-1 A: use measured LLD-compatible lazy discovery; implemented recommendation, not a ruling",
+  "baseline_resolution_seconds": 0.143,
+  "lazy_resolution_seconds": 0.171,
+  "resolution_delta_seconds": 0.028,
+  "hello_members": 359,
+  "original_different_positions": 349,
+  "remaining_different_positions": 0,
+  "member_multiset_equal": true,
+  "tls_reorderings": "pending full-corpus comparison; no resolution claimed yet",
+  "semantics": "Archive-index entries become lazy in index order; a strong unresolved reference extracts immediately and recursively. Earlier archives remain available, matching LLD's backward-reference control. Weak references do not pull. Cycles select each member once.",
+  "cost_caveat": "Total hello link timing after the change also includes retained-relocation metadata; resolver timing isolates discovery. The baseline total was 417.703 warm-up, 335.921 and 337.213 seconds. No separate performance fix."
+}

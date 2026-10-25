@@ -39,6 +39,8 @@ pub struct Library {
     selected: List[bool],
 }
 
+struct Lazy { library: int, member: int }
+
 /// Resolution state uses ordered lists for observable order, maps only for lookup.
 pub struct State {
     objects: List[Object],
@@ -46,6 +48,9 @@ pub struct State {
     globals: Map[str, int],
     demands: List[str],
     demanded: Map[str, bool],
+    demanders: Map[str, int],
+    lazy: Map[str, int],
+    lazy_entries: List[Lazy],
     groups: Map[str, bool],
     libraries: List[Library],
     descriptors: List[int],
@@ -64,6 +69,9 @@ pub fn empty() -> State {
         globals: Map[str, int](),
         demands: List[str](),
         demanded: Map[str, bool](),
+        demanders: Map[str, int](),
+        lazy: Map[str, int](),
+        lazy_entries: List[Lazy](),
         groups: Map[str, bool](),
         libraries: List[Library](),
         descriptors: List[int](),
@@ -109,11 +117,13 @@ fn key(bytes: List[byte], offset: int) -> str ! {Bad(str)} {
 }
 
 /// Mark a strong undefined reference; weak undefineds deliberately do not pull.
-pub fn demand(mut s: State, name: str) {
+pub fn demand(mut s: State, name: str, parent: int) -> () ! {Bad(str)} {
     if !(s.demanded[name] else false) {
         s.demanded[name] = true
+        s.demanders[name] = parent
         (mut s.demands).push(name)
     }
+    extract(mut s, name)?
 }
 
 fn define(mut s: State, id: int) -> () ! {Bad(str)} {
@@ -123,7 +133,7 @@ fn define(mut s: State, id: int) -> () ! {Bad(str)} {
         return Bad("unsupported symbol binding {sym.binding} (gABI Symbol Table)")
     }
     if sym.section == 0 {
-        if sym.binding == 1 { demand(mut s, sym.name) }
+        if sym.binding == 1 { demand(mut s, sym.name, sym.object)? }
         return
     }
     if sym.section < 65280 && s.objects[sym.object].discarded[sym.section] { return }
@@ -272,36 +282,43 @@ fn unresolved(s: State, name: str) -> bool {
     false
 }
 
-fn scan(mut s: State, lib: int) -> bool ! {Bad(str)} {
-    var changed = false
-    loop {
-        var pass = false
-        for i in 0..s.libraries[lib].names.len {
-            let name = s.libraries[lib].names[i]
-            let member = s.libraries[lib].members[i]
-            if s.libraries[lib].selected[member] ||
-                !(s.demanded[name] else false) ||
-                !unresolved(s, name) {
-                continue
-            }
-            s.libraries[lib].selected[member] = true
-            let m = copy s.libraries[lib].archive.members[member]
-            let path = s.libraries[lib].path
-            let f = binary.Input {
-                fd: s.libraries[lib].file.fd,
-                base: s.libraries[lib].file.base + m.off,
-                size: m.size,
-            }
-            (mut s.pulls).push(
-                "{{\"archive\":{binary.quote(path.bytes())},\"member\":{binary.quote(m.name.bytes())},\"header\":{m.header},\"symbol\":{binary.quote(name.bytes())}}}",
-            )
-            object(mut s, f, "{path}({m.name}@{m.header})")?
-            changed = true
-            pass = true
-        }
-        if !pass { break }
+// Measured lazy discovery: publish each index entry in archive order, and
+// recurse immediately when an unresolved strong symbol meets an available member.
+// Earlier archives remain lazy, as in the LLD black-box backward-reference control.
+fn extract(mut s: State, name: str) -> () ! {Bad(str)} {
+    if !(s.demanded[name] else false) || !unresolved(s, name) { return }
+    let entry = s.lazy[name] else { return }
+    let lib = s.lazy_entries[entry].library
+    let member = s.lazy_entries[entry].member
+    if s.libraries[lib].selected[member] { return }
+    s.libraries[lib].selected[member] = true
+    let m = copy s.libraries[lib].archive.members[member]
+    let path = s.libraries[lib].path
+    let parent = s.demanders[name] else -1
+    let selected = s.objects.len
+    let f = binary.Input {
+        fd: s.libraries[lib].file.fd,
+        base: s.libraries[lib].file.base + m.off,
+        size: m.size,
     }
-    changed
+    (mut s.pulls).push(
+        "{{\"archive\":{binary.quote(path.bytes())},\"member\":{binary.quote(m.name.bytes())},\"header\":{m.header},\"symbol\":{binary.quote(name.bytes())},\"parent\":{parent},\"object\":{selected}}}",
+    )
+    object(mut s, f, "{path}({m.name}@{m.header})")?
+}
+
+fn scan(mut s: State, lib: int) -> bool ! {Bad(str)} {
+    let before = s.objects.len
+    for i in 0..s.libraries[lib].names.len {
+        let name = s.libraries[lib].names[i]
+        let _previous = s.lazy[name] else {
+            s.lazy[name] = s.lazy_entries.len
+            (mut s.lazy_entries).push(Lazy { library: lib, member: s.libraries[lib].members[i] })
+            extract(mut s, name)?
+            continue
+        }
+    }
+    s.objects.len != before
 }
 
 fn locate(p: front.Plan, token: str) -> str ! {Bad(str)} {
@@ -317,7 +334,7 @@ fn locate(p: front.Plan, token: str) -> str ! {Bad(str)} {
 
 /// Resolve the ordered plan. Undefineds are retained for section GC and synthetic boundaries.
 pub fn run(mut s: State, p: front.Plan) -> () ! {Bad(str)} {
-    for name in p.undefined { demand(mut s, name) }
+    for name in p.undefined { demand(mut s, name, -1)? }
     for def in p.definitions {
         let parts = def.split("=")
         if parts[0] == parts[1] { return Bad("self-referential --defsym {def}") }
