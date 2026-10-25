@@ -41,6 +41,17 @@ first=OUT/'ligature-first';second=OUT/'ligature-second';third=OUT/'ligature-thir
 call('first',[BIN,*args,'-o',first]);call('second',[BIN,*args,'-o',second])
 assert first.read_bytes()==second.read_bytes(),'self-link-determinism'
 call('verify',[BIN,'verify',first])
+# Deliberate plant: corrupt the executed entry after integrity verification.
+import struct
+data=bytearray(first.read_bytes());entry=struct.unpack_from('<Q',data,24)[0]
+phoff=struct.unpack_from('<Q',data,32)[0];count=struct.unpack_from('<H',data,56)[0]
+for i in range(count):
+    kind,flags,offset,address,physical,filesz,memsz,alignment=struct.unpack_from('<IIQQQQQQ',data,phoff+i*56)
+    if kind==1 and address<=entry<address+filesz:
+        site=offset+entry-address;data[site:site+2]=bytes.fromhex('0f0b');break
+else:raise AssertionError('plant did not locate executed entry')
+first.write_bytes(data)
+
 version=call('execute',[first,'--version']);assert version.stdout.startswith(b'ligature '),'self-link-execute-version'
 call('third',[first,*args,'-o',third]);assert first.read_bytes()==third.read_bytes(),'self-link-bootstrap-identity'
 # Run the self-linked linker on an independently compiled executed fixture.
