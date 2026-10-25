@@ -1,9 +1,9 @@
 # Link formats
 
-These are version 1 contracts. Inspection, link plans, the embedded note and a
-byte-and-patch provenance manifest are implemented, along with `explain`.
+Inspection, link plans and the embedded note retain their version 1 contracts. The
+byte-and-patch provenance model supports legacy JSON and WLPATCH2, along with `explain`.
 Unknown versions must be refused, not interpreted as the nearest known version.
-All offsets and lengths are unsigned 64-bit integers; arithmetic is checked.
+ELF offsets and lengths are unsigned 64-bit integers; arithmetic is checked.
 
 ## Link plan
 
@@ -36,9 +36,10 @@ section payloads are not represented as parsed records and are not rewritten.
 
 ## Embedded provenance
 
-The canonical JSON has `format: "wolf.link.provenance.v1"` and
-`coverage: "bytes-and-patches"`. Keys are lexicographically sorted, integers
-are decimal, encoding is compact UTF-8, and the document ends with one LF.
+The shared data model has `format: "wolf.link.provenance.v1"` and
+`coverage: "bytes-and-patches"`. New outputs use the WLPATCH2 encoding described
+below. Legacy JSON sorts keys lexicographically, writes decimal integers in
+compact UTF-8, and ends with one LF.
 Logical input basenames and member ordinals replace absolute staging paths.
 No timestamp, host name or output filename is embedded.
 
@@ -62,7 +63,7 @@ No timestamp, host name or output filename is embedded.
   root), archive/member/header and demanded symbol. Parent ordinals precede
   children; no recursive expansion or cycle is accepted.
 * `sections` records output layout. `output.sha256` stays null to avoid a hash
-  cycle; the note seals the whole file. `zz_padding` is a reserved string of
+  cycle; the note seals the whole file. In legacy JSON, `zz_padding` is a reserved string of
   zero characters which rounds the canonical document to 4096 bytes. This
   stabilizes the otherwise self-referential alignment-gap description without
   adding noncanonical whitespace. It has no provenance meaning.
