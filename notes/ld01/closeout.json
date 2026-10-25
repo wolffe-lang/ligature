@@ -4,7 +4,7 @@
     "before_changes_commit": "f01a0a3",
     "relocation": "Predicted TLSGD pairing would fail first; the first valid-path native hello linked and ran without a relocation repair. The later high-half REX_GOTPCRELX witness exposed a real range-check defect and now passes.",
     "archives": "Predicted the first 359-member extraction would miss; it matched the exact member multiset on the first valid-path run. Discovery order is explicitly different at 349 positions.",
-    "tls": "GD/LD/IE/LE transitions were implemented and exercised; hello's template is 80 initialized bytes, 272 memory bytes, alignment 8.",
+    "tls": "Predicted GD/LD relaxations are needed for hello: confirmed by retained LLD TLSGD/TLSLD records in evidence/hello-tls-relocations.log. Its template is 80 initialized / 272 memory / alignment 8.",
     "lines": "1599 lines across resolve/layout/relocate/writer/provenance, versus 2100 predicted; frontend and tests excluded.",
     "pax": "Predicted first binary boot failure; the first PAX boot ran hello correctly. ISO replay tooling needed a BIOS-only rebuild, recorded separately from the program's behavior."
   },
@@ -19,10 +19,16 @@
     "Six CI plants observed red and closed unmerged by the coordinator; ld02 drafted in ld02-draft.json"
   ],
   "Evidence": {
-    "local_gate": "evidence/check-sensitive-hello.log: two checked tests, 43 integration process rows, ten three-linker writer cases, resolver/oracle/cc/provenance/replay/range witnesses; zero SKIP",
+    "local_gate": "evidence/check-final.log: two checked tests, 43 integration process rows, ten three-linker writer cases, resolver/oracle/cc/provenance/replay/range witnesses; zero SKIP",
     "linux_batch": "evidence/corpus-second-results.json: 14 functional passes, 101 unexplained structural records; batch head bb00a28",
     "linux_log_sha256_read_twice": "b6a6c59f4331d825fe02df371110431874b33b2c095233cf329fa7b995cb7a02",
-    "structural_classes": {"symbols":28,"segments":28,"entry_aliases":14,"retained_relocation_records":28,"tls_order":3},
+    "structural_classes": {
+      "symbols": 28,
+      "segments": 28,
+      "entry_aliases": 14,
+      "retained_relocation_records": 28,
+      "tls_order": 3
+    },
     "lld18_controls": "evidence/lld18-control-results.json: five lld17-to-18 comparisons have zero structural differences; all selected classes persist against ligature",
     "tls_order": "All three raw-template differences have equal memory size and equal named-symbol initializer bytes; no blanket waiver applied",
     "hello_resolution": "359 archive members (32 runtime, 322 libc, 5 unwind), exact member multiset, exact 401 public-definition names; both sequences retained",
@@ -31,7 +37,8 @@
     "pax_log_sha256_read_twice": "41ae2dcf8d58eb0bc72fcc747d079e8728a3e6bd56061bf701a8894ad208a57d",
     "fork": "pax#175: fresh full-checkout trunk 105d0d1 native AND release kernels, all three binaries get syscall 57 ENOSYS and print fork: io; Linux prints child + status 7. The row remains red.",
     "kernel_identity": "pax#176: copied guest prints no commit-bearing banner; kernel hashes and full-checkout commit identify the two controls",
-    "plants": "plants.json lists PRs 5-10, all six red run IDs, exact failing rows and the harmless initial ENDBR64 mutation"
+    "plants": "plants.json lists PRs 5-10, all six red run IDs, exact failing rows and the harmless initial ENDBR64 mutation",
+    "provenance_control": "evidence/provenance-allocated-control.json: identical ordered hello inputs/options; all 156 allocated sections and program-header bytes are unchanged after provenance emission; final ELF executes and verifies"
   },
   "Departures": [
     "PAX QEMU runs on kasumi's host under taskset 12-15, through the unchanged qemu-halt/qemu-run wrappers, as directed by the coordinator after checking the stock PAX recipe. Builds remain in Ubuntu containers.",
@@ -44,9 +51,22 @@
     "Canonical narrative sections are in the PR body and durable evidence/draft are JSON under notes/ld01, rather than a standalone Markdown note; no wrapper refusal is claimed."
   ],
   "Hand-off": {
-    "recommendations": {"R-ld01-1":"A: relax recognized GOT loads only when the final displacement fits","R-ld01-2":"A: fixed 0x200000 base","R-ld01-3":"A: retain all live locals and name retention differences","R-ld01-4":"Needed weak definition under a strong undefined demand; concurred"},
+    "recommendations": {
+      "R-ld01-1": "A: relax recognized GOT loads only when the final displacement fits",
+      "R-ld01-2": "A: fixed 0x200000 base",
+      "R-ld01-3": "A: retain all live locals and name retention differences",
+      "R-ld01-4": "Needed weak definition under a strong undefined demand; concurred"
+    },
     "m1_basis": "13 matching PAX/Linux rows plus the named, identically reproduced PAX fork red, as explicitly accepted by the coordinator; no expectation adjustment",
-    "issues": ["pax#175 fork syscall 57 capability defect", "pax#176 missing commit banner", "pax#167 exact link bundle availability remains open", "pax#172 lld17 release-kernel linking is separate", "ligature#3 structural normalization remains open", "ligature#4 range guard implemented with CI-red witness; coordinator decides closure", "Consider a ligature performance issue: a full hello link takes about three minutes on kasumi"],
+    "issues": [
+      "pax#175 fork syscall 57 capability defect",
+      "pax#176 missing commit banner",
+      "pax#167 exact link bundle availability remains open",
+      "pax#172 lld17 release-kernel linking is separate",
+      "ligature#3 structural normalization remains open",
+      "ligature#4 range guard implemented with CI-red witness; coordinator decides closure",
+      "Consider a ligature performance issue: a full hello link takes about three minutes on kasumi"
+    ],
     "prune": "After evidence review, compress/remove only exact ld01 generated trees and plant worktrees; retain compressed first/second corpus archives, input pins, transcripts, manifests, the main checkout and final evidence. Never enumerate other repositories' worktrees for deletion."
   }
 }
