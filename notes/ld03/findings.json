@@ -6,7 +6,7 @@
   "findings": [
     {
       "name": "compiler-comptime/lld/symbols",
-      "status": "retained",
+      "status": "resolved",
       "equivalent": false,
       "record": "compiler-comptime/lld-differ.json.gz",
       "record_sha256": "6b4fdb171c6dd10c6d75f2693ef2b61a47de2038fefa6fc3e39e4d455e20a2e2",
