@@ -4,6 +4,7 @@ use front
 use census
 use resolve
 use writer
+use explain
 
 fn execute(args: List[str]) -> () ! {Bad(str)} {
     if args.len == 1 && args[0] == "--version" {
@@ -41,7 +42,9 @@ fn execute(args: List[str]) -> () ! {Bad(str)} {
 }
 
 fn main() -> int {
-    execute(env_args()) else |e| match e {
+    let args = env_args()
+    if args.len > 0 && args[0] == "explain" { return explain.run(args) }
+    execute(args) else |e| match e {
         Bad(message) => { eprint("ligature: {message}"); return 1 },
     }
     0

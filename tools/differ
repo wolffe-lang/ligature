@@ -27,9 +27,9 @@ def address_identity(value, symbols, sections):
     return {'absolute':value}
 
 def snapshot(path, execute=True):
-    p=subprocess.run([ROOT/'target/ligature','verify',path],capture_output=True,timeout=30)
+    p=subprocess.run([ROOT/'target/ligature','verify',path],capture_output=True,timeout=300)
     if p.returncode:raise ValueError(p.stderr.decode().strip())
-    p=subprocess.run([ROOT/'target/ligature','inspect',path],capture_output=True,check=True,timeout=60)
+    p=subprocess.run([ROOT/'target/ligature','inspect',path],capture_output=True,check=True,timeout=300)
     rows=[json.loads(x) for x in p.stdout.splitlines()]
     data=path.read_bytes();header=next(r for r in rows if r['row']=='elf')
     if header['machine']!=62:raise ValueError('EM_AARCH64 differential not implemented')

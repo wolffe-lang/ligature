@@ -1,8 +1,7 @@
 # Link formats
 
 These are version 1 contracts. Inspection, link plans, the embedded note and a
-section-level provenance manifest are implemented. `explain` and complete
-byte/patch attribution remain unimplemented.
+byte-and-patch provenance manifest are implemented, along with `explain`.
 Unknown versions must be refused, not interpreted as the nearest known version.
 All offsets and lengths are unsigned 64-bit integers; arithmetic is checked.
 
@@ -35,57 +34,47 @@ occurrences, link options, and oracle observations. The reader performs
 parse/serialize equality checks while reading fixed-layout tables. Opaque
 section payloads are not represented as parsed records and are not rewritten.
 
-## Provenance sidecar
+## Embedded provenance
 
-The future sidecar is UTF-8 JSON with `format: "wolf.link.provenance.v1"`:
+The canonical JSON has `format: "wolf.link.provenance.v1"` and
+`coverage: "bytes-and-patches"`. Keys are lexicographically sorted, integers
+are decimal, encoding is compact UTF-8, and the document ends with one LF.
+Logical input basenames and member ordinals replace absolute staging paths.
+No timestamp, host name or output filename is embedded.
 
-* `output`: final byte count, target, ELF type, entry symbol and SHA-256.
-* `inputs`: stable ordinal, logical path, SHA-256 of complete original input,
-  archive member name/header offset if any, and member SHA-256.
-* `options`: ordered semantic link options; tool/version and profile hashes.
-* `ranges`: sorted, disjoint, nonempty half-open output file ranges
-  `[start, end)`. Every byte is covered exactly once, including headers,
-  alignment fill, section tables and the provenance note itself.
-* Each range has `origin`: either `{input, section_index, section_name,
-  input_offset, symbol_index, symbol_name}` or a named generated origin
-  (`elf-header`, `program-headers`, `padding`, `got`, `relaxation`,
-  `string-table`, `section-headers`, `provenance-note`). Symbol fields may be
-  null when no input symbol owns those bytes. Overlapping symbol aliases are
-  an ordered `aliases` list, not overlapping range records.
-* `patches`: output range, relocation type, input relocation location,
-  original addend, target identity, final encoded bytes and relaxation rule.
-  A relaxation retains the input origin and names its generated-byte reason.
-* `memory_ranges`: NOBITS/TLS memory ranges, separate from file-byte ranges.
-* `pulls`: archive-member node and the ordered edge that demanded it: an
-  unresolved input symbol, `--undefined`, or an explicit whole-archive root.
-  Weak references do not manufacture an extraction edge. Cycles are represented
-  by node references, never recursively expanded JSON.
-* `discarded`: sections and named causes (unreachable, COMDAT loser, excluded).
+* `inputs` and `members` identify complete inputs and selected members by
+  size and SHA-256. Object ordinals follow lazy discovery order.
+* `input_ranges` maps retained input sections to output sections; NOBITS has
+  an empty file range. `memory_ranges` describes NOBITS separately.
+* `ranges` is a sorted, disjoint, nonempty partition of **every file byte**.
+  Input origins carry member ordinal, section index and member-relative input
+  offset. Generated origins name ELF/program/section headers, padding or the
+  output section (GOT, symbol/string tables, retained RELA, note and manifest).
+* `patches` preserves original relocation type/addend, input member/section/
+  offset, target symbol identity, output byte interval, before/after hex bytes
+  and transition reason. TLS call records name their consuming relocation.
+  Patch intervals can overlap; the complete file partition cannot.
+* `symbols` supplies definition/alias origins, address, size, input identity
+  and file interval. `alias_of` names the canonical definition when applicable.
+  TLS addresses are module offsets. NOBITS and absolute definitions have
+  `file_start=file_end=-1`; they never claim bytes at a conceptual file offset.
+* `pulls` records selected object, demanding parent object (`-1` for a forced
+  root), archive/member/header and demanded symbol. Parent ordinals precede
+  children; no recursive expansion or cycle is accepted.
+* `sections` records output layout. `output.sha256` stays null to avoid a hash
+  cycle; the note seals the whole file. `zz_padding` is a reserved string of
+  zero characters which rounds the canonical document to 4096 bytes. This
+  stabilizes the otherwise self-referential alignment-gap description without
+  adding noncanonical whitespace. It has no provenance meaning.
 
-Paths are logical, relative input labels. Absolute staging paths, wall-clock
-times, hostnames and random identifiers are forbidden. Object and archive
-input order is explicit. Keys are lexicographically sorted, integers decimal,
-no insignificant whitespace, one final LF. Range and edge ordering is defined
-by output start and discovery ordinal, never hash-map enumeration.
+`verify` checks both digests before validating coverage, input-slice bounds,
+patch bytes and extraction edges. A valid digest is not authentication or a
+proof that a claimed target is correct: `tools/differ` independently evaluates
+retained relocation equations. Mutation tests forge matching patch claims and
+re-seal both digests, then require that independent check to fail.
 
-## Current section-level manifest
-
-The writer emits `coverage: "sections"` with the version-1 format name. `inputs`
-lists each original input in discovery order with logical basename, ordinal,
-size and whole-input SHA-256. `members` records every selected object, its input
-ordinal, archive-relative offset, logical label, size and member hash.
-`input_ranges` maps each retained input section to an output section and file
-range. `sections` records every output section's file and memory boundaries,
-flags, type and alignment. NOBITS has an empty file range; its conceptual offset
-can exceed EOF. No absolute staging path or output filename is embedded.
-
-This is explicitly not the complete byte-range manifest above: gaps, generated
-padding, patch records and symbol-level origins are the next layer. Consumers
-must check `coverage`, not infer byte-level attribution from a valid digest.
-The JSON is canonical (sorted keys, compact encoding, final LF); the writer
-iterates the nonallocated layout to a fixed point before sealing its digests.
-`verify` checks the pair, version, flags, owner, offsets, lengths and both hashes.
-Ordinary ELF files without either provenance section remain valid inputs.
+Older `coverage: "sections"` files remain verifiable but `explain` refuses them.
+No sidecar, signature scheme or general linker-script format is implemented.
 
 ## `.note.wolf.link`
 
@@ -114,15 +103,23 @@ envelope; no signing scheme is implied here.
 
 ## Queries and tests for the writer
 
-`explain --symbol NAME` returns all definition/alias ranges and origins;
-ambiguous local names require an input ordinal. `--address VA` reports load
-mapping, section, symbol aliases and file range, or explicitly NOBITS/TLS.
-`--why NAME` returns the archive extraction path from a root, including the
-unresolved reference which caused each edge. Unknown names are status 1;
-invalid or mismatched manifests are status 2 and produce no trusted answer.
+```
+ligature explain FILE --symbol NAME [--input MEMBER_ORDINAL]
+ligature explain FILE --address DECIMAL_OR_0x_HEX
+ligature explain FILE --why NAME [--input MEMBER_ORDINAL]
+```
 
-The writer's gates must reject gaps, overlaps, out-of-range input slices,
-wrong hashes, altered note length/version and cyclic expansion. Two builds
-from identical ordered inputs must be byte-identical. A one-input edit must
-change only the ranges and generated metadata predicted by the dependency
-edges; the test compares actual byte deltas, not just manifest descriptions.
+Queries return JSON arrays only after validation. Symbol results include aliases;
+ambiguous local names require the selected member's ordinal. Address results
+include containing sections and symbol aliases, with NOBITS/TLS explicit.
+`--why` walks extraction edges from the selected object toward its root; an
+explicit input with no extraction edge returns its definition origin. Misses
+and invalid arguments return 1. Invalid/mismatched manifests return 2 and no
+trusted stdout. These digests establish integrity, never signer identity.
+
+Tests reject gaps, overlaps, invalid input slices, mismatched patch bytes,
+wrong hashes and unknown coverage. Same-input relinks are byte-identical. A
+same-size input-data edit changes only that data and the predicted manifest/note
+metadata; the gate compares actual byte deltas. Separate positive/negative
+fixtures cover local/entry normalization, unused data/debug relocation patches,
+alias queries, TLS/NOBITS and ambiguous local names.

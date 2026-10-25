@@ -1,0 +1,174 @@
+//! member: true
+
+use binary
+use layout
+use resolve
+use std.x.crypto.sha2
+
+fn span(
+    mut bytes: List[byte],
+    start: int,
+    end: int,
+    reason: str,
+    member: int,
+    section: int,
+    offset: int,
+) {
+    if start == end { return }
+    if bytes.len != 0 { emit(mut bytes, ",") }
+    emit(
+        mut bytes,
+        "{{\"end\":{end},\"input_offset\":{offset},\"member\":{member},\"origin\":{binary.quote(reason.bytes())},\"section_index\":{section},\"start\":{start}}}",
+    )
+}
+
+/// Cover every file byte exactly once, including generated metadata and alignment.
+pub fn ranges(l: layout.Layout, s: resolve.State, total: int) -> List[byte] ! {Bad(str)} {
+    var bytes = List[byte]()
+    span(mut bytes, 0, 64, "elf-header", -1, 0, 0)
+    let phend = 64 + (if l.tls_address == 0 then 3 else 4) * 56
+    span(mut bytes, 64, phend, "program-headers", -1, 0, 0)
+    var cursor = phend
+    var seen = Map[int, bool]()
+    loop {
+        var next: int = 0
+        for i in 1..l.outputs.len {
+            if l.outputs[i].kind == 8 || l.outputs[i].size == 0 || (seen[i] else false) { continue }
+            if next == 0 || l.outputs[i].fileoff < l.outputs[next].fileoff { next = i }
+        }
+        if next == 0 { break }
+        seen[next] = true
+        let o = copy l.outputs[next]
+        if o.fileoff < cursor { return Bad("provenance output sections overlap") }
+        span(mut bytes, cursor, o.fileoff, "padding", -1, 0, 0)
+        cursor = o.fileoff
+        for a in l.atoms {
+            if !a.live || a.output != next || a.kind == 8 || a.size == 0 { continue }
+            let begin = o.fileoff + a.offset
+            if begin < cursor { return Bad("provenance input sections overlap") }
+            span(mut bytes, cursor, begin, "padding", -1, 0, 0)
+            let sec = copy s.objects[a.object].image.sections[a.index]
+            span(mut bytes, begin, begin + a.size, "input", a.object, a.index, sec.off)
+            cursor = begin + a.size
+        }
+        span(mut bytes, cursor, o.fileoff + o.size, o.name, -1, next, 0)
+        cursor = o.fileoff + o.size
+    }
+    let shoff = total - l.outputs.len * 64
+    if cursor > shoff { return Bad("provenance section table overlaps content") }
+    span(mut bytes, cursor, shoff, "padding", -1, 0, 0)
+    span(mut bytes, shoff, total, "section-headers", -1, 0, 0)
+    bytes
+}
+
+/// Attribute every retained relocation, including TLS call sites consumed by a transition.
+/// Bytes are evidence, not an independent proof: the differential decoder checks them.
+pub fn patches(l: layout.Layout, s: resolve.State) -> List[byte] ! {Bad(str)} {
+    var bytes = List[byte]()
+    var consumed = Map[str, int]()
+    for i in 0..l.relocs.len {
+        let r = copy l.relocs[i]
+        if !l.atoms[r.atom].live { continue }
+        if r.kind == 19 { consumed["{r.atom}:{r.offset + 8}"] = i }
+        if r.kind == 20 {
+            let indirect = l.atoms[r.atom].data[r.offset + 4] == 255 as byte
+            consumed["{r.atom}:{r.offset + (if indirect then 6 else 5)}"] = i
+        }
+    }
+    for i in 0..l.relocs.len {
+        let r = copy l.relocs[i]
+        let ai = r.atom
+        if !l.atoms[ai].live { continue }
+        let oi = l.atoms[ai].output
+        let owner = consumed["{r.atom}:{r.offset}"] else -1
+        var begin = r.offset
+        var width = if r.kind == 1 || r.kind == 17 then 8 else 4
+        var rule = "field"
+        if owner >= 0 {
+            rule = "TLS-call-consumed"
+        } else if r.kind == 19 {
+            begin -= 4
+            width = 16
+            rule = "TLSGD-local-exec"
+        } else if r.kind == 20 {
+            begin -= 3
+            width = if l.atoms[ai].data[r.offset + 4] == 255 as byte then 13 else 12
+            rule = "TLSLD-local-exec"
+        } else if r.kind == 42 || r.kind == 22 {
+            begin -= 3
+            width = 7
+            rule = "GOT-instruction"
+        }
+        if begin < 0 || begin + width > l.atoms[ai].data.len {
+            return Bad("provenance patch outside input")
+        }
+        let id = layout.target(s, r.symbol)?
+        let target = copy s.symbols[id]
+        let start = l.outputs[oi].fileoff + l.atoms[ai].offset + begin
+        let before = sha2.to_hex(l.atoms[ai].data[begin..begin + width])
+        let after = sha2.to_hex(
+            l.outputs[oi].data[l.atoms[ai].offset + begin..l.atoms[ai].offset + begin + width],
+        )
+        if bytes.len != 0 { emit(mut bytes, ",") }
+        emit(
+            mut bytes,
+            "{{\"addend\":{r.addend},\"after\":\"{after}\",\"before\":\"{before}\",\"consumed_by\":{owner},\"end\":{start + width},\"index\":{i},\"member\":{l.atoms[ai].object},\"offset\":{r.offset},\"rule\":\"{rule}\",\"section_index\":{l.atoms[ai].index},\"start\":{start},\"symbol\":{binary.quote(target.name.bytes())},\"target_member\":{target.object},\"target_symbol\":{target.index},\"type\":{r.kind}}}",
+        )
+    }
+    bytes
+}
+
+fn origin(mut bytes: List[byte], l: layout.Layout, s: resolve.State, id: int, name: str) -> () ! {
+    Bad(str),
+} {
+    let sym = copy s.symbols[id]
+    let ai = layout.atom_for(l, s, id)
+    if ai == 0 && sym.section != 65521 && sym.section != 65522 { return }
+    if ai != 0 && !l.atoms[ai].live { return }
+    let nobits = sym.section == 65522 || ai != 0 && l.atoms[ai].kind == 8
+    var start: int = -1
+    var end: int = -1
+    if ai != 0 && !nobits {
+        start = l.outputs[l.atoms[ai].output].fileoff + l.atoms[ai].offset + sym.value as int
+        end = start + sym.size as int
+    }
+    let address = layout.value(l, s, id, false)?
+    let alias = if name != sym.name then binary.quote(sym.name.bytes()) else "null"
+    if bytes.len != 0 { emit(mut bytes, ",") }
+    emit(
+        mut bytes,
+        "{{\"address\":{address},\"alias_of\":{alias},\"binding\":{sym.binding},\"file_end\":{end},\"file_start\":{start},\"member\":{sym.object},\"name\":{binary.quote(name.bytes())},\"nobits\":{nobits},\"section_index\":{sym.section},\"size\":{sym.size},\"symbol_index\":{sym.index},\"tls\":{sym.kind == 6}}}",
+    )
+}
+
+/// Retained definitions and aliases, with file and TLS/NOBITS spaces explicit.
+pub fn origins(l: layout.Layout, s: resolve.State) -> List[byte] ! {Bad(str)} {
+    var bytes = List[byte]()
+    for id in 0..s.symbols.len {
+        let sym = copy s.symbols[id]
+        if sym.index == 0 || sym.section == 0 || sym.name.len == 0 { continue }
+        if sym.binding != 0 && (s.globals[sym.name] else -1) != id { continue }
+        origin(mut bytes, l, s, id, sym.name)?
+    }
+    for name in s.alias_names {
+        let target = s.aliases[name] else { return Bad("missing provenance alias") }
+        let id = s.globals[target] else { return Bad("missing provenance alias target") }
+        origin(mut bytes, l, s, id, name)?
+    }
+    bytes
+}
+
+/// NOBITS address ranges never claim file bytes; TLS has its own address space.
+pub fn memory_ranges(l: layout.Layout) -> List[byte] {
+    var bytes = List[byte]()
+    for i in 1..l.outputs.len {
+        let o = copy l.outputs[i]
+        if o.kind != 8 || o.size == 0 { continue }
+        if bytes.len != 0 { emit(mut bytes, ",") }
+        emit(
+            mut bytes,
+            "{{\"end\":{o.address + o.size},\"section_index\":{i},\"start\":{o.address},\"tls\":{o.flags & 1024 != 0}}}",
+        )
+    }
+    bytes
+}

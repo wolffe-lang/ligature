@@ -1,0 +1,108 @@
+//! member: true
+
+use binary
+use elf
+use std.json
+
+/// A malformed manifest is a named input refusal, not a defaulted value.
+pub fn field(v: json.Value, key: str) -> json.Value ! {Bad(str)} {
+    json.get(v, key) else |_| { return Bad("provenance missing field {key}") }
+}
+
+/// Read an integer field, refusing missing or wrongly typed data.
+pub fn integer(v: json.Value, key: str) -> int ! {Bad(str)} {
+    json.as_int(field(v, key)?) else |_| { return Bad("provenance integer field {key}") }
+}
+
+/// Read a string field, refusing missing or wrongly typed data.
+pub fn text(v: json.Value, key: str) -> str ! {Bad(str)} {
+    json.as_str(field(v, key)?) else |_| { return Bad("provenance string field {key}") }
+}
+
+/// Read an array field, refusing missing or wrongly typed data.
+pub fn array(v: json.Value, key: str) -> List[json.Value] ! {Bad(str)} {
+    json.as_arr(field(v, key)?) else |_| { return Bad("provenance array field {key}") }
+}
+
+/// Read the embedded document. Call check first; parsing is not authentication.
+pub fn document(f: binary.Input, image: elf.Image) -> json.Value ! {Bad(str)} {
+    for sec in image.sections {
+        if (str_from_utf8(elf.name(f, image, sec)?) else "") != ".wolf.link.manifest" { continue }
+        let raw = binary.read(f, sec.off, sec.size)?
+        let data = str_from_utf8(raw) else { return Bad("provenance is not UTF-8") }
+        return json.parse(data) else |_| { return Bad("invalid provenance JSON") }
+    }
+    Bad("missing provenance manifest")
+}
+
+fn hex_digit(c: byte) -> int ! {Bad(str)} {
+    let n = c as int
+    if n >= 48 && n <= 57 { return n - 48 }
+    if n >= 97 && n <= 102 { return n - 87 }
+    Bad("invalid provenance hex bytes")
+}
+
+/// Digest validation precedes these semantic checks: signed garbage is still garbage.
+pub fn validate(f: binary.Input, image: elf.Image) -> () ! {Bad(str)} {
+    let doc = document(f, image)?
+    if text(doc, "format")? != "wolf.link.provenance.v1" { return Bad("unknown provenance format") }
+    let coverage = text(doc, "coverage")?
+    if coverage == "sections" { return }
+    if coverage != "bytes-and-patches" { return Bad("unknown provenance coverage") }
+    if integer(field(doc, "output")?, "bytes")? != f.size { return Bad("provenance output length") }
+    let members = array(doc, "members")?
+    let spans = array(doc, "ranges")?
+    var cursor: int = 0
+    for r in spans {
+        let start = integer(r, "start")?
+        let end = integer(r, "end")?
+        if start != cursor || end <= start || end > f.size {
+            return Bad("provenance gap, overlap or invalid range")
+        }
+        let member = integer(r, "member")?
+        if text(r, "origin")? == "input" {
+            if member < 0 || member >= members.len { return Bad("provenance range member") }
+            let offset = integer(r, "input_offset")?
+            let size = integer(members[member], "size")?
+            if offset < 0 || offset > size || end - start > size - offset {
+                return Bad("provenance input slice")
+            }
+        } else if member != -1 {
+            return Bad("provenance generated range member")
+        }
+        cursor = end
+    }
+    if cursor != f.size { return Bad("provenance incomplete byte coverage") }
+    let edges = array(doc, "pulls")?
+    var selected = Map[int, bool]()
+    for edge in edges {
+        let object = integer(edge, "object")?
+        let parent = integer(edge, "parent")?
+        if object < 0 ||
+            object >= members.len ||
+            parent < -1 ||
+            parent >= object ||
+            (selected[object] else false) {
+            return Bad("provenance invalid or cyclic extraction edge")
+        }
+        selected[object] = true
+    }
+    let changes = array(doc, "patches")?
+    for p in changes {
+        let start = integer(p, "start")?
+        let end = integer(p, "end")?
+        if start < 0 || end <= start || end > f.size { return Bad("provenance patch range") }
+        let after = text(p, "after")?
+        let before = text(p, "before")?
+        if after.len != 2 * (end - start) || before.len != after.len {
+            return Bad("provenance patch length")
+        }
+        let bytes = binary.read(f, start, end - start)?
+        for i in 0..bytes.len {
+            let value = hex_digit(after.bytes()[2 * i])? * 16 + hex_digit(after.bytes()[2 * i + 1])?
+            if value != bytes[i] as int { return Bad("provenance patch bytes differ") }
+            let _hi = hex_digit(before.bytes()[2 * i])?
+            let _lo = hex_digit(before.bytes()[2 * i + 1])?
+        }
+    }
+}

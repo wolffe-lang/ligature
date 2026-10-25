@@ -151,9 +151,8 @@ fn retained(mut l: layout.Layout, s: resolve.State, indices: Map[int, int], symt
 } {
     var tables = Map[int, int]()
     for r in l.relocs {
-        let atom = copy l.atoms[r.atom]
-        if !atom.live { continue }
-        let target = atom.output
+        if !l.atoms[r.atom].live { continue }
+        let target = l.atoms[r.atom].output
         let table = tables[target] else {
             let index = l.outputs.len
             var out = layout.output(".rela{l.outputs[target].name}", 4, 0, 8)
@@ -166,7 +165,7 @@ fn retained(mut l: layout.Layout, s: resolve.State, indices: Map[int, int], symt
         }
         let id = layout.target(s, r.symbol)?
         let index = indices[id] else { return Bad("missing retained relocation symbol") }
-        let offset = atom.offset + r.offset + l.outputs[target].address
+        let offset = l.atoms[r.atom].offset + r.offset + l.outputs[target].address
         append(
             mut l.outputs[table].data,
             binary.encode(
@@ -243,7 +242,7 @@ pub fn link(s: resolve.State, p: front.Plan) -> () ! {Bad(str)} {
             cursor += l.outputs[j].size
         }
         shoff = layout.align(cursor, 8)
-        let manifest = provenance.manifest(l, s, inputs, shoff + l.outputs.len * 64)
+        let manifest = provenance.manifest(l, s, inputs, shoff + l.outputs.len * 64)?
         let stable = manifest.len == l.outputs[manifest_index].size
         l.outputs[manifest_index].size = manifest.len
         l.outputs[manifest_index].data = manifest

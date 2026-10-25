@@ -5,6 +5,7 @@ use elf
 use layout
 use resolve
 use std.x.crypto.sha2
+use std.json
 
 fn emit(mut out: List[byte], text: str) { for b in text.bytes() { (mut out).push(b) } }
 
@@ -62,17 +63,36 @@ pub fn inputs(s: resolve.State) -> List[byte] ! {Bad(str)} {
     out
 }
 
-/// Canonical section-level manifest; byte/patch attribution remains the next format layer.
+fn pulls(s: resolve.State) -> List[byte] ! {Bad(str)} {
+    var bytes = List[byte]()
+    for raw in s.pulls {
+        let p = json.parse(raw) else |_| { return Bad("invalid extraction edge") }
+        if bytes.len != 0 { emit(mut bytes, ",") }
+        let archive = logical(text(p, "archive")?)
+        let member = text(p, "member")?
+        let name = text(p, "symbol")?
+        let header = integer(p, "header")?
+        let object = integer(p, "object")?
+        let parent = integer(p, "parent")?
+        emit(
+            mut bytes,
+            "{{\"archive\":{binary.quote(archive.bytes())},\"header\":{header},\"member\":{binary.quote(member.bytes())},\"object\":{object},\"parent\":{parent},\"symbol\":{binary.quote(name.bytes())}}}",
+        )
+    }
+    bytes
+}
+
+/// Canonical complete file coverage plus original relocation patch attribution.
 pub fn manifest(
     l: layout.Layout,
     s: resolve.State,
     input_json: List[byte],
     total: int,
-) -> List[byte] {
+) -> List[byte] ! {Bad(str)} {
     var out = List[byte]()
     emit(
         mut out,
-        "{{\"coverage\":\"sections\",\"format\":\"wolf.link.provenance.v1\",\"input_ranges\":[",
+        "{{\"coverage\":\"bytes-and-patches\",\"format\":\"wolf.link.provenance.v1\",\"input_ranges\":[",
     )
     var count: int = 0
     for a in l.atoms {
@@ -88,10 +108,18 @@ pub fn manifest(
     }
     emit(mut out, "],")
     for b in input_json { (mut out).push(b) }
+    emit(mut out, ",\"memory_ranges\":[")
+    for b in memory_ranges(l) { (mut out).push(b) }
     emit(
         mut out,
-        ",\"output\":{{\"bytes\":{total},\"entry\":\"_start\",\"sha256\":null,\"target\":\"x86_64\",\"type\":\"ET_EXEC\"}},\"sections\":[",
+        "],\"output\":{{\"bytes\":{total},\"entry\":\"_start\",\"sha256\":null,\"target\":\"x86_64\",\"type\":\"ET_EXEC\"}},\"patches\":[",
     )
+    for b in patches(l, s)? { (mut out).push(b) }
+    emit(mut out, "],\"pulls\":[")
+    for b in pulls(s)? { (mut out).push(b) }
+    emit(mut out, "],\"ranges\":[")
+    for b in ranges(l, s, total)? { (mut out).push(b) }
+    emit(mut out, "],\"sections\":[")
     for i in 1..l.outputs.len {
         let o = copy l.outputs[i]
         if i != 1 { emit(mut out, ",") }
@@ -100,7 +128,14 @@ pub fn manifest(
             "{{\"address\":{o.address},\"align\":{o.align},\"file_end\":{o.fileoff + (if o.kind == 8 then 0 else o.size)},\"file_start\":{o.fileoff},\"flags\":{o.flags},\"index\":{i},\"kind\":{o.kind},\"memory_end\":{o.address + o.size},\"name\":{binary.quote(o.name.bytes())}}}",
         )
     }
-    emit(mut out, "]}}\n")
+    emit(mut out, "],\"symbols\":[")
+    for b in origins(l, s)? { (mut out).push(b) }
+    // A canonical reserved string makes the manifest length page-aligned. Without
+    // it, emitting/removing a zero-length alignment gap can make layout oscillate.
+    emit(mut out, "],\"zz_padding\":\"")
+    let padding = layout.align(out.len + 3, 4096) - out.len - 3
+    for _ in 0..padding { (mut out).push(48 as byte) }
+    emit(mut out, "\"}}\n")
     out
 }
 
@@ -189,4 +224,5 @@ pub fn check(f: binary.Input, image: elf.Image) -> () ! {Bad(str)} {
     for i in 0..32 {
         if whole[i] != raw[76 + i] { return Bad("provenance output digest mismatch") }
     }
+    validate(f, image)?
 }
