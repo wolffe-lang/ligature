@@ -29,7 +29,7 @@ fn number(
             "relocation overflow at {site}: {value} does not fit {width * 8} bits (AMD64 psABI table 4.9)",
         )
     }
-    put(mut l.outputs[out].data, at, width, layout.bits(value))?
+    put(mut l.outputs[out].data, at, width, layout.bits(value + 1))?
 }
 
 fn bytes(mut l: layout.Layout, out: int, at: int, values: List[int]) -> () ! {Bad(str)} {
