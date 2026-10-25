@@ -1,0 +1,25 @@
+{
+  "format": "ligature.ld02a.prediction.v1",
+  "baseline": "3f206413",
+  "inputs": {
+    "hello": "359 selected members, 349 differing sequence positions; 401 public definitions",
+    "structural": "101 explicit findings, including 28 retained-relocation records and 3 TLS reorderings",
+    "controls": "Five lld 18.1.3 controls agree with lld 17; pax-fork remains a named cross-host red (pax#175)"
+  },
+  "prediction": {
+    "extraction_cost": "Lazy indexed discovery adds under 1 second to resolution and reduces total hello link time by less than 10 percent; baseline link near 180 seconds",
+    "sequence_positions_resolved": 349,
+    "tls_reorderings_resolved": 2,
+    "self_link": "Two self-links of identical ordered objects are byte-identical; self-linked linker reproduces seed linker's output bytes",
+    "provenance_note_bytes": 116,
+    "provenance_manifest": "Full ranges and patch attribution increase hello's manifest to 2-8 MiB"
+  },
+  "recommendations": {"R-ld02-1": "A if measured lazy extraction cost remains below the baseline hello link; recommendation only"},
+  "plan": [
+    "Measure baseline resolution and hello; retain independent patch records and test normalization",
+    "Measure and implement lazy extraction, preserving every unresolved finding",
+    "Build self-linked linker and run full Linux/PAX corpus with deterministic relinks",
+    "Extend provenance to disjoint ranges and patches, implement explain and mutation gates",
+    "Push per-item commits and four sensitive CI plants; refresh docs and hand back without CI waits"
+  ]
+}
