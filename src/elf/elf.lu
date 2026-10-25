@@ -76,7 +76,7 @@ pub fn parse(f: binary.Input) -> Image ! {Bad(str)} {
     var sections = List[Section]()
     for i in 0..shnum {
         let s = binary.table(f, shoff + i * 64, [4, 4, 8, 8, 8, 8, 4, 4, 8, 8])?
-        let off = binary.bounded(s[4], f.size)?
+        let off = binary.bounded(s[4], if s[1] == 8 then 9223372036854775807 else f.size)?
         // NOBITS is bounded in memory, not by file bytes.
         let size = binary.bounded(s[5], 9223372036854775807)?
         let st = s[1] as int
