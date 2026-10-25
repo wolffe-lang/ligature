@@ -2,6 +2,7 @@
 
 use front
 use census
+use resolve
 
 fn execute(args: List[str]) -> () ! {Bad(str)} {
     if args.len == 1 && args[0] == "--version" {
@@ -14,6 +15,13 @@ fn execute(args: List[str]) -> () ! {Bad(str)} {
     }
     let plan = front.parse(args)?
     if plan.print_plan { front.emit(plan); return }
+    if plan.resolve_only {
+        var state = resolve.empty()
+        defer resolve.finish(state)
+        resolve.run(mut state, plan)?
+        resolve.emit(state)
+        return
+    }
     for path in plan.inputs {
         let _size = fs_size(path) else |_| { continue }
         census.inspect(path, "link")?

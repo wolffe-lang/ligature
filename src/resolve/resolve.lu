@@ -1,0 +1,364 @@
+//! member: true
+
+use ar
+use binary
+use elf
+use front
+
+/// A symbol preserves its input identity, including local names.
+pub struct Symbol {
+    name: str,
+    object: int,
+    table: int,
+    index: int,
+    section: int,
+    binding: int,
+    kind: int,
+    other: int,
+    value: u64,
+    size: u64,
+}
+
+/// Selected object metadata; descriptors are closed by finish.
+pub struct Object {
+    label: str,
+    file: binary.Input,
+    image: elf.Image,
+    names: List[str],
+    symbols: Map[str, int],
+    discarded: List[bool],
+}
+
+/// Indexed archive state preserves duplicate members by header position.
+pub struct Library {
+    path: str,
+    file: binary.Input,
+    archive: ar.Archive,
+    names: List[str],
+    members: List[int],
+    selected: List[bool],
+}
+
+/// Resolution state uses ordered lists for observable order, maps only for lookup.
+pub struct State {
+    objects: List[Object],
+    symbols: List[Symbol],
+    globals: Map[str, int],
+    demands: List[str],
+    demanded: Map[str, bool],
+    groups: Map[str, bool],
+    libraries: List[Library],
+    descriptors: List[int],
+    pulls: List[str],
+    aliases: Map[str, str],
+    alias_names: List[str],
+}
+
+/// Construct an empty symbol graph.
+pub fn empty() -> State {
+    State {
+        objects: List[Object](),
+        symbols: List[Symbol](),
+        globals: Map[str, int](),
+        demands: List[str](),
+        demanded: Map[str, bool](),
+        groups: Map[str, bool](),
+        libraries: List[Library](),
+        descriptors: List[int](),
+        pulls: List[str](),
+        aliases: Map[str, str](),
+        alias_names: List[str](),
+    }
+}
+
+/// Close every input descriptor exactly once, including on failure.
+pub fn finish(s: State) {
+    for fd in s.descriptors { fs_close(fd) else |_| {} }
+}
+
+fn opened(mut s: State, path: str) -> binary.Input ! {Bad(str)} {
+    let size = fs_size(path) else |_| { return Bad("cannot stat {path}") }
+    let fd = fs_open(path) else |_| { return Bad("cannot open {path}") }
+    (mut s.descriptors).push(fd)
+    binary.Input { fd: fd, base: 0, size: size }
+}
+
+// Keep arbitrary ELF bytes as a reversible, one-codepoint-per-byte key.
+fn key(bytes: List[byte], offset: int) -> str ! {Bad(str)} {
+    if offset < 0 || offset >= bytes.len { return Bad("string offset outside ELF table") }
+    var chars = List[byte]()
+    var i = offset
+    while i < bytes.len {
+        let b = bytes[i] as int
+        if b == 0 { return str_from_utf8(chars) else "" }
+        if b < 128 {
+            (mut chars).push(b as byte)
+        } else {
+            (mut chars).push((192 | b >> 6) as byte)
+            (mut chars).push((128 | b & 63) as byte)
+        }
+        i += 1
+    }
+    Bad("unterminated ELF string")
+}
+
+/// Mark a strong undefined reference; weak undefineds deliberately do not pull.
+pub fn demand(mut s: State, name: str) {
+    if !(s.demanded[name] else false) {
+        s.demanded[name] = true
+        (mut s.demands).push(name)
+    }
+}
+
+fn define(mut s: State, id: int) -> () ! {Bad(str)} {
+    let sym = copy s.symbols[id]
+    if sym.binding == 0 || sym.name.len == 0 { return }
+    if sym.binding != 1 && sym.binding != 2 {
+        return Bad("unsupported symbol binding {sym.binding} (gABI Symbol Table)")
+    }
+    if sym.section == 0 {
+        if sym.binding == 1 { demand(mut s, sym.name) }
+        return
+    }
+    if sym.section < 65280 && s.objects[sym.object].discarded[sym.section] { return }
+    let old = s.globals[sym.name] else { s.globals[sym.name] = id; return }
+    let prev = copy s.symbols[old]
+    if sym.binding == 2 { return }
+    if prev.binding == 2 { s.globals[sym.name] = id; return }
+    if sym.section == 65522 && prev.section == 65522 {
+        if sym.size > prev.size { s.symbols[old].size = sym.size }
+        if sym.value > prev.value { s.symbols[old].value = sym.value }
+        return
+    }
+    if sym.section == 65522 { return }
+    if prev.section == 65522 { s.globals[sym.name] = id; return }
+    return Bad(
+        "duplicate strong symbol {sym.name}: {s.objects[prev.object].label} and {s.objects[sym.object].label} (gABI Symbol Table)",
+    )
+}
+
+fn object(mut s: State, f: binary.Input, label: str) -> () ! {Bad(str)} {
+    let image = elf.parse(f)?
+    if image.kind != 1 || image.machine != 62 {
+        return Bad("{label}: static writer requires x86-64 ET_REL (AMD64 psABI 4)")
+    }
+    let obj = s.objects.len
+    var names = List[str]()
+    var discarded = List[bool]()
+    var symmap = Map[str, int]()
+    let first = s.symbols.len
+    for sec in image.sections {
+        let raw = elf.name(f, image, sec)?
+        var terminated = copy raw
+        (mut terminated).push(0 as byte)
+        (mut names).push(key(terminated, 0)?)
+        (mut discarded).push(sec.flags & 2147483648 != 0)
+    }
+    for t in 0..image.sections.len {
+        let sec = copy image.sections[t]
+        if sec.kind != 2 { continue }
+        if sec.link <= 0 || sec.link >= image.sections.len || sec.entsize != 24 {
+            return Bad("{label}: invalid symbol table (gABI Symbol Table)")
+        }
+        let strings = copy image.sections[sec.link]
+        if strings.kind != 3 { return Bad("symbol sh_link is not STRTAB") }
+        let text = binary.read(f, strings.off, strings.size)?
+        let bytes = binary.read(f, sec.off, sec.size)?
+        for i in 0..sec.size / 24 {
+            let at = i * 24
+            let ni = binary.decode(bytes, at, 4)? as int
+            let info = binary.decode(bytes, at + 4, 1)? as int
+            let sh = binary.decode(bytes, at + 6, 2)? as int
+            if sh >= image.sections.len && sh != 65521 && sh != 65522 {
+                return Bad("{label}: unsupported symbol section {sh} (gABI Symbol Table)")
+            }
+            let sy = Symbol {
+                name: key(text, ni)?,
+                object: obj,
+                table: t,
+                index: i,
+                section: sh,
+                binding: info >> 4,
+                kind: info & 15,
+                other: binary.decode(bytes, at + 5, 1)? as int,
+                value: binary.decode(bytes, at + 8, 8)?,
+                size: binary.decode(bytes, at + 16, 8)?,
+            }
+            symmap["{t}:{i}"] = s.symbols.len
+            (mut s.symbols).push(sy)
+        }
+    }
+    // Group selection precedes symbol resolution: duplicate COMDAT definitions are not errors.
+    for sec in image.sections {
+        if sec.kind != 17 { continue }
+        if sec.size < 4 || sec.size % 4 != 0 { return Bad("invalid SHT_GROUP") }
+        let raw = binary.read(f, sec.off, sec.size)?
+        let flag = binary.decode(raw, 0, 4)?
+        if flag > 1 { return Bad("unknown SHT_GROUP flags") }
+        let sig = symmap["{sec.link}:{sec.info}"] else { return Bad("missing COMDAT signature") }
+        let name = s.symbols[sig].name
+        let loser = flag == 1 && (s.groups[name] else false)
+        if flag == 1 { s.groups[name] = true }
+        for j in 1..sec.size / 4 {
+            let member = binary.decode(raw, j * 4, 4)? as int
+            if member <= 0 || member >= discarded.len { return Bad("invalid COMDAT member") }
+            if loser { discarded[member] = true }
+        }
+    }
+    (mut s.objects).push(Object {
+        label: label,
+        file: copy f,
+        image: image,
+        names: names,
+        symbols: symmap,
+        discarded: discarded,
+    })
+    for id in first..s.symbols.len { define(mut s, id)? }
+}
+
+fn library(mut s: State, f: binary.Input, path: str) -> int ! {Bad(str)} {
+    let archive = ar.parse(f)?
+    if archive.index_off == 0 { return Bad("{path}: missing archive symbol index (SysV ar)") }
+    let raw = binary.read(f, archive.index_off, archive.index_size)?
+    if raw.len < 4 { return Bad("truncated archive symbol index") }
+    let n = raw[0] as int << 24 | raw[1] as int << 16 | raw[2] as int << 8 | raw[3] as int
+    if n > (raw.len - 4) / 4 { return Bad("truncated archive index offsets") }
+    var by_offset = Map[int, int]()
+    var selected = List[bool]()
+    for i in 0..archive.members.len {
+        by_offset[archive.members[i].header] = i
+        (mut selected).push(false)
+    }
+    var names = List[str]()
+    var members = List[int]()
+    var at = 4 + n * 4
+    for i in 0..n {
+        let a = 4 + i * 4
+        let off = raw[a] as int << 24 |
+            raw[a + 1] as int << 16 |
+            raw[a + 2] as int << 8 |
+            raw[a + 3] as int
+        let member = by_offset[off] else { return Bad("archive index target is not a member") }
+        let name = key(raw, at)?
+        while at < raw.len && raw[at] != 0 as byte { at += 1 }
+        at += 1
+        (mut names).push(name)
+        (mut members).push(member)
+    }
+    if at != raw.len && !(at % 2 == 1 && at + 1 == raw.len && raw[at] == 0 as byte) {
+        return Bad("trailing archive index bytes")
+    }
+    let id = s.libraries.len
+    (mut s.libraries).push(Library {
+        path: path,
+        file: copy f,
+        archive: archive,
+        names: names,
+        members: members,
+        selected: selected,
+    })
+    id
+}
+
+fn unresolved(s: State, name: str) -> bool {
+    let _definition = s.globals[name] else { return true }
+    false
+}
+
+fn scan(mut s: State, lib: int) -> bool ! {Bad(str)} {
+    var changed = false
+    loop {
+        var pass = false
+        for i in 0..s.libraries[lib].names.len {
+            let name = s.libraries[lib].names[i]
+            let member = s.libraries[lib].members[i]
+            if s.libraries[lib].selected[member] ||
+                !(s.demanded[name] else false) ||
+                !unresolved(s, name) {
+                continue
+            }
+            s.libraries[lib].selected[member] = true
+            let m = copy s.libraries[lib].archive.members[member]
+            let path = s.libraries[lib].path
+            let f = binary.Input {
+                fd: s.libraries[lib].file.fd,
+                base: s.libraries[lib].file.base + m.off,
+                size: m.size,
+            }
+            (mut s.pulls).push(
+                "{{\"archive\":{binary.quote(path.bytes())},\"member\":{binary.quote(m.name.bytes())},\"header\":{m.header},\"symbol\":{binary.quote(name.bytes())}}}",
+            )
+            object(mut s, f, "{path}({m.name}@{m.header})")?
+            changed = true
+            pass = true
+        }
+        if !pass { break }
+    }
+    changed
+}
+
+fn locate(p: front.Plan, token: str) -> str ! {Bad(str)} {
+    if !token.starts_with("-l") { return token }
+    let name = token[2..]
+    for dir in p.paths {
+        let path = "{dir}/lib{name}.a"
+        let _size = fs_size(path) else |_| { continue }
+        return path
+    }
+    Bad("cannot find static library {name}; supply -L (ld manual -l)")
+}
+
+/// Resolve the ordered plan. Undefineds are retained for section GC and synthetic boundaries.
+pub fn run(mut s: State, p: front.Plan) -> () ! {Bad(str)} {
+    for name in p.undefined { demand(mut s, name) }
+    for def in p.definitions {
+        let parts = def.split("=")
+        if parts[0] == parts[1] { return Bad("self-referential --defsym {def}") }
+        s.aliases[parts[0]] = parts[1]
+        (mut s.alias_names).push(parts[0])
+    }
+    var group_starts = List[int]()
+    for token in p.ordered {
+        if token == "--start-group" { (mut group_starts).push(s.libraries.len); continue }
+        if token == "--end-group" {
+            let start = (mut group_starts).pop() else { return Bad("unmatched --end-group") }
+            loop {
+                var changed = false
+                for id in start..s.libraries.len { if scan(mut s, id)? { changed = true } }
+                if !changed { break }
+            }
+            continue
+        }
+        let path = locate(p, token)?
+        let f = opened(mut s, path)?
+        let magic = binary.read(f, 0, if f.size < 8 then f.size else 8)?
+        if magic.len == 8 && magic[0] == 33 as byte {
+            let id = library(mut s, f, path)?
+            let _changed = scan(mut s, id)?
+        } else {
+            object(mut s, f, path)?
+        }
+    }
+}
+
+/// Emit the selected inputs and pre-GC symbol winners as a diagnostic JSON stream.
+pub fn emit(s: State) {
+    for obj in s.objects {
+        print("{{\"row\":\"selected\",\"object\":{binary.quote(obj.label.bytes())}}}")
+    }
+    for pull in s.pulls { print("{{\"row\":\"pull\",\"edge\":{pull}}}") }
+    for i in 0..s.symbols.len {
+        let sym = copy s.symbols[i]
+        let winner = s.globals[sym.name] else { continue }
+        if winner == i {
+            print(
+                "{{\"row\":\"definition\",\"name\":{binary.quote(sym.name.bytes())},\"object\":{sym.object},\"section\":{sym.section},\"binding\":{sym.binding},\"size\":{sym.size},\"value\":{sym.value}}}",
+            )
+        }
+    }
+    for name in s.demands {
+        if unresolved(s, name) {
+            print("{{\"row\":\"undefined\",\"name\":{binary.quote(name.bytes())}}}")
+        }
+    }
+}

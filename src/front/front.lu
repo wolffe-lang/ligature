@@ -15,6 +15,8 @@ pub struct Plan {
     nostdlib: bool,
     gc: bool,
     print_plan: bool,
+    resolve_only: bool,
+    ordered: List[str],
 }
 
 fn value(s: str, option: str) -> str ! {Bad(str)} {
@@ -23,7 +25,9 @@ fn value(s: str, option: str) -> str ! {Bad(str)} {
 }
 
 fn link_option(mut p: Plan, arg: str) -> () ! {Bad(str)} {
-    if arg == "--gc-sections" {
+    if arg == "--start-group" || arg == "--end-group" {
+        (mut p.ordered).push(arg)
+    } else if arg == "--gc-sections" {
         p.gc = true
     } else if arg.starts_with("--undefined=") {
         (mut p.undefined).push(value(arg[12..], "--undefined")?)
@@ -53,6 +57,8 @@ pub fn parse(args: List[str]) -> Plan ! {Bad(str)} {
         nostdlib: false,
         gc: false,
         print_plan: false,
+        resolve_only: false,
+        ordered: List[str](),
     }
     var i: int = 0
     var operands = false
@@ -60,8 +66,11 @@ pub fn parse(args: List[str]) -> Plan ! {Bad(str)} {
         let a = args[i]
         if operands {
             (mut p.inputs).push(a)
+            (mut p.ordered).push(a)
         } else if a == "--" {
             operands = true
+        } else if a == "--resolve" {
+            p.resolve_only = true
         } else if a == "--print-plan" {
             p.print_plan = true
         } else if a == "-static" {
@@ -78,6 +87,7 @@ pub fn parse(args: List[str]) -> Plan ! {Bad(str)} {
                 (mut p.paths).push(v)
             } else if a == "-l" {
                 (mut p.libraries).push(v)
+                (mut p.ordered).push("-l{v}")
             } else {
                 (mut p.undefined).push(v)
             }
@@ -85,19 +95,30 @@ pub fn parse(args: List[str]) -> Plan ! {Bad(str)} {
             (mut p.paths).push(value(a[2..], "-L")?)
         } else if a.starts_with("-l") {
             (mut p.libraries).push(value(a[2..], "-l")?)
+            (mut p.ordered).push(a)
         } else if a.starts_with("-Wl,") {
             for opt in a[4..].split(",") { link_option(mut p, opt)? }
         } else if a.starts_with("--undefined=") ||
             a.starts_with("--defsym=") ||
-            a == "--gc-sections" {
+            a == "--gc-sections" ||
+            a == "--start-group" ||
+            a == "--end-group" {
             link_option(mut p, a)?
         } else if a.starts_with("-") {
             return Bad("unsupported cc option {a} (wolf link_staged subset)")
         } else {
             (mut p.inputs).push(a)
+            (mut p.ordered).push(a)
         }
         i += 1
     }
+    var depth = 0
+    for token in p.ordered {
+        if token == "--start-group" { depth += 1 }
+        if token == "--end-group" { depth -= 1 }
+        if depth < 0 { return Bad("unmatched --end-group") }
+    }
+    if depth != 0 { return Bad("unmatched --start-group") }
     if p.inputs.len == 0 { return Bad("link plan has no input objects or archives") }
     p
 }
