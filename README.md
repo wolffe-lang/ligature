@@ -86,6 +86,14 @@ A copied executable with an allocated byte changed must fail the differential.
 
 ## Current boundaries
 
+Fourteen live PAX BIOS legs compare the same three linker outputs: all three
+agree in every guest, and thirteen cases also match Linux. `pax-fork` remains a
+named cross-host red: PAX returns `fork: io`, while Linux prints the child and
+status 7. Fresh native and release kernels from PAX trunk reproduce syscall 57
+returning `-ENOSYS` for all three binaries ([pax#175](https://github.com/wolffe-lang/pax/issues/175)).
+No expectation was changed. CI replays a genuine captured transcript and its
+corruption cases; it does not boot the private-to-the-run ISO bundle.
+
 The fourteen-case comparison records 101 structural findings: 28 symbol,
 28 segment, 14 entry-alias, 28 retained-relocation and three TLS-order findings.
 Five controls with LLD 18.1.3 reproduce all five classes; these are not explained
