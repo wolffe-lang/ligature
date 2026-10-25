@@ -1,0 +1,3 @@
+resolve: strong/weak/common, indexed archives, groups, duplicate names, COMDAT; 0 SKIP
+lazy-order: forward/backward discovery matches LLD, four-member cyclic graph selected once; 0 SKIP
+elapsed=0.171 user=0.134 sys=0.037

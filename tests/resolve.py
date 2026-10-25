@@ -42,7 +42,7 @@ assert pulls(resolve(start,a))[0]['member']=='weak.o'
 weakref=obj('weakref','.text\n.global _start\n.weak choice\n_start: .quad choice')
 assert not pulls(resolve(weakref,a))
 assert pulls(resolve(weakref,a,'-u','choice'))[0]['member']=='weak.o'
-assert not pulls(resolve(a,start))
+assert pulls(resolve(a,start))[0]['member']=='weak.o' # LLD-compatible lazy backward reference
 # Group rescan revisits earlier archives, without adding unrelated members.
 aobj=obj('a','.text\n.global a\na: .quad b')
 bobj=obj('b','.text\n.global b\nb: .quad a')
@@ -50,7 +50,7 @@ ref=obj('ref','.text\n.global _start\n_start: .quad a')
 a1=archive('a',aobj);a2=archive('b',bobj)
 rows=resolve(ref,'--start-group',a2,a1,'--end-group')
 assert [x['member'] for x in pulls(rows)]==['a.o','b.o']
-assert 'b' not in defs(resolve(ref,a2,a1))
+assert 'b' in defs(resolve(ref,a2,a1)) # earlier archives remain lazy
 resolve(ref,'--end-group',error='unmatched --end-group')
 resolve(ref,'--start-group',error='unmatched --start-group')
 # Duplicate member names remain distinct via header identity.
