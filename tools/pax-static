@@ -1,0 +1,32 @@
+#!/usr/bin/env bash
+# Linux host QEMU leg, using an unchanged copied dev kernel and lane-owned images.
+set -euo pipefail
+base=${1:?usage: pax-static LANE-DIRECTORY}
+mkdir -p "$base/pax-results/matrix" "$base/tmp"
+export TMPDIR="$base/tmp" PAX_BUILD="$base/pax-results"
+fail=0
+for case in "$base"/pax-cases/*; do
+    name=${case##*/}; out="$base/pax-results/matrix/$name"
+    [ ! -e "$out" ] || { echo "refusing to overwrite prior leg $out" >&2; exit 2; }
+    [ "$(du -sm "$base" | cut -f1)" -lt 9500 ] || { echo 'lane disk ceiling reached' >&2; exit 2; }
+    mkdir -p "$out"
+    printf 'BEGIN PAX %s %s\n' "$name" "$(date -Iseconds)"
+    python3 -I "$base/ligature/tools/pax-stage" "$base/iso-extract/initramfs.cpio" "$case" "$out/initramfs.cpio" >"$out/stage.json"
+    cp "$out/initramfs.cpio" "$base/pax-image-root/boot/initramfs.cpio"
+    podman run --rm --network=none --cpuset-cpus=12-15 -v "$base:/lane:rw" localhost/px13-ubuntu:latest xorriso -as mkisofs -R -r -J -b boot/limine/limine-bios-cd.bin -no-emul-boot -boot-load-size 4 -boot-info-table /lane/pax-image-root -o "/lane/pax-results/matrix/$name/program.iso" >"$out/image.log" 2>&1
+    sha256sum "$out/program.iso" >"$out/image.sha256"
+    hrc=0
+    taskset -c 12-15 "$base/pax/tools/qemu-halt" --accel auto --firmware bios --serial "$out/serial.log" --timeout 240 --qemu -m --qemu 2048M --elf "$base/iso-extract/pax.elf" --marker 'halt|PANIC .*' "$out/program.iso" >"$out/halt.log" 2>&1 || hrc=$?
+    cat "$out/halt.log"
+    rrc=0
+    python3 -I "$base/ligature/tests/pax-row.py" "$out/serial.log" "$case" "$out/result.json" >"$out/row.log" 2>&1 || rrc=$?
+    cat "$out/row.log"
+    printf '{"halt_status":%s,"row_status":%s}\n' "$hrc" "$rrc" >"$out/status.json"
+    if [ "$hrc" != 0 ] || [ "$rrc" != 0 ]; then fail=1; fi
+    # The QEMU wrapper has joined its child; preserve images compressed, never discard evidence.
+    gzip -9 "$out/initramfs.cpio" "$out/program.iso"
+    gzip -t "$out/initramfs.cpio.gz" "$out/program.iso.gz"
+    printf 'END PAX %s halt=%s row=%s %s\n' "$name" "$hrc" "$rrc" "$(date -Iseconds)"
+done
+printf 'PAX matrix status %s\n' "$fail"
+exit "$fail"

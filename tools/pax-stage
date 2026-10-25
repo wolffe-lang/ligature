@@ -1,0 +1,42 @@
+#!/usr/bin/env python3
+"""Patch a lane-owned dev initramfs without reading kernel implementation source."""
+import hashlib,json,pathlib,sys
+original,case,out=map(pathlib.Path,sys.argv[1:4]);data=original.read_bytes();at=0;entries={};serial=100000
+while at<len(data):
+    h=data[at:at+110];assert h[:6]==b'070701'
+    fields=[int(h[6+i*8:14+i*8],16) for i in range(13)]
+    name=data[at+110:at+110+fields[11]-1].decode('ascii').lstrip('/')
+    start=(at+110+fields[11]+3)//4*4
+    assert start+fields[6]<=len(data)
+    if name=='TRAILER!!!':break
+    assert name not in entries
+    entries[name]=(fields,data[start:start+fields[6]])
+    at=(start+fields[6]+3)//4*4
+
+def put(name,payload,mode=0o100644):
+    global serial
+    serial+=1
+    entries[name]=([serial,mode,0,0,1,0,len(payload),0,0,0,0,len(name)+1,0],payload)
+script='cd /home/pax || exit 99\n'
+for name in ('ligature','lld','gnu'):
+    put('home/pax/'+name,(case/name).read_bytes(),0o100755)
+    script+=f'/bin/env -i PATH=/usr/bin:/bin LC_ALL=C /home/pax/{name} > /tmp/out 2> /tmp/err\nstatus=$?\n'
+    script+=f"/bin/printf 'LD01 {name} STATUS %s\\nLD01 {name} OUT\\n' \"$status\"\n/bin/cat /tmp/out\n/bin/printf '\\nLD01 {name} ERR\\n'\n/bin/cat /tmp/err\n/bin/printf '\\nLD01 {name} END\\n'\n"
+script+='/bin/printf "LD01 COMPLETE\\n"\nexit 0\n'
+put('home/pax/check.sh',script.encode())
+put('home/pax/x.lu',b'//! member: false\nfn main() -> !int {\n    print("typed at PAX console, checked by wolf")\n    0\n}\n')
+put('etc/pax-run',b'/bin/env -i PATH=/usr/bin:/bin LC_ALL=C /bin/sh /home/pax/check.sh\n')
+# Match the Linux reference's directory inventory exactly, from the pinned corpus copies.
+sources=pathlib.Path(__file__).resolve().parent.parent/'tests/corpus/pax'
+for name in list(entries):
+    if name.startswith('usr/share/lupin/') and '/' not in name[len('usr/share/lupin/'):]:del entries[name]
+for source in sources.glob('*.lu'):put('usr/share/lupin/'+source.name,source.read_bytes())
+with out.open('wb') as stream:
+    def write(name,fields,payload):
+        nb=name.encode()+b'\0';fields=list(fields);fields[6]=len(payload);fields[11]=len(nb)
+        stream.write(b'070701'+b''.join(f'{x:08x}'.encode() for x in fields)+nb)
+        stream.write(bytes(-stream.tell()%4));stream.write(payload);stream.write(bytes(-stream.tell()%4))
+    for name,(fields,payload) in sorted(entries.items()):write(name,fields,payload)
+    write('TRAILER!!!',[serial+1,0,0,0,1,0,0,0,0,0,0,11,0],b'')
+    stream.write(bytes(-stream.tell()%512))
+print(json.dumps({'case':case.name,'cpio_sha256':hashlib.sha256(out.read_bytes()).hexdigest(),'programs':{n:hashlib.sha256((case/n).read_bytes()).hexdigest() for n in ('ligature','lld','gnu')}},sort_keys=True))
