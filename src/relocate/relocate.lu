@@ -66,7 +66,7 @@ pub fn apply(mut l: layout.Layout, s: resolve.State) -> () ! {Bad(str)} {
     var skipped = Map[str, bool]()
     var relocation_at = Map[str, int]()
     for i in 0..l.relocs.len { relocation_at["{l.relocs[i].atom}:{l.relocs[i].offset}"] = i }
-    let tls_end = layout.align(l.tls_size, l.tls_align)
+    let tls_end = layout.align(l.tls_size, l.tls_align) + 8
     for ri in 0..l.relocs.len {
         let r = copy l.relocs[ri]
         if !l.atoms[r.atom].live || (skipped["{r.atom}:{r.offset}"] else false) { continue }
