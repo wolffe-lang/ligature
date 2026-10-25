@@ -14,6 +14,7 @@
     "ruling": "A, maintainer ruling relayed by orchestrator",
     "condition": "BLOCKED on wolf-lang#962 does not fail CI only when the fetched libwolf_rt.a SHA256 equals 9d859b9e6b5319f5a6f609e73ba0d71981d2dfa489882648ac9f454cd9db739c; actual three-link argv reproduction must confirm the blocker",
     "other_digests": "Hard runtime/self-link assertions; no BLOCKED allowance",
-    "claims": "The cc/glibc seed drives Linux corpus; its musl outputs can be tested on fresh PAX. Running ligature itself on PAX and self-link execution remain BLOCKED, not PASS or SKIP."
+    "claims": "The cc/glibc seed drives Linux corpus; its musl outputs can be tested on fresh PAX. Running ligature itself on PAX and self-link execution remain BLOCKED, not PASS or SKIP.",
+    "flip_prerequisites": "Both a wolf release carrying the new entry (0.2.36 at earliest) and the matching republished musl bundle. The new runtime alone leaves 0.2.35-compiled objects without argv; s267/wolf-lang#963 provides that control."
   }
 }

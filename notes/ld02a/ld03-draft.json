@@ -1,14 +1,16 @@
 {
   "format": "ligature.ld03.draft.v1",
-  "state": "Draft based on completed ld02a Linux census; final live PAX evidence pending",
+  "state": "Final draft from completed Linux census and 56 fresh-kernel PAX boots; self-link and ligature-on-PAX remain digest-bounded BLOCKED",
   "goal": "Resolve remaining measured structural findings and prepare the high-half kernel link without broad equivalence waivers",
   "prerequisites": [
     "Read ld02a's final per-case structural records; preserve every remaining finding individually",
     "Read the self-link byte-identity and current-trunk PAX transcripts by SHA twice",
     "Retain pax#175 as a named red until fork is served; no expectation change",
-    "Coordinate with ld02b and ld02c; this lane changes neither repository"
+    "Coordinate with ld02b and ld02c; this lane changes neither repository",
+    "The runtime fix needs both the compiler entry pin bump and the matching bundle; keep the exact old-digest BLOCKED predicate unchanged until then."
   ],
   "items": [
+    "Pin wolf 0.2.36 (or the first release carrying the new entry) AND the matching republished musl bundle; the self-link row goes live. A new runtime alone does not initialize argv for 0.2.35-compiled objects (wolf-lang#962/#963).",
     "Resolve or explicitly retain local/debug symbol metadata, segment and relocation normalization findings from the new corpus; do not inherit ld01 counts as current",
     "Measure compact provenance encoding/interning: hello embeds a 147,136,512-byte JSON manifest for 590,358 retained sites. Preserve complete attribution, independent patch proofs and deterministic output; do not silently strip debug records.",
     "Measure merge-string/deduplication and unwind metadata behavior against both binary oracles",
@@ -39,6 +41,18 @@
       "gnu_tls": 3
     },
     "hello_manifest_bytes": 147136512,
-    "runtime_blocker": "wolf-lang#962; digest-bounded R-ld02-5 A"
+    "runtime_blocker": "wolf-lang#962; digest-bounded R-ld02-5 A",
+    "pax": {
+      "source_sha": "edbd385c91f2ff0eadb1ab4e52b276f1a1412b63",
+      "counts": {
+        "live_boots": 56,
+        "guest_program_runs": 168,
+        "halted": 56,
+        "linux_equal": 52,
+        "named_red": 4,
+        "unexpected_failures": 0
+      },
+      "named_red": "pax#175 in all four kernel/firmware combinations"
+    }
   }
 }

@@ -1,0 +1,7 @@
+{
+  "path": "/home/mfwolffe/lanes/ld02a/pax-evidence.tar.gz",
+  "sha256": "d1ba3d8f44def38928eb9c14f7a0875c20138633903dd44a4ea0a3e309bbae72",
+  "bytes": 349611,
+  "hash_reads": 2,
+  "contents": "All matrix transcripts, halt/row/boot metadata, image and kernel hash records, build logs; large ISO/CPIO bytes remain verified-compressed on kasumi"
+}

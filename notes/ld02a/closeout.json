@@ -1,0 +1,309 @@
+{
+  "format": "ligature.ld02a.closeout.v1",
+  "Prediction": {
+    "prediction_commit": "15b6ecc",
+    "extraction": "Predicted under one second additional cost and 349 positions resolved. Observed +0.028 seconds (0.143 to 0.171) and 349/349 resolved, same 359-member multiset.",
+    "tls": "Predicted 2/3 reorderings resolved. All three original LLD findings resolve; three new GNU findings for the same cases are recorded. Count alone hid the comparator change.",
+    "self_link": "Two seed links are byte-identical, hashes read twice, but actual self-linked execution/bootstrap is BLOCKED on wolf-lang#962. No fixed-point success claimed.",
+    "provenance": "Predicted 116-byte note and 2\u20138 MiB hello manifest. Note is 116; hello manifest is 147136512 bytes, a large miss. Self-link output manifest is 150601728 bytes."
+  },
+  "What was done": [
+    "Retained RELA targets and per-site output validation, local/debug/entry positive and negative normalization fixtures",
+    "Measured lazy indexed extraction with backward references, weak-demand behavior, recursive pulls and parent identities",
+    "Complete disjoint file ranges, relocation patches, definitions/aliases, NOBITS/TLS and validated explain queries",
+    "Digest-pinned public musl bundle and actual self-link harness; reduced and filed-through-orchestrator the independent compiler/runtime argv blocker",
+    "Digest-bounded R-ld02-5 A with hard checks for every other runtime digest and compiler+bundle flip prerequisites",
+    "Fourteen-case cc/glibc-seed Linux corpus and 56 current-trunk PAX boots of its unchanged musl outputs; no execution of ligature itself on PAX claimed"
+  ],
+  "Forbidden": [
+    "No other linker, libc or third-party kernel implementation source read",
+    "No Mac build/test, package installation, merge, tag, release, issue filing/closure or PR label by this lane",
+    "Only full own PAX checkout built with stock tools; no kernel source read or modified",
+    "Planning repo and ~/.claude read-only; no Mac git config; ld01 baseline read-only"
+  ],
+  "Inputs, verified": {
+    "wolf_archive_sha256": "4cc4045bbbb605c07835bc4f32685953c784eeef4cd3139a48b457dfc90dad1a",
+    "lupin_archive_sha256": "ad703550ac4787e8e4bb26989d591a731410274d7332f2b4e8b9a64c878822cc",
+    "bundle_sha256": "6f99a2794da54b2dd85f06713d736b27862a7cd0da9e28bd940d975a4603a1d1",
+    "runtime_sha256": "9d859b9e6b5319f5a6f609e73ba0d71981d2dfa489882648ac9f454cd9db739c",
+    "hash_reads": 2,
+    "pax_source_sha": "edbd385c91f2ff0eadb1ab4e52b276f1a1412b63",
+    "pax_kernels": {
+      "native": {
+        "sha256": "2ef1e4cfc0c9ed9a0dcd8f41d238f040a56b58ca8af5763c0c560902b3c97198",
+        "bytes": 2915304,
+        "reads": 2
+      },
+      "release": {
+        "sha256": "265b2f3deb8f3dc3d76de0f34e346e7cd6872753f399e9c063e15a3abee46df2",
+        "bytes": 2273328,
+        "reads": 2
+      }
+    },
+    "pax_recipe": "localhost/px79-ubuntu, PAX_WOLF=$(tools/fetch-wolf), no explicit WOLF_STD; full checkout, stock tools/build-kernel; host tools/qemu-halt calls tools/qemu-run; BIOS/UEFI TCG, 4096 MiB"
+  },
+  "Evidence": {
+    "index": [
+      "evidence/linux-closeout.json",
+      "evidence/structural-classes-v2.json",
+      "evidence/pax-matrix-results.json",
+      "evidence/pax-evidence-index.json",
+      "evidence/pax-evidence.tar.gz",
+      "evidence/pax-inputs-verified.json",
+      "evidence/compressed-evidence-index.json",
+      "evidence/self-link-blocked-evidence.json",
+      "evidence/argv-probe/",
+      "evidence/blocker-ruling.log",
+      "evidence/final-helpers.log"
+    ],
+    "linux_cases": 14,
+    "functional_failures": 0,
+    "deterministic_relinks": 14,
+    "retained_site_validation": "Candidate and both oracles have no relocation-validation findings in all 28 comparisons; hello retains 590358 RELA records.",
+    "structural_counts": {
+      "relocations": 28,
+      "segments": 28,
+      "symbols": 28,
+      "tls": 3
+    },
+    "structural_total": 87,
+    "resolved_baseline_identities": [
+      [
+        "compiler-comptime",
+        "lld",
+        "entry"
+      ],
+      [
+        "compiler-entry_no_return",
+        "lld",
+        "entry"
+      ],
+      [
+        "compiler-overflow",
+        "lld",
+        "entry"
+      ],
+      [
+        "compiler-procs",
+        "lld",
+        "entry"
+      ],
+      [
+        "compiler-procs",
+        "lld",
+        "tls"
+      ],
+      [
+        "compiler-regions",
+        "lld",
+        "entry"
+      ],
+      [
+        "hello-hello",
+        "lld",
+        "entry"
+      ],
+      [
+        "pax-exec",
+        "lld",
+        "entry"
+      ],
+      [
+        "pax-fork",
+        "lld",
+        "entry"
+      ],
+      [
+        "pax-hello",
+        "lld",
+        "entry"
+      ],
+      [
+        "pax-host",
+        "lld",
+        "entry"
+      ],
+      [
+        "pax-host",
+        "lld",
+        "tls"
+      ],
+      [
+        "pax-loop",
+        "lld",
+        "entry"
+      ],
+      [
+        "pax-signal",
+        "lld",
+        "entry"
+      ],
+      [
+        "pax-spawn",
+        "lld",
+        "entry"
+      ],
+      [
+        "pax-spawn",
+        "lld",
+        "tls"
+      ],
+      [
+        "pax-std",
+        "lld",
+        "entry"
+      ]
+    ],
+    "new_identities": [
+      [
+        "compiler-procs",
+        "gnu",
+        "tls"
+      ],
+      [
+        "pax-host",
+        "gnu",
+        "tls"
+      ],
+      [
+        "pax-spawn",
+        "gnu",
+        "tls"
+      ]
+    ],
+    "pax": {
+      "live_boots": 56,
+      "guest_program_runs": 168,
+      "halted": 56,
+      "linux_equal": 52,
+      "named_red": 4,
+      "unexpected_failures": 0
+    },
+    "pax_raw_exit": 1,
+    "pax_exit_reason": "Only the four exact pax-fork cross-host rows are red; no expectation changed. All 56 boots halt, all three linker outputs agree in every guest.",
+    "timings": {
+      "baseline_seconds": [
+        417.703,
+        335.921,
+        337.213
+      ],
+      "post_change_seconds": [
+        255.397,
+        266.776,
+        259.38
+      ],
+      "baseline_measured_median_seconds": 336.567,
+      "post_change_measured_median_seconds": 263.078,
+      "resolution_seconds": [
+        0.143,
+        0.171
+      ],
+      "caveat": "Total timings include retained relocation and full provenance changes and different host load; only the resolver timings isolate extraction. No causal whole-link speedup claim.",
+      "input_identities_equal": true,
+      "inputs": [
+        {
+          "ordinal": 0,
+          "path": "crt1.o",
+          "sha256": "51dba24287eb9b1e74f3c7cb8ea5464491d3a4ba54c016722f149179d08f90f6",
+          "size": 5560
+        },
+        {
+          "ordinal": 1,
+          "path": "crti.o",
+          "sha256": "5cbc84c78a23cdddda0db8cdcd5ec3b5a15b6b555510bd97e4c5a0334aca7b49",
+          "size": 2816
+        },
+        {
+          "ordinal": 2,
+          "path": "main.o",
+          "sha256": "7292aa7d7cf5ce844b448ef02b3c16f079110825ef4ea1b71d6ba8c13e02a8ff",
+          "size": 2400
+        },
+        {
+          "ordinal": 3,
+          "path": "libwolf_rt.a",
+          "sha256": "9d859b9e6b5319f5a6f609e73ba0d71981d2dfa489882648ac9f454cd9db739c",
+          "size": 45363160
+        },
+        {
+          "ordinal": 4,
+          "path": "libc.a",
+          "sha256": "8e69a73c464a86fd8b278f3aa08ab2640b720157e92b45a2d34441c22248ddd4",
+          "size": 10961970
+        },
+        {
+          "ordinal": 5,
+          "path": "libunwind.a",
+          "sha256": "264296d61db52859cc7a8cd6a7a09fc62bde189aa3ea8867fb62ef5129b694bc",
+          "size": 201794
+        },
+        {
+          "ordinal": 6,
+          "path": "crtn.o",
+          "sha256": "d884ee5f9120490b98bb43496f88983ee379a0d2ebf027574fcca7eae9aaa1e7",
+          "size": 2760
+        }
+      ]
+    },
+    "plants": [
+      {
+        "pr": 15,
+        "head": "49f472d",
+        "run": 40184536391,
+        "row": "independent target relocation witness",
+        "state": "closed red by orchestrator"
+      },
+      {
+        "pr": 18,
+        "head": "b3ab537",
+        "run": 40184381385,
+        "row": "choice archive extraction",
+        "state": "closed red by orchestrator"
+      },
+      {
+        "pr": 16,
+        "head": "db616de",
+        "run": 40184318477,
+        "row": "writer local-exec: writer 35 3 versus writer 42 3",
+        "state": "red observed"
+      },
+      {
+        "pr": 17,
+        "head": "1559f93",
+        "run": 40184320850,
+        "row": "self-link-execute rc -4 after entry corruption",
+        "state": "closed red by orchestrator"
+      }
+    ]
+  },
+  "Departures": [
+    "Self-link execution and running ligature on PAX are BLOCKED on wolf-lang#962, allowed non-failing only for the exact fetched old-runtime digest under R-ld02-5 A. Any other digest faces hard assertions. Unblocking needs BOTH a compiler release with the new entry (0.2.36 earliest) and its matching bundle (wolf-lang#963).",
+    "This is not an M milestone or full structural equivalence claim: 87 exact findings remain, and four PAX fork rows remain red.",
+    "The three GNU TLS findings are new, not retained copies of the three resolved LLD findings. Named initializer bytes and memory sizes agree; binding differences remain separate explicit records.",
+    "Total link times fell from measured median 336.567 to 263.078 seconds for identical ordered input hashes, but metadata and host load also changed; no extraction-only whole-link speedup claim. ligature#12 remains open.",
+    "The embedded canonical manifest is large; the ld03 draft explicitly carries compact encoding/interning work without silently dropping debug sites.",
+    "Digest integrity is not authentication. Symbol/alias ownership is a separate list alongside disjoint input-section ranges. Discard causes and richer dependency explanations remain follow-on work.",
+    "Narrative note is in the PR and this structured record; no wrapper-refusal claim."
+  ],
+  "Hand-off": {
+    "recommendations": [
+      "R-ld02-1 A implemented on measured cost; lane did not decide it",
+      "R-ld02-4 canonical reserved page-alignment string implemented recommendation",
+      "R-ld02-5 A relayed maintainer ruling implemented with the exact digest guard"
+    ],
+    "issues_to_close_at_merge": [
+      "ligature#3",
+      "ligature#13"
+    ],
+    "issues_remaining": [
+      "wolf-lang#962/#963 require compiler and runtime pins",
+      "pax#175 fork cross-host red",
+      "pax#176 kernel identified by built SHA, not banner",
+      "ligature#12 total-link cost"
+    ],
+    "issues_filed_by_lane": [],
+    "ld03_draft": "ld03-draft.json",
+    "done_when": "Local independent qualification complete with explicit digest-bounded BLOCKED capabilities and named fork reds. Final PR CI/audit and orchestrator full-matrix label are merge prerequisites.",
+    "prune": "No live jobs remain after completed markers. Preserve verified compressed evidence, pins and all SHA indexes for review. Afterwards prune only exact ld02a generated target/build/cache paths and the four exact ld02a plant worktrees, never repo-wide worktree lists."
+  }
+}
