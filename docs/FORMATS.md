@@ -123,3 +123,42 @@ same-size input-data edit changes only that data and the predicted manifest/note
 metadata; the gate compares actual byte deltas. Separate positive/negative
 fixtures cover local/entry normalization, unused data/debug relocation patches,
 alias queries, TLS/NOBITS and ambiguous local names.
+
+## Compact patch tables (WLPATCH2)
+
+New outputs keep the 116-byte note and its digest rules unchanged. The
+nonallocated `.wolf.link.manifest` begins with eight ASCII bytes `WLPATCH2`,
+then four little-endian u64 lengths: metadata bytes, string count, patch-row
+count, and patch-table bytes. Canonical compact JSON metadata follows, with
+`patches: []` and no `zz_padding`. Every other attribution field is retained.
+A first-use-ordered UTF-8 pool follows; each string has a minimal unsigned
+LEB128 byte length. The patch table follows the pool; zero bytes round the
+complete section to a 4096-byte boundary for layout convergence.
+
+Each row starts with a little-endian u16 presence mask (bit 15 reserved zero).
+Columns, in order, are `addend`, `after`, `before`, `consumed_by`, `end`, `index`,
+`member`, `offset`, `rule`, `section_index`, `start`, `symbol`, `target_member`,
+`target_symbol`, `type`. The four string columns contain pool indexes. `end`
+is encoded as patch width. `addend` is absolute; all other values are deltas
+from the previous row, initially zero. Present values use minimal unsigned
+LEB128 of zigzag signed integers (`2*n` if nonnegative, `-2*n-1` otherwise).
+Zero values omit their bit and bytes. All original row values reconstruct
+exactly, including signed 64-bit addends. Encoding order is independent of
+hash-bucket iteration. Unknown masks, overflows, truncated lengths, invalid
+pool references, duplicate pooled strings and nonzero padding are refusals.
+
+The reader accepts both this table and legacy JSON. `verify` additionally
+requires one patch per retained RELA record and strictly increasing original
+patch indexes; independent relocation equations remain `tools/differ`'s job.
+This count check is not a claim that digest-sealed metadata proves its own
+truth. The independent test encoder reconstructs the exact compact bytes.
+
+New metadata adds `discarded`: each absent selected-input section records its
+member, section index/name, size and cause (`GC-unreachable`, `duplicate-COMDAT`,
+`SHF_EXCLUDE`, regenerated metadata, consumed group metadata or stack policy).
+Unselected archive members are not read and are not called discarded sections.
+`explain --discarded SECTION [--input N]` returns these records; legacy files
+without causes refuse that query explicitly. `explain --dependencies SYMBOL`
+returns the original relocation patches in the definition's input section,
+including target identities and transition reasons. This is section dependency
+information, not a claim to recover source-language call graphs.

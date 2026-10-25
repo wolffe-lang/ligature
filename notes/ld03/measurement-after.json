@@ -1,0 +1,29 @@
+{
+  "old_bytes": 147136512,
+  "new_bytes": 12414976,
+  "ratio": 11.851534147146156,
+  "sites": 590358,
+  "bytes_per_site_before": 249.2326893173295,
+  "bytes_per_site_after": 21.029571886888974,
+  "equal_fields": [
+    "patches",
+    "inputs",
+    "members",
+    "input_ranges",
+    "memory_ranges",
+    "symbols",
+    "pulls"
+  ],
+  "hashes_read_twice": [
+    {
+      "old": "4587eb789e4aec259ce7c3d24447d9f2eccf8538659b8b0fb12a095264a1761f",
+      "new": "8551aa62d0a73673883fcd8ea2e5b65d833255ad0dcc428fe62e4bb346ca986a"
+    },
+    {
+      "old": "4587eb789e4aec259ce7c3d24447d9f2eccf8538659b8b0fb12a095264a1761f",
+      "new": "8551aa62d0a73673883fcd8ea2e5b65d833255ad0dcc428fe62e4bb346ca986a"
+    }
+  ],
+  "discard_records": 17765,
+  "canonical_independent_encoder_equal": true
+}

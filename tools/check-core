@@ -19,11 +19,15 @@ python3 -I tests/relocation-witness.py
 python3 -I tests/cc.py
 python3 -I tests/provenance.py
 python3 -I tests/attribution.py
+python3 -I tests/compact.py
 python3 -I tests/pax-validator.py
 python3 -I tests/pax-stage.py
 python3 -I tests/static-pax-runner.py
 python3 -I tests/classify-static.py
+python3 -I tools/check-findings
+python3 -I tests/findings.py
 python3 -I tests/kernel-edge.py
+python3 -I tests/layout-controls.py
 # Read the public runtime too; it is glibc-targeted, not the PAX runtime.
 if [ -n "${WOLF_RT_FOR_TEST:-}" ]; then
     target/ligature roundtrip "$WOLF_RT_FOR_TEST"
