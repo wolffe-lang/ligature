@@ -23,12 +23,12 @@ for case in results['rows']:
       if sym['type']!=6:continue
       start=sym['value'];size=sym['size']
       payload=raw[start:start+size] if sym['section']=='.tdata' else bytes(size)
-      out.append((sym['name'],sym['binding'],size,payload.hex()))
+      out.append((sym['name'],size,payload.hex()))
      return collections.Counter(out)
     a=tls_variables('reference');b=tls_variables('candidate')
-    detail.update({'symbol_normalized_initializers_equal':a==b if symbols else None,'reference_only_variables':list((a-b).elements()),'candidate_only_variables':list((b-a).elements()),'classification':'different TLS variable ordering; raw template mismatch remains recorded'})
+    detail.update({'symbol_normalized_initializers_equal':a==b if symbols else None,'symbol_bindings_equal':collections.Counter((s['name'],s['binding']) for s in symbols['reference'] if s['type']==6)==collections.Counter((s['name'],s['binding']) for s in symbols['candidate'] if s['type']==6) if symbols else None,'reference_only_variables':list((a-b).elements()),'candidate_only_variables':list((b-a).elements()),'classification':'different TLS variable ordering; raw template mismatch remains recorded'})
    row['classes'].append(detail)
   rows.append(row)
-report={'format':'ligature.ld01.structural-classes.v1','counts':dict(counts),'total':sum(counts.values()),'rows':rows,'waivers':[],'lld17_18_attribution':{'confirmed_count':0,'reason':'No same-input lld18 run was performed. These low-address user executables do not exercise pax#172/ligature#4 high-half kernel range failure; lld-only findings are not automatically version artifacts.'}}
+report={'format':'ligature.structural-classes.v2','counts':dict(counts),'total':sum(counts.values()),'rows':rows,'waivers':[],'lld17_18_attribution':{'confirmed_count':0,'reason':'No same-input lld18 run was performed. These low-address user executables do not exercise pax#172/ligature#4 high-half kernel range failure; lld-only findings are not automatically version artifacts.'}}
 target.write_text(json.dumps(report,indent=2,sort_keys=True)+'\n')
 print(json.dumps({'counts':dict(counts),'total':sum(counts.values()),'tls_normalized':[r for row in rows for r in row['classes'] if r['kind']=='tls']},sort_keys=True))
