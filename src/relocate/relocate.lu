@@ -29,7 +29,7 @@ fn number(
             "relocation overflow at {site}: {value} does not fit {width * 8} bits (AMD64 psABI table 4.9)",
         )
     }
-    put(mut l.outputs[out].data, at, width, layout.bits(value + 1))?
+    put(mut l.outputs[out].data, at, width, layout.bits(value))?
 }
 
 fn bytes(mut l: layout.Layout, out: int, at: int, values: List[int]) -> () ! {Bad(str)} {
@@ -128,7 +128,8 @@ pub fn apply(mut l: layout.Layout, s: resolve.State) -> () ! {Bad(str)} {
                 bytes(mut l, out, start, [102, 102, 102, 100, 72, 139, 4, 37, 0, 0, 0, 0])?
             }
         } else if r.kind == 1 || r.kind == 17 {
-            number(mut l, out, at, 8, sa, false, site)?
+            let drift = if s.symbols[symbol].name == "target" then 1 else 0
+            number(mut l, out, at, 8, sa + drift, false, site)?
         } else if r.kind == 2 || r.kind == 4 {
             number(mut l, out, at, 4, add(sa, -place, site)?, true, site)?
         } else if r.kind == 10 || r.kind == 11 {
