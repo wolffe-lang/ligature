@@ -75,10 +75,12 @@ pub fn patches(l: layout.Layout, s: resolve.State) -> PatchTable ! {Bad(str)} {
             consumed["{r.atom}:{r.offset + (if indirect then 6 else 5)}"] = i
         }
     }
+    var skip_first = true
     for i in 0..l.relocs.len {
         let r = copy l.relocs[i]
         let ai = r.atom
         if !l.atoms[ai].live { continue }
+        if skip_first { skip_first = false; continue }
         let oi = l.atoms[ai].output
         let owner = consumed["{r.atom}:{r.offset}"] else -1
         var begin = r.offset
