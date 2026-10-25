@@ -1,0 +1,19 @@
+{
+  "format": "ligature.ld03.draft.v1",
+  "state": "provisional until ld02a self-link and live PAX qualification complete",
+  "goal": "Resolve remaining measured structural findings and prepare the high-half kernel link without broad equivalence waivers",
+  "prerequisites": [
+    "Read ld02a's final per-case structural records; preserve every remaining finding individually",
+    "Read the self-link byte-identity and current-trunk PAX transcripts by SHA twice",
+    "Retain pax#175 as a named red until fork is served; no expectation change",
+    "Coordinate with ld02b and ld02c; this lane changes neither repository"
+  ],
+  "items": [
+    "Resolve or explicitly retain local/debug symbol metadata, segment and relocation normalization findings from the new corpus; do not inherit ld01 counts as current",
+    "Measure merge-string/deduplication and unwind metadata behavior against both binary oracles",
+    "Extend provenance to discarded-section causes and richer dependency explanations; signatures remain a separately specified authentication envelope",
+    "Scope the kernel linker-script/high-half subset with the ELF and ABI specifications and black-box oracles; pax#172 is not a user-program waiver",
+    "Plan AArch64 linking separately from the already-supported header reader, with ABI-qualified relocation and refusal tests"
+  ],
+  "gates": ["Every new gate planted red in its executing CI row", "Same-input deterministic relinks", "Actual input-edit byte deltas match attribution", "All retained relocation sites independently decoded", "Full Linux and live PAX corpus with explicit per-row status"]
+}

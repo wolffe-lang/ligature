@@ -68,11 +68,15 @@ the binutils hashes match the table above. The local image digest is
 
 The generated CI C fixture exercises musl CRT startup, TLS, initialization
 arrays, static archive extraction, relocation retention and a real run.
-CI does not possess the PAX-specific musl runtime archive or its exact lld
-build. Wolf 0.2.35's public Linux archives target glibc and cannot substitute
-for that musl runtime (the link fails on `open64`, `fstat64` and unwind
-references). The full PAX/Wolf corpus is a separate local strict run; these
-fixtures are not represented as that corpus.
+CI fetches the exact PAX-specific binary link bundle through `tools/fetch-bundle`:
+release `link-bundle-2026-10-25`, asset `ld02-musl-link-bundle.tar.gz`, 36,594,483
+bytes, SHA-256 `6f99a2794da54b2dd85f06713d736b27862a7cd0da9e28bd940d975a4603a1d1`.
+Both the archive digest and extracted file identities are checked twice. It
+contains the exact LLD control, musl runtime, CRTs, libc and libunwind. This
+provisions the real self-link CI row (ligature#13). Wolf 0.2.35's public Linux
+runtime targets glibc and cannot substitute for it (`open64`, `fstat64` and
+unwind references differ). The full PAX/Wolf corpus remains a separate local
+strict run; distro fixtures are not represented as that corpus.
 
 The public glibc runtime additionally contains empty, excluded
 `SHT_LLVM_ADDRSIG` sections: LLVM 17 Language Reference Extensions,
@@ -101,5 +105,6 @@ the reader accepts 0 or 8 there while requiring size divisible by 8.
   are structurally unchanged between the pinned LLD 17 and that LLD 18 binary.
 * PAX `tests/mpx5-bore`, `tools/qemu-halt`, `tools/qemu-run` and
   `tools/mkinitramfs`: guest output capture, halt proof and initramfs format.
-  The copied dev ISO supplies the unchanged kernel binary; no kernel source
-  was read or rebuilt.
+  PAX qualification uses a full checkout at its recorded trunk SHA and the
+  stock `tools/fetch-wolf` / `tools/build-kernel` recipe in `localhost/px79-ubuntu`.
+  The copied dev initramfs supplies userland only, never a stale kernel oracle.

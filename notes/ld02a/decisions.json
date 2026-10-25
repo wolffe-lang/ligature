@@ -1,0 +1,13 @@
+{
+  "R-ld02-1": {
+    "recommendation": "A, implemented: match measured lazy discovery",
+    "basis": "0.028 seconds additional resolver cost, versus 336.567-second median of the two measured baseline total links; all 349 sequence positions resolved",
+    "ruling": "not decided by lane"
+  },
+  "R-ld02-4": {
+    "recommendation": "Use a reserved canonical zz_padding string to page-align embedded manifest length; implemented",
+    "basis": "Describing only nonempty alignment ranges produced a fixed-point oscillation in alias-gc. A reserved zero-character string makes the JSON canonical and stabilizes layout; note stays 116 bytes. The negative and determinism gates pass.",
+    "alternative": "Allow noncanonical trailing whitespace or include forbidden empty coverage ranges",
+    "ruling": "not decided by lane"
+  }
+}
