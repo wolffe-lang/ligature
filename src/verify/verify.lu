@@ -1,0 +1,85 @@
+//! member: true
+
+use elf
+
+fn covers(base: u64, size: u64, addr: u64, length: u64) -> bool {
+    addr >= base && addr - base <= size && length <= size - (addr - base)
+}
+
+/// Validate executable section, segment, entry and TLS invariants; Bad names a violated invariant.
+pub fn check(image: elf.Image) -> () ! {Bad(str)} {
+    if image.kind != 2 && image.kind != 3 { return Bad("verify requires ET_EXEC or ET_DYN") }
+    var entry = false
+    var tls_count: int = 0
+    for i in 0..image.programs.len {
+        let p = copy image.programs[i]
+        if p.kind == 7 { tls_count += 1 }
+        if p.kind != 1 { continue }
+        if p.align > 1 && p.addr % p.align != p.off as u64 % p.align {
+            return Bad("PT_LOAD address/offset alignment mismatch")
+        }
+        if p.flags & 1 != 0 && covers(p.addr, p.memsz, image.entry, 1) { entry = true }
+        for j in 0..i {
+            let q = copy image.programs[j]
+            if q.kind == 1 &&
+                p.memsz > 0 &&
+                q.memsz > 0 &&
+                p.addr < q.addr + q.memsz &&
+                q.addr < p.addr + p.memsz {
+                return Bad("overlapping PT_LOAD memory ranges")
+            }
+        }
+    }
+    if !entry { return Bad("entry outside executable PT_LOAD") }
+    if tls_count > 1 { return Bad("multiple PT_TLS segments") }
+    var tls_seen = false
+    for i in 1..image.sections.len {
+        let s = copy image.sections[i]
+        if s.size == 0 || s.flags & 2 == 0 { continue }
+        if s.align > 1 && s.addr % s.align != 0 {
+            return Bad("allocated section alignment mismatch")
+        }
+        if s.addr > 18446744073709551615 - s.size as u64 {
+            return Bad("section virtual range overflows")
+        }
+        let tls = s.flags & 1024 != 0
+        var covered = false
+        var tls_covered = false
+        for p in image.programs {
+            let memory = covers(p.addr, p.memsz, s.addr, s.size as u64)
+            var file = s.kind == 8
+            if s.kind != 8 &&
+                covers(p.off as u64, p.filesz as u64, s.off as u64, s.size as u64) &&
+                s.addr >= p.addr &&
+                s.addr - p.addr == (s.off - p.off) as u64 {
+                file = true
+            }
+            if p.kind == 1 && memory && file {
+                if s.flags & 1 != 0 && p.flags & 2 == 0 {
+                    return Bad("writable section in nonwritable PT_LOAD")
+                }
+                if s.flags & 4 != 0 && p.flags & 1 == 0 {
+                    return Bad("executable section in nonexecutable PT_LOAD")
+                }
+                covered = true
+            }
+            if p.kind == 7 && memory && file { tls_covered = true }
+        }
+        if !covered && !(tls && s.kind == 8 && tls_covered) {
+            return Bad("allocated section not covered by PT_LOAD")
+        }
+        if tls {
+            tls_seen = true
+            if !tls_covered { return Bad("TLS section outside PT_TLS template") }
+        }
+        for j in 1..i {
+            let q = copy image.sections[j]
+            if q.size == 0 || q.flags & 2 == 0 { continue }
+            if tls && s.kind == 8 || q.flags & 1024 != 0 && q.kind == 8 { continue }
+            if s.addr < q.addr + q.size as u64 && q.addr < s.addr + s.size as u64 {
+                return Bad("overlapping allocated sections")
+            }
+        }
+    }
+    if tls_count != 0 && !tls_seen { return Bad("PT_TLS without TLS sections") }
+}
