@@ -1,0 +1,11 @@
+{
+  "format": "ligature.ld03.prediction.v1",
+  "base": "089ee5d",
+  "self_link": "BLOCKED unchanged: the self-link goes live when ld03b (or the pin lane) bumps both compiler and bundle",
+  "recommendation": "R-ld03-1 A: deterministic binary tables with an interned string pool in the existing manifest section; no ruling decided",
+  "manifest": {"baseline_bytes": 147136512, "sites": 590358, "target_bytes_max": 14713651, "prediction": "At least 10x smaller; all rows and independent patch proofs retained; explain accepts old JSON and new encoding"},
+  "findings": "Expect to retain all 87 individually as explicit oracle divergences, with raw-record hashes and specification references; no category waiver or structural-equivalence claim",
+  "scope": ["Measure duplicate strings before implementing", "Preserve complete attribution, extend discard/dependency causes", "Measure merge-string and unwind behavior using black-box fixtures", "Scope high-half kernel script and AArch64 linking for ld04, do not implement them"],
+  "gates": ["dropped provenance record", "silently reclassified finding", "nondeterministic relink", "full Linux corpus", "live PAX corpus with named fork red retained"],
+  "forbidden": ["linker/libc/kernel/compiler-runtime implementation sources", "pax or wolf-lang changes", "self-link predicate changes", "ld02a evidence writes", "merge, label, tag, release or issue actions", "Mac git config or heavy work", "memory/settings/CLAUDE.md edits"]
+}
