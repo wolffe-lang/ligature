@@ -144,8 +144,7 @@ pub fn apply(mut l: layout.Layout, s: resolve.State) -> () ! {Bad(str)} {
                 (rex == 72 || rex == 76) &&
                 opcode == 139 &&
                 modrm & 199 == 5 &&
-                r.addend == -4 &&
-                pc32_reachable(sa, place) {
+                r.addend == -4 {
                 l.outputs[out].data[at - 2] = 141 as byte
                 number(mut l, out, at, 4, sa - place, true, site)?
             } else if r.kind == 22 &&
