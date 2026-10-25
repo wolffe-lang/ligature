@@ -32,7 +32,8 @@ fields by re-serialization, without rewriting the input. `verify` checks ELF
 header consistency, section indices, segment coverage and overlap, alignment,
 entry placement, the TLS template, provenance digests, complete file coverage
 and patch-byte claims when present. `explain` queries symbols, virtual addresses
-and extraction paths; ambiguous locals require `--input MEMBER_ORDINAL`. Unknown options and unsupported formats
+and extraction paths; `--dependencies SYMBOL` shows section relocation causes and
+`--discarded SECTION` shows selected-input discard reasons. Ambiguous locals require `--input MEMBER_ORDINAL`. Unknown options and unsupported formats
 fail by name on stderr. AArch64 ELF headers can be read; AArch64 linking,
 ELF32, big-endian ELF, REL relocations, BSD archives, thin archives and extended
 ELF numbering are not supported. The reader uses bounded positional reads,
@@ -97,7 +98,8 @@ oracles on Linux. `tests/static-pax.py LINK-INPUTS` drives it;
 `LIGATURE_COMPRESS_EVIDENCE=1` retains verified compressed per-case reports.
 The corpus requires every candidate's retained relocation site to validate
 independently. Evidence is retained under `notes/ld00-evidence/`, `notes/ld01/`
-and `notes/ld02a/`. The hosted CI gate does not boot the complete PAX corpus.
+and `notes/ld02a/`; compact-format measurements and individual finding dispositions
+are under `notes/ld03/`. The hosted CI gate does not boot the complete PAX corpus.
 
 `tools/oracle` records `readelf`, `nm`, disassembly, extraction traces and runs.
 `tools/differ` checks symbol metadata, relocation equations (including measured
@@ -117,7 +119,9 @@ relocation-record and three GNU TLS-order differences. Fourteen LLD entry-alias
 findings and all three original LLD TLS-order findings are resolved. The three
 GNU TLS findings are new comparisons, not unchanged copies of the old ones;
 named initializer bytes and memory sizes agree, while binding differences
-remain recorded separately. No blanket structural equivalence is claimed.
+remain recorded separately. `notes/ld03/findings.json` retains each of the 87
+findings by name, raw-record hash, deciding fact and specification reference.
+No blanket structural equivalence is claimed.
 
 Fresh native and release kernels from PAX `edbd385c91f2ff0eadb1ab4e52b276f1a1412b63`
 ran the same three linker outputs under BIOS and UEFI: **56 live boots, all
@@ -140,9 +144,10 @@ bundle are both required; a runtime-only update is insufficient.
 The nonallocated 116-byte `.note.wolf.link` seals input hashes, disjoint file
 ranges and relocation patches with SHA-256. It is integrity, not a signature
 or proof of authorship. `explain` validates the manifest before answering.
-Hello retains 590,358 relocation records and embeds a 147,136,512-byte canonical
-manifest; compact encoding remains follow-on work, not an excuse to omit debug
-sites. Unwind data has no generated unwind header, strings are not merged,
+Hello retains all 590,358 relocation records. Its interned binary patch table
+reduces the embedded manifest from 147,136,512 to 12,414,976 bytes (11.85×),
+including 17,765 newly explicit discard/consumed-metadata records. Legacy JSON
+manifests remain readable by `verify` and `explain`; no debug sites are omitted. Unwind data has no generated unwind header, strings are not merged,
 and AArch64 linking, linker scripts and Mach-O remain future work. The high-half
 relocation fixture does not claim support for a kernel linker script.
 
