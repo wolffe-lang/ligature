@@ -1,0 +1,2 @@
+exec: child
+exec: child status 7

@@ -1,0 +1,30 @@
+#!/usr/bin/env python3
+"""Link one object set with both pinned oracles and retain independent views."""
+import argparse,hashlib,json,os,pathlib,subprocess
+root=pathlib.Path(__file__).resolve().parent.parent
+ap=argparse.ArgumentParser();ap.add_argument('--link-inputs',type=pathlib.Path,required=True);ap.add_argument('--out',type=pathlib.Path,required=True);ap.add_argument('objects',nargs='+',type=pathlib.Path);a=ap.parse_args()
+base=a.link_inputs.resolve();out=a.out.resolve();out.mkdir(parents=True,exist_ok=True)
+for row in (root/'tests/pax-link.sums').read_text().splitlines():
+    name,digest,size=row.split();f=base/name
+    assert f.stat().st_size==int(size) and hashlib.file_digest(f.open('rb'),'sha256').hexdigest()==digest,('pin',name)
+assert hashlib.file_digest(pathlib.Path('/usr/bin/ld.bfd').open('rb'),'sha256').hexdigest()=='e9ceb054c12207970f2726dfc07e9a66b411602748628baf27399f02a9bbb31b','GNU ld pin differs'
+objects=[str(p.resolve()) for p in a.objects];lib=base/'sysroot'
+manifest={}
+for name,linker in [('lld',base/'ld.lld'),('gnu','/usr/bin/ld.bfd')]:
+    dest=out/name;dest.mkdir(exist_ok=True);exe=dest/'program'
+    args=list(map(str,[linker,'-static','--emit-relocs','--gc-sections','--undefined=__wolf_rt_trap_at','--defsym=wolf_trap=__wolf_rt_trap_at','--trace',f'-Map={dest}/link.map','-o',exe,lib/'crt1.o',lib/'crti.o','--start-group',*objects,base/'libwolf_rt.a',lib/'libc.a',lib/'libunwind.a','--end-group',lib/'crtn.o']))
+    if name=='lld':args.append(f'--why-extract={dest}/why-extract.tsv')
+    p=subprocess.run(args,capture_output=True,timeout=120);(dest/'trace.txt').write_bytes(p.stdout);(dest/'link.err').write_bytes(p.stderr)
+    assert p.returncode==0,(name,p.stderr.decode(errors='replace'))
+    subprocess.run([root/'target/ligature','verify',exe],check=True,timeout=30)
+    for filename,cmd in [('readelf.txt',['readelf','-lSsrW',exe]),('nm.txt',['nm','-n',exe]),('objdump.txt',['objdump','-d','--no-show-raw-insn',exe]),('inspect.jsonl',[root/'target/ligature','inspect',exe])]:
+        with (dest/filename).open('wb') as stream:subprocess.run(list(map(str,cmd)),stdout=stream,check=True,timeout=60)
+    work=dest/'run';work.mkdir(exist_ok=True)
+    (work/'x.lu').write_text('//! member: false\nfn main() -> !int {\n    print("typed at PAX console, checked by wolf")\n    0\n}\n')
+    env={'PATH':'/usr/bin:/bin','LC_ALL':'C'}
+    p=subprocess.run([exe],cwd=work,env=env,capture_output=True,timeout=30)
+    (dest/'stdout').write_bytes(p.stdout);(dest/'stderr').write_bytes(p.stderr);(dest/'status').write_text(str(p.returncode)+'\n')
+    manifest[name]={'argv':args,'sha256':hashlib.file_digest(exe.open('rb'),'sha256').hexdigest(),'run':{'stdout_hex':p.stdout.hex(),'stderr_hex':p.stderr.hex(),'status':p.returncode}}
+assert manifest['lld']['run']==manifest['gnu']['run'],('behavioral difference',manifest)
+(out/'manifest.json').write_text(json.dumps(manifest,indent=2)+'\n')
+print('oracle: both links verified; run stdout/stderr/status identical',out)

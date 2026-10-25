@@ -1,0 +1,356 @@
+{
+  "categories": [
+    {
+      "kind": "symbols",
+      "lld_only": 1028,
+      "gnu_only": 215,
+      "lld_examples": [
+        {
+          "binding": 0,
+          "name": "DW.ref.rust_eh_personality",
+          "section": ".data",
+          "size": 8,
+          "type": 1,
+          "value": null,
+          "visibility": 2
+        },
+        {
+          "binding": 0,
+          "name": "GCC_except_table0",
+          "section": ".gcc_except_table",
+          "size": 0,
+          "type": 0,
+          "value": null,
+          "visibility": 0
+        },
+        {
+          "binding": 0,
+          "name": "GCC_except_table1",
+          "section": ".gcc_except_table",
+          "size": 0,
+          "type": 0,
+          "value": null,
+          "visibility": 0
+        },
+        {
+          "binding": 0,
+          "name": "GCC_except_table10",
+          "section": ".gcc_except_table",
+          "size": 0,
+          "type": 0,
+          "value": null,
+          "visibility": 0
+        },
+        {
+          "binding": 0,
+          "name": "GCC_except_table100",
+          "section": ".gcc_except_table",
+          "size": 0,
+          "type": 0,
+          "value": null,
+          "visibility": 0
+        }
+      ],
+      "gnu_examples": [
+        {
+          "binding": 0,
+          "name": "_GLOBAL_OFFSET_TABLE_",
+          "section": ".got.plt",
+          "size": 0,
+          "type": 1,
+          "value": null,
+          "visibility": 0
+        },
+        {
+          "binding": 0,
+          "name": "__fini_array_end",
+          "section": ".tbss",
+          "size": 0,
+          "type": 0,
+          "value": null,
+          "visibility": 0
+        },
+        {
+          "binding": 0,
+          "name": "__fini_array_start",
+          "section": ".tbss",
+          "size": 0,
+          "type": 0,
+          "value": null,
+          "visibility": 0
+        },
+        {
+          "binding": 0,
+          "name": "__init_array_end",
+          "section": ".tbss",
+          "size": 0,
+          "type": 0,
+          "value": null,
+          "visibility": 0
+        },
+        {
+          "binding": 0,
+          "name": "__init_array_start",
+          "section": ".tbss",
+          "size": 0,
+          "type": 0,
+          "value": null,
+          "visibility": 0
+        }
+      ]
+    },
+    {
+      "kind": "segments",
+      "candidate": [
+        [
+          1,
+          4,
+          4096
+        ],
+        [
+          1,
+          4,
+          4096
+        ],
+        [
+          1,
+          5,
+          4096
+        ],
+        [
+          1,
+          6,
+          4096
+        ],
+        [
+          7,
+          4,
+          8
+        ],
+        [
+          1685382481,
+          6,
+          16
+        ],
+        [
+          1685382482,
+          4,
+          1
+        ]
+      ],
+      "reference": [
+        [
+          1,
+          4,
+          4096
+        ],
+        [
+          1,
+          5,
+          4096
+        ],
+        [
+          1,
+          6,
+          4096
+        ],
+        [
+          1,
+          6,
+          4096
+        ],
+        [
+          6,
+          4,
+          8
+        ],
+        [
+          7,
+          4,
+          8
+        ],
+        [
+          1685382481,
+          6,
+          0
+        ],
+        [
+          1685382482,
+          4,
+          1
+        ]
+      ]
+    },
+    {
+      "kind": "entry",
+      "candidate": {
+        "offset": 0,
+        "symbols": [
+          "_start"
+        ]
+      },
+      "reference": {
+        "offset": 0,
+        "symbols": [
+          "__fini_array_end",
+          "__fini_array_start",
+          "__init_array_end",
+          "__init_array_start",
+          "_start"
+        ]
+      }
+    },
+    {
+      "kind": "relocations",
+      "lld_only": 382238,
+      "gnu_only": 370179,
+      "lld_examples": [
+        {
+          "addend": -4,
+          "mode": "direct",
+          "site": {
+            "offset": 9,
+            "section": ".text"
+          },
+          "target": {
+            "name": "_DYNAMIC",
+            "section": "",
+            "type": 0
+          },
+          "type": 2
+        },
+        {
+          "addend": -4,
+          "mode": "direct",
+          "site": {
+            "offset": 18,
+            "section": ".text"
+          },
+          "target": {
+            "name": "_start_c",
+            "section": ".text",
+            "type": 2
+          },
+          "type": 4
+        },
+        {
+          "addend": -4,
+          "mode": "GOT relaxed PC-relative",
+          "site": {
+            "offset": 9,
+            "symbol": "_start_c"
+          },
+          "target": {
+            "name": "_fini",
+            "section": ".fini",
+            "type": 0
+          },
+          "type": 42
+        },
+        {
+          "addend": -4,
+          "mode": "GOT relaxed PC-relative",
+          "site": {
+            "offset": 19,
+            "symbol": "_start_c"
+          },
+          "target": {
+            "name": "_init",
+            "section": ".init",
+            "type": 0
+          },
+          "type": 42
+        },
+        {
+          "addend": -4,
+          "mode": "GOT relaxed PC-relative",
+          "site": {
+            "offset": 26,
+            "symbol": "_start_c"
+          },
+          "target": {
+            "name": "main",
+            "section": ".text",
+            "type": 2
+          },
+          "type": 42
+        }
+      ],
+      "gnu_examples": [
+        {
+          "addend": 164,
+          "mode": "direct",
+          "site": {
+            "offset": 58,
+            "symbol": "_RINvMNtNtCs268jdzri8zx_3std4sync9once_lockINtB3_8OnceLockINtNtB5_14reentrant_lock13ReentrantLockINtNtCs7x1JxYRm7tp_4core4cell7RefCellINtNtNtNtB7_2io8buffered10linewriter10LineWriterNtNtB2e_5stdio9StdoutRawEEEE10initializeNCINvB2_11get_or_initNCNvB2V_6stdout0E0zEB7_"
+          },
+          "target": {
+            "name": "",
+            "section": ".data.rel.ro",
+            "type": 3
+          },
+          "type": 2
+        },
+        {
+          "addend": 204,
+          "mode": "direct",
+          "site": {
+            "offset": 65,
+            "symbol": "_RINvMNtNtCs268jdzri8zx_3std4sync9once_lockINtB3_8OnceLockINtNtB5_14reentrant_lock13ReentrantLockINtNtCs7x1JxYRm7tp_4core4cell7RefCellINtNtNtNtB7_2io8buffered10linewriter10LineWriterNtNtB2e_5stdio9StdoutRawEEEE10initializeNCINvB2_11get_or_initNCNvB2V_6stdout0E0zEB7_"
+          },
+          "target": {
+            "name": "",
+            "section": ".data.rel.ro",
+            "type": 3
+          },
+          "type": 2
+        },
+        {
+          "addend": 228,
+          "mode": "direct",
+          "site": {
+            "offset": 62,
+            "symbol": "_RINvMNtNtCs268jdzri8zx_3std4sync9once_lockINtB3_8OnceLockINtNtB5_14reentrant_lock13ReentrantLockINtNtCs7x1JxYRm7tp_4core4cell7RefCellINtNtNtNtB7_2io8buffered10linewriter10LineWriterNtNtB2e_5stdio9StdoutRawEEEE10initializeNCINvB2_11get_or_initNCNvB2V_7cleanup0E0zEB7_"
+          },
+          "target": {
+            "name": "",
+            "section": ".data.rel.ro",
+            "type": 3
+          },
+          "type": 2
+        },
+        {
+          "addend": 204,
+          "mode": "direct",
+          "site": {
+            "offset": 69,
+            "symbol": "_RINvMNtNtCs268jdzri8zx_3std4sync9once_lockINtB3_8OnceLockINtNtB5_14reentrant_lock13ReentrantLockINtNtCs7x1JxYRm7tp_4core4cell7RefCellINtNtNtNtB7_2io8buffered10linewriter10LineWriterNtNtB2e_5stdio9StdoutRawEEEE10initializeNCINvB2_11get_or_initNCNvB2V_7cleanup0E0zEB7_"
+          },
+          "target": {
+            "name": "",
+            "section": ".data.rel.ro",
+            "type": 3
+          },
+          "type": 2
+        },
+        {
+          "addend": 61420,
+          "mode": "direct",
+          "site": {
+            "offset": 32,
+            "symbol": "_RINvMNtNtCs7x1JxYRm7tp_4core4cell4onceINtB3_8OnceCellINtNtB7_6result6ResultINtNtB7_6option6OptionINtNtCskPe9mFtgPYj_5alloc5boxed3BoxINtNtCs5FTk6J0Pid3_9addr2line4unit7DwoUnitINtNtNtCsaIvH96uYD7A_5gimli4read12endian_slice11EndianSliceNtNtB2T_9endianity12LittleEndianEEEENtB2R_5ErrorEE8try_initNCINvB2_11get_or_initNCNvMB29_INtB29_7ResUnitB2M_E14dwarf_and_units0_0E0zECs268jdzri8zx_3std"
+          },
+          "target": {
+            "name": "",
+            "section": ".text",
+            "type": 3
+          },
+          "type": 4
+        }
+      ]
+    }
+  ],
+  "full_record_sha256": "2155b34083242ebedbfae7f6130b218b666ae38655a8bbbbff96f5f0b52fe7e3",
+  "full_record": "target/evidence/oracle-differences.json",
+  "waived": false
+}

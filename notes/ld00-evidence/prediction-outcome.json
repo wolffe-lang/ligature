@@ -1,0 +1,27 @@
+{
+  "relocation_types": {
+    "predicted": 12,
+    "observed": 13
+  },
+  "tls": {
+    "predicted": true,
+    "observed": true
+  },
+  "hello_members": {
+    "predicted": 95,
+    "observed": 359
+  },
+  "GOTPCRELX": {
+    "predicted": true,
+    "observed": false
+  },
+  "REX_GOTPCRELX": {
+    "predicted": true,
+    "observed": true
+  },
+  "oracle_behavior_disagreement": false,
+  "oracle_structural_categories": 4,
+  "reader_lines": 446,
+  "ar_lines": 131,
+  "oracle_differ_lines": 172
+}

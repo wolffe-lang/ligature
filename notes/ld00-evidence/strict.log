@@ -1,0 +1,104 @@
+{"event":"suite","file":"src/reader_test.lu","schema":"wolf-test/0","tests":1}
+{"detail":"exit(0)","event":"test","file":"src/reader_test.lu","name":"main","schema":"wolf-test/0","status":"pass"}
+{"event":"summary","failed":0,"filtered_out":0,"native":0,"passed":1,"rejected":0,"schema":"wolf-test/0","stopped_early":false,"unsupported":0}
+integration: 42 process rows, 0 SKIP
+oracle: 2 musl links, 2 deterministic relinks, 2 differ plants, 4 verify plants, 0 SKIP
+resolution: 16 oracle rows, 0 SKIP
+roundtrip: PASS /lane/toolchain/wolf/wolf-0.2.35-x86_64-unknown-linux-gnu/libwolf_rt.a
+EMIT tests/corpus/pax/exec.lu -> target/corpus/pax-exec
+EMIT tests/corpus/pax/fork.lu -> target/corpus/pax-fork
+EMIT tests/corpus/pax/hello.lu -> target/corpus/pax-hello
+EMIT tests/corpus/pax/host.lu -> target/corpus/pax-host
+warning[E0802]: this arm can never match — the arms above already cover it
+  --> tests/corpus/pax/host.lu:39:13
+   |
+38 |             invalid => "invalid",
+   |             ------- this arm already matches those values
+39 |             missing => "missing",
+   |             ^^^^^^^ unreachable arm
+   |
+   = note: delete the arm, or reorder the arms so the more specific pattern comes first.
+
+EMIT tests/corpus/pax/loop.lu -> target/corpus/pax-loop
+EMIT tests/corpus/pax/signal.lu -> target/corpus/pax-signal
+EMIT tests/corpus/pax/spawn.lu -> target/corpus/pax-spawn
+EMIT tests/corpus/pax/std.lu -> target/corpus/pax-std
+EMIT tests/corpus/hello/hello.lu -> target/corpus/hello-hello
+target/corpus/hello-hello/main.o 1
+target/corpus/pax-exec/main.o 1
+target/corpus/pax-fork/main.o 1
+target/corpus/pax-hello/main.o 1
+target/corpus/pax-host/main.o 1
+target/corpus/pax-loop/main.o 1
+target/corpus/pax-signal/main.o 1
+target/corpus/pax-spawn/main.o 1
+target/corpus/pax-std/main.root.o 1
+target/corpus/pax-std/main.std.cmp.o 1
+target/corpus/pax-std/main.std.list.o 1
+target/corpus/pax-std/main.std.range.o 1
+target/corpus/pax-std/main.std.str.o 1
+target/corpus/pax-std/main.std.strbuf.o 1
+pax/libwolf_rt.a 344
+pax/sysroot/crt1.o 1
+pax/sysroot/crti.o 1
+pax/sysroot/crtn.o 1
+pax/sysroot/libc.a 1345
+pax/sysroot/libunwind.a 8
+objects 1714 relocation types 13
+STRICT target/corpus/hello-hello
+verify: PASS /lane/ligature/target/oracle/hello-hello/lld/program
+verify: PASS /lane/ligature/target/oracle/hello-hello/gnu/program
+oracle: both links verified; run stdout/stderr/status identical /lane/ligature/target/oracle/hello-hello
+differ: 0 differences, 0 unexplained, 0 layout records
+differ: 0 differences, 0 unexplained, 0 layout records
+STRICT target/corpus/pax-exec
+verify: PASS /lane/ligature/target/oracle/pax-exec/lld/program
+verify: PASS /lane/ligature/target/oracle/pax-exec/gnu/program
+oracle: both links verified; run stdout/stderr/status identical /lane/ligature/target/oracle/pax-exec
+differ: 0 differences, 0 unexplained, 0 layout records
+differ: 0 differences, 0 unexplained, 0 layout records
+STRICT target/corpus/pax-fork
+verify: PASS /lane/ligature/target/oracle/pax-fork/lld/program
+verify: PASS /lane/ligature/target/oracle/pax-fork/gnu/program
+oracle: both links verified; run stdout/stderr/status identical /lane/ligature/target/oracle/pax-fork
+differ: 0 differences, 0 unexplained, 0 layout records
+differ: 0 differences, 0 unexplained, 0 layout records
+STRICT target/corpus/pax-hello
+verify: PASS /lane/ligature/target/oracle/pax-hello/lld/program
+verify: PASS /lane/ligature/target/oracle/pax-hello/gnu/program
+oracle: both links verified; run stdout/stderr/status identical /lane/ligature/target/oracle/pax-hello
+differ: 0 differences, 0 unexplained, 0 layout records
+differ: 0 differences, 0 unexplained, 0 layout records
+STRICT target/corpus/pax-host
+verify: PASS /lane/ligature/target/oracle/pax-host/lld/program
+verify: PASS /lane/ligature/target/oracle/pax-host/gnu/program
+oracle: both links verified; run stdout/stderr/status identical /lane/ligature/target/oracle/pax-host
+differ: 0 differences, 0 unexplained, 0 layout records
+differ: 0 differences, 0 unexplained, 0 layout records
+STRICT target/corpus/pax-loop
+verify: PASS /lane/ligature/target/oracle/pax-loop/lld/program
+verify: PASS /lane/ligature/target/oracle/pax-loop/gnu/program
+oracle: both links verified; run stdout/stderr/status identical /lane/ligature/target/oracle/pax-loop
+differ: 0 differences, 0 unexplained, 0 layout records
+differ: 0 differences, 0 unexplained, 0 layout records
+STRICT target/corpus/pax-signal
+verify: PASS /lane/ligature/target/oracle/pax-signal/lld/program
+verify: PASS /lane/ligature/target/oracle/pax-signal/gnu/program
+oracle: both links verified; run stdout/stderr/status identical /lane/ligature/target/oracle/pax-signal
+differ: 0 differences, 0 unexplained, 0 layout records
+differ: 0 differences, 0 unexplained, 0 layout records
+STRICT target/corpus/pax-spawn
+verify: PASS /lane/ligature/target/oracle/pax-spawn/lld/program
+verify: PASS /lane/ligature/target/oracle/pax-spawn/gnu/program
+oracle: both links verified; run stdout/stderr/status identical /lane/ligature/target/oracle/pax-spawn
+differ: 0 differences, 0 unexplained, 0 layout records
+differ: 0 differences, 0 unexplained, 0 layout records
+STRICT target/corpus/pax-std
+verify: PASS /lane/ligature/target/oracle/pax-std/lld/program
+verify: PASS /lane/ligature/target/oracle/pax-std/gnu/program
+oracle: both links verified; run stdout/stderr/status identical /lane/ligature/target/oracle/pax-std
+differ: 0 differences, 0 unexplained, 0 layout records
+differ: 0 differences, 0 unexplained, 0 layout records
+resolution: 16 oracle rows, 0 SKIP
+PAX pinned lld allocated-byte flip: RED as required
+record-map: exact traces and outputs recorded; structural differences not waived

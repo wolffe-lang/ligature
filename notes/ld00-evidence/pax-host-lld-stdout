@@ -1,0 +1,12 @@
+clock: a 20 ms sleep, at least 20 ms passed: true
+env: HOME before the program sets it: invalid
+env: HOME after env_set: /home/wolf
+tree: x.lu in the working directory: kind 0, 97 bytes
+tree: /usr/share/lupin/exec.lu
+tree: /usr/share/lupin/fork.lu
+tree: /usr/share/lupin/hello.lu
+tree: /usr/share/lupin/host.lu
+tree: /usr/share/lupin/loop.lu
+tree: /usr/share/lupin/signal.lu
+tree: /usr/share/lupin/spawn.lu
+tree: /usr/share/lupin/std.lu

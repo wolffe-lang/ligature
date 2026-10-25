@@ -55,3 +55,29 @@ SHA-256 `02f979bedf5520661f8a5e5623f1f9a7f5cb18b2b1d8c936b3d51f8c0336d4d9`.
 The ISO contains `/boot/initramfs.cpio`; only the named binary inputs are
 extracted from that archive. Both the hash and size of each file are checked
 against PAX's `user/wolf-link.sums` before use. No source rebuild is substituted.
+
+## CI binary-package oracle
+
+CI uses only Ubuntu 24.04 binary packages, pinned in `ci/oracle.Containerfile`:
+`lld-17=1:17.0.6-9ubuntu1`, `binutils=2.42-4ubuntu2.10`,
+`musl-dev=1.2.4-2`, `musl-tools=1.2.4-2` and
+`build-essential=12.10ubuntu1`. The lld binary SHA-256 is
+`4379d66509f61190ebeb1661666609464cb51f995e4ae8d0423b1f547ae39ed4`;
+the binutils hashes match the table above. The local image digest is
+`sha256:4e921f9058653b9c7b0e0c127fb2247c587adbd81190bf78e81e64c1b3599495`.
+
+The generated CI C fixture exercises musl CRT startup, TLS, initialization
+arrays, static archive extraction, relocation retention and a real run.
+CI does not possess the PAX-specific musl runtime archive or its exact lld
+build. Wolf 0.2.35's public Linux archives target glibc and cannot substitute
+for that musl runtime (the link fails on `open64`, `fstat64` and unwind
+references). The full PAX/Wolf corpus is a separate local strict run; these
+fixtures are not represented as that corpus.
+
+The public glibc runtime additionally contains empty, excluded
+`SHT_LLVM_ADDRSIG` sections: LLVM 17 Language Reference Extensions,
+“Address-significance tables”, <https://llvm.org/docs/Extensions.html>.
+The reader recognizes only the empty, `SHF_EXCLUDE` form; a nonempty table
+is refused by name rather than pretending to interpret its ULEB128 payload.
+The same archive emits an eight-byte `SHT_INIT_ARRAY` with `sh_entsize=0`;
+the reader accepts 0 or 8 there while requiring size divisible by 8.

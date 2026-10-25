@@ -1,0 +1,14 @@
+{
+  "src/reader_test.lu": 37,
+  "src/ligature.lu": 29,
+  "src/verify/verify.lu": 108,
+  "src/oracle/oracle.lu": 96,
+  "src/ar/ar.lu": 131,
+  "src/binary/binary.lu": 137,
+  "src/census/census.lu": 31,
+  "src/front/front.lu": 131,
+  "src/elf/elf.lu": 309,
+  "tools/oracle": 30,
+  "tools/differ": 142,
+  "tools/census": 38
+}

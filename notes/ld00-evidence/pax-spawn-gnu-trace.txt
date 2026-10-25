@@ -1,0 +1,13 @@
+/lane/link-inputs/sysroot/crt1.o
+/lane/link-inputs/sysroot/crti.o
+/lane/ligature/target/corpus/pax-spawn/main.o
+/lane/link-inputs/libwolf_rt.a
+/lane/link-inputs/sysroot/libc.a
+/lane/link-inputs/sysroot/libunwind.a
+/lane/link-inputs/libwolf_rt.a
+/lane/link-inputs/sysroot/libc.a
+/lane/link-inputs/sysroot/libunwind.a
+/lane/link-inputs/libwolf_rt.a
+/lane/link-inputs/sysroot/libc.a
+/lane/link-inputs/sysroot/libunwind.a
+/lane/link-inputs/sysroot/crtn.o

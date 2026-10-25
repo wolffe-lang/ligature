@@ -1,0 +1,444 @@
+[
+  {
+    "argv": [
+      "/lane/ligature/target/ligature",
+      "roundtrip",
+      "/lane/ligature/target/evidence/fixture-sw24hpg1/empty.o"
+    ],
+    "status": 0,
+    "stdout": "roundtrip: PASS /lane/ligature/target/evidence/fixture-sw24hpg1/empty.o\n",
+    "stderr": ""
+  },
+  {
+    "argv": [
+      "/lane/ligature/target/ligature",
+      "roundtrip",
+      "/lane/ligature/target/evidence/fixture-sw24hpg1/aarch.o"
+    ],
+    "status": 0,
+    "stdout": "roundtrip: PASS /lane/ligature/target/evidence/fixture-sw24hpg1/aarch.o\n",
+    "stderr": ""
+  },
+  {
+    "argv": [
+      "/lane/ligature/target/ligature",
+      "/lane/ligature/target/evidence/fixture-sw24hpg1/aarch.o"
+    ],
+    "status": 1,
+    "stdout": "",
+    "stderr": "ligature: EM_AARCH64 linking refused (AAELF64 2025Q1)\n"
+  },
+  {
+    "argv": [
+      "/lane/ligature/target/ligature",
+      "inspect",
+      "/lane/ligature/target/evidence/fixture-sw24hpg1/short0"
+    ],
+    "status": 1,
+    "stdout": "",
+    "stderr": "ligature: truncated range (gABI ch.4)\n"
+  },
+  {
+    "argv": [
+      "/lane/ligature/target/ligature",
+      "inspect",
+      "/lane/ligature/target/evidence/fixture-sw24hpg1/short1"
+    ],
+    "status": 1,
+    "stdout": "",
+    "stderr": "ligature: truncated range (gABI ch.4)\n"
+  },
+  {
+    "argv": [
+      "/lane/ligature/target/ligature",
+      "inspect",
+      "/lane/ligature/target/evidence/fixture-sw24hpg1/short7"
+    ],
+    "status": 1,
+    "stdout": "",
+    "stderr": "ligature: truncated range (gABI ch.4)\n"
+  },
+  {
+    "argv": [
+      "/lane/ligature/target/ligature",
+      "inspect",
+      "/lane/ligature/target/evidence/fixture-sw24hpg1/short8"
+    ],
+    "status": 1,
+    "stdout": "",
+    "stderr": "ligature: truncated range (gABI ch.4)\n"
+  },
+  {
+    "argv": [
+      "/lane/ligature/target/ligature",
+      "inspect",
+      "/lane/ligature/target/evidence/fixture-sw24hpg1/short15"
+    ],
+    "status": 1,
+    "stdout": "",
+    "stderr": "ligature: truncated range (gABI ch.4)\n"
+  },
+  {
+    "argv": [
+      "/lane/ligature/target/ligature",
+      "inspect",
+      "/lane/ligature/target/evidence/fixture-sw24hpg1/short16"
+    ],
+    "status": 1,
+    "stdout": "",
+    "stderr": "ligature: truncated range (gABI ch.4)\n"
+  },
+  {
+    "argv": [
+      "/lane/ligature/target/ligature",
+      "inspect",
+      "/lane/ligature/target/evidence/fixture-sw24hpg1/short63"
+    ],
+    "status": 1,
+    "stdout": "",
+    "stderr": "ligature: truncated range (gABI ch.4)\n"
+  },
+  {
+    "argv": [
+      "/lane/ligature/target/ligature",
+      "inspect",
+      "/lane/ligature/target/evidence/fixture-sw24hpg1/elf32"
+    ],
+    "status": 1,
+    "stdout": "",
+    "stderr": "ligature: ELFCLASS32 refused; ELF64 required (gABI ch.4)\n"
+  },
+  {
+    "argv": [
+      "/lane/ligature/target/ligature",
+      "inspect",
+      "/lane/ligature/target/evidence/fixture-sw24hpg1/big-endian"
+    ],
+    "status": 1,
+    "stdout": "",
+    "stderr": "ligature: ELFDATA2MSB refused; little-endian required (gABI ch.4)\n"
+  },
+  {
+    "argv": [
+      "/lane/ligature/target/ligature",
+      "inspect",
+      "/lane/ligature/target/evidence/fixture-sw24hpg1/machine"
+    ],
+    "status": 1,
+    "stdout": "",
+    "stderr": "ligature: unsupported e_machine 3 (gABI ch.4)\n"
+  },
+  {
+    "argv": [
+      "/lane/ligature/target/ligature",
+      "inspect",
+      "/lane/ligature/target/evidence/fixture-sw24hpg1/offset-overflow"
+    ],
+    "status": 1,
+    "stdout": "",
+    "stderr": "ligature: offset exceeds input (gABI ch.4)\n"
+  },
+  {
+    "argv": [
+      "/lane/ligature/target/ligature",
+      "inspect",
+      "/lane/ligature/target/evidence/fixture-sw24hpg1/section-truncated"
+    ],
+    "status": 1,
+    "stdout": "",
+    "stderr": "ligature: truncated range (gABI ch.4)\n"
+  },
+  {
+    "argv": [
+      "/lane/ligature/target/ligature",
+      "inspect",
+      "/lane/ligature/target/evidence/fixture-sw24hpg1/thin.a"
+    ],
+    "status": 1,
+    "stdout": "",
+    "stderr": "ligature: thin archives refused (GNU ar manual)\n"
+  },
+  {
+    "argv": [
+      "/lane/ligature/target/ligature",
+      "inspect",
+      "/lane/ligature/target/evidence/fixture-sw24hpg1/bsd.a"
+    ],
+    "status": 1,
+    "stdout": "",
+    "stderr": "ligature: BSD archives refused (ar format)\n"
+  },
+  {
+    "argv": [
+      "/lane/ligature/target/ligature",
+      "inspect",
+      "/lane/ligature/target/evidence/fixture-sw24hpg1/bad-long.a"
+    ],
+    "status": 1,
+    "stdout": "",
+    "stderr": "ligature: ar long-name offset outside // table\n"
+  },
+  {
+    "argv": [
+      "/lane/ligature/target/ligature",
+      "inspect",
+      "/lane/ligature/target/evidence/fixture-sw24hpg1/bad-index.a"
+    ],
+    "status": 1,
+    "stdout": "",
+    "stderr": "ligature: ar symbol index does not name a member header\n"
+  },
+  {
+    "argv": [
+      "cc",
+      "-c",
+      "-ffunction-sections",
+      "-fdata-sections",
+      "/lane/ligature/target/evidence/fixture-sw24hpg1/fixture.c",
+      "-o",
+      "/lane/ligature/target/evidence/fixture-sw24hpg1/member-with-a-very-long-name.o"
+    ],
+    "status": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "argv": [
+      "/lane/ligature/target/ligature",
+      "roundtrip",
+      "/lane/ligature/target/evidence/fixture-sw24hpg1/member-with-a-very-long-name.o"
+    ],
+    "status": 0,
+    "stdout": "roundtrip: PASS /lane/ligature/target/evidence/fixture-sw24hpg1/member-with-a-very-long-name.o\n",
+    "stderr": ""
+  },
+  {
+    "argv": [
+      "ar",
+      "rcs",
+      "/lane/ligature/target/evidence/fixture-sw24hpg1/long.a",
+      "/lane/ligature/target/evidence/fixture-sw24hpg1/member-with-a-very-long-name.o"
+    ],
+    "status": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "argv": [
+      "/lane/ligature/target/ligature",
+      "roundtrip",
+      "/lane/ligature/target/evidence/fixture-sw24hpg1/long.a"
+    ],
+    "status": 0,
+    "stdout": "roundtrip: PASS /lane/ligature/target/evidence/fixture-sw24hpg1/long.a\n",
+    "stderr": ""
+  },
+  {
+    "argv": [
+      "/lane/ligature/target/ligature",
+      "inspect",
+      "/lane/ligature/target/evidence/fixture-sw24hpg1/member-with-a-very-long-name.o"
+    ],
+    "status": 0,
+    "stdout": "{\"row\":\"elf\",\"kind\":1,\"machine\":62,\"entry\":0}\n{\"row\":\"section\",\"index\":0,\"name\":\"\",\"kind\":0,\"flags\":0,\"address\":0,\"offset\":0,\"size\":0,\"link\":0,\"info\":0,\"align\":0,\"entsize\":0}\n{\"row\":\"section\",\"index\":1,\"name\":\".text\",\"kind\":1,\"flags\":6,\"address\":0,\"offset\":64,\"size\":0,\"link\":0,\"info\":0,\"align\":1,\"entsize\":0}\n{\"row\":\"section\",\"index\":2,\"name\":\".data\",\"kind\":1,\"flags\":3,\"address\":0,\"offset\":64,\"size\":0,\"link\":0,\"info\":0,\"align\":1,\"entsize\":0}\n{\"row\":\"section\",\"index\":3,\"name\":\".bss\",\"kind\":8,\"flags\":3,\"address\":0,\"offset\":64,\"size\":0,\"link\":0,\"info\":0,\"align\":1,\"entsize\":0}\n{\"row\":\"section\",\"index\":4,\"name\":\".bss.state\",\"kind\":8,\"flags\":3,\"address\":0,\"offset\":64,\"size\":4,\"link\":0,\"info\":0,\"align\":4,\"entsize\":0}\n{\"row\":\"section\",\"index\":5,\"name\":\".tdata.tls\",\"kind\":1,\"flags\":1027,\"address\":0,\"offset\":64,\"size\":4,\"link\":0,\"info\":0,\"align\":4,\"entsize\":0}\n{\"row\":\"section\",\"index\":6,\"name\":\".text.main\",\"kind\":1,\"flags\":6,\"address\":0,\"offset\":68,\"size\":29,\"link\":0,\"info\":0,\"align\":1,\"entsize\":0}\n{\"row\":\"section\",\"index\":7,\"name\":\".rela.text.main\",\"kind\":4,\"flags\":64,\"address\":0,\"offset\":472,\"size\":48,\"link\":13,\"info\":6,\"align\":8,\"entsize\":24}\n{\"row\":\"rela\",\"table\":7,\"index\":0,\"target\":6,\"offset\":10,\"symbol\":2,\"type\":2,\"name\":\"R_X86_64_PC32\",\"addend_bits\":18446744073709551612}\n{\"row\":\"rela\",\"table\":7,\"index\":1,\"target\":6,\"offset\":18,\"symbol\":5,\"type\":23,\"name\":\"R_X86_64_TPOFF32\",\"addend_bits\":0}\n{\"row\":\"section\",\"index\":8,\"name\":\".comment\",\"kind\":1,\"flags\":48,\"address\":0,\"offset\":97,\"size\":46,\"link\":0,\"info\":0,\"align\":1,\"entsize\":1}\n{\"row\":\"section\",\"index\":9,\"name\":\".note.GNU-stack\",\"kind\":1,\"flags\":0,\"address\":0,\"offset\":143,\"size\":0,\"link\":0,\"info\":0,\"align\":1,\"entsize\":0}\n{\"row\":\"section\",\"index\":10,\"name\":\".note.gnu.property\",\"kind\":7,\"flags\":2,\"address\":0,\"offset\":144,\"size\":32,\"link\":0,\"info\":0,\"align\":8,\"entsize\":0}\n{\"row\":\"note\",\"table\":10,\"type\":5,\"owner\":\"GNU\\u0000\",\"descriptor_size\":16}\n{\"row\":\"section\",\"index\":11,\"name\":\".eh_frame\",\"kind\":1,\"flags\":2,\"address\":0,\"offset\":176,\"size\":56,\"link\":0,\"info\":0,\"align\":8,\"entsize\":0}\n{\"row\":\"section\",\"index\":12,\"name\":\".rela.eh_frame\",\"kind\":4,\"flags\":64,\"address\":0,\"offset\":520,\"size\":24,\"link\":13,\"info\":11,\"align\":8,\"entsize\":24}\n{\"row\":\"rela\",\"table\":12,\"index\":0,\"target\":11,\"offset\":32,\"symbol\":4,\"type\":2,\"name\":\"R_X86_64_PC32\",\"addend_bits\":0}\n{\"row\":\"section\",\"index\":13,\"name\":\".symtab\",\"kind\":2,\"flags\":0,\"address\":0,\"offset\":232,\"size\":192,\"link\":14,\"info\":5,\"align\":8,\"entsize\":24}\n{\"row\":\"symbol\",\"table\":13,\"index\":0,\"name\":\"\",\"binding\":0,\"type\":0,\"visibility\":0,\"other\":0,\"section\":0,\"value\":0,\"size\":0}\n{\"row\":\"symbol\",\"table\":13,\"index\":1,\"name\":\"fixture.c\",\"binding\":0,\"type\":4,\"visibility\":0,\"other\":0,\"section\":65521,\"value\":0,\"size\":0}\n{\"row\":\"symbol\",\"table\":13,\"index\":2,\"name\":\"\",\"binding\":0,\"type\":3,\"visibility\":0,\"other\":0,\"section\":4,\"value\":0,\"size\":0}\n{\"row\":\"symbol\",\"table\":13,\"index\":3,\"name\":\"state\",\"binding\":0,\"type\":1,\"visibility\":0,\"other\":0,\"section\":4,\"value\":0,\"size\":4}\n{\"row\":\"symbol\",\"table\":13,\"index\":4,\"name\":\"\",\"binding\":0,\"type\":3,\"visibility\":0,\"other\":0,\"section\":6,\"value\":0,\"size\":0}\n{\"row\":\"symbol\",\"table\":13,\"index\":5,\"name\":\"tls\",\"binding\":1,\"type\":6,\"visibility\":0,\"other\":0,\"section\":5,\"value\":0,\"size\":4}\n{\"row\":\"symbol\",\"table\":13,\"index\":6,\"name\":\"main\",\"binding\":1,\"type\":2,\"visibility\":0,\"other\":0,\"section\":6,\"value\":0,\"size\":29}\n{\"row\":\"symbol\",\"table\":13,\"index\":7,\"name\":\"_GLOBAL_OFFSET_TABLE_\",\"binding\":1,\"type\":0,\"visibility\":0,\"other\":0,\"section\":0,\"value\":0,\"size\":0}\n{\"row\":\"section\",\"index\":14,\"name\":\".strtab\",\"kind\":3,\"flags\":0,\"address\":0,\"offset\":424,\"size\":48,\"link\":0,\"info\":0,\"align\":1,\"entsize\":0}\n{\"row\":\"section\",\"index\":15,\"name\":\".shstrtab\",\"kind\":3,\"flags\":0,\"address\":0,\"offset\":544,\"size\":141,\"link\":0,\"info\":0,\"align\":1,\"entsize\":0}\n",
+    "stderr": ""
+  },
+  {
+    "argv": [
+      "cc",
+      "-fuse-ld=bfd",
+      "/lane/ligature/target/evidence/fixture-sw24hpg1/fixture.c",
+      "-o",
+      "/lane/ligature/target/evidence/fixture-sw24hpg1/exe-bfd"
+    ],
+    "status": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "argv": [
+      "/lane/ligature/target/ligature",
+      "verify",
+      "/lane/ligature/target/evidence/fixture-sw24hpg1/exe-bfd"
+    ],
+    "status": 0,
+    "stdout": "verify: PASS /lane/ligature/target/evidence/fixture-sw24hpg1/exe-bfd\n",
+    "stderr": ""
+  },
+  {
+    "argv": [
+      "/lane/ligature/target/ligature",
+      "verify",
+      "/lane/ligature/target/evidence/fixture-sw24hpg1/bad-entry-bfd"
+    ],
+    "status": 1,
+    "stdout": "",
+    "stderr": "ligature: entry outside executable PT_LOAD\n"
+  },
+  {
+    "argv": [
+      "cc",
+      "-fuse-ld=lld",
+      "/lane/ligature/target/evidence/fixture-sw24hpg1/fixture.c",
+      "-o",
+      "/lane/ligature/target/evidence/fixture-sw24hpg1/exe-lld"
+    ],
+    "status": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "argv": [
+      "/lane/ligature/target/ligature",
+      "verify",
+      "/lane/ligature/target/evidence/fixture-sw24hpg1/exe-lld"
+    ],
+    "status": 0,
+    "stdout": "verify: PASS /lane/ligature/target/evidence/fixture-sw24hpg1/exe-lld\n",
+    "stderr": ""
+  },
+  {
+    "argv": [
+      "/lane/ligature/target/ligature",
+      "verify",
+      "/lane/ligature/target/evidence/fixture-sw24hpg1/bad-entry-lld"
+    ],
+    "status": 1,
+    "stdout": "",
+    "stderr": "ligature: entry outside executable PT_LOAD\n"
+  },
+  {
+    "argv": [
+      "/lane/ligature/target/ligature",
+      "inspect",
+      "/lane/ligature/target/evidence/fixture-sw24hpg1/rel.o"
+    ],
+    "status": 1,
+    "stdout": "",
+    "stderr": "ligature: SHT_REL refused; SHT_RELA required (gABI ch.4 Relocation)\n"
+  },
+  {
+    "argv": [
+      "/lane/ligature/target/ligature",
+      "inspect",
+      "/lane/ligature/target/evidence/fixture-sw24hpg1/rel-symbol.o"
+    ],
+    "status": 1,
+    "stdout": "{\"row\":\"elf\",\"kind\":1,\"machine\":62,\"entry\":0}\n{\"row\":\"section\",\"index\":0,\"name\":\"\",\"kind\":0,\"flags\":0,\"address\":0,\"offset\":0,\"size\":0,\"link\":0,\"info\":0,\"align\":0,\"entsize\":0}\n{\"row\":\"section\",\"index\":1,\"name\":\".text\",\"kind\":1,\"flags\":6,\"address\":0,\"offset\":64,\"size\":0,\"link\":0,\"info\":0,\"align\":1,\"entsize\":0}\n{\"row\":\"section\",\"index\":2,\"name\":\".data\",\"kind\":1,\"flags\":3,\"address\":0,\"offset\":64,\"size\":0,\"link\":0,\"info\":0,\"align\":1,\"entsize\":0}\n{\"row\":\"section\",\"index\":3,\"name\":\".bss\",\"kind\":8,\"flags\":3,\"address\":0,\"offset\":64,\"size\":0,\"link\":0,\"info\":0,\"align\":1,\"entsize\":0}\n{\"row\":\"section\",\"index\":4,\"name\":\".bss.state\",\"kind\":8,\"flags\":3,\"address\":0,\"offset\":64,\"size\":4,\"link\":0,\"info\":0,\"align\":4,\"entsize\":0}\n{\"row\":\"section\",\"index\":5,\"name\":\".tdata.tls\",\"kind\":1,\"flags\":1027,\"address\":0,\"offset\":64,\"size\":4,\"link\":0,\"info\":0,\"align\":4,\"entsize\":0}\n{\"row\":\"section\",\"index\":6,\"name\":\".text.main\",\"kind\":1,\"flags\":6,\"address\":0,\"offset\":68,\"size\":29,\"link\":0,\"info\":0,\"align\":1,\"entsize\":0}\n{\"row\":\"section\",\"index\":7,\"name\":\".rela.text.main\",\"kind\":4,\"flags\":64,\"address\":0,\"offset\":472,\"size\":48,\"link\":13,\"info\":6,\"align\":8,\"entsize\":24}\n{\"row\":\"rela\",\"table\":7,\"index\":0,\"target\":6,\"offset\":10,\"symbol\":2,\"type\":2,\"name\":\"R_X86_64_PC32\",\"addend_bits\":18446744073709551612}\n{\"row\":\"rela\",\"table\":7,\"index\":1,\"target\":6,\"offset\":18,\"symbol\":5,\"type\":23,\"name\":\"R_X86_64_TPOFF32\",\"addend_bits\":0}\n{\"row\":\"section\",\"index\":8,\"name\":\".comment\",\"kind\":1,\"flags\":48,\"address\":0,\"offset\":97,\"size\":46,\"link\":0,\"info\":0,\"align\":1,\"entsize\":1}\n{\"row\":\"section\",\"index\":9,\"name\":\".note.GNU-stack\",\"kind\":1,\"flags\":0,\"address\":0,\"offset\":143,\"size\":0,\"link\":0,\"info\":0,\"align\":1,\"entsize\":0}\n{\"row\":\"section\",\"index\":10,\"name\":\".note.gnu.property\",\"kind\":7,\"flags\":2,\"address\":0,\"offset\":144,\"size\":32,\"link\":0,\"info\":0,\"align\":8,\"entsize\":0}\n{\"row\":\"note\",\"table\":10,\"type\":5,\"owner\":\"GNU\\u0000\",\"descriptor_size\":16}\n{\"row\":\"section\",\"index\":11,\"name\":\".eh_frame\",\"kind\":1,\"flags\":2,\"address\":0,\"offset\":176,\"size\":56,\"link\":0,\"info\":0,\"align\":8,\"entsize\":0}\n{\"row\":\"section\",\"index\":12,\"name\":\".rela.eh_frame\",\"kind\":4,\"flags\":64,\"address\":0,\"offset\":520,\"size\":24,\"link\":13,\"info\":11,\"align\":8,\"entsize\":24}\n",
+    "stderr": "ligature: RELA symbol index outside symbol table\n"
+  },
+  {
+    "argv": [
+      "/lane/ligature/target/ligature",
+      "inspect",
+      "/lane/ligature/target/evidence/fixture-sw24hpg1/unknown-section.o"
+    ],
+    "status": 1,
+    "stdout": "",
+    "stderr": "ligature: unknown section type 123456 (gABI section types)\n"
+  },
+  {
+    "argv": [
+      "/lane/ligature/target/ligature",
+      "inspect",
+      "/lane/ligature/target/evidence/fixture-sw24hpg1/symbol-section.o"
+    ],
+    "status": 1,
+    "stdout": "{\"row\":\"elf\",\"kind\":1,\"machine\":62,\"entry\":0}\n{\"row\":\"section\",\"index\":0,\"name\":\"\",\"kind\":0,\"flags\":0,\"address\":0,\"offset\":0,\"size\":0,\"link\":0,\"info\":0,\"align\":0,\"entsize\":0}\n{\"row\":\"section\",\"index\":1,\"name\":\".text\",\"kind\":1,\"flags\":6,\"address\":0,\"offset\":64,\"size\":0,\"link\":0,\"info\":0,\"align\":1,\"entsize\":0}\n{\"row\":\"section\",\"index\":2,\"name\":\".data\",\"kind\":1,\"flags\":3,\"address\":0,\"offset\":64,\"size\":0,\"link\":0,\"info\":0,\"align\":1,\"entsize\":0}\n{\"row\":\"section\",\"index\":3,\"name\":\".bss\",\"kind\":8,\"flags\":3,\"address\":0,\"offset\":64,\"size\":0,\"link\":0,\"info\":0,\"align\":1,\"entsize\":0}\n{\"row\":\"section\",\"index\":4,\"name\":\".bss.state\",\"kind\":8,\"flags\":3,\"address\":0,\"offset\":64,\"size\":4,\"link\":0,\"info\":0,\"align\":4,\"entsize\":0}\n{\"row\":\"section\",\"index\":5,\"name\":\".tdata.tls\",\"kind\":1,\"flags\":1027,\"address\":0,\"offset\":64,\"size\":4,\"link\":0,\"info\":0,\"align\":4,\"entsize\":0}\n{\"row\":\"section\",\"index\":6,\"name\":\".text.main\",\"kind\":1,\"flags\":6,\"address\":0,\"offset\":68,\"size\":29,\"link\":0,\"info\":0,\"align\":1,\"entsize\":0}\n{\"row\":\"section\",\"index\":7,\"name\":\".rela.text.main\",\"kind\":4,\"flags\":64,\"address\":0,\"offset\":472,\"size\":48,\"link\":13,\"info\":6,\"align\":8,\"entsize\":24}\n{\"row\":\"rela\",\"table\":7,\"index\":0,\"target\":6,\"offset\":10,\"symbol\":2,\"type\":2,\"name\":\"R_X86_64_PC32\",\"addend_bits\":18446744073709551612}\n{\"row\":\"rela\",\"table\":7,\"index\":1,\"target\":6,\"offset\":18,\"symbol\":5,\"type\":23,\"name\":\"R_X86_64_TPOFF32\",\"addend_bits\":0}\n{\"row\":\"section\",\"index\":8,\"name\":\".comment\",\"kind\":1,\"flags\":48,\"address\":0,\"offset\":97,\"size\":46,\"link\":0,\"info\":0,\"align\":1,\"entsize\":1}\n{\"row\":\"section\",\"index\":9,\"name\":\".note.GNU-stack\",\"kind\":1,\"flags\":0,\"address\":0,\"offset\":143,\"size\":0,\"link\":0,\"info\":0,\"align\":1,\"entsize\":0}\n{\"row\":\"section\",\"index\":10,\"name\":\".note.gnu.property\",\"kind\":7,\"flags\":2,\"address\":0,\"offset\":144,\"size\":32,\"link\":0,\"info\":0,\"align\":8,\"entsize\":0}\n{\"row\":\"note\",\"table\":10,\"type\":5,\"owner\":\"GNU\\u0000\",\"descriptor_size\":16}\n{\"row\":\"section\",\"index\":11,\"name\":\".eh_frame\",\"kind\":1,\"flags\":2,\"address\":0,\"offset\":176,\"size\":56,\"link\":0,\"info\":0,\"align\":8,\"entsize\":0}\n{\"row\":\"section\",\"index\":12,\"name\":\".rela.eh_frame\",\"kind\":4,\"flags\":64,\"address\":0,\"offset\":520,\"size\":24,\"link\":13,\"info\":11,\"align\":8,\"entsize\":24}\n{\"row\":\"rela\",\"table\":12,\"index\":0,\"target\":11,\"offset\":32,\"symbol\":4,\"type\":2,\"name\":\"R_X86_64_PC32\",\"addend_bits\":0}\n{\"row\":\"section\",\"index\":13,\"name\":\".symtab\",\"kind\":2,\"flags\":0,\"address\":0,\"offset\":232,\"size\":192,\"link\":14,\"info\":5,\"align\":8,\"entsize\":24}\n{\"row\":\"symbol\",\"table\":13,\"index\":0,\"name\":\"\",\"binding\":0,\"type\":0,\"visibility\":0,\"other\":0,\"section\":0,\"value\":0,\"size\":0}\n",
+    "stderr": "ligature: symbol section index outside section table\n"
+  },
+  {
+    "argv": [
+      "/lane/ligature/target/ligature",
+      "inspect",
+      "/lane/ligature/target/evidence/fixture-sw24hpg1/symbol-name.o"
+    ],
+    "status": 1,
+    "stdout": "{\"row\":\"elf\",\"kind\":1,\"machine\":62,\"entry\":0}\n{\"row\":\"section\",\"index\":0,\"name\":\"\",\"kind\":0,\"flags\":0,\"address\":0,\"offset\":0,\"size\":0,\"link\":0,\"info\":0,\"align\":0,\"entsize\":0}\n{\"row\":\"section\",\"index\":1,\"name\":\".text\",\"kind\":1,\"flags\":6,\"address\":0,\"offset\":64,\"size\":0,\"link\":0,\"info\":0,\"align\":1,\"entsize\":0}\n{\"row\":\"section\",\"index\":2,\"name\":\".data\",\"kind\":1,\"flags\":3,\"address\":0,\"offset\":64,\"size\":0,\"link\":0,\"info\":0,\"align\":1,\"entsize\":0}\n{\"row\":\"section\",\"index\":3,\"name\":\".bss\",\"kind\":8,\"flags\":3,\"address\":0,\"offset\":64,\"size\":0,\"link\":0,\"info\":0,\"align\":1,\"entsize\":0}\n{\"row\":\"section\",\"index\":4,\"name\":\".bss.state\",\"kind\":8,\"flags\":3,\"address\":0,\"offset\":64,\"size\":4,\"link\":0,\"info\":0,\"align\":4,\"entsize\":0}\n{\"row\":\"section\",\"index\":5,\"name\":\".tdata.tls\",\"kind\":1,\"flags\":1027,\"address\":0,\"offset\":64,\"size\":4,\"link\":0,\"info\":0,\"align\":4,\"entsize\":0}\n{\"row\":\"section\",\"index\":6,\"name\":\".text.main\",\"kind\":1,\"flags\":6,\"address\":0,\"offset\":68,\"size\":29,\"link\":0,\"info\":0,\"align\":1,\"entsize\":0}\n{\"row\":\"section\",\"index\":7,\"name\":\".rela.text.main\",\"kind\":4,\"flags\":64,\"address\":0,\"offset\":472,\"size\":48,\"link\":13,\"info\":6,\"align\":8,\"entsize\":24}\n{\"row\":\"rela\",\"table\":7,\"index\":0,\"target\":6,\"offset\":10,\"symbol\":2,\"type\":2,\"name\":\"R_X86_64_PC32\",\"addend_bits\":18446744073709551612}\n{\"row\":\"rela\",\"table\":7,\"index\":1,\"target\":6,\"offset\":18,\"symbol\":5,\"type\":23,\"name\":\"R_X86_64_TPOFF32\",\"addend_bits\":0}\n{\"row\":\"section\",\"index\":8,\"name\":\".comment\",\"kind\":1,\"flags\":48,\"address\":0,\"offset\":97,\"size\":46,\"link\":0,\"info\":0,\"align\":1,\"entsize\":1}\n{\"row\":\"section\",\"index\":9,\"name\":\".note.GNU-stack\",\"kind\":1,\"flags\":0,\"address\":0,\"offset\":143,\"size\":0,\"link\":0,\"info\":0,\"align\":1,\"entsize\":0}\n{\"row\":\"section\",\"index\":10,\"name\":\".note.gnu.property\",\"kind\":7,\"flags\":2,\"address\":0,\"offset\":144,\"size\":32,\"link\":0,\"info\":0,\"align\":8,\"entsize\":0}\n{\"row\":\"note\",\"table\":10,\"type\":5,\"owner\":\"GNU\\u0000\",\"descriptor_size\":16}\n{\"row\":\"section\",\"index\":11,\"name\":\".eh_frame\",\"kind\":1,\"flags\":2,\"address\":0,\"offset\":176,\"size\":56,\"link\":0,\"info\":0,\"align\":8,\"entsize\":0}\n{\"row\":\"section\",\"index\":12,\"name\":\".rela.eh_frame\",\"kind\":4,\"flags\":64,\"address\":0,\"offset\":520,\"size\":24,\"link\":13,\"info\":11,\"align\":8,\"entsize\":24}\n{\"row\":\"rela\",\"table\":12,\"index\":0,\"target\":11,\"offset\":32,\"symbol\":4,\"type\":2,\"name\":\"R_X86_64_PC32\",\"addend_bits\":0}\n{\"row\":\"section\",\"index\":13,\"name\":\".symtab\",\"kind\":2,\"flags\":0,\"address\":0,\"offset\":232,\"size\":192,\"link\":14,\"info\":5,\"align\":8,\"entsize\":24}\n{\"row\":\"symbol\",\"table\":13,\"index\":0,\"name\":\"\",\"binding\":0,\"type\":0,\"visibility\":0,\"other\":0,\"section\":0,\"value\":0,\"size\":0}\n",
+    "stderr": "ligature: string index outside SHT_STRTAB (gABI ch.4)\n"
+  },
+  {
+    "argv": [
+      "/lane/ligature/target/ligature",
+      "inspect",
+      "/lane/ligature/target/evidence/fixture-sw24hpg1/align.o"
+    ],
+    "status": 1,
+    "stdout": "",
+    "stderr": "ligature: sh_addralign is not a power of two\n"
+  },
+  {
+    "argv": [
+      "/lane/ligature/target/ligature",
+      "--print-plan",
+      "-o",
+      "a b",
+      "x.o",
+      "rt.a",
+      "-lpthread",
+      "-ldl",
+      "-lm",
+      "-Wl,--gc-sections",
+      "-Wl,--undefined=__wolf_rt_trap_at",
+      "-Wl,--defsym=wolf_trap=__wolf_rt_trap_at",
+      "-fuse-ld=lld",
+      "-static",
+      "-nostdlib",
+      "-L",
+      "/lib",
+      "-l",
+      "c"
+    ],
+    "status": 0,
+    "stdout": "{\"format\":\"ligature.plan.v1\",\"output\":\"a b\",\"inputs\":[\"x.o\",\"rt.a\"],\"argv\":[\"--print-plan\",\"-o\",\"a b\",\"x.o\",\"rt.a\",\"-lpthread\",\"-ldl\",\"-lm\",\"-Wl,--gc-sections\",\"-Wl,--undefined=__wolf_rt_trap_at\",\"-Wl,--defsym=wolf_trap=__wolf_rt_trap_at\",\"-fuse-ld=lld\",\"-static\",\"-nostdlib\",\"-L\",\"/lib\",\"-l\",\"c\"],\"libraries\":[\"pthread\",\"dl\",\"m\",\"c\"],\"search_paths\":[\"/lib\"],\"undefined\":[\"__wolf_rt_trap_at\"],\"definitions\":[\"wolf_trap=__wolf_rt_trap_at\"],\"static\":true,\"nostdlib\":true,\"gc_sections\":true}\n",
+    "stderr": ""
+  },
+  {
+    "argv": [
+      "/lane/ligature/target/ligature",
+      "-o"
+    ],
+    "status": 1,
+    "stdout": "",
+    "stderr": "ligature: missing value for -o\n"
+  },
+  {
+    "argv": [
+      "/lane/ligature/target/ligature",
+      "--unknown",
+      "x.o"
+    ],
+    "status": 1,
+    "stdout": "",
+    "stderr": "ligature: unsupported cc option --unknown (wolf link_staged subset)\n"
+  },
+  {
+    "argv": [
+      "/lane/ligature/target/ligature",
+      "-Wl,--surprise",
+      "x.o"
+    ],
+    "status": 1,
+    "stdout": "",
+    "stderr": "ligature: unsupported linker option --surprise (ld.lld 17 options)\n"
+  },
+  {
+    "argv": [
+      "/lane/ligature/target/ligature",
+      "-Wl,--defsym=a",
+      "x.o"
+    ],
+    "status": 1,
+    "stdout": "",
+    "stderr": "ligature: --defsym requires NAME=SYMBOL\n"
+  },
+  {
+    "argv": [
+      "/lane/ligature/target/ligature",
+      "x.o"
+    ],
+    "status": 1,
+    "stdout": "",
+    "stderr": "ligature: linking not implemented; use --print-plan\n"
+  }
+]

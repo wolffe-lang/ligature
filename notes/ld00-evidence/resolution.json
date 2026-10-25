@@ -1,0 +1,150 @@
+[
+  {
+    "case": "strong-weak",
+    "oracle": "lld",
+    "link_status": 0,
+    "expected_run_status": 11,
+    "stderr": "",
+    "choice": [
+      "0000000000202165 0000000000000004 D choice"
+    ]
+  },
+  {
+    "case": "strong-weak",
+    "oracle": "gnu",
+    "link_status": 0,
+    "expected_run_status": 11,
+    "stderr": "",
+    "choice": [
+      "0000000000402000 0000000000000004 D choice"
+    ]
+  },
+  {
+    "case": "weak-strong",
+    "oracle": "lld",
+    "link_status": 0,
+    "expected_run_status": 11,
+    "stderr": "",
+    "choice": [
+      "0000000000202169 0000000000000004 D choice"
+    ]
+  },
+  {
+    "case": "weak-strong",
+    "oracle": "gnu",
+    "link_status": 0,
+    "expected_run_status": 11,
+    "stderr": "",
+    "choice": [
+      "0000000000402004 0000000000000004 D choice"
+    ]
+  },
+  {
+    "case": "weak-first",
+    "oracle": "lld",
+    "link_status": 0,
+    "expected_run_status": 22,
+    "stderr": "",
+    "choice": [
+      "0000000000202165 0000000000000004 V choice"
+    ]
+  },
+  {
+    "case": "weak-first",
+    "oracle": "gnu",
+    "link_status": 0,
+    "expected_run_status": 22,
+    "stderr": "",
+    "choice": [
+      "0000000000402000 0000000000000004 V choice"
+    ]
+  },
+  {
+    "case": "weak-reverse",
+    "oracle": "lld",
+    "link_status": 0,
+    "expected_run_status": 33,
+    "stderr": "",
+    "choice": [
+      "0000000000202165 0000000000000004 V choice"
+    ]
+  },
+  {
+    "case": "weak-reverse",
+    "oracle": "gnu",
+    "link_status": 0,
+    "expected_run_status": 33,
+    "stderr": "",
+    "choice": [
+      "0000000000402000 0000000000000004 V choice"
+    ]
+  },
+  {
+    "case": "strong-common",
+    "oracle": "lld",
+    "link_status": 0,
+    "expected_run_status": 11,
+    "stderr": "",
+    "choice": [
+      "0000000000202165 0000000000000004 D choice"
+    ]
+  },
+  {
+    "case": "strong-common",
+    "oracle": "gnu",
+    "link_status": 0,
+    "expected_run_status": 11,
+    "stderr": "ld.bfd: warning: alignment 1 of normal symbol `choice' in /lane/ligature/target/evidence/resolution/strong.o is smaller than 16 used by the common definition in /lane/ligature/target/evidence/resolution/common.o\nld.bfd: warning: NOTE: alignment discrepancies can cause real problems.  Investigation is advised.\n",
+    "choice": [
+      "0000000000402000 0000000000000004 D choice"
+    ]
+  },
+  {
+    "case": "common-common",
+    "oracle": "lld",
+    "link_status": 0,
+    "expected_run_status": 0,
+    "stderr": "",
+    "choice": [
+      "0000000000202180 0000000000000020 B choice"
+    ]
+  },
+  {
+    "case": "common-common",
+    "oracle": "gnu",
+    "link_status": 0,
+    "expected_run_status": 0,
+    "stderr": "",
+    "choice": [
+      "0000000000402000 0000000000000020 B choice"
+    ]
+  },
+  {
+    "case": "duplicate-strong",
+    "oracle": "lld",
+    "link_status": 1,
+    "expected_run_status": null,
+    "stderr": "ld.lld: error: duplicate symbol: choice\n>>> defined at /lane/ligature/target/evidence/resolution/strong.o:(choice)\n>>> defined at /lane/ligature/target/evidence/resolution/strong.o:(.data+0x0)\n",
+    "choice": []
+  },
+  {
+    "case": "duplicate-strong",
+    "oracle": "gnu",
+    "link_status": 1,
+    "expected_run_status": null,
+    "stderr": "ld.bfd: /lane/ligature/target/evidence/resolution/strong.o:(.data+0x0): multiple definition of `choice'; /lane/ligature/target/evidence/resolution/strong.o:(.data+0x0): first defined here\n",
+    "choice": []
+  },
+  {
+    "case": "archive-first-definition",
+    "oracle": "lld",
+    "trace": "/lane/ligature/target/evidence/resolution/start.o\n/lane/ligature/target/evidence/resolution/choices.a(strong.o)\n",
+    "run_status": 11
+  },
+  {
+    "case": "archive-first-definition",
+    "oracle": "gnu",
+    "trace": "/lane/ligature/target/evidence/resolution/start.o\n/lane/ligature/target/evidence/resolution/choices.a\n",
+    "run_status": 11
+  }
+]

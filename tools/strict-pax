@@ -1,0 +1,21 @@
+#!/usr/bin/env bash
+# Run inside the lane container. No source rebuild or substitute input is allowed.
+set -euo pipefail
+cd "$(dirname "$0")/.."
+inputs=${1:?usage: strict-pax LINK-INPUT-DIRECTORY}
+tools/check
+tools/make-corpus
+tools/census --link-inputs "$inputs"
+mkdir -p /usr/share/lupin
+cp tests/corpus/pax/*.lu /usr/share/lupin/
+for dir in target/corpus/*; do
+    echo "STRICT $dir"
+    tools/oracle --link-inputs "$inputs" --out "target/oracle/${dir##*/}" "$dir"/*.o
+    for linker in lld gnu; do
+        exe="target/oracle/${dir##*/}/$linker/program"
+        tools/differ "$exe" "$exe" --output "target/oracle/${dir##*/}/$linker/self-differ.json"
+    done
+done
+python3 -I tests/resolution.py --lld "$inputs/ld.lld"
+python3 -I tests/pax-plant.py
+python3 -I tools/record-map

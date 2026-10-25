@@ -1,0 +1,142 @@
+#!/usr/bin/env python3
+"""Conservative structural differential. Unknown relocation encodings are refusals.
+
+Addresses and file offsets are listed separately as layout differences. Exact
+same-layout non-relocation bytes remain a mandatory comparison, so a copied
+oracle with any allocated byte changed can never pass by metadata agreement.
+"""
+import argparse,collections,hashlib,json,pathlib,subprocess,sys
+ROOT=pathlib.Path(__file__).resolve().parent.parent
+RUN_DIR=ROOT/"target/evidence/differ-run"
+
+def snapshot(path):
+    p=subprocess.run([ROOT/'target/ligature','verify',path],capture_output=True,timeout=30)
+    if p.returncode:raise ValueError(p.stderr.decode().strip())
+    p=subprocess.run([ROOT/'target/ligature','inspect',path],capture_output=True,check=True,timeout=60)
+    rows=[json.loads(x) for x in p.stdout.splitlines()]
+    data=path.read_bytes();header=next(r for r in rows if r['row']=='elf')
+    if header['machine']!=62:raise ValueError('EM_AARCH64 differential not implemented')
+    sections={r['index']:r for r in rows if r['row']=='section'}
+    syms={(r['table'],r['index']):r for r in rows if r['row']=='symbol'}
+    programs=[r for r in rows if r['row']=='program']
+    named=[s for s in syms.values() if s['name'] and s['section'] not in (0,65521) and s['type'] not in (3,4,6)]
+    def address(v):
+        exact=sorted(s['name'] for s in named if s['value']==v)
+        if exact:return {'symbols':exact,'offset':0}
+        within=sorted((s['size'],s['name'],v-s['value']) for s in named if s['size'] and s['value']<=v<s['value']+s['size'])
+        if within:return {'symbol':within[0][1],'offset':within[0][2]}
+        for sec in sections.values():
+            if sec['flags']&2 and sec['address']<=v<sec['address']+sec['size']:
+                return {'section':sec['name'],'offset':v-sec['address']}
+        return {'absolute':v}
+    defs=[]
+    for s in syms.values():
+        if s['section']==0 or s['type'] in (3,4):continue
+        sec=sections.get(s['section'])
+        defs.append({'name':s['name'],'binding':s['binding'],'type':s['type'],'visibility':s['visibility'],'size':s['size'],
+            'value':s['value'] if s['section']==65521 or s['type']==6 else None,
+            'section':sec['name'] if sec else s['section']})
+    def file_at(v,n):
+        for sec in sections.values():
+            if sec['kind']!=8 and sec['flags']&2 and sec['address']<=v and v+n<=sec['address']+sec['size']:
+                off=sec['offset']+v-sec['address'];return data[off:off+n]
+        raise ValueError(f'unmapped relocation target {v:#x}')
+    tls=next((r for r in programs if r['kind']==7),None)
+    tls_size=((tls['memsz']+max(tls['align'],1)-1)//max(tls['align'],1)*max(tls['align'],1)) if tls else 0
+    rels=[r for r in rows if r['row']=='rela']
+    # Linkers retain relocation records for instructions consumed by TLS relaxation.
+    consumed=set()
+    for r in rels:
+        if r['type']==19:consumed.add((r['target'],r['offset']+8))
+        if r['type']==20:consumed.add((r['target'],r['offset']+5))
+    resolved=[];refused=[]
+    for r in rels:
+        sec=sections[r['target']];alloc=bool(sec['flags']&2)
+        # --emit-relocs output r_offset is virtual for allocated sections,
+        # section-relative for nonallocated debugging sections.
+        relative=r['offset']-sec['address'] if alloc else r['offset']
+        sym=syms[(sections[r['table']]['link'],r['symbol'])]
+        a=r['addend_bits'];a=a-(1<<64) if a>>63 else a
+        t=r['type'];S=sym['value'];P=r['offset'];n=8 if t in (1,17,18,24) else 4
+        if t==0:continue
+        if relative<0 or relative+n>sec['size']:
+            refused.append({'row':r,'reason':'relocation field outside section'});continue
+        off=sec['offset']+relative;raw=int.from_bytes(data[off:off+n],'little');mask=(1<<(8*n))-1
+        signed=raw-(1<<(8*n)) if raw>>(8*n-1) else raw
+        expected=None;mode='direct'
+        if (r['target'],P) in consumed and t==4:mode='TLS call consumed'
+        elif t in (1,10,11):expected=S+a
+        elif t in (2,4,24):expected=S+a-P
+        elif t==17:expected=S+a
+        elif t==21:expected=S+a-(tls_size if alloc else 0)
+        elif t==23:expected=S+a-tls_size
+        elif t in (9,41,42):
+            if raw==(S+a-P)&mask:expected=S+a-P;mode='GOT relaxed PC-relative'
+            elif raw==(S+a+4)&mask and off>=2 and data[off-2]==0xc7:
+                expected=S+a+4;mode='GOT relaxed immediate'
+            else:
+                try:
+                    got=P+signed-a
+                    target=int.from_bytes(file_at(got,8),'little')
+                    if target!=S:raise ValueError(f'GOT slot holds {target:#x}, symbol is {S:#x}')
+                    mode='GOT indirection'
+                except ValueError as e:refused.append({'row':r,'reason':str(e)})
+        elif t==22:
+            expected=S-tls_size;mode='GOTTPOFF relaxed immediate'
+        elif t==19:
+            # psABI 1.0 §10.3: TLSGD to local-exec, 16-byte sequence.
+            if off<4 or data[off-4:off+5]!=bytes.fromhex('64488b042500000000'):
+                refused.append({'row':r,'reason':'unrecognized TLSGD relaxation'})
+            else:
+                actual=int.from_bytes(data[off+8:off+12],'little')
+                if actual!=(S-tls_size)&0xffffffff:refused.append({'row':r,'reason':'TLSGD local-exec target differs'})
+            mode='TLSGD local-exec'
+        elif t==20:
+            if off<3 or data[off-3:off+9]!=bytes.fromhex('66666664488b042500000000'):
+                refused.append({'row':r,'reason':'unrecognized TLSLD relaxation'})
+            mode='TLSLD local-exec'
+        else:refused.append({'row':r,'reason':f'unsupported relocation {t} (AMD64 ABI §4.4)'})
+        if expected is not None and raw!=expected&mask:
+            # A nonallocated debug reference to a GC-discarded section is a
+            # tombstone, not an address. Keep it named rather than silently drop it.
+            if not alloc and raw==0:mode='debug tombstone'
+            else:refused.append({'row':r,'symbol':sym['name'],'raw':raw,'expected':expected&mask,'reason':'resolved relocation bytes differ'})
+        site=address(P) if alloc else {'section':sec['name'],'offset':relative}
+        target={'name':sym['name'],'section':sections.get(sym['section'],{}).get('name',sym['section']),'type':sym['type']}
+        resolved.append({'site':site,'target':target,'addend':a,'type':t,'mode':mode})
+    arrays=[]
+    for r in rows:
+        if r['row']=='array':arrays.append({'section':sections[r['table']]['name'],'index':r['index'],'target':address(r['value'])})
+    template=data[tls['offset']:tls['offset']+tls['filesz']].hex() if tls else None
+    allocated={s['name']:{'address':s['address'],'offset':s['offset'],'size':s['size'],'kind':s['kind'],
+        'sha256':hashlib.sha256(data[s['offset']:s['offset']+s['size']]).hexdigest() if s['kind']!=8 else None}
+        for s in sections.values() if s['flags']&2}
+    RUN_DIR.mkdir(parents=True,exist_ok=True)
+    (RUN_DIR/'x.lu').write_text('//! member: false\nfn main() -> !int {\n    print("typed at PAX console, checked by wolf")\n    0\n}\n')
+    ran=subprocess.run([path.resolve()],cwd=RUN_DIR,env={'PATH':'/usr/bin:/bin','LC_ALL':'C'},capture_output=True,timeout=30)
+    return {'run':{'stdout':ran.stdout.hex(),'stderr':ran.stderr.hex(),'status':ran.returncode},'symbols':sorted(defs,key=lambda x:json.dumps(x,sort_keys=True)),'segments':sorted((p['kind'],p['flags'],p['align']) for p in programs),
+        'entry':address(header['entry']),'arrays':arrays,'tls':{'bytes':template,'memsz':tls['memsz'] if tls else 0},
+        'relocations':resolved,'refused':refused,'allocated':allocated,'layout':{'programs':programs,'sections':list(sections.values())}}
+
+def main():
+    ap=argparse.ArgumentParser();ap.add_argument('reference',type=pathlib.Path);ap.add_argument('candidate',type=pathlib.Path);ap.add_argument('--output',type=pathlib.Path);ap.add_argument('--allow',type=pathlib.Path);a=ap.parse_args()
+    try:left,right=snapshot(a.reference),snapshot(a.candidate)
+    except (ValueError,subprocess.SubprocessError) as e:print('differ: REFUSED',str(e),file=sys.stderr);return 2
+    diffs=[]
+    for key in ('run','symbols','segments','entry','arrays','tls','relocations'):
+        if left[key]!=right[key]:diffs.append({'kind':key,'reference':left[key],'candidate':right[key]})
+    if left['refused'] or right['refused']:diffs.append({'kind':'relocation-validation','reference':left['refused'],'candidate':right['refused']})
+    # If a section did not move or resize, its bytes have no layout excuse.
+    for name,sec in left['allocated'].items():
+        other=right['allocated'].get(name)
+        if other and all(sec[k]==other[k] for k in ('address','offset','size','kind')) and sec['sha256']!=other['sha256']:
+            diffs.append({'kind':'allocated-bytes','section':name,'reference':sec['sha256'],'candidate':other['sha256']})
+    allowed=json.loads(a.allow.read_text()) if a.allow else []
+    # Allow only exact recorded differences, never a category or wildcard.
+    unexplained=[d for d in diffs if d not in allowed]
+    result={'format':'ligature.differ.v1','differences':diffs,'unexplained':unexplained,'layout_differences':[] if left['layout']==right['layout'] else [{'reference':left['layout'],'candidate':right['layout']}]}
+    text=json.dumps(result,indent=2,sort_keys=True)+'\n'
+    if a.output:a.output.write_text(text)
+    print(f'differ: {len(diffs)} differences, {len(unexplained)} unexplained, {len(result["layout_differences"])} layout records')
+    return 1 if unexplained else 0
+if __name__=='__main__':sys.exit(main())

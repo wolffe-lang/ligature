@@ -1,0 +1,16 @@
+[
+  {
+    "oracle": "lld",
+    "sha256": "b05d6eb937f85e7156ed1913338e55711ec3c78c6910fb853a3d5893342cce6d",
+    "stdout": "oracle 42\n",
+    "status": 0,
+    "plant": "allocated-byte flip red; entry and TLS corruption red"
+  },
+  {
+    "oracle": "gnu",
+    "sha256": "2663575a92f52ebab3dbcf4eea44442ff3b7e102754d3c82a5c28ffcd5fca5cf",
+    "stdout": "oracle 42\n",
+    "status": 0,
+    "plant": "allocated-byte flip red; entry and TLS corruption red"
+  }
+]
