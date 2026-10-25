@@ -1,0 +1,1 @@
+kernel edge: lld17 refuses -2147483652; GNU default refuses, GNU --no-relax keeps GOT load; newer-lld comparison remains outstanding

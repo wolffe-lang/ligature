@@ -52,6 +52,15 @@ fn add(a: int, b: int, site: str) -> int ! {Bad(str)} {
     a + b
 }
 
+/// Check final S+A-P without overflowing the host signed address representation.
+/// Canonical high-half addresses are represented by their two's-complement value.
+pub fn pc32_reachable(sa: int, place: int) -> bool {
+    if place > 0 && sa < -9223372036854775807 - 1 + place { return false }
+    if place < 0 && sa > 9223372036854775807 + place { return false }
+    let displacement = sa - place
+    displacement >= -2147483648 && displacement <= 2147483647
+}
+
 /// Apply the census relocation set and recognized psABI TLS instruction transitions.
 pub fn apply(mut l: layout.Layout, s: resolve.State) -> () ! {Bad(str)} {
     var skipped = Map[str, bool]()
@@ -135,7 +144,8 @@ pub fn apply(mut l: layout.Layout, s: resolve.State) -> () ! {Bad(str)} {
                 (rex == 72 || rex == 76) &&
                 opcode == 139 &&
                 modrm & 199 == 5 &&
-                r.addend == -4 {
+                r.addend == -4 &&
+                pc32_reachable(sa, place) {
                 l.outputs[out].data[at - 2] = 141 as byte
                 number(mut l, out, at, 4, sa - place, true, site)?
             } else if r.kind == 22 &&

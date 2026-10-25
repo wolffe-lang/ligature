@@ -1,0 +1,119 @@
+//! member: false
+
+use binary
+use elf
+use layout
+use relocate
+use resolve
+
+// A kernel-shaped layout, not a claim that the ET_EXEC front end accepts scripts.
+// The real relocation pass must keep the GOT load at the negative rel32 edge.
+fn witness() -> () ! {Bad(str)} {
+    assert(relocate.pc32_reachable(-2147483648, 0))
+    assert(relocate.pc32_reachable(2147483647, 0))
+    assert(!relocate.pc32_reachable(-2147483649, 0))
+    assert(!relocate.pc32_reachable(2147483648, 0))
+    assert(!relocate.pc32_reachable(9223372036854775807, -1))
+    assert(!relocate.pc32_reachable(-9223372036854775807 - 1, 1))
+    var state = resolve.empty()
+    var placed = layout.read(state)?
+    let base = layout.signed(0xffffffff80000000)
+    let far = layout.signed(0xffffffff00000003)
+    (mut state.objects).push(resolve.Object {
+        label: "kernel-edge.o",
+        file: binary.Input { fd: 0, base: 0, size: 0 },
+        image: elf.Image {
+            kind: 1,
+            machine: 62,
+            entry: 0,
+            names: 0,
+            sections: List[elf.Section](),
+            programs: List[elf.Program](),
+        },
+        names: List[str](),
+        symbols: Map[str, int](),
+        discarded: List[bool](),
+    })
+    (mut state.symbols).push(resolve.Symbol {
+        name: "far",
+        object: 0,
+        table: 3,
+        index: 1,
+        section: 2,
+        binding: 1,
+        kind: 1,
+        other: 0,
+        value: 0,
+        size: 8,
+    })
+    state.globals["far"] = 0
+    let instruction: List[byte] = [
+        72 as byte,
+        139 as byte,
+        5 as byte,
+        0 as byte,
+        0 as byte,
+        0 as byte,
+        0 as byte,
+    ]
+    (mut placed.atoms).push(layout.Atom {
+        object: 0,
+        index: 1,
+        name: ".text",
+        kind: 1,
+        flags: 6,
+        align: 1,
+        size: 7,
+        data: copy instruction,
+        records: List[int](),
+        live: true,
+        output: 1,
+        offset: 0,
+    })
+    (mut placed.atoms).push(layout.Atom {
+        object: 0,
+        index: 2,
+        name: ".far",
+        kind: 1,
+        flags: 2,
+        align: 1,
+        size: 8,
+        data: List[byte](),
+        records: List[int](),
+        live: true,
+        output: 3,
+        offset: 0,
+    })
+    placed.locations["0:2"] = 2
+    var text = layout.output(".text", 1, 6, 1)
+    text.address = base
+    text.size = 7
+    text.data = copy instruction
+    (mut placed.outputs).push(text)
+    var got = layout.output(".got", 1, 3, 8)
+    got.address = base + 4096
+    got.size = 8
+    got.data = binary.encode([0], [8])?
+    (mut placed.outputs).push(got)
+    var distant = layout.output(".far", 1, 2, 1)
+    distant.address = far
+    (mut placed.outputs).push(distant)
+    placed.got["0:false"] = 0
+    (mut placed.got_symbols).push(0)
+    (mut placed.got_tls).push(false)
+    placed.synthetics["_GLOBAL_OFFSET_TABLE_"] = base + 4096
+    (mut placed.relocs).push(layout.Reloc { atom: 1, offset: 3, symbol: 0, kind: 42, addend: -4 })
+    assert(far - 4 - (base + 3) == -2147483652)
+    relocate.apply(mut placed, state)?
+    assert(placed.outputs[1].data[1] == 139 as byte)
+    assert(binary.decode(placed.outputs[1].data, 3, 4)? == 4089)
+    assert(binary.decode(placed.outputs[2].data, 0, 8)? == 0xffffffff00000003)
+    print("kernel relocation: high-half out-of-range direct reference retains GOT load, 0 SKIP")
+}
+
+fn main() -> int {
+    witness() else |e| match e {
+        Bad(message) => { eprint(message); return 1 },
+    }
+    0
+}
