@@ -1,0 +1,301 @@
+//! member: true
+
+use binary
+
+/// An ELF64 section header with checked file offsets.
+pub struct Section {
+    name_index: int,
+    kind: int,
+    flags: u64,
+    addr: u64,
+    off: int,
+    size: int,
+    link: int,
+    info: int,
+    align: u64,
+    entsize: int,
+}
+
+/// An ELF64 program header with checked file and virtual ranges.
+pub struct Program {
+    kind: int,
+    flags: int,
+    off: int,
+    addr: u64,
+    physical: u64,
+    filesz: int,
+    memsz: u64,
+    align: u64,
+}
+
+/// Parsed ELF metadata; section payloads remain in the positional input.
+pub struct Image {
+    kind: int,
+    machine: int,
+    entry: u64,
+    names: int,
+    sections: List[Section],
+    programs: List[Program],
+}
+
+/// Read ELF64 headers; Bad names unsupported encodings or malformed ranges.
+pub fn parse(f: binary.Input) -> Image ! {Bad(str)} {
+    let ident = binary.read(f, 0, 16)?
+    if ident[0] != 127 as byte ||
+        ident[1] != 69 as byte ||
+        ident[2] != 76 as byte ||
+        ident[3] != 70 as byte {
+        return Bad("not ELF (gABI ch.4 ELF Header)")
+    }
+    if ident[4] != 2 as byte { return Bad("ELFCLASS32 refused; ELF64 required (gABI ch.4)") }
+    if ident[5] != 1 as byte {
+        return Bad("ELFDATA2MSB refused; little-endian required (gABI ch.4)")
+    }
+    if ident[6] != 1 as byte { return Bad("unsupported ELF identification version") }
+    let h = binary.table(f, 16, [2, 2, 4, 8, 8, 8, 4, 2, 2, 2, 2, 2, 2])?
+    let kind = h[0] as int
+    let machine = h[1] as int
+    if kind < 1 || kind > 3 { return Bad("unsupported ELF type {kind} (gABI ch.4)") }
+    if machine != 62 && machine != 183 { return Bad("unsupported e_machine {machine} (gABI ch.4)") }
+    if h[2] != 1 || h[7] != 64 { return Bad("ELF header version/size inconsistent") }
+    if h[6] != 0 { return Bad("unknown e_flags {h[6]} (processor ABI)") }
+    let phoff = binary.bounded(h[4], f.size)?
+    let shoff = binary.bounded(h[5], f.size)?
+    let phnum = h[9] as int
+    let shnum = h[11] as int
+    let names = h[12] as int
+    if phnum == 65535 || names == 65535 || shnum == 0 && shoff != 0 {
+        return Bad("extended ELF numbering refused (gABI ch.4)")
+    }
+    if phnum != 0 && h[8] != 56 { return Bad("e_phentsize is not ELF64 program-header size") }
+    if shnum != 0 && h[10] != 64 { return Bad("e_shentsize is not ELF64 section-header size") }
+    binary.range(f, phoff, phnum * 56)?
+    binary.range(f, shoff, shnum * 64)?
+    if names >= shnum && names != 0 { return Bad("e_shstrndx outside section table") }
+    var sections = List[Section]()
+    for i in 0..shnum {
+        let s = binary.table(f, shoff + i * 64, [4, 4, 8, 8, 8, 8, 4, 4, 8, 8])?
+        let off = binary.bounded(s[4], f.size)?
+        // NOBITS is bounded in memory, not by file bytes.
+        let size = binary.bounded(s[5], 9223372036854775807)?
+        let st = s[1] as int
+        if st != 8 { binary.range(f, off, size)? }
+        if st == 9 { return Bad("SHT_REL refused; SHT_RELA required (gABI ch.4 Relocation)") }
+        if !binary.pow2(s[8]) { return Bad("sh_addralign is not a power of two") }
+        let entsize = binary.bounded(s[9], 9223372036854775807)?
+        if entsize != 0 && size % entsize != 0 {
+            return Bad("section size not divisible by sh_entsize")
+        }
+        (mut sections).push(Section {
+            name_index: s[0] as int,
+            kind: st,
+            flags: s[2],
+            addr: s[3],
+            off: off,
+            size: size,
+            link: s[6] as int,
+            info: s[7] as int,
+            align: s[8],
+            entsize: entsize,
+        })
+    }
+    if shnum > 0 && sections[0].kind != 0 { return Bad("section zero is not SHT_NULL") }
+    if names != 0 && sections[names].kind != 3 { return Bad("e_shstrndx is not SHT_STRTAB") }
+    var programs = List[Program]()
+    for i in 0..phnum {
+        let p = binary.table(f, phoff + i * 56, [4, 4, 8, 8, 8, 8, 8, 8])?
+        let off = binary.bounded(p[2], f.size)?
+        let filesz = binary.bounded(p[5], f.size)?
+        binary.range(f, off, filesz)?
+        if !binary.pow2(p[7]) { return Bad("p_align is not a power of two") }
+        if p[6] < p[5] { return Bad("p_filesz exceeds p_memsz") }
+        if p[3] > 18446744073709551615 - p[6] { return Bad("segment virtual range overflows") }
+        (mut programs).push(Program {
+            kind: p[0] as int,
+            flags: p[1] as int,
+            off: off,
+            addr: p[3],
+            physical: p[4],
+            filesz: filesz,
+            memsz: p[6],
+            align: p[7],
+        })
+    }
+    Image {
+        kind: kind,
+        machine: machine,
+        entry: h[3],
+        names: names,
+        sections: sections,
+        programs: programs,
+    }
+}
+
+/// Read a section name as bytes; Bad names invalid string-table indices.
+pub fn name(f: binary.Input, image: Image, s: Section) -> List[byte] ! {Bad(str)} {
+    if image.names == 0 {
+        if s.name_index != 0 { return Bad("section name without string table") }
+        return List[byte]()
+    }
+    let ns = copy image.sections[image.names]
+    binary.cstring(f, ns.off, ns.size, s.name_index)?
+}
+
+fn linked(image: Image, s: Section, expected: int) -> Section ! {Bad(str)} {
+    if s.link <= 0 || s.link >= image.sections.len { return Bad("sh_link outside section table") }
+    let t = copy image.sections[s.link]
+    if t.kind != expected { return Bad("sh_link has wrong section type") }
+    copy t
+}
+
+// Values stay unsigned, including RELA's two's-complement addend bits.
+// The symbol value's meaning (section-relative, TLS, ABS) is preserved.
+/// Validate and roundtrip structured payloads; optionally emit JSONL. Bad names invalid metadata.
+pub fn walk(f: binary.Input, image: Image, emit: bool) -> () ! {Bad(str)} {
+    if emit {
+        print(
+            "{{\"row\":\"elf\",\"kind\":{image.kind},\"machine\":{image.machine},\"entry\":{image.entry}}}",
+        )
+    }
+    for i in 0..image.programs.len {
+        let p = copy image.programs[i]
+        if emit {
+            print(
+                "{{\"row\":\"program\",\"index\":{i},\"kind\":{p.kind},\"flags\":{p.flags},\"offset\":{p.off},\"address\":{p.addr},\"filesz\":{p.filesz},\"memsz\":{p.memsz},\"align\":{p.align}}}",
+            )
+        }
+    }
+    for i in 0..image.sections.len {
+        region section {
+            let s = copy image.sections[i]
+            let label = binary.quote(name(f, image, s)?)
+            if emit {
+                print(
+                    "{{\"row\":\"section\",\"index\":{i},\"name\":{label},\"kind\":{s.kind},\"flags\":{s.flags},\"address\":{s.addr},\"offset\":{s.off},\"size\":{s.size},\"link\":{s.link},\"info\":{s.info},\"align\":{s.align},\"entsize\":{s.entsize}}}",
+                )
+            }
+            if s.kind == 3 && s.size > 0 {
+                let first = binary.read(f, s.off, 1)?
+                let last = binary.read(f, s.off + s.size - 1, 1)?
+                if first[0] != 0 as byte || last[0] != 0 as byte {
+                    return Bad("SHT_STRTAB must begin/end with NUL")
+                }
+            }
+            if s.kind == 2 || s.kind == 11 {
+                let strings = linked(image, s, 3)?
+                if s.entsize != 24 { return Bad("symbol table entry is not Elf64_Sym") }
+                let count = s.size / 24
+                if s.info > count { return Bad("symbol sh_info exceeds entry count") }
+                for j in 0..count {
+                    region symbol {
+                        let v = binary.table(f, s.off + j * 24, [4, 1, 1, 2, 8, 8])?
+                        let text = binary.quote(
+                            binary.cstring(f, strings.off, strings.size, v[0] as int)?,
+                        )
+                        let binding = v[1] >> 4
+                        let stype = v[1] & 15
+                        let visibility = v[2] & 3
+                        if v[3] == 65535 { return Bad("SHN_XINDEX refused (gABI Symbol Table)") }
+                        if v[3] >= image.sections.len as u64 && v[3] < 65280 {
+                            return Bad("symbol section index outside section table")
+                        }
+                        if j < s.info && binding != 0 || j >= s.info && binding == 0 {
+                            return Bad("symbol local partition contradicts sh_info")
+                        }
+                        if emit {
+                            print(
+                                "{{\"row\":\"symbol\",\"table\":{i},\"index\":{j},\"name\":{text},\"binding\":{binding},\"type\":{stype},\"visibility\":{visibility},\"other\":{v[2]},\"section\":{v[3]},\"value\":{v[4]},\"size\":{v[5]}}}",
+                            )
+                        }
+                    }
+                }
+            } else if s.kind == 4 {
+                if s.entsize != 24 { return Bad("SHT_RELA entry is not Elf64_Rela") }
+                if s.link <= 0 || s.link >= image.sections.len {
+                    return Bad("RELA sh_link outside section table")
+                }
+                let syms = copy image.sections[s.link]
+                if syms.kind != 2 && syms.kind != 11 || syms.entsize != 24 {
+                    return Bad("RELA sh_link is not a symbol table")
+                }
+                if s.info >= image.sections.len { return Bad("RELA sh_info outside section table") }
+                for j in 0..s.size / 24 {
+                    region relocation {
+                        let v = binary.table(f, s.off + j * 24, [8, 8, 8])?
+                        let sym = v[1] >> 32
+                        let rt = v[1] & 4294967295
+                        if sym >= (syms.size / 24) as u64 {
+                            return Bad("RELA symbol index outside symbol table")
+                        }
+                        if image.kind == 1 &&
+                            (s.info == 0 || v[0] > image.sections[s.info].size as u64) {
+                            return Bad("RELA offset outside target section")
+                        }
+                        if emit {
+                            print(
+                                "{{\"row\":\"rela\",\"table\":{i},\"index\":{j},\"target\":{s.info},\"offset\":{v[0]},\"symbol\":{sym},\"type\":{rt},\"addend_bits\":{v[2]}}}",
+                            )
+                        }
+                    }
+                }
+            } else if s.kind == 17 {
+                let syms = linked(image, s, 2)?
+                if s.entsize != 4 || s.size < 4 || syms.entsize != 24 || s.info >= syms.size / 24 {
+                    return Bad("invalid SHT_GROUP signature/entry size")
+                }
+                let flag = binary.table(f, s.off, [4])?
+                if flag[0] & 4294967294 != 0 { return Bad("unknown SHT_GROUP flags") }
+                for j in 1..s.size / 4 {
+                    let member = binary.table(f, s.off + j * 4, [4])?
+                    let si = binary.bounded(member[0], image.sections.len - 1)?
+                    if si == 0 || image.sections[si].flags & 512 == 0 {
+                        return Bad("group member lacks SHF_GROUP")
+                    }
+                    if emit {
+                        print(
+                            "{{\"row\":\"group\",\"table\":{i},\"flags\":{flag[0]},\"signature\":{s.info},\"member\":{si}}}",
+                        )
+                    }
+                }
+            } else if s.kind == 6 {
+                if s.entsize != 16 { return Bad("dynamic entry is not Elf64_Dyn") }
+                for j in 0..s.size / 16 {
+                    let v = binary.table(f, s.off + j * 16, [8, 8])?
+                    if emit {
+                        print(
+                            "{{\"row\":\"dynamic\",\"table\":{i},\"tag_bits\":{v[0]},\"value\":{v[1]}}}",
+                        )
+                    }
+                }
+            } else if s.kind == 14 || s.kind == 15 || s.kind == 16 {
+                if s.entsize != 8 { return Bad("array entry is not ELF64 address") }
+                for j in 0..s.size / 8 {
+                    let v = binary.table(f, s.off + j * 8, [8])?
+                    if emit {
+                        print("{{\"row\":\"array\",\"table\":{i},\"index\":{j},\"value\":{v[0]}}}")
+                    }
+                }
+            } else if s.kind == 7 {
+                var at: int = 0
+                while at < s.size {
+                    if s.size - at < 12 { return Bad("truncated SHT_NOTE header") }
+                    let v = binary.table(f, s.off + at, [4, 4, 4])?
+                    let ns = binary.bounded(v[0], s.size - at - 12)?
+                    let ds = binary.bounded(v[1], s.size - at - 12)?
+                    let npad = (ns + 3) / 4 * 4
+                    let dpad = (ds + 3) / 4 * 4
+                    if npad > s.size - at - 12 || dpad > s.size - at - 12 - npad {
+                        return Bad("truncated SHT_NOTE payload")
+                    }
+                    let owner = binary.quote(binary.read(f, s.off + at + 12, ns)?)
+                    if emit {
+                        print(
+                            "{{\"row\":\"note\",\"table\":{i},\"type\":{v[2]},\"owner\":{owner},\"descriptor_size\":{ds}}}",
+                        )
+                    }
+                    at += 12 + npad + dpad
+                }
+            }
+        }
+    }
+}

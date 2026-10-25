@@ -1,0 +1,137 @@
+//! member: true
+
+// All offsets are checked before conversion to the host's signed file API.
+/// An owned descriptor view bounded to a file or archive member.
+pub struct Input {
+    fd: int,
+    base: int,
+    size: int,
+}
+
+/// Convert an unsigned file field only within limit; Bad names an out-of-range field.
+pub fn bounded(n: u64, limit: int) -> int ! {Bad(str)} {
+    if limit < 0 || n > limit as u64 { return Bad("offset exceeds input (gABI ch.4)") }
+    n as int
+}
+
+/// Check a range without addition overflow; Bad names truncation.
+pub fn range(f: Input, off: int, size: int) -> () ! {Bad(str)} {
+    if off < 0 || size < 0 || off > f.size || size > f.size - off {
+        return Bad("truncated range (gABI ch.4)")
+    }
+}
+
+/// Read exactly a bounded range with positional IO; Bad names IO or truncation.
+pub fn read(f: Input, off: int, size: int) -> List[byte] ! {Bad(str)} {
+    range(f, off, size)?
+    var out = List[byte]()
+    var done: int = 0
+    while done < size {
+        {
+            let want = if size - done > 65536 then 65536 else size - done
+            let part = fs_read_at(f.fd, f.base + off + done, want) else |_| {
+                return Bad("positional read failed")
+            }
+            if part.len == 0 { return Bad("short positional read") }
+            for b in part { (mut out).push(b) }
+            done += part.len
+        }
+    }
+    out
+}
+
+/// Decode one little-endian integer; Bad names an invalid width or span.
+pub fn decode(bytes: List[byte], off: int, width: int) -> u64 ! {Bad(str)} {
+    if width < 1 || width > 8 || off < 0 || off > bytes.len || width > bytes.len - off {
+        return Bad("invalid integer field")
+    }
+    var value: u64 = 0
+    var i: int = width
+    while i > 0 {
+        i -= 1
+        value = value << 8 | bytes[off + i] as int as u64
+    }
+    value
+}
+
+/// Serialize unsigned fields without narrowing; Bad names a shape or width mismatch.
+pub fn encode(values: List[u64], widths: List[int]) -> List[byte] ! {Bad(str)} {
+    if values.len != widths.len { return Bad("invalid table shape") }
+    var out = List[byte]()
+    for i in 0..values.len {
+        let width = widths[i]
+        if width < 1 || width > 8 { return Bad("invalid field width") }
+        var n = values[i]
+        for _ in 0..width {
+            (mut out).push((n & 255) as int as byte)
+            n = n >> 8
+        }
+        if n != 0 { return Bad("integer does not fit field") }
+    }
+    out
+}
+
+// Parsing and re-serialising every structured table is an always-on invariant.
+/// Decode and independently serialize a table; Bad names malformed or non-roundtripping data.
+pub fn table(f: Input, off: int, widths: List[int]) -> List[u64] ! {Bad(str)} {
+    var size: int = 0
+    for w in widths {
+        if w < 1 || w > 8 { return Bad("invalid field width") }
+        size += w
+    }
+    let raw = read(f, off, size)?
+    var fields = List[u64]()
+    var at: int = 0
+    for w in widths {
+        (mut fields).push(decode(raw, at, w)?)
+        at += w
+    }
+    let back = encode(fields, widths)?
+    for i in 0..raw.len {
+        if raw[i] != back[i] { return Bad("table roundtrip differs") }
+    }
+    fields
+}
+
+/// True for zero or a power-of-two alignment.
+pub fn pow2(n: u64) -> bool {
+    n == 0 || n & n - 1 == 0
+}
+
+/// Encode arbitrary byte names as reversible JSON Latin-1 escapes.
+pub fn quote(bytes: List[byte]) -> str {
+    var out = List[byte]()
+    (mut out).push(34 as byte)
+    let digits = "0123456789abcdef"
+    for b in bytes {
+        let v = b as int
+        if v >= 32 && v < 127 && v != 34 && v != 92 {
+            (mut out).push(b)
+        } else {
+            for x in "\\u00".bytes() { (mut out).push(x) }
+            (mut out).push(digits.bytes()[v / 16])
+            (mut out).push(digits.bytes()[v % 16])
+        }
+    }
+    (mut out).push(34 as byte)
+    str_from_utf8(out) else "\"invalid\""
+}
+
+/// Read a bounded NUL-terminated byte string; Bad names bounds or termination failure.
+pub fn cstring(f: Input, off: int, size: int, index: int) -> List[byte] ! {Bad(str)} {
+    if index < 0 || index >= size { return Bad("string index outside SHT_STRTAB (gABI ch.4)") }
+    var out = List[byte]()
+    var at = index
+    while at < size {
+        region block {
+            let n = if size - at > 256 then 256 else size - at
+            let bytes = read(f, off + at, n)?
+            for b in bytes {
+                if b == 0 as byte { return out }
+                (mut out).push(b)
+            }
+            at += bytes.len
+        }
+    }
+    Bad("unterminated string table entry (gABI ch.4)")
+}
