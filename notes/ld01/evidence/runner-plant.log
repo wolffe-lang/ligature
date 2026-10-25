@@ -1,0 +1,5 @@
+Traceback (most recent call last):
+  File "/lane/ligature/tests/static-pax-runner.py", line 13, in <module>
+    assert json.loads(report.read_text())==expected,'command report overwritten by runner metadata'
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: command report overwritten by runner metadata
