@@ -43,6 +43,14 @@ for label,linker in [('ligature',BIN),('lld','ld.lld-17'),('gnu','ld.bfd')]:
         # Re-seal so the relocation gate, rather than the digest gate, must fail.
         if '.note.wolf.link' in sections:
             no=sections['.note.wolf.link'][4];mo=sections['.wolf.link.manifest']
+            document=json.loads(mutated[mo[4]:mo[4]+mo[5]])
+            # Forge matching patch claims too: independent relocation equations
+            # must reject this even when the manifest and both digests agree.
+            for patch in document.get('patches',[]):
+                patch['after']=mutated[patch['start']:patch['end']].hex()
+            manifest=(json.dumps(document,sort_keys=True,separators=(',',':'))+'\n').encode()
+            assert len(manifest)==mo[5]
+            mutated[mo[4]:mo[4]+mo[5]]=manifest
             mutated[no+44:no+108]=bytes(64)
             whole=hashlib.sha256(mutated).digest()
             mutated[no+44:no+76]=hashlib.sha256(mutated[mo[4]:mo[4]+mo[5]]).digest()

@@ -1,0 +1,153 @@
+//! member: true
+
+use binary
+use elf
+use provenance
+use std.json
+use verify
+
+fn load(path: str) -> json.Value ! {Bad(str)} {
+    let fd = fs_open(path) else |_| { return Bad("cannot open {path}") }
+    defer fs_close(fd) else |_| {}
+    let size = fs_size(path) else |_| { return Bad("cannot size {path}") }
+    let input = binary.Input { fd: fd, base: 0, size: size }
+    let image = elf.parse(input)?
+    verify.check(image)?
+    provenance.check(input, image)?
+    let doc = provenance.document(input, image)?
+    if provenance.text(doc, "coverage")? != "bytes-and-patches" {
+        return Bad("explain requires byte-and-patch provenance")
+    }
+    doc
+}
+
+fn number(value: str) -> int ! {Bad(str)} {
+    let hex = value.starts_with("0x")
+    let base = if hex then 16 else 10
+    let start = if hex then 2 else 0
+    if start == value.len { return Bad("empty address") }
+    var n: int = 0
+    for i in start..value.len {
+        let b = value.bytes()[i] as int
+        let digit = if b >= 48 && b <= 57 {
+            b - 48
+        } else if b >= 97 && b <= 102 {
+            b - 87
+        } else {
+            -1
+        }
+        if digit < 0 || digit >= base || n > (9223372036854775807 - digit) / base {
+            return Bad("invalid address or ordinal {value}")
+        }
+        n = n * base + digit
+    }
+    n
+}
+
+fn answer(doc: json.Value, mode: str, query: str, input: int) -> List[json.Value] ! {Bad(str)} {
+    var result = List[json.Value]()
+    let symbols = provenance.array(doc, "symbols")?
+    var selected = List[json.Value]()
+    var members = Map[int, bool]()
+    let address = if mode == "--address" then number(query)? else -1
+    for s in symbols {
+        let member = provenance.integer(s, "member")?
+        if input >= 0 && input != member { continue }
+        var found = provenance.text(s, "name")? == query
+        if mode == "--address" {
+            let tls = json.as_bool(provenance.field(s, "tls")?) else {
+                return Bad("invalid TLS origin")
+            }
+            let start = provenance.integer(s, "address")?
+            let size = provenance.integer(s, "size")?
+            found = !tls && address >= start && (address == start || address - start < size)
+        }
+        if found { (mut selected).push(copy s); members[member] = true }
+    }
+    if mode != "--address" && input < 0 && members.len > 1 {
+        return Bad("ambiguous symbol {query}; specify --input MEMBER_ORDINAL")
+    }
+    if mode == "--why" {
+        if selected.len == 0 { return result }
+        let edges = provenance.array(doc, "pulls")?
+        var object = provenance.integer(selected[0], "member")?
+        for _ in 0..edges.len + 1 {
+            var found = false
+            for edge in edges {
+                if provenance.integer(edge, "object")? != object { continue }
+                (mut result).push(copy edge)
+                object = provenance.integer(edge, "parent")?
+                found = true
+                break
+            }
+            if !found || object < 0 {
+                // A selected explicit input is the terminal root, not a missing edge.
+                if result.len == 0 { (mut result).push(copy selected[0]) }
+                return result
+            }
+        }
+        return Bad("cyclic extraction provenance")
+    }
+    if mode == "--symbol" { return selected }
+    // Address queries also report containing LOAD/TLS/NOBITS section metadata.
+    for section in provenance.array(doc, "sections")? {
+        let start = provenance.integer(section, "address")?
+        let end = provenance.integer(section, "memory_end")?
+        let flags = provenance.integer(section, "flags")?
+        if flags & 2 != 0 && address >= start && address < end { (mut result).push(copy section) }
+    }
+    for s in selected { (mut result).push(copy s) }
+    result
+}
+
+/// Query only a fully validated manifest. Invalid files are status 2; misses are 1.
+pub fn run(args: List[str]) -> int {
+    var path = ""
+    var mode = ""
+    var query = ""
+    var input: int = -1
+    var i = 1
+    while i < args.len {
+        let arg = args[i]
+        if arg == "--symbol" || arg == "--address" || arg == "--why" || arg == "--input" {
+            if i + 1 >= args.len { eprint("ligature explain: missing value for {arg}"); return 1 }
+            i += 1
+            if arg == "--input" {
+                input = number(args[i]) else |_| {
+                    eprint("ligature explain: invalid input ordinal")
+                    return 1
+                }
+            } else {
+                if mode.len != 0 { eprint("ligature explain: choose one query"); return 1 }
+                mode = arg
+                query = args[i]
+            }
+        } else {
+            if path.len != 0 || arg.starts_with("-") {
+                eprint("ligature explain: unexpected argument {arg}")
+                return 1
+            }
+            path = arg
+        }
+        i += 1
+    }
+    if path.len == 0 || mode.len == 0 {
+        eprint(
+            "usage: ligature explain FILE (--symbol NAME|--address VA|--why NAME) [--input MEMBER_ORDINAL]",
+        )
+        return 1
+    }
+    let doc = load(path) else |e| match e {
+        Bad(message) => { eprint("ligature explain: {message}"); return 2 },
+    }
+    let result = answer(doc, mode, query, input) else |e| match e {
+        Bad(message) => { eprint("ligature explain: {message}"); return 1 },
+    }
+    if result.len == 0 { eprint("ligature explain: no match for {query}"); return 1 }
+    let text = json.stringify(json.from_list(result)) else |_| {
+        eprint("ligature explain: result nesting")
+        return 2
+    }
+    print(text)
+    0
+}

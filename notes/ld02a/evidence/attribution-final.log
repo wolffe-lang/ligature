@@ -1,0 +1,3 @@
+attribution: complete disjoint coverage, explain, deterministic relink, delta locality, five resealed negative rows; 0 SKIP
+attribution: aliases, archive path, TLS/NOBITS, ambiguous locals and explicit member selection; 0 SKIP
+static-pax runner: report preserved, nonzero differ status preserved, 0 SKIP

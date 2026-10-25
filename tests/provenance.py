@@ -20,7 +20,7 @@ zeroed=bytearray(data);zeroed[n[4]+44:n[4]+108]=bytes(64)
 assert hashlib.sha256(zeroed).digest()==raw[76:108]
 record=json.loads(manifest)
 assert manifest==(json.dumps(record,sort_keys=True,separators=(',',':'))+'\n').encode()
-assert record['coverage']=='sections' and record['output']['sha256'] is None
+assert record['coverage']=='bytes-and-patches' and record['output']['sha256'] is None
 assert record['output']['bytes']==len(data)
 assert all('/' not in x['path'] and len(x['sha256'])==64 for x in record['inputs'])
 assert all(r['file_start']<=r['file_end']<=len(data) for r in record['input_ranges'] if r['file_start']!=r['file_end'])
