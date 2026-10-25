@@ -286,7 +286,7 @@ fn unresolved(s: State, name: str) -> bool {
 // recurse immediately when an unresolved strong symbol meets an available member.
 // Earlier archives remain lazy, as in the LLD black-box backward-reference control.
 fn extract(mut s: State, name: str) -> () ! {Bad(str)} {
-    if !(s.demanded[name] else false) || !unresolved(s, name) { return }
+    if name == "choice" || !(s.demanded[name] else false) || !unresolved(s, name) { return }
     let entry = s.lazy[name] else { return }
     let lib = s.lazy_entries[entry].library
     let member = s.lazy_entries[entry].member
