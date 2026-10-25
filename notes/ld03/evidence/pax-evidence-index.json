@@ -1,0 +1,9 @@
+{
+  "path": "pax-evidence.tar.gz",
+  "bytes": 367873,
+  "sha256_read_twice": [
+    "0be461763b9c1f27f02c98c071e0a800f752431382d94c6a815bb5ecb1f3b1f3",
+    "0be461763b9c1f27f02c98c071e0a800f752431382d94c6a815bb5ecb1f3b1f3"
+  ],
+  "contents": "Every boot result, status, atomic checkpoint, serial/halt/QEMU metadata and image SHA record; large generated images remain under the lane directory"
+}

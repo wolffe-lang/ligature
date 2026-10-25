@@ -1,0 +1,114 @@
+[
+  {
+    "case": "compiler-comptime",
+    "hashes_read_twice": {
+      "lld": "3d00f333e8b4235e27b5ac2768149650da1f8b13312eff3484b1d05cbd7a0f3e",
+      "gnu": "914ca79370c93a3dce7c16d31c6eea51a51ab35dbf5f235931338960b7812673",
+      "ligature": "96887214838f56564c1078741730cd7625f21eff231b8515b10228ad3cafe495"
+    }
+  },
+  {
+    "case": "compiler-entry_no_return",
+    "hashes_read_twice": {
+      "lld": "6a0a4b170afa653dec058e70845d9e293f4b8b094a6010a97f8da4637670ff6a",
+      "gnu": "6fc555e2b7eaa4ed2b5fc449c54cc570c73236fe43dc542f1baa581febc2b6c5",
+      "ligature": "6e59dd1a6d5217c51c271f465ef1360f2b4cedb016e4f6bed0c94b722801a41b"
+    }
+  },
+  {
+    "case": "compiler-overflow",
+    "hashes_read_twice": {
+      "lld": "73d75dee321922a79de5ad0ed835f936a34baa3acc1fcf2807aa53b823232377",
+      "gnu": "919e794bf90de373803daa0c75407c810fee322533330d15286919a353df3eca",
+      "ligature": "c11a9b1f936efdb0b22b62ef87b826f733a1e8da6e15b51fdfacabcfbe4f55be"
+    }
+  },
+  {
+    "case": "compiler-procs",
+    "hashes_read_twice": {
+      "lld": "b665766c75a19bc0708cbc86e7e40566dc33b7722710473051bd4262defe0f7d",
+      "gnu": "3c056e6ca5726d1be0fec996f953be036cea500df558d751e52ab5c3f5deb89a",
+      "ligature": "4054677c33961221ec9dae265356d32b2e8ea224a668510e2462a616f0127267"
+    }
+  },
+  {
+    "case": "compiler-regions",
+    "hashes_read_twice": {
+      "lld": "e4e91acc6833f2d6b48747010574aaab31c3d0356d6722e7d17c1b99717d26ed",
+      "gnu": "d39537eda81f40f4db218e19c6751bca68fd4bff8e13609b0e937753d5ce1059",
+      "ligature": "ad57168c84b8516fdab6506342d74d75860cc15142f3807774b30134568a9187"
+    }
+  },
+  {
+    "case": "hello-hello",
+    "hashes_read_twice": {
+      "lld": "842c159a765a6f872d972a9c017cb9f7bd3cbadafa70e932bf8c42f647790e26",
+      "gnu": "2b62874008928c760e8a1703d0040147c58ea1b69e37f667239f6773e2130239",
+      "ligature": "8551aa62d0a73673883fcd8ea2e5b65d833255ad0dcc428fe62e4bb346ca986a"
+    }
+  },
+  {
+    "case": "pax-exec",
+    "hashes_read_twice": {
+      "lld": "cef1740073e89046cd28472cf20675673de7e6c14c5e1bac4e00b843c3ac5392",
+      "gnu": "cc2766a880ea35f28fd55231d62c3777715835c47620e31d275863dfeba314c5",
+      "ligature": "ad61d915010945cf720fcf9d5a493d4b30777c1426ea00691e564fe179af4b1a"
+    }
+  },
+  {
+    "case": "pax-fork",
+    "hashes_read_twice": {
+      "lld": "c058f27e03568317afa8909f99beb7d0b937b919add2a1649757a6fcc9b25204",
+      "gnu": "7ec23dee8a059b05d9fc8dec47c35c134b00ecaf40e6bcb158546422fd821ba6",
+      "ligature": "fe3508914b25f7da81e35b73354cd7699b47502083002d48622547ffd1e2e1c5"
+    }
+  },
+  {
+    "case": "pax-hello",
+    "hashes_read_twice": {
+      "lld": "55c6aa21700399fbd42c9963b995d57009308c1c00b8e7e1690af13861f8aeb9",
+      "gnu": "15a727e1b0241b64125bea92d9b3adcb707aad711bf3411e4c53e2a96886f9bf",
+      "ligature": "e4751953326492db7c0edd5f92cf9b02ef7738d2386dd9b1397ca06990c28145"
+    }
+  },
+  {
+    "case": "pax-host",
+    "hashes_read_twice": {
+      "lld": "23b57ad98800ab878c053347c7365398b0aaa2f3361238f8bdf804c103fee217",
+      "gnu": "0fafd0ac754150190250adf8fbc9e59bb4b8865587c2f4006959992ea544953d",
+      "ligature": "bf3c92a89047daf860c25a8d9460a3159728a4161dcfa28e527a9f60ebf15622"
+    }
+  },
+  {
+    "case": "pax-loop",
+    "hashes_read_twice": {
+      "lld": "8c6fd7d2e11979c361ce0952c8df0423d1605b16e4583d162e12ed5165be71dc",
+      "gnu": "efc6a43be4de09b1e512c5e2f898ead62858b8130893512743caa7543227a139",
+      "ligature": "1da35860662cbb1eb6e2c5fc817754306cc6a8e573accd76f216ebf54a3780ec"
+    }
+  },
+  {
+    "case": "pax-signal",
+    "hashes_read_twice": {
+      "lld": "c4f8730878ee7fa887c2f1fdfe3386f04eb5d9d7e86fa0401b39b5aab0497e18",
+      "gnu": "7e2c2a41af106a52801d255028f271becc223168b765f9222b4d87052a6dfe45",
+      "ligature": "e458040b0104eb866ab5bc2925b15bb948856725bdecb39c68b5b9f291e3ee37"
+    }
+  },
+  {
+    "case": "pax-spawn",
+    "hashes_read_twice": {
+      "lld": "1e66c4ed608f4dca4449890fa6c3979a816f131ec919af0ea3172a297e212394",
+      "gnu": "5d8ac87c52016cd7da78073f0c12dc7e19419c7029d9a2876a620283f8f87c06",
+      "ligature": "dec1dd335c4a23d2689bca6b6e82984b6f64ea16ba891b52f3621ebf2bcc9ce2"
+    }
+  },
+  {
+    "case": "pax-std",
+    "hashes_read_twice": {
+      "lld": "ffa7355ebb217e5565ce1b372005a6842488447df18c6c3fa8ecad5fb454c4e9",
+      "gnu": "f960ea70798f97529afba0c8f679366730b75b2e97bda170b484b977624f4260",
+      "ligature": "8faf5624968cf617ff6f69928d49a1a41ca50d62bd6e5550d195c1744af4168d"
+    }
+  }
+]

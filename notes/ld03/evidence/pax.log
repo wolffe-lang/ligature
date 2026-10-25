@@ -1,0 +1,257 @@
+LD03 PAX START 2026-10-25T16:02:20-04:00 reused kernels from edbd385c91f2ff0eadb1ab4e52b276f1a1412b63
+BOOT compiler-comptime native bios 2026-10-25T16:02:22-04:00
+qemu-halt: HALTED in pax_halt (RIP ffffffff800001aa, unchanged a second later; IF clear; serial still at 23076 bytes; accel tcg; quit -> 0)
+PAX compiler-comptime three stdout/stderr/status records equal Linux; serial 71d76cc8d2edb43c296774f13233c6d829074bc058c71198a6eab5541d49d3b5
+END compiler-comptime native bios halt=0 row=0
+BOOT compiler-comptime native uefi 2026-10-25T16:02:30-04:00
+qemu-halt: HALTED in pax_halt (RIP ffffffff800001aa, unchanged a second later; IF clear; serial still at 23338 bytes; accel tcg; quit -> 0)
+PAX compiler-comptime three stdout/stderr/status records equal Linux; serial cc4c0a246994bf772eab60cb2b6d51eca747d68eb04905b3033befedbfa85fc0
+END compiler-comptime native uefi halt=0 row=0
+BOOT compiler-comptime release bios 2026-10-25T16:02:42-04:00
+qemu-halt: HALTED in pax_halt (RIP ffffffff800001aa, unchanged a second later; IF clear; serial still at 23068 bytes; accel tcg; quit -> 0)
+PAX compiler-comptime three stdout/stderr/status records equal Linux; serial f70b05e6a8d665d04ec2b364fd84a4bc00c401033f4b440391c5a395c8517e0b
+END compiler-comptime release bios halt=0 row=0
+BOOT compiler-comptime release uefi 2026-10-25T16:02:48-04:00
+qemu-halt: HALTED in pax_halt (RIP ffffffff800001aa, unchanged a second later; IF clear; serial still at 23338 bytes; accel tcg; quit -> 0)
+PAX compiler-comptime three stdout/stderr/status records equal Linux; serial f46de9ecd21f936f13ffc30980def955442451b8812116e5a009d1b63e4232d4
+END compiler-comptime release uefi halt=0 row=0
+CASE COMPLETE compiler-comptime
+BOOT compiler-entry_no_return native bios 2026-10-25T16:03:04-04:00
+qemu-halt: HALTED in pax_halt (RIP ffffffff800001aa, unchanged a second later; IF clear; serial still at 23107 bytes; accel tcg; quit -> 0)
+PAX compiler-entry_no_return three stdout/stderr/status records equal Linux; serial cbdc2362407c8a9e4d21485a0b75fdc46f41244c3aa26de4d684a65ddc3c0ed3
+END compiler-entry_no_return native bios halt=0 row=0
+BOOT compiler-entry_no_return native uefi 2026-10-25T16:03:12-04:00
+qemu-halt: HALTED in pax_halt (RIP ffffffff800001aa, unchanged a second later; IF clear; serial still at 23377 bytes; accel tcg; quit -> 0)
+PAX compiler-entry_no_return three stdout/stderr/status records equal Linux; serial 50c100b78e85a63dfd44ad09c9675061367245123e5bdea4bd62918e3c846b4a
+END compiler-entry_no_return native uefi halt=0 row=0
+BOOT compiler-entry_no_return release bios 2026-10-25T16:03:24-04:00
+qemu-halt: HALTED in pax_halt (RIP ffffffff800001aa, unchanged a second later; IF clear; serial still at 23107 bytes; accel tcg; quit -> 0)
+PAX compiler-entry_no_return three stdout/stderr/status records equal Linux; serial 1268ad5c20221b6e5d8c39d31d0496329b5ea8510b9dac00cd84cc3417230c12
+END compiler-entry_no_return release bios halt=0 row=0
+BOOT compiler-entry_no_return release uefi 2026-10-25T16:03:30-04:00
+qemu-halt: HALTED in pax_halt (RIP ffffffff800001aa, unchanged a second later; IF clear; serial still at 23377 bytes; accel tcg; quit -> 0)
+PAX compiler-entry_no_return three stdout/stderr/status records equal Linux; serial c8e8809ecc2503d69fe1b454e22b0e7896f561b1e95bb7c087248b13edd4b5d3
+END compiler-entry_no_return release uefi halt=0 row=0
+CASE COMPLETE compiler-entry_no_return
+BOOT compiler-overflow native bios 2026-10-25T16:03:46-04:00
+qemu-halt: HALTED in pax_halt (RIP ffffffff800001aa, unchanged a second later; IF clear; serial still at 23323 bytes; accel tcg; quit -> 0)
+PAX compiler-overflow three stdout/stderr/status records equal Linux; serial d9de04c1739fbeefd5d4e5de0198035d0f91780ad15e790ecfca98355eef66eb
+END compiler-overflow native bios halt=0 row=0
+BOOT compiler-overflow native uefi 2026-10-25T16:03:54-04:00
+qemu-halt: HALTED in pax_halt (RIP ffffffff800001aa, unchanged a second later; IF clear; serial still at 23593 bytes; accel tcg; quit -> 0)
+PAX compiler-overflow three stdout/stderr/status records equal Linux; serial 94e534532fae8324e583f733a85d9cbe5a87dc18c6a1c2c93e03d5642664a4b8
+END compiler-overflow native uefi halt=0 row=0
+BOOT compiler-overflow release bios 2026-10-25T16:04:06-04:00
+qemu-halt: HALTED in pax_halt (RIP ffffffff800001aa, unchanged a second later; IF clear; serial still at 23331 bytes; accel tcg; quit -> 0)
+PAX compiler-overflow three stdout/stderr/status records equal Linux; serial 9e447ce3ed8802e153662d20f56a3888fffa96c4122219b37bb71786ee8c5b89
+END compiler-overflow release bios halt=0 row=0
+BOOT compiler-overflow release uefi 2026-10-25T16:04:12-04:00
+qemu-halt: HALTED in pax_halt (RIP ffffffff800001aa, unchanged a second later; IF clear; serial still at 23593 bytes; accel tcg; quit -> 0)
+PAX compiler-overflow three stdout/stderr/status records equal Linux; serial bcc61d0c705a829d7ed54899ec93701a6fbdc6e51c5b0b0fa927a68fc24e8fe6
+END compiler-overflow release uefi halt=0 row=0
+CASE COMPLETE compiler-overflow
+BOOT compiler-procs native bios 2026-10-25T16:04:48-04:00
+qemu-halt: HALTED in pax_halt (RIP ffffffff800001aa, unchanged a second later; IF clear; serial still at 23421 bytes; accel tcg; quit -> 0)
+PAX compiler-procs three stdout/stderr/status records equal Linux; serial 35fcfabb8c52b35a391cad43ef0764de8e742b179de3d4a749122f5b67d5f4f1
+END compiler-procs native bios halt=0 row=0
+BOOT compiler-procs native uefi 2026-10-25T16:04:59-04:00
+qemu-halt: HALTED in pax_halt (RIP ffffffff800001aa, unchanged a second later; IF clear; serial still at 23691 bytes; accel tcg; quit -> 0)
+PAX compiler-procs three stdout/stderr/status records equal Linux; serial f8f54b06e71317b3226ec1d06b058c1099808492684c4d0693e1327ab32db724
+END compiler-procs native uefi halt=0 row=0
+BOOT compiler-procs release bios 2026-10-25T16:05:23-04:00
+qemu-halt: HALTED in pax_halt (RIP ffffffff800001aa, unchanged a second later; IF clear; serial still at 23421 bytes; accel tcg; quit -> 0)
+PAX compiler-procs three stdout/stderr/status records equal Linux; serial 9d9d57e4f551dd9defcbad75fca11786162504f0611526bc758db3ab2001cfa6
+END compiler-procs release bios halt=0 row=0
+BOOT compiler-procs release uefi 2026-10-25T16:05:33-04:00
+qemu-halt: HALTED in pax_halt (RIP ffffffff800001aa, unchanged a second later; IF clear; serial still at 23691 bytes; accel tcg; quit -> 0)
+PAX compiler-procs three stdout/stderr/status records equal Linux; serial 85ea47c7094629930d4fa316e50fbfa609a9fa751e2d9631f62850976fa85501
+END compiler-procs release uefi halt=0 row=0
+CASE COMPLETE compiler-procs
+BOOT compiler-regions native bios 2026-10-25T16:06:08-04:00
+qemu-halt: HALTED in pax_halt (RIP ffffffff800001aa, unchanged a second later; IF clear; serial still at 23068 bytes; accel tcg; quit -> 0)
+PAX compiler-regions three stdout/stderr/status records equal Linux; serial a0ee1a46fa49417fb267ede80104c1ed6060beecbc5fb98323c80146f47f99c9
+END compiler-regions native bios halt=0 row=0
+BOOT compiler-regions native uefi 2026-10-25T16:06:19-04:00
+qemu-halt: HALTED in pax_halt (RIP ffffffff800001aa, unchanged a second later; IF clear; serial still at 23338 bytes; accel tcg; quit -> 0)
+PAX compiler-regions three stdout/stderr/status records equal Linux; serial 44c7e71c62e5c0c0de6264d758649ed2a529de0076a54f2d48b7622d6835b0b6
+END compiler-regions native uefi halt=0 row=0
+BOOT compiler-regions release bios 2026-10-25T16:06:43-04:00
+qemu-halt: HALTED in pax_halt (RIP ffffffff800001aa, unchanged a second later; IF clear; serial still at 23068 bytes; accel tcg; quit -> 0)
+PAX compiler-regions three stdout/stderr/status records equal Linux; serial 5a35d3bd11799372ec2979579fdc25fac54ee81167b4100a5839109168504bb0
+END compiler-regions release bios halt=0 row=0
+BOOT compiler-regions release uefi 2026-10-25T16:06:54-04:00
+qemu-halt: HALTED in pax_halt (RIP ffffffff800001aa, unchanged a second later; IF clear; serial still at 23338 bytes; accel tcg; quit -> 0)
+PAX compiler-regions three stdout/stderr/status records equal Linux; serial 18119338a37b12794e5d1893c03a0b202d364230b110b1c6e77b8ee0a2f1c46d
+END compiler-regions release uefi halt=0 row=0
+CASE COMPLETE compiler-regions
+BOOT hello-hello native bios 2026-10-25T16:07:29-04:00
+qemu-halt: HALTED in pax_halt (RIP ffffffff800001aa, unchanged a second later; IF clear; serial still at 23107 bytes; accel tcg; quit -> 0)
+PAX hello-hello three stdout/stderr/status records equal Linux; serial 1ab95dff154fa47894c3a2417c44fcd5ece122fce21134891a1ffcf03cbb6db6
+END hello-hello native bios halt=0 row=0
+BOOT hello-hello native uefi 2026-10-25T16:07:41-04:00
+qemu-halt: HALTED in pax_halt (RIP ffffffff800001aa, unchanged a second later; IF clear; serial still at 23377 bytes; accel tcg; quit -> 0)
+PAX hello-hello three stdout/stderr/status records equal Linux; serial b7d32125dacccac36ff13d7b47848cf46aff5b73d50019d4e336bd29ab1b7fb7
+END hello-hello native uefi halt=0 row=0
+BOOT hello-hello release bios 2026-10-25T16:08:00-04:00
+qemu-halt: HALTED in pax_halt (RIP ffffffff800001aa, unchanged a second later; IF clear; serial still at 23107 bytes; accel tcg; quit -> 0)
+PAX hello-hello three stdout/stderr/status records equal Linux; serial a1ae2c6c4a37a728e63abd2d555a5228c37b1b079d0eda15e8317883954bc9f1
+END hello-hello release bios halt=0 row=0
+BOOT hello-hello release uefi 2026-10-25T16:08:07-04:00
+qemu-halt: HALTED in pax_halt (RIP ffffffff800001aa, unchanged a second later; IF clear; serial still at 23377 bytes; accel tcg; quit -> 0)
+PAX hello-hello three stdout/stderr/status records equal Linux; serial 95e1ceb8164761cc2d855f16c49a85f9e4ad66a1d0b7f8d261d56fc615cf4bc2
+END hello-hello release uefi halt=0 row=0
+CASE COMPLETE hello-hello
+BOOT pax-exec native bios 2026-10-25T16:08:22-04:00
+qemu-halt: HALTED in pax_halt (RIP ffffffff800001aa, unchanged a second later; IF clear; serial still at 24781 bytes; accel tcg; quit -> 0)
+PAX pax-exec three stdout/stderr/status records equal Linux; serial 64fe748473ea08ac4ee1edf9fa663d3142e0f818d087277f7fede3bc715b34f5
+END pax-exec native bios halt=0 row=0
+BOOT pax-exec native uefi 2026-10-25T16:08:31-04:00
+qemu-halt: HALTED in pax_halt (RIP ffffffff800001aa, unchanged a second later; IF clear; serial still at 25051 bytes; accel tcg; quit -> 0)
+PAX pax-exec three stdout/stderr/status records equal Linux; serial e0828c78917c2f3c733722c6f51f908d185c6e049acf09712e1c03b527d79f6c
+END pax-exec native uefi halt=0 row=0
+BOOT pax-exec release bios 2026-10-25T16:08:44-04:00
+qemu-halt: HALTED in pax_halt (RIP ffffffff800001aa, unchanged a second later; IF clear; serial still at 24781 bytes; accel tcg; quit -> 0)
+PAX pax-exec three stdout/stderr/status records equal Linux; serial 7e54b4c55d56f7fdfe771bfe8eba57869df200573dcb5da326b835942b617674
+END pax-exec release bios halt=0 row=0
+BOOT pax-exec release uefi 2026-10-25T16:08:50-04:00
+qemu-halt: HALTED in pax_halt (RIP ffffffff800001aa, unchanged a second later; IF clear; serial still at 25051 bytes; accel tcg; quit -> 0)
+PAX pax-exec three stdout/stderr/status records equal Linux; serial 740da79e86c3e5478478782963ab20a3931bf5184b2bd9b8b89b95c9eba05399
+END pax-exec release uefi halt=0 row=0
+CASE COMPLETE pax-exec
+BOOT pax-fork native bios 2026-10-25T16:09:10-04:00
+qemu-halt: HALTED in pax_halt (RIP ffffffff800001aa, unchanged a second later; IF clear; serial still at 23215 bytes; accel tcg; quit -> 0)
+Traceback (most recent call last):
+  File "/home/mfwolffe/lanes/ld03/ligature/tests/pax-row.py", line 21, in <module>
+    assert all(r['equal'] for r in rows),rows
+           ~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: [{'linker': 'ligature', 'actual': {'stdout_hex': '666f726b3a20696f0a', 'stderr_hex': '', 'status': 0}, 'expected': {'stdout_hex': '666f726b3a206368696c640a666f726b3a206368696c642073746174757320370a', 'stderr_hex': '', 'status': 0}, 'equal': False}, {'linker': 'lld', 'actual': {'stdout_hex': '666f726b3a20696f0a', 'stderr_hex': '', 'status': 0}, 'expected': {'stdout_hex': '666f726b3a206368696c640a666f726b3a206368696c642073746174757320370a', 'stderr_hex': '', 'status': 0}, 'equal': False}, {'linker': 'gnu', 'actual': {'stdout_hex': '666f726b3a20696f0a', 'stderr_hex': '', 'status': 0}, 'expected': {'stdout_hex': '666f726b3a206368696c640a666f726b3a206368696c642073746174757320370a', 'stderr_hex': '', 'status': 0}, 'equal': False}]
+END pax-fork native bios halt=0 row=1
+BOOT pax-fork native uefi 2026-10-25T16:09:17-04:00
+qemu-halt: HALTED in pax_halt (RIP ffffffff800001aa, unchanged a second later; IF clear; serial still at 23485 bytes; accel tcg; quit -> 0)
+Traceback (most recent call last):
+  File "/home/mfwolffe/lanes/ld03/ligature/tests/pax-row.py", line 21, in <module>
+    assert all(r['equal'] for r in rows),rows
+           ~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: [{'linker': 'ligature', 'actual': {'stdout_hex': '666f726b3a20696f0a', 'stderr_hex': '', 'status': 0}, 'expected': {'stdout_hex': '666f726b3a206368696c640a666f726b3a206368696c642073746174757320370a', 'stderr_hex': '', 'status': 0}, 'equal': False}, {'linker': 'lld', 'actual': {'stdout_hex': '666f726b3a20696f0a', 'stderr_hex': '', 'status': 0}, 'expected': {'stdout_hex': '666f726b3a206368696c640a666f726b3a206368696c642073746174757320370a', 'stderr_hex': '', 'status': 0}, 'equal': False}, {'linker': 'gnu', 'actual': {'stdout_hex': '666f726b3a20696f0a', 'stderr_hex': '', 'status': 0}, 'expected': {'stdout_hex': '666f726b3a206368696c640a666f726b3a206368696c642073746174757320370a', 'stderr_hex': '', 'status': 0}, 'equal': False}]
+END pax-fork native uefi halt=0 row=1
+BOOT pax-fork release bios 2026-10-25T16:09:30-04:00
+qemu-halt: HALTED in pax_halt (RIP ffffffff800001aa, unchanged a second later; IF clear; serial still at 23223 bytes; accel tcg; quit -> 0)
+Traceback (most recent call last):
+  File "/home/mfwolffe/lanes/ld03/ligature/tests/pax-row.py", line 21, in <module>
+    assert all(r['equal'] for r in rows),rows
+           ~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: [{'linker': 'ligature', 'actual': {'stdout_hex': '666f726b3a20696f0a', 'stderr_hex': '', 'status': 0}, 'expected': {'stdout_hex': '666f726b3a206368696c640a666f726b3a206368696c642073746174757320370a', 'stderr_hex': '', 'status': 0}, 'equal': False}, {'linker': 'lld', 'actual': {'stdout_hex': '666f726b3a20696f0a', 'stderr_hex': '', 'status': 0}, 'expected': {'stdout_hex': '666f726b3a206368696c640a666f726b3a206368696c642073746174757320370a', 'stderr_hex': '', 'status': 0}, 'equal': False}, {'linker': 'gnu', 'actual': {'stdout_hex': '666f726b3a20696f0a', 'stderr_hex': '', 'status': 0}, 'expected': {'stdout_hex': '666f726b3a206368696c640a666f726b3a206368696c642073746174757320370a', 'stderr_hex': '', 'status': 0}, 'equal': False}]
+END pax-fork release bios halt=0 row=1
+BOOT pax-fork release uefi 2026-10-25T16:09:37-04:00
+qemu-halt: HALTED in pax_halt (RIP ffffffff800001aa, unchanged a second later; IF clear; serial still at 23485 bytes; accel tcg; quit -> 0)
+Traceback (most recent call last):
+  File "/home/mfwolffe/lanes/ld03/ligature/tests/pax-row.py", line 21, in <module>
+    assert all(r['equal'] for r in rows),rows
+           ~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: [{'linker': 'ligature', 'actual': {'stdout_hex': '666f726b3a20696f0a', 'stderr_hex': '', 'status': 0}, 'expected': {'stdout_hex': '666f726b3a206368696c640a666f726b3a206368696c642073746174757320370a', 'stderr_hex': '', 'status': 0}, 'equal': False}, {'linker': 'lld', 'actual': {'stdout_hex': '666f726b3a20696f0a', 'stderr_hex': '', 'status': 0}, 'expected': {'stdout_hex': '666f726b3a206368696c640a666f726b3a206368696c642073746174757320370a', 'stderr_hex': '', 'status': 0}, 'equal': False}, {'linker': 'gnu', 'actual': {'stdout_hex': '666f726b3a20696f0a', 'stderr_hex': '', 'status': 0}, 'expected': {'stdout_hex': '666f726b3a206368696c640a666f726b3a206368696c642073746174757320370a', 'stderr_hex': '', 'status': 0}, 'equal': False}]
+END pax-fork release uefi halt=0 row=1
+CASE COMPLETE pax-fork
+BOOT pax-hello native bios 2026-10-25T16:09:53-04:00
+qemu-halt: HALTED in pax_halt (RIP ffffffff800001aa, unchanged a second later; IF clear; serial still at 23107 bytes; accel tcg; quit -> 0)
+PAX pax-hello three stdout/stderr/status records equal Linux; serial adcadcf6ee28a746e43eeced4b569c29bb92d76112804231b2bc08facb023e33
+END pax-hello native bios halt=0 row=0
+BOOT pax-hello native uefi 2026-10-25T16:10:01-04:00
+qemu-halt: HALTED in pax_halt (RIP ffffffff800001aa, unchanged a second later; IF clear; serial still at 23377 bytes; accel tcg; quit -> 0)
+PAX pax-hello three stdout/stderr/status records equal Linux; serial 060a7046f99f921cad8568bf04002f0b6154ebb7a4c9153cb32397318c2c8665
+END pax-hello native uefi halt=0 row=0
+BOOT pax-hello release bios 2026-10-25T16:16:39-04:00
+qemu-halt: HALTED in pax_halt (RIP ffffffff800001aa, unchanged a second later; IF clear; serial still at 23107 bytes; accel tcg; quit -> 0)
+PAX pax-hello three stdout/stderr/status records equal Linux; serial 79cf049619ccc41f62eb2a22034a1f3e768d03455165d3f1e353b1b8057a9994
+END pax-hello release bios halt=0 row=0
+BOOT pax-hello release uefi 2026-10-25T16:16:46-04:00
+qemu-halt: HALTED in pax_halt (RIP ffffffff800001aa, unchanged a second later; IF clear; serial still at 23377 bytes; accel tcg; quit -> 0)
+PAX pax-hello three stdout/stderr/status records equal Linux; serial 5c27b7b268c595e58f5e4dea2ae1b2661984fcbc4a0fa995f69bb90780f30ae2
+END pax-hello release uefi halt=0 row=0
+CASE COMPLETE pax-hello
+BOOT pax-host native bios 2026-10-25T16:17:02-04:00
+qemu-halt: HALTED in pax_halt (RIP ffffffff800001aa, unchanged a second later; IF clear; serial still at 24415 bytes; accel tcg; quit -> 0)
+PAX pax-host three stdout/stderr/status records equal Linux; serial 802ae376dc19c3d3bbf39c0e0fc31c0d1a986202e284009e9e591747380dfd16
+END pax-host native bios halt=0 row=0
+BOOT pax-host native uefi 2026-10-25T16:17:10-04:00
+qemu-halt: HALTED in pax_halt (RIP ffffffff800001aa, unchanged a second later; IF clear; serial still at 24685 bytes; accel tcg; quit -> 0)
+PAX pax-host three stdout/stderr/status records equal Linux; serial 6752e162e0ecbfbd1455be94dfe8902516568d415407804824b3d027caa42565
+END pax-host native uefi halt=0 row=0
+BOOT pax-host release bios 2026-10-25T16:17:23-04:00
+qemu-halt: HALTED in pax_halt (RIP ffffffff800001aa, unchanged a second later; IF clear; serial still at 24415 bytes; accel tcg; quit -> 0)
+PAX pax-host three stdout/stderr/status records equal Linux; serial 5e6312f1758da985ccce2aca09e198d8abf89dd03a9968b075278e4098b5fc94
+END pax-host release bios halt=0 row=0
+BOOT pax-host release uefi 2026-10-25T16:17:30-04:00
+qemu-halt: HALTED in pax_halt (RIP ffffffff800001aa, unchanged a second later; IF clear; serial still at 24685 bytes; accel tcg; quit -> 0)
+PAX pax-host three stdout/stderr/status records equal Linux; serial 80a21f81fb738401d5f114b54a42d9fc1e9f783074e27de3c3de9596f5186fff
+END pax-host release uefi halt=0 row=0
+CASE COMPLETE pax-host
+BOOT pax-loop native bios 2026-10-25T16:17:46-04:00
+qemu-halt: HALTED in pax_halt (RIP ffffffff800001aa, unchanged a second later; IF clear; serial still at 23670 bytes; accel tcg; quit -> 0)
+PAX pax-loop three stdout/stderr/status records equal Linux; serial dfdf9420bfb2af2e0f47e9f0979129ab4a3793aac52f20949036dbe7de37e475
+END pax-loop native bios halt=0 row=0
+BOOT pax-loop native uefi 2026-10-25T16:17:53-04:00
+qemu-halt: HALTED in pax_halt (RIP ffffffff800001aa, unchanged a second later; IF clear; serial still at 23932 bytes; accel tcg; quit -> 0)
+PAX pax-loop three stdout/stderr/status records equal Linux; serial 194deb3cf3f91657d97731abe6ba51a4d588e791d16a99654527207972e33584
+END pax-loop native uefi halt=0 row=0
+BOOT pax-loop release bios 2026-10-25T16:18:06-04:00
+qemu-halt: HALTED in pax_halt (RIP ffffffff800001aa, unchanged a second later; IF clear; serial still at 23662 bytes; accel tcg; quit -> 0)
+PAX pax-loop three stdout/stderr/status records equal Linux; serial 6479890f071f9bb6fa8ccaef14a8df864a72be5b00af0b45c737a2d559ebf26b
+END pax-loop release bios halt=0 row=0
+BOOT pax-loop release uefi 2026-10-25T16:18:14-04:00
+qemu-halt: HALTED in pax_halt (RIP ffffffff800001aa, unchanged a second later; IF clear; serial still at 23932 bytes; accel tcg; quit -> 0)
+PAX pax-loop three stdout/stderr/status records equal Linux; serial 3b86f7fa376b7a14ba22e389c65ee0859f8b8615f74971150d93b34d8a72e5cb
+END pax-loop release uefi halt=0 row=0
+CASE COMPLETE pax-loop
+BOOT pax-signal native bios 2026-10-25T16:18:29-04:00
+qemu-halt: HALTED in pax_halt (RIP ffffffff800001aa, unchanged a second later; IF clear; serial still at 23218 bytes; accel tcg; quit -> 0)
+PAX pax-signal three stdout/stderr/status records equal Linux; serial 820a8c0e8aa8fc5adda9f7a60bf00de5b391a06151fbc4357b45f4c2406b8872
+END pax-signal native bios halt=0 row=0
+BOOT pax-signal native uefi 2026-10-25T16:18:36-04:00
+qemu-halt: HALTED in pax_halt (RIP ffffffff800001aa, unchanged a second later; IF clear; serial still at 23488 bytes; accel tcg; quit -> 0)
+PAX pax-signal three stdout/stderr/status records equal Linux; serial b39f40f7f8c22bd7fb57aada33303a19faa7f373248830735f0367eaf1fb0cab
+END pax-signal native uefi halt=0 row=0
+BOOT pax-signal release bios 2026-10-25T16:18:49-04:00
+qemu-halt: HALTED in pax_halt (RIP ffffffff800001aa, unchanged a second later; IF clear; serial still at 23218 bytes; accel tcg; quit -> 0)
+PAX pax-signal three stdout/stderr/status records equal Linux; serial 4ab955b52f9aeba699ed45708d5e4afed89522eb6c54880039d587c19219c077
+END pax-signal release bios halt=0 row=0
+BOOT pax-signal release uefi 2026-10-25T16:18:55-04:00
+qemu-halt: HALTED in pax_halt (RIP ffffffff800001aa, unchanged a second later; IF clear; serial still at 23488 bytes; accel tcg; quit -> 0)
+PAX pax-signal three stdout/stderr/status records equal Linux; serial 26bcbef84652559472e09dd856653d1b960703ceda76c4526eb72ca955245a51
+END pax-signal release uefi halt=0 row=0
+CASE COMPLETE pax-signal
+BOOT pax-spawn native bios 2026-10-25T16:19:11-04:00
+qemu-halt: HALTED in pax_halt (RIP ffffffff800001aa, unchanged a second later; IF clear; serial still at 23445 bytes; accel tcg; quit -> 0)
+PAX pax-spawn three stdout/stderr/status records equal Linux; serial 6d72391bf6ab6c644380592b93072b70e5e3b1f806a457f8e36573c59b015472
+END pax-spawn native bios halt=0 row=0
+BOOT pax-spawn native uefi 2026-10-25T16:19:19-04:00
+qemu-halt: HALTED in pax_halt (RIP ffffffff800001aa, unchanged a second later; IF clear; serial still at 23707 bytes; accel tcg; quit -> 0)
+PAX pax-spawn three stdout/stderr/status records equal Linux; serial 2d9283bab2dca97e54e87c53ce3e25254290b449549ba3dc7d4460c20eaac9f8
+END pax-spawn native uefi halt=0 row=0
+BOOT pax-spawn release bios 2026-10-25T16:19:31-04:00
+qemu-halt: HALTED in pax_halt (RIP ffffffff800001aa, unchanged a second later; IF clear; serial still at 23437 bytes; accel tcg; quit -> 0)
+PAX pax-spawn three stdout/stderr/status records equal Linux; serial c19b3b8c9ae96333439a32e191ab4c1179b44efa0dfe8eb3755959c17addd747
+END pax-spawn release bios halt=0 row=0
+BOOT pax-spawn release uefi 2026-10-25T16:19:37-04:00
+qemu-halt: HALTED in pax_halt (RIP ffffffff800001aa, unchanged a second later; IF clear; serial still at 23707 bytes; accel tcg; quit -> 0)
+PAX pax-spawn three stdout/stderr/status records equal Linux; serial 6f2ed73d27323f2f0461ab73ed26d07a87903cf4893913ef60b6a686b94b2242
+END pax-spawn release uefi halt=0 row=0
+CASE COMPLETE pax-spawn
+BOOT pax-std native bios 2026-10-25T16:19:53-04:00
+qemu-halt: HALTED in pax_halt (RIP ffffffff800001aa, unchanged a second later; IF clear; serial still at 23101 bytes; accel tcg; quit -> 0)
+PAX pax-std three stdout/stderr/status records equal Linux; serial 0e69b487895d30f2b3ca067013faacfa9d3d4cd2a826c98eb0ca4fbc0ae6b001
+END pax-std native bios halt=0 row=0
+BOOT pax-std native uefi 2026-10-25T16:20:01-04:00
+qemu-halt: HALTED in pax_halt (RIP ffffffff800001aa, unchanged a second later; IF clear; serial still at 23371 bytes; accel tcg; quit -> 0)
+PAX pax-std three stdout/stderr/status records equal Linux; serial 62d29373f15066cefd4716eb1e88b36b70202fb227a1e14aa88993539ff6e98b
+END pax-std native uefi halt=0 row=0
+BOOT pax-std release bios 2026-10-25T16:20:13-04:00
+qemu-halt: HALTED in pax_halt (RIP ffffffff800001aa, unchanged a second later; IF clear; serial still at 23101 bytes; accel tcg; quit -> 0)
+PAX pax-std three stdout/stderr/status records equal Linux; serial 4787c84e395bbbfc9338b11cab052acafd88ae27a243debb33472f1541632cf2
+END pax-std release bios halt=0 row=0
+BOOT pax-std release uefi 2026-10-25T16:20:19-04:00
+qemu-halt: HALTED in pax_halt (RIP ffffffff800001aa, unchanged a second later; IF clear; serial still at 23371 bytes; accel tcg; quit -> 0)
+PAX pax-std three stdout/stderr/status records equal Linux; serial 34360b65021cfc44d7372391c984332d3638b324bb69cbaabb8610e0b2c445f2
+END pax-std release uefi halt=0 row=0
+CASE COMPLETE pax-std
+LD03 PAX MATRIX COMPLETE raw-status=1 (named fork reds remain red)
+LD03 PAX EXIT 1 2026-10-25T16:20:33-04:00

@@ -1,0 +1,282 @@
+[
+  {
+    "archive_entry": "compiler-comptime/native-bios/serial.log",
+    "sha256": "8ab10d6fbf0cc6eacb857ff0baf4fae5277fb93155c2d43f4e6057eb4aa27f97",
+    "reads": 2
+  },
+  {
+    "archive_entry": "compiler-comptime/native-uefi/serial.log",
+    "sha256": "cc9614423108137c789496503c7d76eabc6e6e6c2322aa80cc8fd2366df245ef",
+    "reads": 2
+  },
+  {
+    "archive_entry": "compiler-comptime/release-bios/serial.log",
+    "sha256": "17e8ad2d57703eb8e0d0f603a443868a8d04ef8e9b830563d01c8b7b52eeff66",
+    "reads": 2
+  },
+  {
+    "archive_entry": "compiler-comptime/release-uefi/serial.log",
+    "sha256": "dd44a9c9364bdc01dc20d6fdc09354aa2b73de2f2251ab1a32559294b81a0608",
+    "reads": 2
+  },
+  {
+    "archive_entry": "compiler-entry_no_return/native-bios/serial.log",
+    "sha256": "3c3f49d4b07bc10d8efab1a807cb7c49bcb673b35f332ec983bb18f7ea7d59c7",
+    "reads": 2
+  },
+  {
+    "archive_entry": "compiler-entry_no_return/native-uefi/serial.log",
+    "sha256": "57d74dec31720a0c770e7d82361ddfca0516fdd27fad5df1b8ce131827052abd",
+    "reads": 2
+  },
+  {
+    "archive_entry": "compiler-entry_no_return/release-bios/serial.log",
+    "sha256": "a56e7ef073af727b28be64c51f0f5ceb3d4c8104eb4d8f2a5129bd08530a55a5",
+    "reads": 2
+  },
+  {
+    "archive_entry": "compiler-entry_no_return/release-uefi/serial.log",
+    "sha256": "5e361b1797ba7a1c407d5ea4c4a55031691b5dc8eba08a18680f491165f18a45",
+    "reads": 2
+  },
+  {
+    "archive_entry": "compiler-overflow/native-bios/serial.log",
+    "sha256": "86648d62425026da878f18e9ab21c24b15a36d65aea29ba7f5d719c081c6a9c6",
+    "reads": 2
+  },
+  {
+    "archive_entry": "compiler-overflow/native-uefi/serial.log",
+    "sha256": "be6af9058b65cbafcd49f0a6b22f13ebe2d36913bf54ed9957c85af05dd9a4b9",
+    "reads": 2
+  },
+  {
+    "archive_entry": "compiler-overflow/release-bios/serial.log",
+    "sha256": "9ba62c649d12fa759b88dccd9d5c017f0d4746f33346d2637542cb5aa5bdaeb1",
+    "reads": 2
+  },
+  {
+    "archive_entry": "compiler-overflow/release-uefi/serial.log",
+    "sha256": "480eb4e9bed3c2e0ddf7733c75c601551311f21b29d12edad0ed1ccf0a4b5f2c",
+    "reads": 2
+  },
+  {
+    "archive_entry": "compiler-procs/native-bios/serial.log",
+    "sha256": "fad123e21f0ea2414e862983fc44c95c7d6fa49dab3295dab9673c4556c62315",
+    "reads": 2
+  },
+  {
+    "archive_entry": "compiler-procs/native-uefi/serial.log",
+    "sha256": "c1c5be25b33c02bcbd6062c76d9ec58965005cda9f00c43315c9ddc2a2a1deaa",
+    "reads": 2
+  },
+  {
+    "archive_entry": "compiler-procs/release-bios/serial.log",
+    "sha256": "526b38356685e70f38ef6ba1938cf9e8f3244f09a79892c191d84fa447a182be",
+    "reads": 2
+  },
+  {
+    "archive_entry": "compiler-procs/release-uefi/serial.log",
+    "sha256": "cd13397f7ba19bdcea4686db18fd2f51dd45f3dbfbf7e149b3253331f303db0b",
+    "reads": 2
+  },
+  {
+    "archive_entry": "compiler-regions/native-bios/serial.log",
+    "sha256": "272729a2020372fb5bfaacdccd836800a7c034d2234b9e68a2486a6a8e62c9a0",
+    "reads": 2
+  },
+  {
+    "archive_entry": "compiler-regions/native-uefi/serial.log",
+    "sha256": "8d25826a6d77b8fbfaf5ce1e0fd35fe6629877a0635f432384060322c61ca38b",
+    "reads": 2
+  },
+  {
+    "archive_entry": "compiler-regions/release-bios/serial.log",
+    "sha256": "f663ed6f66a1dea2976b3e88b3c21c3cc0a51e892cbe2922f8f1afed4de819ef",
+    "reads": 2
+  },
+  {
+    "archive_entry": "compiler-regions/release-uefi/serial.log",
+    "sha256": "c7184b4440fc42f0d7cb54c5db78cd8d47bc4cd0cc7e8cfcbdd87f627258f990",
+    "reads": 2
+  },
+  {
+    "archive_entry": "hello-hello/native-bios/serial.log",
+    "sha256": "b55012a3cd4737b55a6e5a4f8d2f4cd0cb9de23fcc1b1c5341c2c74ecd51008c",
+    "reads": 2
+  },
+  {
+    "archive_entry": "hello-hello/native-uefi/serial.log",
+    "sha256": "071b8459fec9eeafa6c2158230190b4f54890babce79cce94b82835f3d20411d",
+    "reads": 2
+  },
+  {
+    "archive_entry": "hello-hello/release-bios/serial.log",
+    "sha256": "023905ce203a108b3fc203db22b73cdd412e95e59ee100201510328d1558e0cf",
+    "reads": 2
+  },
+  {
+    "archive_entry": "hello-hello/release-uefi/serial.log",
+    "sha256": "2a5160f06245efd79981e1c52800bd2ae6380441b93590b13448998adfd81892",
+    "reads": 2
+  },
+  {
+    "archive_entry": "pax-exec/native-bios/serial.log",
+    "sha256": "f54b86cf96ad4fe0fbf5cfce4696c98ed089e17528a2e20b298a680d7e8c867c",
+    "reads": 2
+  },
+  {
+    "archive_entry": "pax-exec/native-uefi/serial.log",
+    "sha256": "3b05e011e30610c4d428a7594a638ef2126ab479e15787fa015dfe43ca1f7c29",
+    "reads": 2
+  },
+  {
+    "archive_entry": "pax-exec/release-bios/serial.log",
+    "sha256": "4330ecaf9fda24be63e9ba56b41ac7b034e50b7f3bd0928bdd1e321a21bd7062",
+    "reads": 2
+  },
+  {
+    "archive_entry": "pax-exec/release-uefi/serial.log",
+    "sha256": "5d1e88f5ef9078e133ef102c66484db0d49caee443fc7d1895f210454d45e50b",
+    "reads": 2
+  },
+  {
+    "archive_entry": "pax-fork/native-bios/serial.log",
+    "sha256": "f88249b8695d01f2a9c948d14a2d9433534147eb73aec0b71e38be5a0a8c0331",
+    "reads": 2
+  },
+  {
+    "archive_entry": "pax-fork/native-uefi/serial.log",
+    "sha256": "0c21a25a7d2125139d8e66eddf2d7cb452bcacbbb49aadef715a9bdb68df3d37",
+    "reads": 2
+  },
+  {
+    "archive_entry": "pax-fork/release-bios/serial.log",
+    "sha256": "6c629506dc8533c0be21c42c357aef37b63ddb4740e555549a57cf67333133f4",
+    "reads": 2
+  },
+  {
+    "archive_entry": "pax-fork/release-uefi/serial.log",
+    "sha256": "9ebb3c2ea034f6b8fec19155fc6dbfc5cb17b787970cd7f6bb11283fe40d91ea",
+    "reads": 2
+  },
+  {
+    "archive_entry": "pax-hello/native-bios/serial.log",
+    "sha256": "48c3ced568be8607f6cfb5482472af75b3eefc70452111b9198d63326c042f05",
+    "reads": 2
+  },
+  {
+    "archive_entry": "pax-hello/native-uefi/serial.log",
+    "sha256": "e513ac5f21660a5fea4484015b334ba6f51c2f3dc235ddc929345926e9621f38",
+    "reads": 2
+  },
+  {
+    "archive_entry": "pax-hello/release-bios/serial.log",
+    "sha256": "3033006a5da51f1cb8c434b32c4a7085ab9201d9735332469f60a9873744e8a4",
+    "reads": 2
+  },
+  {
+    "archive_entry": "pax-hello/release-uefi/serial.log",
+    "sha256": "653fb1952b078b43ccd86e7061f4f88eed30ba1729fb481d73f4a00fd4c75a17",
+    "reads": 2
+  },
+  {
+    "archive_entry": "pax-host/native-bios/serial.log",
+    "sha256": "f1ecb049c8d957f4527e3bc51e6e1d5638634d194ccd8dcdf39f9e22a0c45f9d",
+    "reads": 2
+  },
+  {
+    "archive_entry": "pax-host/native-uefi/serial.log",
+    "sha256": "a93c11209eebd8712c29dc59bb79472475f6bef4e909313a17dbdf8a60962228",
+    "reads": 2
+  },
+  {
+    "archive_entry": "pax-host/release-bios/serial.log",
+    "sha256": "0830a2d1329c4c18d59db0d27bbb4190e6604be02d53bc58f3dfacaf95fb5478",
+    "reads": 2
+  },
+  {
+    "archive_entry": "pax-host/release-uefi/serial.log",
+    "sha256": "9bbd33bb628dc8bd63b5283fa909b41fda86696e6a8c83c9b983b09a95b30f8b",
+    "reads": 2
+  },
+  {
+    "archive_entry": "pax-loop/native-bios/serial.log",
+    "sha256": "a2db68952319932517c3013587c1feb85db39177d86f8dde04683969fb524174",
+    "reads": 2
+  },
+  {
+    "archive_entry": "pax-loop/native-uefi/serial.log",
+    "sha256": "c5f3f855533a76c8a59f1bff4ead4b78722b991c95ab5e8e880e5b2c2e373897",
+    "reads": 2
+  },
+  {
+    "archive_entry": "pax-loop/release-bios/serial.log",
+    "sha256": "a57dcacacd2b4b6e99835353f4286f3eb0eff4442ed0e98999bd3cadbbb45764",
+    "reads": 2
+  },
+  {
+    "archive_entry": "pax-loop/release-uefi/serial.log",
+    "sha256": "a294e854afbede497aa224b6574b048d638da3b5a8fb1b92d28a468e1b96a7f6",
+    "reads": 2
+  },
+  {
+    "archive_entry": "pax-signal/native-bios/serial.log",
+    "sha256": "8217572e45685e892d310afcc4ac71613c04b83656df021b4ecba33d904c4e25",
+    "reads": 2
+  },
+  {
+    "archive_entry": "pax-signal/native-uefi/serial.log",
+    "sha256": "41e561b88b9d852811075e3073f7109250b5adfb6bc8d782ed194bbb8c7330af",
+    "reads": 2
+  },
+  {
+    "archive_entry": "pax-signal/release-bios/serial.log",
+    "sha256": "540bba83a3ac2befca79e386833013f8fd83d5a5578c5b05119374212889111e",
+    "reads": 2
+  },
+  {
+    "archive_entry": "pax-signal/release-uefi/serial.log",
+    "sha256": "f7a4411271e427ed696515a8b974a868079f4292fd4e9a52ca343cee4d42a6c9",
+    "reads": 2
+  },
+  {
+    "archive_entry": "pax-spawn/native-bios/serial.log",
+    "sha256": "004ff14d66756c2b2163055a5519be9e1a1ca9e2eaeab45095159b6e6e6ae267",
+    "reads": 2
+  },
+  {
+    "archive_entry": "pax-spawn/native-uefi/serial.log",
+    "sha256": "1dd5186c3b6020c4089bc9fbafa6ba49c98e6b4be60d1f9b32f7b22cb8aef6cc",
+    "reads": 2
+  },
+  {
+    "archive_entry": "pax-spawn/release-bios/serial.log",
+    "sha256": "c21c021b89f21bede7d20917872ca6a10d0e710173631dbd2a3e3937e8b683b3",
+    "reads": 2
+  },
+  {
+    "archive_entry": "pax-spawn/release-uefi/serial.log",
+    "sha256": "a8e26e80dcc4ef87e4d8f8b21c5b40ae79b9c8a2eb91fe7968f8d5856db77d39",
+    "reads": 2
+  },
+  {
+    "archive_entry": "pax-std/native-bios/serial.log",
+    "sha256": "b27948dc359b123105f300bf8abe28fb4dd139d41906ce013528a2375b5d51d1",
+    "reads": 2
+  },
+  {
+    "archive_entry": "pax-std/native-uefi/serial.log",
+    "sha256": "16798de995c4aaea1f36d298a501161b91b0e6065c6de283121d2bf77e56b054",
+    "reads": 2
+  },
+  {
+    "archive_entry": "pax-std/release-bios/serial.log",
+    "sha256": "befa247be81f11e11d095959adae71161734aa61fb34e9591898aac23e04f8c2",
+    "reads": 2
+  },
+  {
+    "archive_entry": "pax-std/release-uefi/serial.log",
+    "sha256": "5df9b6469c816c91ece40b46121b6ae27e821113ee9de48f02047dcd7ab20b86",
+    "reads": 2
+  }
+]
