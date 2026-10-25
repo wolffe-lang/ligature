@@ -1,0 +1,26 @@
+#!/usr/bin/env python3
+"""Fetch the exact published musl link inputs, never substitute host libraries."""
+import hashlib,pathlib,tarfile,tempfile,urllib.request
+ROOT=pathlib.Path(__file__).resolve().parent.parent
+SHA='6f99a2794da54b2dd85f06713d736b27862a7cd0da9e28bd940d975a4603a1d1'
+URL='https://github.com/wolffe-lang/ligature/releases/download/link-bundle-2026-10-25/ld02-musl-link-bundle.tar.gz'
+FILES={'cc','ld.lld','libwolf_rt.a','sysroot/crt1.o','sysroot/crti.o','sysroot/crtn.o','sysroot/libc.a','sysroot/libunwind.a'}
+stage=ROOT/'.link-inputs';stage.mkdir(exist_ok=True)
+with tempfile.TemporaryDirectory(prefix='fetch-',dir=stage) as temp:
+    archive=pathlib.Path(temp)/'bundle.tar.gz'
+    urllib.request.urlretrieve(URL,archive)
+    for _ in range(2):
+        with archive.open('rb') as stream:actual=hashlib.file_digest(stream,'sha256').hexdigest()
+        if actual!=SHA:raise SystemExit(f'REFUSED link bundle digest {actual}')
+        print('link-bundle sha256',actual,flush=True)
+    with tarfile.open(archive) as tf:
+        members=tf.getmembers()
+        if {m.name for m in members}!=FILES or len(members)!=len(FILES) or any(not m.isfile() for m in members):
+            raise SystemExit('REFUSED link bundle members')
+        tf.extractall(stage,filter='data')
+for _ in range(2):
+    for row in (ROOT/'tests/pax-link.sums').read_text().splitlines():
+        name,sha,size=row.split();path=stage/name
+        with path.open('rb') as stream:actual=hashlib.file_digest(stream,'sha256').hexdigest()
+        if path.stat().st_size!=int(size) or actual!=sha:raise SystemExit(f'REFUSED link input {name}')
+print('link-bundle: exact binary inputs verified twice; ligature#13',flush=True)

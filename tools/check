@@ -7,6 +7,7 @@ wolf=${WOLF:-$PWD/.wolf-bin/wolf}
 "$wolf" test --deny-warnings --json src
 # Native IO and malformed-file rows cannot be replaced by checked unit tests.
 tools/build
+python3 -I tests/fetch-bundle.py
 python3 -I tests/integration.py
 python3 -I tests/oracle.py
 python3 -I tests/resolution.py
@@ -16,6 +17,7 @@ python3 -I tests/writer.py
 python3 -I tests/relocation-witness.py
 python3 -I tests/cc.py
 python3 -I tests/provenance.py
+python3 -I tests/attribution.py
 python3 -I tests/pax-validator.py
 python3 -I tests/static-pax-runner.py
 python3 -I tests/kernel-edge.py
@@ -28,3 +30,6 @@ else
     echo 'SKIP public-runtime roundtrip: set WOLF_RT_FOR_TEST or stage .wolf-bin' >&2
     exit 1
 fi
+
+# This is the real linker linking its own compiler-produced objects, not a replay.
+python3 -I tests/self-link.py

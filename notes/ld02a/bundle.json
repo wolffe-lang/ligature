@@ -5,8 +5,19 @@
   "sha256": "6f99a2794da54b2dd85f06713d736b27862a7cd0da9e28bd940d975a4603a1d1",
   "reads": 2,
   "recipe": "GNU tar --sort=name --mtime=@0 --owner=0 --group=0 --numeric-owner, explicit ordered file list, gzip -n",
-  "files": ["cc", "ld.lld", "libwolf_rt.a", "sysroot/crt1.o", "sysroot/crti.o", "sysroot/crtn.o", "sysroot/libc.a", "sysroot/libunwind.a"],
+  "files": [
+    "cc",
+    "ld.lld",
+    "libwolf_rt.a",
+    "sysroot/crt1.o",
+    "sysroot/crti.o",
+    "sysroot/crtn.o",
+    "sysroot/libc.a",
+    "sysroot/libunwind.a"
+  ],
   "runtime_sha256": "9d859b9e6b5319f5a6f609e73ba0d71981d2dfa489882648ac9f454cd9db739c",
   "runtime_bytes": 45363160,
-  "state": "staged, not published; maintainer publication required; unprovisioned CI self-link is a named SKIP, not proof"
+  "state": "published by the maintainer; tools/fetch-bundle pins the digest and CI executes self-link; ligature#13 closes at merge",
+  "url": "https://github.com/wolffe-lang/ligature/releases/download/link-bundle-2026-10-25/ld02-musl-link-bundle.tar.gz",
+  "archive_bytes": 36594483
 }

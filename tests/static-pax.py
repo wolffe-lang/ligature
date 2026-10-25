@@ -6,7 +6,7 @@ raw outputs and individual structural differences stay under target/static-pax.
 The exit code covers behavior, verification, determinism and hello identity;
 structural equality has its own explicit unresolved counter in results.json.
 """
-import argparse,collections,hashlib,json,os,pathlib,subprocess,sys,time,traceback
+import argparse,collections,gzip,hashlib,json,os,pathlib,shutil,subprocess,sys,time,traceback
 ROOT=pathlib.Path(__file__).resolve().parent.parent
 
 def digest(path):
@@ -21,7 +21,7 @@ def checked(argv,log,timeout=1200,allowed=(0,),cwd=ROOT,env=None):
 
 def main():
     ap=argparse.ArgumentParser();ap.add_argument('inputs',type=pathlib.Path);a=ap.parse_args()
-    BASE=a.inputs.resolve();LIB=BASE/'sysroot';BIN=ROOT/'target/ligature';OUT=ROOT/'target/static-pax';OUT.mkdir(parents=True,exist_ok=True)
+    BASE=a.inputs.resolve();LIB=BASE/'sysroot';BIN=pathlib.Path(os.environ.get('LIGATURE_LINKER',str(ROOT/'target/ligature')));OUT=ROOT/'target/static-pax';OUT.mkdir(parents=True,exist_ok=True)
 
     for _ in range(2):
         for row in (ROOT/'tests/pax-link.sums').read_text().splitlines():
@@ -77,6 +77,15 @@ def main():
                 result=dest/(oracle_name+'-differ.json')
                 diff=checked([ROOT/'tools/differ',dest/'oracle'/oracle_name/'program',exe,'--output',result],dest/(oracle_name+'-differ'),allowed=(0,1),timeout=300)
                 data=json.loads(result.read_text())
+                for record in data['differences']:
+                    if record['kind']=='relocation-validation':
+                        assert not record['candidate'],('per-site patch validation',record['candidate'][:3])
+                if os.environ.get('LIGATURE_COMPRESS_EVIDENCE')=='1':
+                    compressed=result.with_suffix(result.suffix+'.gz')
+                    with result.open('rb') as source,gzip.open(compressed,'wb',compresslevel=6) as sink:shutil.copyfileobj(source,sink)
+                    with gzip.open(compressed,'rb') as stream:assert hashlib.file_digest(stream,'sha256').hexdigest()==digest(result)
+                    result.unlink() # verified compression, never discarded evidence
+                    result=compressed
                 differences.append({'oracle':oracle_name,'status':diff.returncode,'record':str(result.relative_to(OUT)),'kinds':[r['kind'] for r in data['differences']],'unexplained':len(data['unexplained'])})
                 structural+=len(data['unexplained'])
             row['structural']=differences

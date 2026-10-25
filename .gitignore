@@ -2,3 +2,4 @@ target/
 .wolf-bin/
 .lu-cache/
 *.dSYM/
+.link-inputs/
