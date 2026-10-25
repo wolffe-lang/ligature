@@ -1,0 +1,237 @@
+{
+  "oracle_version": "Ubuntu LLD 18.1.3 (compatible with GNU linkers)",
+  "oracle_sha256": "7ad9a0e8fe6d0e79b71172d731e33872c0274e49fceb7b516d774876d5a58ade",
+  "rows": [
+    {
+      "chosen_class": "symbols",
+      "case": "hello-hello",
+      "argv": [
+        "/usr/bin/ld.lld-18",
+        "-static",
+        "--emit-relocs",
+        "--gc-sections",
+        "--undefined=__wolf_rt_trap_at",
+        "--defsym=wolf_trap=__wolf_rt_trap_at",
+        "-o",
+        "/lane/ligature/target/lld18-control/hello-hello/program",
+        "/lane/link-inputs/sysroot/crt1.o",
+        "/lane/link-inputs/sysroot/crti.o",
+        "--start-group",
+        "/lane/ligature/target/corpus/hello-hello/main.o",
+        "/lane/link-inputs/libwolf_rt.a",
+        "/lane/link-inputs/sysroot/libc.a",
+        "/lane/link-inputs/sysroot/libunwind.a",
+        "--end-group",
+        "/lane/link-inputs/sysroot/crtn.o"
+      ],
+      "sha256": "782cb76e0477487e6eef5025205ce67387d94ed984aca7a77ca3229f899450ac",
+      "comparisons": [
+        {
+          "name": "17-to-18",
+          "status": 0,
+          "classes": [],
+          "report": "hello-hello/17-to-18.json",
+          "report_sha256": "5a867abf95a785715f0a1677fa636b9943debaf187cba88e4ef63fdb3b57d2f3"
+        },
+        {
+          "name": "18-to-ligature",
+          "status": 1,
+          "classes": [
+            "symbols",
+            "segments",
+            "entry",
+            "relocations"
+          ],
+          "report": "hello-hello/18-to-ligature.json",
+          "report_sha256": "29cbec744ebcb2e179c255e66be22b7f705188104f8752802208a5879770ee19"
+        }
+      ]
+    },
+    {
+      "chosen_class": "segments",
+      "case": "pax-loop",
+      "argv": [
+        "/usr/bin/ld.lld-18",
+        "-static",
+        "--emit-relocs",
+        "--gc-sections",
+        "--undefined=__wolf_rt_trap_at",
+        "--defsym=wolf_trap=__wolf_rt_trap_at",
+        "-o",
+        "/lane/ligature/target/lld18-control/pax-loop/program",
+        "/lane/link-inputs/sysroot/crt1.o",
+        "/lane/link-inputs/sysroot/crti.o",
+        "--start-group",
+        "/lane/ligature/target/corpus/pax-loop/main.o",
+        "/lane/link-inputs/libwolf_rt.a",
+        "/lane/link-inputs/sysroot/libc.a",
+        "/lane/link-inputs/sysroot/libunwind.a",
+        "--end-group",
+        "/lane/link-inputs/sysroot/crtn.o"
+      ],
+      "sha256": "612482bd727872a64787db446c0d3227e09ec262a4c666d2dc1acb90c18f5c4a",
+      "comparisons": [
+        {
+          "name": "17-to-18",
+          "status": 0,
+          "classes": [],
+          "report": "pax-loop/17-to-18.json",
+          "report_sha256": "051b6af7e75ed2c8f8797c5a9df40632e154ad92449f9405fabb53164706e569"
+        },
+        {
+          "name": "18-to-ligature",
+          "status": 1,
+          "classes": [
+            "symbols",
+            "segments",
+            "entry",
+            "relocations"
+          ],
+          "report": "pax-loop/18-to-ligature.json",
+          "report_sha256": "7fde2f08c269dcc157aa03d14d67a070715a968abb7b2ca266c2048f823c6ea9"
+        }
+      ]
+    },
+    {
+      "chosen_class": "entry",
+      "case": "pax-hello",
+      "argv": [
+        "/usr/bin/ld.lld-18",
+        "-static",
+        "--emit-relocs",
+        "--gc-sections",
+        "--undefined=__wolf_rt_trap_at",
+        "--defsym=wolf_trap=__wolf_rt_trap_at",
+        "-o",
+        "/lane/ligature/target/lld18-control/pax-hello/program",
+        "/lane/link-inputs/sysroot/crt1.o",
+        "/lane/link-inputs/sysroot/crti.o",
+        "--start-group",
+        "/lane/ligature/target/corpus/pax-hello/main.o",
+        "/lane/link-inputs/libwolf_rt.a",
+        "/lane/link-inputs/sysroot/libc.a",
+        "/lane/link-inputs/sysroot/libunwind.a",
+        "--end-group",
+        "/lane/link-inputs/sysroot/crtn.o"
+      ],
+      "sha256": "1a077d64c9724d67d9cf31d48f06ab97134e901b456024f998f0d08b07a4b470",
+      "comparisons": [
+        {
+          "name": "17-to-18",
+          "status": 0,
+          "classes": [],
+          "report": "pax-hello/17-to-18.json",
+          "report_sha256": "8942698fe03439a6372652fb5a66fffe021c8bbb8a8e50d301872a74452ed29b"
+        },
+        {
+          "name": "18-to-ligature",
+          "status": 1,
+          "classes": [
+            "symbols",
+            "segments",
+            "entry",
+            "relocations"
+          ],
+          "report": "pax-hello/18-to-ligature.json",
+          "report_sha256": "5bf284bb97ab5dca4c2154d8563c00e5d78d9a50fe85c819c0fe6377117c12e8"
+        }
+      ]
+    },
+    {
+      "chosen_class": "relocations",
+      "case": "pax-std",
+      "argv": [
+        "/usr/bin/ld.lld-18",
+        "-static",
+        "--emit-relocs",
+        "--gc-sections",
+        "--undefined=__wolf_rt_trap_at",
+        "--defsym=wolf_trap=__wolf_rt_trap_at",
+        "-o",
+        "/lane/ligature/target/lld18-control/pax-std/program",
+        "/lane/link-inputs/sysroot/crt1.o",
+        "/lane/link-inputs/sysroot/crti.o",
+        "--start-group",
+        "/lane/ligature/target/corpus/pax-std/main.root.o",
+        "/lane/ligature/target/corpus/pax-std/main.std.cmp.o",
+        "/lane/ligature/target/corpus/pax-std/main.std.list.o",
+        "/lane/ligature/target/corpus/pax-std/main.std.range.o",
+        "/lane/ligature/target/corpus/pax-std/main.std.str.o",
+        "/lane/ligature/target/corpus/pax-std/main.std.strbuf.o",
+        "/lane/link-inputs/libwolf_rt.a",
+        "/lane/link-inputs/sysroot/libc.a",
+        "/lane/link-inputs/sysroot/libunwind.a",
+        "--end-group",
+        "/lane/link-inputs/sysroot/crtn.o"
+      ],
+      "sha256": "a12a72b68361b001f2a366bec0bc49f1d79b9cd3063d2c29b665b408d9b5626b",
+      "comparisons": [
+        {
+          "name": "17-to-18",
+          "status": 0,
+          "classes": [],
+          "report": "pax-std/17-to-18.json",
+          "report_sha256": "14d1030e318801b12250b6f6bcd09c5bb5ad436a5ad6f777658289d4316afb58"
+        },
+        {
+          "name": "18-to-ligature",
+          "status": 1,
+          "classes": [
+            "symbols",
+            "segments",
+            "entry",
+            "relocations"
+          ],
+          "report": "pax-std/18-to-ligature.json",
+          "report_sha256": "47475194a31b06db773aa9a275fa06562711ee267f305bc4f792efabc05f70ad"
+        }
+      ]
+    },
+    {
+      "chosen_class": "tls",
+      "case": "compiler-procs",
+      "argv": [
+        "/usr/bin/ld.lld-18",
+        "-static",
+        "--emit-relocs",
+        "--gc-sections",
+        "--undefined=__wolf_rt_trap_at",
+        "--defsym=wolf_trap=__wolf_rt_trap_at",
+        "-o",
+        "/lane/ligature/target/lld18-control/compiler-procs/program",
+        "/lane/link-inputs/sysroot/crt1.o",
+        "/lane/link-inputs/sysroot/crti.o",
+        "--start-group",
+        "/lane/ligature/target/corpus/compiler-procs/main.o",
+        "/lane/link-inputs/libwolf_rt.a",
+        "/lane/link-inputs/sysroot/libc.a",
+        "/lane/link-inputs/sysroot/libunwind.a",
+        "--end-group",
+        "/lane/link-inputs/sysroot/crtn.o"
+      ],
+      "sha256": "b34c8689e2cbdaf40a172669b4808c51285ac80874ccb1e4eea595a85a90bb43",
+      "comparisons": [
+        {
+          "name": "17-to-18",
+          "status": 0,
+          "classes": [],
+          "report": "compiler-procs/17-to-18.json",
+          "report_sha256": "072ffa42d44c1a60382034be407e59cb16a4f34808d8ce7230879e645929b728"
+        },
+        {
+          "name": "18-to-ligature",
+          "status": 1,
+          "classes": [
+            "symbols",
+            "segments",
+            "entry",
+            "tls",
+            "relocations"
+          ],
+          "report": "compiler-procs/18-to-ligature.json",
+          "report_sha256": "ca158bc43232213487b1581132c21f30bc2ddf24ef4d91230fac2fc77c6fa423"
+        }
+      ]
+    }
+  ]
+}

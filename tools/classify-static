@@ -1,0 +1,34 @@
+#!/usr/bin/env python3
+"""Summarize, but never waive, exact recorded structural differences."""
+import collections,hashlib,json,pathlib,sys
+base=pathlib.Path(sys.argv[1]);target=pathlib.Path(sys.argv[2])
+results=json.loads((base/'results.json').read_text());counts=collections.Counter();rows=[]
+for case in results['rows']:
+ for comparison in case['structural']:
+  path=base/comparison['record'];raw=path.read_bytes();data=json.loads(raw)
+  row={'case':case['case'],'oracle':comparison['oracle'],'record':comparison['record'],'sha256':hashlib.sha256(raw).hexdigest(),'classes':[]}
+  symbols=next((d for d in data['differences'] if d['kind']=='symbols'),None)
+  for d in data['differences']:
+   kind=d['kind'];counts[kind]+=1;detail={'kind':kind}
+   if kind=='symbols':
+    left=collections.Counter(json.dumps(v,sort_keys=True) for v in d['reference']);right=collections.Counter(json.dumps(v,sort_keys=True) for v in d['candidate'])
+    detail.update({'reference_only':sum((left-right).values()),'candidate_only':sum((right-left).values()),'reference_binding_counts':dict(collections.Counter(str(json.loads(x)['binding']) for x in (left-right).elements())),'candidate_binding_counts':dict(collections.Counter(str(json.loads(x)['binding']) for x in (right-left).elements()))})
+   elif kind in ('entry','segments'):detail.update({'reference':d['reference'],'candidate':d['candidate']})
+   elif kind=='relocations':detail.update({'reference_records':len(d['reference']),'candidate_records':len(d['candidate']),'cause':'ligature does not emit retained relocation sections; the per-site cross-output comparison remains incomplete'})
+   elif kind=='tls':
+    detail.update({'reference_memsz':d['reference']['memsz'],'candidate_memsz':d['candidate']['memsz']})
+    def tls_variables(side):
+     raw=bytes.fromhex(d[side]['bytes']);out=[]
+     for sym in symbols[side]:
+      if sym['type']!=6:continue
+      start=sym['value'];size=sym['size']
+      payload=raw[start:start+size] if sym['section']=='.tdata' else bytes(size)
+      out.append((sym['name'],sym['binding'],size,payload.hex()))
+     return collections.Counter(out)
+    a=tls_variables('reference');b=tls_variables('candidate')
+    detail.update({'symbol_normalized_initializers_equal':a==b,'reference_only_variables':list((a-b).elements()),'candidate_only_variables':list((b-a).elements()),'classification':'different TLS variable ordering; raw template mismatch remains recorded'})
+   row['classes'].append(detail)
+  rows.append(row)
+report={'format':'ligature.ld01.structural-classes.v1','counts':dict(counts),'total':sum(counts.values()),'rows':rows,'waivers':[],'lld17_18_attribution':{'confirmed_count':0,'reason':'No same-input lld18 run was performed. These low-address user executables do not exercise pax#172/ligature#4 high-half kernel range failure; lld-only findings are not automatically version artifacts.'}}
+target.write_text(json.dumps(report,indent=2,sort_keys=True)+'\n')
+print(json.dumps({'counts':dict(counts),'total':sum(counts.values()),'tls_normalized':[r for row in rows for r in row['classes'] if r['kind']=='tls']},sort_keys=True))

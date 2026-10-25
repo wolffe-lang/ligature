@@ -1,0 +1,679 @@
+{
+  "compile": [
+    {
+      "case": "comptime",
+      "status": "compiled"
+    },
+    {
+      "case": "entry_no_return",
+      "status": "compiled"
+    },
+    {
+      "case": "overflow",
+      "status": "compiled"
+    },
+    {
+      "case": "procs",
+      "status": "compiled"
+    },
+    {
+      "case": "regions",
+      "status": "compiled"
+    }
+  ],
+  "format": "ligature.ld01.static-rows.v1",
+  "functional_failures": 0,
+  "pax_boot": "not run by this Linux-only harness",
+  "rows": [
+    {
+      "behavior": "equal",
+      "case": "compiler-comptime",
+      "deterministic": true,
+      "objects": [
+        {
+          "path": "main.o",
+          "sha256": "d5d325469361a8fa6c16e05e0c8d91d8a3942ba80c0f7d90bae48be7315834d4"
+        }
+      ],
+      "run": {
+        "status": 0,
+        "stderr_hex": "",
+        "stdout_hex": ""
+      },
+      "sha256": "d5d5ffd33c3e24d44b368ebc890fa520f466b8e2401dbe45ecc0039cec6f0e30",
+      "status": "behavior-verified-structural-recorded",
+      "structural": [
+        {
+          "kinds": [
+            "symbols",
+            "segments",
+            "entry",
+            "relocations"
+          ],
+          "oracle": "lld",
+          "record": "compiler-comptime/lld-differ.json",
+          "status": 1,
+          "unexplained": 4
+        },
+        {
+          "kinds": [
+            "symbols",
+            "segments",
+            "relocations"
+          ],
+          "oracle": "gnu",
+          "record": "compiler-comptime/gnu-differ.json",
+          "status": 1,
+          "unexplained": 3
+        }
+      ],
+      "verified": true
+    },
+    {
+      "behavior": "equal",
+      "case": "compiler-entry_no_return",
+      "deterministic": true,
+      "objects": [
+        {
+          "path": "main.o",
+          "sha256": "166c54b75d77a3a91bfe70cad1c6ddefc031cace5eb6eef8246e72d39407cd6a"
+        }
+      ],
+      "run": {
+        "status": 0,
+        "stderr_hex": "",
+        "stdout_hex": "68656c6c6f2c20776f6c660a"
+      },
+      "sha256": "0620c8c4f6507e88fce04dbbfab84166596481a692423b59c14d80f16b03211c",
+      "status": "behavior-verified-structural-recorded",
+      "structural": [
+        {
+          "kinds": [
+            "symbols",
+            "segments",
+            "entry",
+            "relocations"
+          ],
+          "oracle": "lld",
+          "record": "compiler-entry_no_return/lld-differ.json",
+          "status": 1,
+          "unexplained": 4
+        },
+        {
+          "kinds": [
+            "symbols",
+            "segments",
+            "relocations"
+          ],
+          "oracle": "gnu",
+          "record": "compiler-entry_no_return/gnu-differ.json",
+          "status": 1,
+          "unexplained": 3
+        }
+      ],
+      "verified": true
+    },
+    {
+      "behavior": "equal",
+      "case": "compiler-overflow",
+      "deterministic": true,
+      "objects": [
+        {
+          "path": "main.o",
+          "sha256": "ebd29008f012d6f0b8c5eaef8558deea6f6be0ccac908e703cf24edd59c91129"
+        }
+      ],
+      "run": {
+        "status": 134,
+        "stderr_hex": "776f6c662d747261703a206f766572666c6f770a20206174202f6c616e652f6c696761747572652f74657374732f636f727075732f636f6d70696c65722f6f766572666c6f772e6c753a31373a350a",
+        "stdout_hex": ""
+      },
+      "sha256": "df557ae17c8842aa777377d46fc1e4fcb065126a735288665da0032e6d5bcfe9",
+      "status": "behavior-verified-structural-recorded",
+      "structural": [
+        {
+          "kinds": [
+            "symbols",
+            "segments",
+            "entry",
+            "relocations"
+          ],
+          "oracle": "lld",
+          "record": "compiler-overflow/lld-differ.json",
+          "status": 1,
+          "unexplained": 4
+        },
+        {
+          "kinds": [
+            "symbols",
+            "segments",
+            "relocations"
+          ],
+          "oracle": "gnu",
+          "record": "compiler-overflow/gnu-differ.json",
+          "status": 1,
+          "unexplained": 3
+        }
+      ],
+      "verified": true
+    },
+    {
+      "behavior": "equal",
+      "case": "compiler-procs",
+      "deterministic": true,
+      "objects": [
+        {
+          "path": "main.o",
+          "sha256": "c3bb36cf419e400ed2a918f1e58294edc1f998358c6f0211f18e4464bc1d9daf"
+        }
+      ],
+      "run": {
+        "status": 0,
+        "stderr_hex": "",
+        "stdout_hex": ""
+      },
+      "sha256": "87485300237e7fe2aa5149c0d53c780cd0c0e3349ebf83343e8b88c5d9e89775",
+      "status": "behavior-verified-structural-recorded",
+      "structural": [
+        {
+          "kinds": [
+            "symbols",
+            "segments",
+            "entry",
+            "tls",
+            "relocations"
+          ],
+          "oracle": "lld",
+          "record": "compiler-procs/lld-differ.json",
+          "status": 1,
+          "unexplained": 5
+        },
+        {
+          "kinds": [
+            "symbols",
+            "segments",
+            "relocations"
+          ],
+          "oracle": "gnu",
+          "record": "compiler-procs/gnu-differ.json",
+          "status": 1,
+          "unexplained": 3
+        }
+      ],
+      "verified": true
+    },
+    {
+      "behavior": "equal",
+      "case": "compiler-regions",
+      "deterministic": true,
+      "objects": [
+        {
+          "path": "main.o",
+          "sha256": "7777387d218535dc29d098ad5143bdb031801664fc6dc2ebb093899420fec96d"
+        }
+      ],
+      "run": {
+        "status": 0,
+        "stderr_hex": "",
+        "stdout_hex": ""
+      },
+      "sha256": "96cf7e74e1e768efdce1c20a486ecb27672d8ffa90edf7e21344ab71024c821d",
+      "status": "behavior-verified-structural-recorded",
+      "structural": [
+        {
+          "kinds": [
+            "symbols",
+            "segments",
+            "entry",
+            "relocations"
+          ],
+          "oracle": "lld",
+          "record": "compiler-regions/lld-differ.json",
+          "status": 1,
+          "unexplained": 4
+        },
+        {
+          "kinds": [
+            "symbols",
+            "segments",
+            "relocations"
+          ],
+          "oracle": "gnu",
+          "record": "compiler-regions/gnu-differ.json",
+          "status": 1,
+          "unexplained": 3
+        }
+      ],
+      "verified": true
+    },
+    {
+      "behavior": "equal",
+      "case": "hello-hello",
+      "deterministic": true,
+      "hello_identity": {
+        "definitions": 401,
+        "equal_names": true,
+        "members": {
+          "libc.a": 322,
+          "libunwind.a": 5,
+          "libwolf_rt.a": 32
+        }
+      },
+      "objects": [
+        {
+          "path": "main.o",
+          "sha256": "7292aa7d7cf5ce844b448ef02b3c16f079110825ef4ea1b71d6ba8c13e02a8ff"
+        }
+      ],
+      "run": {
+        "status": 0,
+        "stderr_hex": "",
+        "stdout_hex": "68656c6c6f2c20776f6c660a"
+      },
+      "sha256": "a7683ab49f2c2d4024a9e29a412176f104ff9cee7006a5283774772d8a480ba0",
+      "status": "behavior-verified-structural-recorded",
+      "structural": [
+        {
+          "kinds": [
+            "symbols",
+            "segments",
+            "entry",
+            "relocations"
+          ],
+          "oracle": "lld",
+          "record": "hello-hello/lld-differ.json",
+          "status": 1,
+          "unexplained": 4
+        },
+        {
+          "kinds": [
+            "symbols",
+            "segments",
+            "relocations"
+          ],
+          "oracle": "gnu",
+          "record": "hello-hello/gnu-differ.json",
+          "status": 1,
+          "unexplained": 3
+        }
+      ],
+      "verified": true
+    },
+    {
+      "behavior": "equal",
+      "case": "pax-exec",
+      "deterministic": true,
+      "objects": [
+        {
+          "path": "main.o",
+          "sha256": "8bbc6a2d5b515d9ed0d3759f597ad8a62f79082b8f8de882b551dede8e9209c3"
+        }
+      ],
+      "run": {
+        "status": 0,
+        "stderr_hex": "",
+        "stdout_hex": "657865633a206368696c640a657865633a206368696c642073746174757320370a"
+      },
+      "sha256": "3ae843687264ea113ba919341b242c0e842f89944520c001747fd3c690a09bb2",
+      "status": "behavior-verified-structural-recorded",
+      "structural": [
+        {
+          "kinds": [
+            "symbols",
+            "segments",
+            "entry",
+            "relocations"
+          ],
+          "oracle": "lld",
+          "record": "pax-exec/lld-differ.json",
+          "status": 1,
+          "unexplained": 4
+        },
+        {
+          "kinds": [
+            "symbols",
+            "segments",
+            "relocations"
+          ],
+          "oracle": "gnu",
+          "record": "pax-exec/gnu-differ.json",
+          "status": 1,
+          "unexplained": 3
+        }
+      ],
+      "verified": true
+    },
+    {
+      "behavior": "equal",
+      "case": "pax-fork",
+      "deterministic": true,
+      "objects": [
+        {
+          "path": "main.o",
+          "sha256": "dc9fa526c1e1779383dcae29d65e4f24563f33b216a037b2eb53e0221bc557bc"
+        }
+      ],
+      "run": {
+        "status": 0,
+        "stderr_hex": "",
+        "stdout_hex": "666f726b3a206368696c640a666f726b3a206368696c642073746174757320370a"
+      },
+      "sha256": "e7ae6166e74208f557532df021077cc3e5d3b6eed23acf877b008d9b28add037",
+      "status": "behavior-verified-structural-recorded",
+      "structural": [
+        {
+          "kinds": [
+            "symbols",
+            "segments",
+            "entry",
+            "relocations"
+          ],
+          "oracle": "lld",
+          "record": "pax-fork/lld-differ.json",
+          "status": 1,
+          "unexplained": 4
+        },
+        {
+          "kinds": [
+            "symbols",
+            "segments",
+            "relocations"
+          ],
+          "oracle": "gnu",
+          "record": "pax-fork/gnu-differ.json",
+          "status": 1,
+          "unexplained": 3
+        }
+      ],
+      "verified": true
+    },
+    {
+      "behavior": "equal",
+      "case": "pax-hello",
+      "deterministic": true,
+      "objects": [
+        {
+          "path": "main.o",
+          "sha256": "76440f80328569279b5fc61b6160daf7f59f6f410594d25c741f1613871aaa68"
+        }
+      ],
+      "run": {
+        "status": 0,
+        "stderr_hex": "",
+        "stdout_hex": "68656c6c6f2c20776f6c660a"
+      },
+      "sha256": "5f0e317d8b27619f725c3291289e85399c2768cadfd8bddbf7eb600b7d0fe9de",
+      "status": "behavior-verified-structural-recorded",
+      "structural": [
+        {
+          "kinds": [
+            "symbols",
+            "segments",
+            "entry",
+            "relocations"
+          ],
+          "oracle": "lld",
+          "record": "pax-hello/lld-differ.json",
+          "status": 1,
+          "unexplained": 4
+        },
+        {
+          "kinds": [
+            "symbols",
+            "segments",
+            "relocations"
+          ],
+          "oracle": "gnu",
+          "record": "pax-hello/gnu-differ.json",
+          "status": 1,
+          "unexplained": 3
+        }
+      ],
+      "verified": true
+    },
+    {
+      "behavior": "equal",
+      "case": "pax-host",
+      "deterministic": true,
+      "objects": [
+        {
+          "path": "main.o",
+          "sha256": "dddf70668d02b6804ceeb2dd8c875339abfd604eb9b6e2ec98c04686a46dd504"
+        }
+      ],
+      "run": {
+        "status": 0,
+        "stderr_hex": "",
+        "stdout_hex": "636c6f636b3a2061203230206d7320736c6565702c206174206c65617374203230206d73207061737365643a20747275650a656e763a20484f4d45206265666f7265207468652070726f6772616d20736574732069743a20696e76616c69640a656e763a20484f4d4520616674657220656e765f7365743a202f686f6d652f776f6c660a747265653a20782e6c7520696e2074686520776f726b696e67206469726563746f72793a206b696e6420302c2039372062797465730a747265653a202f7573722f73686172652f6c7570696e2f657865632e6c750a747265653a202f7573722f73686172652f6c7570696e2f666f726b2e6c750a747265653a202f7573722f73686172652f6c7570696e2f68656c6c6f2e6c750a747265653a202f7573722f73686172652f6c7570696e2f686f73742e6c750a747265653a202f7573722f73686172652f6c7570696e2f6c6f6f702e6c750a747265653a202f7573722f73686172652f6c7570696e2f7369676e616c2e6c750a747265653a202f7573722f73686172652f6c7570696e2f737061776e2e6c750a747265653a202f7573722f73686172652f6c7570696e2f7374642e6c750a"
+      },
+      "sha256": "ef604a30e565fd4f4c40cf3cdb1904f6d40ed06b650d05dc64f57ece89cdd57d",
+      "status": "behavior-verified-structural-recorded",
+      "structural": [
+        {
+          "kinds": [
+            "symbols",
+            "segments",
+            "entry",
+            "tls",
+            "relocations"
+          ],
+          "oracle": "lld",
+          "record": "pax-host/lld-differ.json",
+          "status": 1,
+          "unexplained": 5
+        },
+        {
+          "kinds": [
+            "symbols",
+            "segments",
+            "relocations"
+          ],
+          "oracle": "gnu",
+          "record": "pax-host/gnu-differ.json",
+          "status": 1,
+          "unexplained": 3
+        }
+      ],
+      "verified": true
+    },
+    {
+      "behavior": "equal",
+      "case": "pax-loop",
+      "deterministic": true,
+      "objects": [
+        {
+          "path": "main.o",
+          "sha256": "b5d0b3ee966ff0de9555f62972ff84874b71ea13a6dda4c8c818b299b576c38c"
+        }
+      ],
+      "run": {
+        "status": 0,
+        "stderr_hex": "",
+        "stdout_hex": "31207371756172656420697320310a32207371756172656420697320340a33207371756172656420697320390a3420737175617265642069732031360a3520737175617265642069732032350a3620737175617265642069732033360a3720737175617265642069732034390a3820737175617265642069732036340a3920737175617265642069732038310a31302073717561726564206973203130300a7468652073756d206f662074686520737175617265733a203338350a"
+      },
+      "sha256": "b1fdfa3782781112df104012a277048d3c07ad5c089aba1ebec842d74d89dd9a",
+      "status": "behavior-verified-structural-recorded",
+      "structural": [
+        {
+          "kinds": [
+            "symbols",
+            "segments",
+            "entry",
+            "relocations"
+          ],
+          "oracle": "lld",
+          "record": "pax-loop/lld-differ.json",
+          "status": 1,
+          "unexplained": 4
+        },
+        {
+          "kinds": [
+            "symbols",
+            "segments",
+            "relocations"
+          ],
+          "oracle": "gnu",
+          "record": "pax-loop/gnu-differ.json",
+          "status": 1,
+          "unexplained": 3
+        }
+      ],
+      "verified": true
+    },
+    {
+      "behavior": "equal",
+      "case": "pax-signal",
+      "deterministic": true,
+      "objects": [
+        {
+          "path": "main.o",
+          "sha256": "5e27638908623a69952495596259f64f6396bc8bc0ce10014094b7bf68c363f3"
+        }
+      ],
+      "run": {
+        "status": 0,
+        "stderr_hex": "",
+        "stdout_hex": "494e54455252555054206973207369676e616c203220686572650a69747320776f7264733a20496e746572727570740a"
+      },
+      "sha256": "dce050891fe6bc1e5919fb73abc5b2b04817247d74739d6d55cc5d53e12b82c3",
+      "status": "behavior-verified-structural-recorded",
+      "structural": [
+        {
+          "kinds": [
+            "symbols",
+            "segments",
+            "entry",
+            "relocations"
+          ],
+          "oracle": "lld",
+          "record": "pax-signal/lld-differ.json",
+          "status": 1,
+          "unexplained": 4
+        },
+        {
+          "kinds": [
+            "symbols",
+            "segments",
+            "relocations"
+          ],
+          "oracle": "gnu",
+          "record": "pax-signal/gnu-differ.json",
+          "status": 1,
+          "unexplained": 3
+        }
+      ],
+      "verified": true
+    },
+    {
+      "behavior": "equal",
+      "case": "pax-spawn",
+      "deterministic": true,
+      "objects": [
+        {
+          "path": "main.o",
+          "sha256": "93ac2fe29b39509bb3ba6b49fd7f11247c66588feddde126f3dfa31000acb7a7"
+        }
+      ],
+      "run": {
+        "status": 0,
+        "stderr_hex": "",
+        "stdout_hex": "737061776e3a206a6f696e65642c20616e737765722034320a"
+      },
+      "sha256": "7d803a82cd81f57e8b8ca4b3dfcd084f921fd536ef6f3b941a826923c6526f57",
+      "status": "behavior-verified-structural-recorded",
+      "structural": [
+        {
+          "kinds": [
+            "symbols",
+            "segments",
+            "entry",
+            "tls",
+            "relocations"
+          ],
+          "oracle": "lld",
+          "record": "pax-spawn/lld-differ.json",
+          "status": 1,
+          "unexplained": 5
+        },
+        {
+          "kinds": [
+            "symbols",
+            "segments",
+            "relocations"
+          ],
+          "oracle": "gnu",
+          "record": "pax-spawn/gnu-differ.json",
+          "status": 1,
+          "unexplained": 3
+        }
+      ],
+      "verified": true
+    },
+    {
+      "behavior": "equal",
+      "case": "pax-std",
+      "deterministic": true,
+      "objects": [
+        {
+          "path": "main.root.o",
+          "sha256": "2a3b2626f900528eecd684447703f2496f424955d83d1e8637be558b384cb252"
+        },
+        {
+          "path": "main.std.cmp.o",
+          "sha256": "d8daade0b35b7987057a2c4933125b053178147a21fb6968291c5abd22f7b2de"
+        },
+        {
+          "path": "main.std.list.o",
+          "sha256": "6acba4d9f393cb61bbc3ed840cb025ae4d2bdb61058404a92d58df744fea28ad"
+        },
+        {
+          "path": "main.std.range.o",
+          "sha256": "34f3c6400774d2c4dda15dd4e97cff6541d1e2bcad4e776b64d83bc7d2eca8e2"
+        },
+        {
+          "path": "main.std.str.o",
+          "sha256": "a67d752cf75d83b908aa525221d2408cbcdf393c537822eeb7fb2dbe6e5040b1"
+        },
+        {
+          "path": "main.std.strbuf.o",
+          "sha256": "6f0c3345cd207cd41d75c3097fb25e5f090eb66212fe225cfe138a54283095ae"
+        }
+      ],
+      "run": {
+        "status": 0,
+        "stderr_hex": "",
+        "stdout_hex": "7374643a20776f6c660a"
+      },
+      "sha256": "efc5a33fb4940134b8eb6d28b91900dc0c74ff13cbf0ed8fe7ca29cb66282a7d",
+      "status": "behavior-verified-structural-recorded",
+      "structural": [
+        {
+          "kinds": [
+            "symbols",
+            "segments",
+            "entry",
+            "relocations"
+          ],
+          "oracle": "lld",
+          "record": "pax-std/lld-differ.json",
+          "status": 1,
+          "unexplained": 4
+        },
+        {
+          "kinds": [
+            "symbols",
+            "segments",
+            "relocations"
+          ],
+          "oracle": "gnu",
+          "record": "pax-std/gnu-differ.json",
+          "status": 1,
+          "unexplained": 3
+        }
+      ],
+      "verified": true
+    }
+  ],
+  "structural_claim": "not equivalent while unexplained is nonzero",
+  "unexplained_structural_differences": 101
+}

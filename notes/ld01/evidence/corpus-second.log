@@ -1,0 +1,46 @@
+JOB START 2026-10-25T01:47:38-04:00 pid=1938874 head=bb00a289c0bd28248b492fe0cef52aa5a7eb6d17
+PINS verified twice
+BEGIN compiler-comptime
+LINK1 compiler-comptime d5d5ffd33c3e24d44b368ebc890fa520f466b8e2401dbe45ecc0039cec6f0e30
+END compiler-comptime behavior-verified-structural-recorded functional_failures 0 unexplained 7
+BEGIN compiler-entry_no_return
+LINK1 compiler-entry_no_return 0620c8c4f6507e88fce04dbbfab84166596481a692423b59c14d80f16b03211c
+END compiler-entry_no_return behavior-verified-structural-recorded functional_failures 0 unexplained 14
+BEGIN compiler-overflow
+LINK1 compiler-overflow df557ae17c8842aa777377d46fc1e4fcb065126a735288665da0032e6d5bcfe9
+END compiler-overflow behavior-verified-structural-recorded functional_failures 0 unexplained 21
+BEGIN compiler-procs
+LINK1 compiler-procs 87485300237e7fe2aa5149c0d53c780cd0c0e3349ebf83343e8b88c5d9e89775
+END compiler-procs behavior-verified-structural-recorded functional_failures 0 unexplained 29
+BEGIN compiler-regions
+LINK1 compiler-regions 96cf7e74e1e768efdce1c20a486ecb27672d8ffa90edf7e21344ab71024c821d
+END compiler-regions behavior-verified-structural-recorded functional_failures 0 unexplained 36
+BEGIN hello-hello
+LINK1 hello-hello a7683ab49f2c2d4024a9e29a412176f104ff9cee7006a5283774772d8a480ba0
+END hello-hello behavior-verified-structural-recorded functional_failures 0 unexplained 43
+BEGIN pax-exec
+LINK1 pax-exec 3ae843687264ea113ba919341b242c0e842f89944520c001747fd3c690a09bb2
+END pax-exec behavior-verified-structural-recorded functional_failures 0 unexplained 50
+BEGIN pax-fork
+LINK1 pax-fork e7ae6166e74208f557532df021077cc3e5d3b6eed23acf877b008d9b28add037
+END pax-fork behavior-verified-structural-recorded functional_failures 0 unexplained 57
+BEGIN pax-hello
+LINK1 pax-hello 5f0e317d8b27619f725c3291289e85399c2768cadfd8bddbf7eb600b7d0fe9de
+END pax-hello behavior-verified-structural-recorded functional_failures 0 unexplained 64
+BEGIN pax-host
+LINK1 pax-host ef604a30e565fd4f4c40cf3cdb1904f6d40ed06b650d05dc64f57ece89cdd57d
+END pax-host behavior-verified-structural-recorded functional_failures 0 unexplained 72
+BEGIN pax-loop
+LINK1 pax-loop b1fdfa3782781112df104012a277048d3c07ad5c089aba1ebec842d74d89dd9a
+END pax-loop behavior-verified-structural-recorded functional_failures 0 unexplained 79
+BEGIN pax-signal
+LINK1 pax-signal dce050891fe6bc1e5919fb73abc5b2b04817247d74739d6d55cc5d53e12b82c3
+END pax-signal behavior-verified-structural-recorded functional_failures 0 unexplained 86
+BEGIN pax-spawn
+LINK1 pax-spawn 7d803a82cd81f57e8b8ca4b3dfcd084f921fd536ef6f3b941a826923c6526f57
+END pax-spawn behavior-verified-structural-recorded functional_failures 0 unexplained 94
+BEGIN pax-std
+LINK1 pax-std efc5a33fb4940134b8eb6d28b91900dc0c74ff13cbf0ed8fe7ca29cb66282a7d
+END pax-std behavior-verified-structural-recorded functional_failures 0 unexplained 101
+COMPLETE 14 rows; functional failures 0 unexplained structural differences 101
+JOB EXIT 0 2026-10-25T03:35:32-04:00
