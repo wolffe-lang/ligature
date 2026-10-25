@@ -1,0 +1,4 @@
+wolf 0.2.35 (wolfgang, pin cf0c13d)
+paired with lupin 0.1.56 (reference interpreter), pin 294d626
+lupin 0.1.56 (wolf-interp, reference interpreter at pin 294d626)
+reader/front: 8 assertions, 0 SKIP

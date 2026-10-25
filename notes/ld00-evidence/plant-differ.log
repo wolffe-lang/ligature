@@ -1,0 +1,7 @@
+Traceback (most recent call last):
+  File "/lane/plant-differ/tests/oracle.py", line 35, in <module>
+    call([DIFFER,exe,bad,'--output',OUT/(name+'-flip.json')],1)
+  File "/lane/plant-differ/tests/oracle.py", line 10, in call
+    assert p.returncode==status,(list(map(str,args)),p.returncode,p.stdout,p.stderr)
+           ^^^^^^^^^^^^^^^^^^^^
+AssertionError: (['/lane/plant-differ/tools/differ', '/lane/plant-differ/target/evidence/distro-oracle/lld', '/lane/plant-differ/target/evidence/distro-oracle/lld-flipped', '--output', '/lane/plant-differ/target/evidence/distro-oracle/lld-flip.json'], 0, b'differ: 2 differences, 2 unexplained, 0 layout records\n', b'')
