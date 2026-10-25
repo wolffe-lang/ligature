@@ -70,8 +70,9 @@ bootstrap relink and an executed hello. Its runtime preflight currently reports
 the pinned musl runtime loses command-line arguments under both reference
 linkers too. CI records this as BLOCKED, neither a passing self-link nor a SKIP, only
 for runtime SHA-256 `9d859b9e6b5319f5a6f609e73ba0d71981d2dfa489882648ac9f454cd9db739c`.
-Any other runtime digest must pass the hard self-link assertions. `tools/check-core` runs the independent linker/provenance gates. A new
-runtime bundle is required before actual self-link execution can qualify.
+Any other runtime digest must pass the hard self-link assertions. `tools/check-core` runs the independent linker/provenance gates. Both a Wolf release carrying the new entry (0.2.36 at the earliest) and
+its matching musl bundle are required before self-link execution can qualify;
+a runtime-only update leaves 0.2.35-compiled objects without argv.
 No linker, binutils or libc source is fetched or built.
 
 The strict PAX run additionally reads the **complete** PAX runtime, musl libc
@@ -109,31 +110,40 @@ A copied executable with an allocated byte changed must fail the differential.
 
 ## Current boundaries
 
-Fourteen live PAX BIOS legs compare the same three linker outputs: all three
-agree in every guest, and thirteen cases also match Linux. `pax-fork` remains a
-named cross-host red: PAX returns `fork: io`, while Linux prints the child and
-status 7. Fresh native and release kernels from PAX trunk reproduce syscall 57
-returning `-ENOSYS` for all three binaries ([pax#175](https://github.com/wolffe-lang/pax/issues/175)).
-No expectation was changed. CI replays a genuine captured transcript and its
-corruption cases; it does not boot the private-to-the-run ISO bundle.
+The fourteen-case Linux corpus passes behavior, verification, deterministic
+relinks and independent relocation-site validation against both binary oracles.
+It still records **87 structural findings**: 28 symbol, 28 segment, 28 retained
+relocation-record and three GNU TLS-order differences. Fourteen LLD entry-alias
+findings and all three original LLD TLS-order findings are resolved. The three
+GNU TLS findings are new comparisons, not unchanged copies of the old ones;
+named initializer bytes and memory sizes agree, while binding differences
+remain recorded separately. No blanket structural equivalence is claimed.
 
-The ld01 baseline fourteen-case comparison records 101 structural findings: 28 symbol,
-28 segment, 14 entry-alias, 28 retained-relocation and three TLS-order findings.
-Five controls with LLD 18.1.3 reproduce all five classes; these are not explained
-by the LLD 17/18 high-half kernel bug. The three TLS cases have equal named
-initializers and memory size but different variable ordering. Differences remain
-recorded, not waived. The output retains unwind data without an unwind header;
-string merging still differs from the oracles. Relocation records are now
-retained and local/entry normalization has independent positive and negative
-fixtures. Baseline findings are not retired without a new per-case comparison.
+Fresh native and release kernels from PAX `edbd385c91f2ff0eadb1ab4e52b276f1a1412b63`
+ran the same three linker outputs under BIOS and UEFI: **56 live boots, all
+halted, all three outputs equal within every guest**. Fifty-two boot rows also
+match Linux. The four `pax-fork` rows remain red: PAX prints `fork: io` instead
+of the child and status 7 ([pax#175](https://github.com/wolffe-lang/pax/issues/175)).
+No expectation changed. These are the cc/glibc-built seed's musl program
+outputs, not a linker running inside PAX. Kernel, image, program and transcript
+hashes were read twice; `notes/ld02a/` indexes the full evidence. Hosted CI
+replays a genuine transcript with corruption fixtures; live boots run on the
+Linux test host through PAX's own QEMU harness.
+
+Self-link execution and running ligature itself on PAX remain **BLOCKED on
+[wolf-lang#962](https://github.com/wolffe-lang/wolf-lang/issues/962)** under the
+exact-runtime-digest CI condition above. Two seed links produced byte-identical
+linker binaries, but they lose argv just like the same objects linked by LLD
+and GNU ld. A compiler release carrying the new entry and its matching runtime
+bundle are both required; a runtime-only update is insufficient.
 
 The nonallocated 116-byte `.note.wolf.link` seals input hashes, disjoint file
-ranges and relocation patches with SHA-256. It is an integrity digest, not a
-signature or proof of authorship. `explain` validates that manifest before
-answering. The cc/glibc-built seed can drive the Linux corpus and produce musl binaries
-for live PAX testing. Executing ligature itself on PAX and the executable
-self-link remain BLOCKED on wolf-lang#962. AArch64, linker scripts and Mach-O
-remain future work. The high-half relocation fixture tests a post-layout boundary; it does not
-claim the frontend accepts a kernel linker script.
+ranges and relocation patches with SHA-256. It is integrity, not a signature
+or proof of authorship. `explain` validates the manifest before answering.
+Hello retains 590,358 relocation records and embeds a 147,136,512-byte canonical
+manifest; compact encoding remains follow-on work, not an excuse to omit debug
+sites. Unwind data has no generated unwind header, strings are not merged,
+and AArch64 linking, linker scripts and Mach-O remain future work. The high-half
+relocation fixture does not claim support for a kernel linker script.
 
 Licence: GPL-3.0-only with the wolf Training Data Permission (`LICENSE`, `LICENSE-TRAINING-DATA`), as pax, boreutils and den.
