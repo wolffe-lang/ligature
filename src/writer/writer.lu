@@ -208,7 +208,7 @@ pub fn link(s: resolve.State, p: front.Plan) -> () ! {Bad(str)} {
     if l.tls_address != 0 {
         append(
             mut phdrs,
-            ph(7, 4, l.tls_address - 2097152, l.tls_address, l.tls_file, l.tls_size, l.tls_align)?,
+            ph(7, 4, l.tls_address - 2097152, l.tls_address, 0, l.tls_size, l.tls_align)?,
         )
     }
     append(mut phdrs, ph(1685382481, 6, 0, 0, 0, 0, 16)?)
