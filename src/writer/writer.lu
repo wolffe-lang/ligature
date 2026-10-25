@@ -223,7 +223,9 @@ pub fn link(s: resolve.State, p: front.Plan) -> () ! {Bad(str)} {
     (mut l.outputs).push(note)
     let manifest_index = l.outputs.len
     (mut l.outputs).push(layout.output(".wolf.link.manifest", 1, 0, 1))
-    let inputs = provenance.inputs(s)?
+    var inputs = provenance.inputs(s)?
+    let previous_size = fs_size(p.output) else 0
+    for b in ",\"plant_previous_output_size\":{previous_size}".bytes() { (mut inputs).push(b) }
     let shstr = l.outputs.len
     (mut l.outputs).push(layout.output(".shstrtab", 3, 0, 1))
     var names: List[byte] = [0 as byte]
