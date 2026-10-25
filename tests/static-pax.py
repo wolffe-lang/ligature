@@ -6,16 +6,23 @@ raw outputs and individual structural differences stay under target/static-pax.
 The exit code covers behavior, verification, determinism and hello identity;
 structural equality has its own explicit unresolved counter in results.json.
 """
-import argparse,collections,gzip,hashlib,json,os,pathlib,shutil,subprocess,sys,time,traceback
+import argparse,collections,fcntl,gzip,hashlib,json,os,pathlib,shutil,subprocess,sys,time,traceback
 ROOT=pathlib.Path(__file__).resolve().parent.parent
 
 def digest(path):
     with path.open('rb') as stream:return hashlib.file_digest(stream,'sha256').hexdigest()
 def checked(argv,log,timeout=1200,allowed=(0,),cwd=ROOT,env=None):
-    start=time.monotonic()
-    p=subprocess.run(list(map(str,argv)),cwd=cwd,env=env,capture_output=True,timeout=timeout)
+    command=list(map(str,argv))
+    lock=os.environ.get('LIGATURE_COMMAND_LOCK')
+    lease=open(lock,'a') if lock else None
+    try:
+        if lease:fcntl.flock(lease.fileno(),fcntl.LOCK_EX)
+        start=time.monotonic()
+        p=subprocess.run(command,cwd=cwd,env=env,capture_output=True,timeout=timeout)
+    finally:
+        if lease:lease.close()
     pathlib.Path(str(log)+'.stdout').write_bytes(p.stdout);pathlib.Path(str(log)+'.stderr').write_bytes(p.stderr)
-    pathlib.Path(str(log)+'.command.json').write_text(json.dumps({'argv':list(map(str,argv)),'status':p.returncode,'elapsed':time.monotonic()-start},indent=2)+'\n')
+    pathlib.Path(str(log)+'.command.json').write_text(json.dumps({'argv':command,'status':p.returncode,'elapsed':time.monotonic()-start},indent=2)+'\n')
     assert p.returncode in allowed,(list(map(str,argv)),p.returncode,p.stderr[-2000:])
     return p
 

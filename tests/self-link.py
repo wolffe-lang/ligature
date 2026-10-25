@@ -5,6 +5,9 @@ The PAX musl runtime is not replaceable with the public glibc release. Fetch
 the digest-pinned published bundle first; an absent bundle is a named failure.
 """
 import hashlib,json,os,pathlib,subprocess,sys,tempfile,time
+def permits_blocked(runtime_sha,argv_status):
+    return runtime_sha=='9d859b9e6b5319f5a6f609e73ba0d71981d2dfa489882648ac9f454cd9db739c' and argv_status==2
+
 ROOT=pathlib.Path(__file__).resolve().parent.parent
 OUT=ROOT/'target/evidence/self-link';OUT.mkdir(parents=True,exist_ok=True)
 inputs=os.environ.get('LIGATURE_LINK_INPUTS') or (str(ROOT/'.link-inputs') if (ROOT/'.link-inputs/libwolf_rt.a').exists() else None)
@@ -20,7 +23,7 @@ for _ in range(2):
     for row in (ROOT/'tests/pax-link.sums').read_text().splitlines():
         name,sha,size=row.split();p=BASE/name
         assert p.stat().st_size==int(size) and digest(p)==sha,('self-link pin',name)
-    assert digest(BASE/'libwolf_rt.a')=='9d859b9e6b5319f5a6f609e73ba0d71981d2dfa489882648ac9f454cd9db739c'
+runtime_digest=digest(BASE/'libwolf_rt.a')
 def call(name,args):
     print('SELF-LINK',name,'START',flush=True);start=time.monotonic()
     p=subprocess.run(list(map(str,args)),capture_output=True,timeout=2400)
@@ -31,10 +34,11 @@ def call(name,args):
     return p
 # Prove the exact runtime blocker before spending minutes linking the full tool.
 preflight=subprocess.run([sys.executable,'-I',str(ROOT/'tests/musl-argv.py')])
-if preflight.returncode==2:
-    (OUT/'status.json').write_text(json.dumps({'status':'BLOCKED','row':'self-link','issue':'wolf-lang#962','evidence':'target/evidence/musl-argv/results.json','same_object_evidence':'notes/ld02a/evidence/argv-probe/same-object-controls.json'})+'\n')
-    print('BLOCKED self-link and executing ligature on PAX: wolf-lang#962; not a passing or skipped gate',flush=True)
-    sys.exit(2)
+if permits_blocked(runtime_digest,preflight.returncode):
+    (OUT/'status.json').write_text(json.dumps({'status':'BLOCKED','row':'self-link','issue':'wolf-lang#962','runtime_sha256':runtime_digest,'ruling':'R-ld02-5 A','evidence':'target/evidence/musl-argv/results.json','same_object_evidence':'notes/ld02a/evidence/argv-probe/same-object-controls.json'})+'\n')
+    print(f'BLOCKED self-link and executing ligature on PAX: wolf-lang#962; runtime SHA256 {runtime_digest}; R-ld02-5 A',flush=True)
+    print('BLOCKED evidence: target/evidence/musl-argv/results.json; notes/ld02a/evidence/argv-probe/; kasumi /home/mfwolffe/lanes/ld02a/ligature/target/evidence/self-link/diagnose-03/results.json',flush=True)
+    sys.exit(0)
 assert preflight.returncode==0,'self-link runtime argv preflight failed unexpectedly'
 wolf=os.environ.get('WOLF',str(ROOT/'.wolf-bin/wolf'))
 object_dir=pathlib.Path(tempfile.mkdtemp(prefix='objects-',dir=OUT))

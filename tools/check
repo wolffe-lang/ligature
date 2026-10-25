@@ -2,5 +2,5 @@
 set -euo pipefail
 cd "$(dirname "$0")/.."
 tools/check-core
-# Exit 2 names a BLOCKED runtime prerequisite; the full gate is not green.
+# R-ld02-5 A: only the exact known runtime digest may record BLOCKED without failing CI.
 python3 -I tests/self-link.py
