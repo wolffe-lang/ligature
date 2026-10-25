@@ -7,7 +7,22 @@
   "original_different_positions": 349,
   "remaining_different_positions": 0,
   "member_multiset_equal": true,
-  "tls_reorderings": "pending full-corpus comparison; no resolution claimed yet",
+  "tls_reorderings": {
+    "baseline_lld_findings_resolved": 3,
+    "new_gnu_findings_retained": 3,
+    "cases": [
+      "compiler-procs",
+      "pax-host",
+      "pax-spawn"
+    ],
+    "named_initializer_bytes_equal": true,
+    "binding_differences_recorded_separately": true
+  },
   "semantics": "Archive-index entries become lazy in index order; a strong unresolved reference extracts immediately and recursively. Earlier archives remain available, matching LLD's backward-reference control. Weak references do not pull. Cycles select each member once.",
-  "cost_caveat": "Total hello link timing after the change also includes retained-relocation metadata; resolver timing isolates discovery. The baseline total was 417.703 warm-up, 335.921 and 337.213 seconds. No separate performance fix."
+  "cost_caveat": "The before/after link inputs have equal identity, order, size and hash. Total times include retained-relocation/full-provenance changes and different host load, so no extraction-only whole-link speedup is claimed; resolver delta isolates extraction.",
+  "post_change_total_link_seconds": [
+    255.397,
+    266.776,
+    259.38
+  ]
 }

@@ -1,0 +1,2 @@
+TLS classification: same named payload despite ordering/binding changes; changed payload remains unequal; no findings waived; 0 SKIP
+PAX staging: gzip evidence preserves exact program bytes and identical initramfs; 0 SKIP

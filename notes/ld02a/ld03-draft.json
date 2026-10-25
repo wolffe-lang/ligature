@@ -1,6 +1,6 @@
 {
   "format": "ligature.ld03.draft.v1",
-  "state": "provisional until ld02a self-link and live PAX qualification complete",
+  "state": "Draft based on completed ld02a Linux census; final live PAX evidence pending",
   "goal": "Resolve remaining measured structural findings and prepare the high-half kernel link without broad equivalence waivers",
   "prerequisites": [
     "Read ld02a's final per-case structural records; preserve every remaining finding individually",
@@ -10,10 +10,35 @@
   ],
   "items": [
     "Resolve or explicitly retain local/debug symbol metadata, segment and relocation normalization findings from the new corpus; do not inherit ld01 counts as current",
+    "Measure compact provenance encoding/interning: hello embeds a 147,136,512-byte JSON manifest for 590,358 retained sites. Preserve complete attribution, independent patch proofs and deterministic output; do not silently strip debug records.",
     "Measure merge-string/deduplication and unwind metadata behavior against both binary oracles",
     "Extend provenance to discarded-section causes and richer dependency explanations; signatures remain a separately specified authentication envelope",
     "Scope the kernel linker-script/high-half subset with the ELF and ABI specifications and black-box oracles; pax#172 is not a user-program waiver",
     "Plan AArch64 linking separately from the already-supported header reader, with ABI-qualified relocation and refusal tests"
   ],
-  "gates": ["Every new gate planted red in its executing CI row", "Same-input deterministic relinks", "Actual input-edit byte deltas match attribution", "All retained relocation sites independently decoded", "Full Linux and live PAX corpus with explicit per-row status"]
+  "gates": [
+    "Every new gate planted red in its executing CI row",
+    "Same-input deterministic relinks",
+    "Actual input-edit byte deltas match attribution",
+    "All retained relocation sites independently decoded",
+    "Full Linux and live PAX corpus with explicit per-row status"
+  ],
+  "inputs": {
+    "current_structural_findings": 87,
+    "classes": {
+      "symbols": 28,
+      "segments": 28,
+      "relocations": 28,
+      "tls_gnu": 3
+    },
+    "resolved_baseline_findings": {
+      "lld_entry": 14,
+      "lld_tls": 3
+    },
+    "new_findings": {
+      "gnu_tls": 3
+    },
+    "hello_manifest_bytes": 147136512,
+    "runtime_blocker": "wolf-lang#962; digest-bounded R-ld02-5 A"
+  }
 }

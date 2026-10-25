@@ -1,0 +1,110 @@
+LD02A LONG START 2026-10-25T06:46:09-04:00 pid=3364371 head=39da5cb8a3e995890cabc19d137ed1cc8815a26e
+SOURCE GATE 2026-10-25T10:46:09+00:00
+{"event":"suite","file":"src/kernel_relocation_test.lu","schema":"wolf-test/0","tests":1}
+{"detail":"exit(0)","event":"test","file":"src/kernel_relocation_test.lu","name":"main","schema":"wolf-test/0","status":"pass"}
+{"event":"suite","file":"src/reader_test.lu","schema":"wolf-test/0","tests":1}
+{"detail":"exit(0)","event":"test","file":"src/reader_test.lu","name":"main","schema":"wolf-test/0","status":"pass"}
+{"event":"summary","failed":0,"filtered_out":0,"native":0,"passed":2,"rejected":0,"schema":"wolf-test/0","stopped_early":false,"unsupported":0}
+fetch-bundle: mismatched archive refused before extraction; 0 SKIP
+self-link blocker: exact fetched runtime digest and reproduced argv status required; other digests hard-gated; 0 SKIP
+integration: 43 process rows, 0 SKIP
+oracle: 2 musl links, 2 deterministic relinks, 2 differ plants, 4 verify plants, 0 SKIP
+resolution: 16 oracle rows, 0 SKIP
+resolve: strong/weak/common, indexed archives, groups, duplicate names, COMDAT; 0 SKIP
+lazy-order: forward/backward discovery matches LLD, four-member cyclic graph selected once; 0 SKIP
+writer: 10 three-linker behavior rows, determinism, named refusals and TLS-negative rows; 0 SKIP
+relocation-witness: three linkers, retained sites, unused data/debug corruption red, local/entry normalization; 0 SKIP
+relocation-witness: all writer cases independently decoded, including four TLS models; 0 SKIP
+cc frontend: exact compiler-style option subset links and runs; 0 SKIP
+provenance: canonical manifest, independent SHA256 checks, four negative rows; 0 SKIP
+attribution: complete disjoint coverage, explain, deterministic relink, delta locality, five resealed negative rows; 0 SKIP
+attribution: aliases, archive path, TLS/NOBITS, ambiguous locals and explicit member selection; 0 SKIP
+PAX transcript validator: one genuine capture, four rejected mutations; replay only, 0 SKIP
+static-pax runner: report preserved, nonzero differ status preserved, 0 SKIP
+kernel edge: lld17 refuses -2147483652; GNU default refuses, GNU --no-relax keeps GOT load; newer-lld comparison remains outstanding
+roundtrip: PASS /baseline/toolchain/wolf/wolf-0.2.35-x86_64-unknown-linux-gnu/libwolf_rt.a
+musl-argv glibc 0 b'argc=3\n[--version]\n[space word]\n[]\n' b''
+musl-argv lld 0 b'argc=0\n' b''
+musl-argv gnu 0 b'argc=0\n' b''
+musl-argv c-musl 0 b'argc=3\n[--version]\n[space word]\n[]\n' b''
+BLOCKED self-link: wolf-lang#962; both pinned musl links lose argv while cc/glibc and the pinned C/musl control preserve it
+BLOCKED self-link and executing ligature on PAX: wolf-lang#962; runtime SHA256 9d859b9e6b5319f5a6f609e73ba0d71981d2dfa489882648ac9f454cd9db739c; R-ld02-5 A
+BLOCKED evidence: target/evidence/musl-argv/results.json; notes/ld02a/evidence/argv-probe/; kasumi /home/mfwolffe/lanes/ld02a/ligature/target/evidence/self-link/diagnose-03/results.json
+POST-CHANGE TOTAL COST 2026-10-25T10:46:13+00:00
+POST-CHANGE LINK 1 2026-10-25T10:46:13+00:00
+elapsed=255.397 user=251.339 sys=3.162
+4587eb789e4aec259ce7c3d24447d9f2eccf8538659b8b0fb12a095264a1761f  /lane/lazy-hello
+POST-CHANGE LINK 2 2026-10-25T10:50:28+00:00
+elapsed=266.776 user=262.676 sys=3.047
+4587eb789e4aec259ce7c3d24447d9f2eccf8538659b8b0fb12a095264a1761f  /lane/lazy-hello
+POST-CHANGE LINK 3 2026-10-25T10:54:55+00:00
+elapsed=259.380 user=255.436 sys=2.941
+4587eb789e4aec259ce7c3d24447d9f2eccf8538659b8b0fb12a095264a1761f  /lane/lazy-hello
+SEED-LINKED CORPUS 2026-10-25T10:59:15+00:00
+EMIT tests/corpus/pax/exec.lu -> target/corpus/pax-exec
+EMIT tests/corpus/pax/fork.lu -> target/corpus/pax-fork
+EMIT tests/corpus/pax/hello.lu -> target/corpus/pax-hello
+EMIT tests/corpus/pax/host.lu -> target/corpus/pax-host
+warning[E0802]: this arm can never match — the arms above already cover it
+  --> tests/corpus/pax/host.lu:39:13
+   |
+38 |             invalid => "invalid",
+   |             ------- this arm already matches those values
+39 |             missing => "missing",
+   |             ^^^^^^^ unreachable arm
+   |
+   = note: delete the arm, or reorder the arms so the more specific pattern comes first.
+
+EMIT tests/corpus/pax/loop.lu -> target/corpus/pax-loop
+EMIT tests/corpus/pax/signal.lu -> target/corpus/pax-signal
+EMIT tests/corpus/pax/spawn.lu -> target/corpus/pax-spawn
+EMIT tests/corpus/pax/std.lu -> target/corpus/pax-std
+EMIT tests/corpus/hello/hello.lu -> target/corpus/hello-hello
+PINS verified twice
+BEGIN compiler-comptime
+LINK1 compiler-comptime 8875f0dc61ea78785046654cb9220a97a7f2c2fb1c3eff933770aae81efedf2f
+END compiler-comptime behavior-verified-structural-recorded functional_failures 0 unexplained 6
+BEGIN compiler-entry_no_return
+LINK1 compiler-entry_no_return 2081ef8b46c1826fb7664f65460b355ae8f082ed5be3498b29d743fa7ee4340b
+END compiler-entry_no_return behavior-verified-structural-recorded functional_failures 0 unexplained 12
+BEGIN compiler-overflow
+LINK1 compiler-overflow 09147632e69a88c75c538aebe16693f9450f47b70b0df17bff9cf5a33498e933
+END compiler-overflow behavior-verified-structural-recorded functional_failures 0 unexplained 18
+BEGIN compiler-procs
+LINK1 compiler-procs c0fb4440d3a179217b9231ace6fc530e49d312c1709bb1a17a7c980d088e69be
+END compiler-procs behavior-verified-structural-recorded functional_failures 0 unexplained 25
+BEGIN compiler-regions
+LINK1 compiler-regions ca999e9fd35581a22b760b9f2286c892093ec157a7a820c1d752669b93162fd4
+END compiler-regions behavior-verified-structural-recorded functional_failures 0 unexplained 31
+BEGIN hello-hello
+LINK1 hello-hello 4587eb789e4aec259ce7c3d24447d9f2eccf8538659b8b0fb12a095264a1761f
+END hello-hello behavior-verified-structural-recorded functional_failures 0 unexplained 37
+BEGIN pax-exec
+LINK1 pax-exec 11e88a3c045cccdcc9df32b5560b0ec0681f1fa6498aacb12eda4a940871e9d3
+END pax-exec behavior-verified-structural-recorded functional_failures 0 unexplained 43
+BEGIN pax-fork
+LINK1 pax-fork 5f297e2092536348f9541bffc2e5883cbdd13ba661f0739d1652ae638397c1aa
+END pax-fork behavior-verified-structural-recorded functional_failures 0 unexplained 49
+BEGIN pax-hello
+LINK1 pax-hello fb5dc5d58a517ffd7a036f76d38122edb3b114f6254ffb6100db9e233ae7d8b0
+END pax-hello behavior-verified-structural-recorded functional_failures 0 unexplained 55
+BEGIN pax-host
+LINK1 pax-host 44a0b31cab8e763beb3cb90932e74f54b72d94fbf279652c3b504ec71afde9d4
+END pax-host behavior-verified-structural-recorded functional_failures 0 unexplained 62
+BEGIN pax-loop
+LINK1 pax-loop d286c1f8ed5742d9e06cd2de631400dcf336024629ce393a3b31228102e12641
+END pax-loop behavior-verified-structural-recorded functional_failures 0 unexplained 68
+BEGIN pax-signal
+LINK1 pax-signal 7e5b074e5f4838663f51b127d8a4c4d553dba49bf67d7a57bb1c82bfaffd8ea6
+END pax-signal behavior-verified-structural-recorded functional_failures 0 unexplained 74
+BEGIN pax-spawn
+LINK1 pax-spawn aefecc3a808d8e903b6a36009e26143be328dbc10a009d287d25bc1d95a462e3
+END pax-spawn behavior-verified-structural-recorded functional_failures 0 unexplained 81
+BEGIN pax-std
+LINK1 pax-std a41ab6ea01c8db7b175ccbe68af7e9fa2fefae9b7fa3add8388a5c576d43c12b
+END pax-std behavior-verified-structural-recorded functional_failures 0 unexplained 87
+COMPLETE 14 rows; functional failures 0 unexplained structural differences 87
+{"counts": {"relocations": 28, "segments": 28, "symbols": 28, "tls": 3}, "tls_normalized": [{"candidate_memsz": 552, "candidate_only_variables": [["_RNvNCNKNvNtCs1NRTePXyPp9_7wolf_rt2fs8OS_ERROR0s_023___RUST_STD_INTERNAL_VAL.llvm.7178678154886780955", 0, 8, "0000000000000000"], ["_RNvNCNKNvNtCs1NRTePXyPp9_7wolf_rt3str6WINDOW0023___RUST_STD_INTERNAL_VAL.llvm.992735906511195175", 0, 24, "000000000000000000000000000000000000000000000000"], ["_RNvNCNKNvNtCs1NRTePXyPp9_7wolf_rt6native5POOLS0023___RUST_STD_INTERNAL_VAL.llvm.17460160716277744143", 0, 72, "000000000000000000000000000000000800000000000000000000000000000000000000000000000000000000000000080000000000000000000000000000000000000000000000"], ["_RNvNCNKNvNtCs1NRTePXyPp9_7wolf_rt7scratch8READ_BUF0023___RUST_STD_INTERNAL_VAL.llvm.992735906511195175", 0, 32, "0000000000000000010000000000000000000000000000000000000000000000"], ["_RNvNCNKNvNtNtCs1NRTePXyPp9_7wolf_rt4task4pool11WORKER_SPAN0s_023___RUST_STD_INTERNAL_VAL", 0, 24, "000000000000000000000000000000000000000000000000"], ["_RNvNCNKNvNtNtCs1NRTePXyPp9_7wolf_rt4task5stack11FAULT_LABELs_0s_023___RUST_STD_INTERNAL_VAL.llvm.10606004618873227756", 0, 96, "000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"], ["_RNvNCNKNvNtNtCs1NRTePXyPp9_7wolf_rt4task5stack13CURRENT_GUARD0s_023___RUST_STD_INTERNAL_VAL.llvm.10606004618873227756", 0, 16, "00000000000000000000000000000000"], ["_RNvNCNKNvNtNtCs1NRTePXyPp9_7wolf_rt4task5stack7OWN_ALT0023___RUST_STD_INTERNAL_VAL.llvm.10606004618873227756", 0, 32, "0000000000000000000000000000000000000000000000000000000000000000"], ["_RNvNCNKNvNtNtCs1NRTePXyPp9_7wolf_rt4task8conc_abi10PROC_VALUE0s_023___RUST_STD_INTERNAL_VAL", 0, 8, "0000000000000000"]], "classification": "different TLS variable ordering; raw template mismatch remains recorded", "kind": "tls", "reference_memsz": 552, "reference_only_variables": [["_RNvNCNKNvNtCs1NRTePXyPp9_7wolf_rt2fs8OS_ERROR0s_023___RUST_STD_INTERNAL_VAL.llvm.7178678154886780955", 1, 8, "0000000000000000"], ["_RNvNCNKNvNtCs1NRTePXyPp9_7wolf_rt3str6WINDOW0023___RUST_STD_INTERNAL_VAL.llvm.992735906511195175", 1, 24, "000000000000000000000000000000000000000000000000"], ["_RNvNCNKNvNtCs1NRTePXyPp9_7wolf_rt6native5POOLS0023___RUST_STD_INTERNAL_VAL.llvm.17460160716277744143", 1, 72, "000000000000000000000000000000000800000000000000000000000000000000000000000000000000000000000000080000000000000000000000000000000000000000000000"], ["_RNvNCNKNvNtCs1NRTePXyPp9_7wolf_rt7scratch8READ_BUF0023___RUST_STD_INTERNAL_VAL.llvm.992735906511195175", 1, 32, "0000000000000000010000000000000000000000000000000000000000000000"], ["_RNvNCNKNvNtNtCs1NRTePXyPp9_7wolf_rt4task4pool11WORKER_SPAN0s_023___RUST_STD_INTERNAL_VAL", 1, 24, "000000000000000000000000000000000000000000000000"], ["_RNvNCNKNvNtNtCs1NRTePXyPp9_7wolf_rt4task5stack11FAULT_LABELs_0s_023___RUST_STD_INTERNAL_VAL.llvm.10606004618873227756", 1, 96, "000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"], ["_RNvNCNKNvNtNtCs1NRTePXyPp9_7wolf_rt4task5stack13CURRENT_GUARD0s_023___RUST_STD_INTERNAL_VAL.llvm.10606004618873227756", 1, 16, "00000000000000000000000000000000"], ["_RNvNCNKNvNtNtCs1NRTePXyPp9_7wolf_rt4task5stack7OWN_ALT0023___RUST_STD_INTERNAL_VAL.llvm.10606004618873227756", 1, 32, "0000000000000000000000000000000000000000000000000000000000000000"], ["_RNvNCNKNvNtNtCs1NRTePXyPp9_7wolf_rt4task8conc_abi10PROC_VALUE0s_023___RUST_STD_INTERNAL_VAL", 1, 8, "0000000000000000"]], "symbol_normalized_initializers_equal": false}, {"candidate_memsz": 520, "candidate_only_variables": [["_RNvNCNKNvNtCs1NRTePXyPp9_7wolf_rt2fs8OS_ERROR0s_023___RUST_STD_INTERNAL_VAL.llvm.7178678154886780955", 0, 8, "0000000000000000"], ["_RNvNCNKNvNtCs1NRTePXyPp9_7wolf_rt2io4LINE0023___RUST_STD_INTERNAL_VAL.llvm.17751204243059859980", 0, 48, "000000000000000000000000000000000100000000000000000000000000000000000000000000000000000000000000"], ["_RNvNCNKNvNtCs1NRTePXyPp9_7wolf_rt3str6WINDOW0023___RUST_STD_INTERNAL_VAL.llvm.992735906511195175", 0, 24, "000000000000000000000000000000000000000000000000"], ["_RNvNCNKNvNtCs1NRTePXyPp9_7wolf_rt6native5POOLS0023___RUST_STD_INTERNAL_VAL.llvm.17460160716277744143", 0, 72, "000000000000000000000000000000000800000000000000000000000000000000000000000000000000000000000000080000000000000000000000000000000000000000000000"], ["_RNvNCNKNvNtNtCs1NRTePXyPp9_7wolf_rt4task4pool11WORKER_SPAN0s_023___RUST_STD_INTERNAL_VAL", 0, 24, "000000000000000000000000000000000000000000000000"], ["_RNvNCNKNvNtNtCs1NRTePXyPp9_7wolf_rt4task5stack11FAULT_LABELs_0s_023___RUST_STD_INTERNAL_VAL.llvm.10606004618873227756", 0, 96, "000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"], ["_RNvNCNKNvNtNtCs1NRTePXyPp9_7wolf_rt4task5stack13CURRENT_GUARD0s_023___RUST_STD_INTERNAL_VAL.llvm.10606004618873227756", 0, 16, "00000000000000000000000000000000"], ["_RNvNCNKNvNtNtCs1NRTePXyPp9_7wolf_rt4task5stack7OWN_ALT0023___RUST_STD_INTERNAL_VAL.llvm.10606004618873227756", 0, 32, "0000000000000000000000000000000000000000000000000000000000000000"]], "classification": "different TLS variable ordering; raw template mismatch remains recorded", "kind": "tls", "reference_memsz": 520, "reference_only_variables": [["_RNvNCNKNvNtCs1NRTePXyPp9_7wolf_rt2fs8OS_ERROR0s_023___RUST_STD_INTERNAL_VAL.llvm.7178678154886780955", 1, 8, "0000000000000000"], ["_RNvNCNKNvNtCs1NRTePXyPp9_7wolf_rt2io4LINE0023___RUST_STD_INTERNAL_VAL.llvm.17751204243059859980", 1, 48, "000000000000000000000000000000000100000000000000000000000000000000000000000000000000000000000000"], ["_RNvNCNKNvNtCs1NRTePXyPp9_7wolf_rt3str6WINDOW0023___RUST_STD_INTERNAL_VAL.llvm.992735906511195175", 1, 24, "000000000000000000000000000000000000000000000000"], ["_RNvNCNKNvNtCs1NRTePXyPp9_7wolf_rt6native5POOLS0023___RUST_STD_INTERNAL_VAL.llvm.17460160716277744143", 1, 72, "000000000000000000000000000000000800000000000000000000000000000000000000000000000000000000000000080000000000000000000000000000000000000000000000"], ["_RNvNCNKNvNtNtCs1NRTePXyPp9_7wolf_rt4task4pool11WORKER_SPAN0s_023___RUST_STD_INTERNAL_VAL", 1, 24, "000000000000000000000000000000000000000000000000"], ["_RNvNCNKNvNtNtCs1NRTePXyPp9_7wolf_rt4task5stack11FAULT_LABELs_0s_023___RUST_STD_INTERNAL_VAL.llvm.10606004618873227756", 1, 96, "000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"], ["_RNvNCNKNvNtNtCs1NRTePXyPp9_7wolf_rt4task5stack13CURRENT_GUARD0s_023___RUST_STD_INTERNAL_VAL.llvm.10606004618873227756", 1, 16, "00000000000000000000000000000000"], ["_RNvNCNKNvNtNtCs1NRTePXyPp9_7wolf_rt4task5stack7OWN_ALT0023___RUST_STD_INTERNAL_VAL.llvm.10606004618873227756", 1, 32, "0000000000000000000000000000000000000000000000000000000000000000"]], "symbol_normalized_initializers_equal": false}, {"candidate_memsz": 448, "candidate_only_variables": [["_RNvNCNKNvNtCs1NRTePXyPp9_7wolf_rt2fs8OS_ERROR0s_023___RUST_STD_INTERNAL_VAL.llvm.7178678154886780955", 0, 8, "0000000000000000"], ["_RNvNCNKNvNtCs1NRTePXyPp9_7wolf_rt2io4LINE0023___RUST_STD_INTERNAL_VAL.llvm.17751204243059859980", 0, 48, "000000000000000000000000000000000100000000000000000000000000000000000000000000000000000000000000"], ["_RNvNCNKNvNtNtCs1NRTePXyPp9_7wolf_rt4task4pool11WORKER_SPAN0s_023___RUST_STD_INTERNAL_VAL", 0, 24, "000000000000000000000000000000000000000000000000"], ["_RNvNCNKNvNtNtCs1NRTePXyPp9_7wolf_rt4task5stack11FAULT_LABELs_0s_023___RUST_STD_INTERNAL_VAL.llvm.10606004618873227756", 0, 96, "000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"], ["_RNvNCNKNvNtNtCs1NRTePXyPp9_7wolf_rt4task5stack13CURRENT_GUARD0s_023___RUST_STD_INTERNAL_VAL.llvm.10606004618873227756", 0, 16, "00000000000000000000000000000000"], ["_RNvNCNKNvNtNtCs1NRTePXyPp9_7wolf_rt4task5stack7OWN_ALT0023___RUST_STD_INTERNAL_VAL.llvm.10606004618873227756", 0, 32, "0000000000000000000000000000000000000000000000000000000000000000"]], "classification": "different TLS variable ordering; raw template mismatch remains recorded", "kind": "tls", "reference_memsz": 448, "reference_only_variables": [["_RNvNCNKNvNtCs1NRTePXyPp9_7wolf_rt2fs8OS_ERROR0s_023___RUST_STD_INTERNAL_VAL.llvm.7178678154886780955", 1, 8, "0000000000000000"], ["_RNvNCNKNvNtCs1NRTePXyPp9_7wolf_rt2io4LINE0023___RUST_STD_INTERNAL_VAL.llvm.17751204243059859980", 1, 48, "000000000000000000000000000000000100000000000000000000000000000000000000000000000000000000000000"], ["_RNvNCNKNvNtNtCs1NRTePXyPp9_7wolf_rt4task4pool11WORKER_SPAN0s_023___RUST_STD_INTERNAL_VAL", 1, 24, "000000000000000000000000000000000000000000000000"], ["_RNvNCNKNvNtNtCs1NRTePXyPp9_7wolf_rt4task5stack11FAULT_LABELs_0s_023___RUST_STD_INTERNAL_VAL.llvm.10606004618873227756", 1, 96, "000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"], ["_RNvNCNKNvNtNtCs1NRTePXyPp9_7wolf_rt4task5stack13CURRENT_GUARD0s_023___RUST_STD_INTERNAL_VAL.llvm.10606004618873227756", 1, 16, "00000000000000000000000000000000"], ["_RNvNCNKNvNtNtCs1NRTePXyPp9_7wolf_rt4task5stack7OWN_ALT0023___RUST_STD_INTERNAL_VAL.llvm.10606004618873227756", 1, 32, "0000000000000000000000000000000000000000000000000000000000000000"]], "symbol_normalized_initializers_equal": false}], "total": 87}
+LINUX COMPLETE 2026-10-25T13:46:33+00:00
+7.9G	/home/mfwolffe/lanes/ld02a
+LD02A LONG EXIT 0 2026-10-25T09:46:33-04:00

@@ -1,0 +1,1424 @@
+[
+  {
+    "path": "ligature/target/evidence/self-link/diagnose-03/gnu",
+    "bytes": 14655080,
+    "sha256": "005c0fb71a55fad559f87bd509cbd349e06d6dd42e672b7e5fe97b2e74c2b0ff",
+    "compressed_path": "ligature/target/evidence/self-link/diagnose-03/gnu.gz",
+    "compressed_bytes": 3417016,
+    "compressed_sha256": "fa0392829150cf085e438f70afeb6e4bf86123c811fb32296668b6378c14ad23",
+    "hash_reads": 2
+  },
+  {
+    "path": "ligature/target/evidence/self-link/diagnose-03/lld",
+    "bytes": 15282376,
+    "sha256": "29f43d645591e03780af1a043cb030f0de2a9b8d7960a047589f27a50253a6a4",
+    "compressed_path": "ligature/target/evidence/self-link/diagnose-03/lld.gz",
+    "compressed_bytes": 3941472,
+    "compressed_sha256": "5da434495d47e14ba9c8b3cf94aacbc86fa669d2abb9a5b149c669be472fec53",
+    "hash_reads": 2
+  },
+  {
+    "path": "ligature/target/evidence/self-link/ligature-first",
+    "bytes": 182631512,
+    "sha256": "c07f2300982e528f7556c398e91f45586ff671cad431fd1e1d4b08dbacf49600",
+    "compressed_path": "ligature/target/evidence/self-link/ligature-first.gz",
+    "compressed_bytes": 18908566,
+    "compressed_sha256": "163bc4755d69704ba40c95fad53ecd2c84f7a53ea2d3b41aee9cd4be26c5a2f8",
+    "hash_reads": 2
+  },
+  {
+    "path": "ligature/target/evidence/self-link/ligature-second",
+    "bytes": 182631512,
+    "sha256": "c07f2300982e528f7556c398e91f45586ff671cad431fd1e1d4b08dbacf49600",
+    "compressed_path": "ligature/target/evidence/self-link/ligature-second.gz",
+    "compressed_bytes": 18908567,
+    "compressed_sha256": "cb17a147d7f2dff183ea704e674da6525db8ecfe5aeb4293158789ddb4c751e9",
+    "hash_reads": 2
+  },
+  {
+    "path": "ligature/target/static-pax/compiler-comptime/oracle/gnu/inspect.jsonl",
+    "bytes": 75670352,
+    "sha256": "28b45e69a88e40915c55ec497c20d7d16e31d3073caf9881c86dc972102e91d4",
+    "compressed_path": "ligature/target/static-pax/compiler-comptime/oracle/gnu/inspect.jsonl.gz",
+    "compressed_bytes": 5165158,
+    "compressed_sha256": "7ed585c0b41596174bd4f046488e34104922f0095cb00096ec2f2a6a554fbc89",
+    "hash_reads": 2
+  },
+  {
+    "path": "ligature/target/static-pax/compiler-comptime/oracle/gnu/link.map",
+    "bytes": 3010689,
+    "sha256": "eda90a526df38719c3494cb404f2202131f8adb8408b3dc288125a06f18cd263",
+    "compressed_path": "ligature/target/static-pax/compiler-comptime/oracle/gnu/link.map.gz",
+    "compressed_bytes": 189017,
+    "compressed_sha256": "f60353a84d3e82e08a321d30490fc3aa587a61878221b75b3f70c5392d403ec6",
+    "hash_reads": 2
+  },
+  {
+    "path": "ligature/target/static-pax/compiler-comptime/oracle/gnu/objdump.txt",
+    "bytes": 4450740,
+    "sha256": "2cae20ca088c0f4db6323a94f0a59838d3d1741d51b76e91c7f39d21d56976be",
+    "compressed_path": "ligature/target/static-pax/compiler-comptime/oracle/gnu/objdump.txt.gz",
+    "compressed_bytes": 687793,
+    "compressed_sha256": "574c619e01513c2b0a39f582d5b4c2612820a1482b8bde607fd49945663a30b2",
+    "hash_reads": 2
+  },
+  {
+    "path": "ligature/target/static-pax/compiler-comptime/oracle/gnu/program",
+    "bytes": 27599984,
+    "sha256": "914ca79370c93a3dce7c16d31c6eea51a51ab35dbf5f235931338960b7812673",
+    "compressed_path": "ligature/target/static-pax/compiler-comptime/oracle/gnu/program.gz",
+    "compressed_bytes": 5282722,
+    "compressed_sha256": "baa0359c862e703bb10bc77f323342da50065c633b2a41164d11b6bfdf225f55",
+    "hash_reads": 2
+  },
+  {
+    "path": "ligature/target/static-pax/compiler-comptime/oracle/gnu/readelf.txt",
+    "bytes": 51393690,
+    "sha256": "9b0fe3d4f38b6864f59f8be093df18b5eadb554325f9c734db710bd484ee058f",
+    "compressed_path": "ligature/target/static-pax/compiler-comptime/oracle/gnu/readelf.txt.gz",
+    "compressed_bytes": 3211172,
+    "compressed_sha256": "eb3f2da32ca70935980693fe52b1148b9940bead57b0718b9dd6919e5223b8e0",
+    "hash_reads": 2
+  },
+  {
+    "path": "ligature/target/static-pax/compiler-comptime/oracle/lld/inspect.jsonl",
+    "bytes": 78169540,
+    "sha256": "bb561cfe0020cb1390ecf78486a5572125caee76cf751d9fc0214e22e521d4b9",
+    "compressed_path": "ligature/target/static-pax/compiler-comptime/oracle/lld/inspect.jsonl.gz",
+    "compressed_bytes": 5628420,
+    "compressed_sha256": "e582426ec4d36029eb2fa2c50aae4083e66b3c17819bf9b0f0845e23bd8070f5",
+    "hash_reads": 2
+  },
+  {
+    "path": "ligature/target/static-pax/compiler-comptime/oracle/lld/link.map",
+    "bytes": 1719595,
+    "sha256": "21d99638ec060176b9c95c52424dd308a104d95e39d78a5dede87d59417c5294",
+    "compressed_path": "ligature/target/static-pax/compiler-comptime/oracle/lld/link.map.gz",
+    "compressed_bytes": 168776,
+    "compressed_sha256": "44c4082ab5a9d72822b91f5abbafe7da15313817025968a79454dc1959977943",
+    "hash_reads": 2
+  },
+  {
+    "path": "ligature/target/static-pax/compiler-comptime/oracle/lld/objdump.txt",
+    "bytes": 4636981,
+    "sha256": "05186c1f3149fa6a1ded23f146909a30d1c9ce89d3b7c0746ade9a387c293268",
+    "compressed_path": "ligature/target/static-pax/compiler-comptime/oracle/lld/objdump.txt.gz",
+    "compressed_bytes": 702339,
+    "compressed_sha256": "f0a6d8328975669ee0bd2a2f2aeb2ddb4b3c0c5ac67ad1470711f0b565b43258",
+    "hash_reads": 2
+  },
+  {
+    "path": "ligature/target/static-pax/compiler-comptime/oracle/lld/program",
+    "bytes": 28521752,
+    "sha256": "3d00f333e8b4235e27b5ac2768149650da1f8b13312eff3484b1d05cbd7a0f3e",
+    "compressed_path": "ligature/target/static-pax/compiler-comptime/oracle/lld/program.gz",
+    "compressed_bytes": 6191820,
+    "compressed_sha256": "b780814d52c59a1fe0315e37495cfdd87a0aecbcdee524c3d611a59650a4cdaf",
+    "hash_reads": 2
+  },
+  {
+    "path": "ligature/target/static-pax/compiler-comptime/oracle/lld/readelf.txt",
+    "bytes": 52883506,
+    "sha256": "02d3d24a811a6b9be87810301bfc8c95d638bf1418bf3069f45ede051410b5e2",
+    "compressed_path": "ligature/target/static-pax/compiler-comptime/oracle/lld/readelf.txt.gz",
+    "compressed_bytes": 3580987,
+    "compressed_sha256": "0a85e61062d7d42741de8942d5469fdaf6b8d76341bd684cd93e6d6c7edb5ddb",
+    "hash_reads": 2
+  },
+  {
+    "path": "ligature/target/static-pax/compiler-comptime/program",
+    "bytes": 177958688,
+    "sha256": "8875f0dc61ea78785046654cb9220a97a7f2c2fb1c3eff933770aae81efedf2f",
+    "compressed_path": "ligature/target/static-pax/compiler-comptime/program.gz",
+    "compressed_bytes": 18207673,
+    "compressed_sha256": "b6b98425dd343dc9bee1314e2989f3812aea52a47fd310a1ec56d307bcfe517d",
+    "hash_reads": 2
+  },
+  {
+    "path": "ligature/target/static-pax/compiler-entry_no_return/oracle/gnu/inspect.jsonl",
+    "bytes": 75653452,
+    "sha256": "9e87c449c1a522f118b155d29bbe62b85ec5a278b16870a35a90f4705a999503",
+    "compressed_path": "ligature/target/static-pax/compiler-entry_no_return/oracle/gnu/inspect.jsonl.gz",
+    "compressed_bytes": 5163776,
+    "compressed_sha256": "a2452862aa3f1a9a8715d8d1d85f6ec1915db4f476d047536fc7d2b639e54b01",
+    "hash_reads": 2
+  },
+  {
+    "path": "ligature/target/static-pax/compiler-entry_no_return/oracle/gnu/link.map",
+    "bytes": 3013768,
+    "sha256": "0fdd71eab01b77b79345ebbe3472d92bcdfdbe67a2cc3c864d67d39a8fdbe895",
+    "compressed_path": "ligature/target/static-pax/compiler-entry_no_return/oracle/gnu/link.map.gz",
+    "compressed_bytes": 190167,
+    "compressed_sha256": "c63b2e0e9ee4e2fe696e9d6b3cbba827cf6814693e66dd8b273622f5781a2561",
+    "hash_reads": 2
+  },
+  {
+    "path": "ligature/target/static-pax/compiler-entry_no_return/oracle/gnu/objdump.txt",
+    "bytes": 4487659,
+    "sha256": "1a5830afae0f2177cb6d267614fbe063a7e5329f151c5244181a31a55f9dfc54",
+    "compressed_path": "ligature/target/static-pax/compiler-entry_no_return/oracle/gnu/objdump.txt.gz",
+    "compressed_bytes": 694659,
+    "compressed_sha256": "d7919596f2134a9fe64a664a7468074ad754e9df97f5af2f2abebedcee8cbf72",
+    "hash_reads": 2
+  },
+  {
+    "path": "ligature/target/static-pax/compiler-entry_no_return/oracle/gnu/program",
+    "bytes": 27610616,
+    "sha256": "6fc555e2b7eaa4ed2b5fc449c54cc570c73236fe43dc542f1baa581febc2b6c5",
+    "compressed_path": "ligature/target/static-pax/compiler-entry_no_return/oracle/gnu/program.gz",
+    "compressed_bytes": 5287941,
+    "compressed_sha256": "3a14ab9dfbdace93bf90ea40b688840199027eaa7c774b7e9c0609a36b81dc69",
+    "hash_reads": 2
+  },
+  {
+    "path": "ligature/target/static-pax/compiler-entry_no_return/oracle/gnu/readelf.txt",
+    "bytes": 51375551,
+    "sha256": "8f2d0698552a0a61bd6105b9a50fd16be15576325d026a3e62c8252a5605ebff",
+    "compressed_path": "ligature/target/static-pax/compiler-entry_no_return/oracle/gnu/readelf.txt.gz",
+    "compressed_bytes": 3211634,
+    "compressed_sha256": "7672036976e25180434ddcd8d3fd6b034c1691c24308437dcba026af68f2623e",
+    "hash_reads": 2
+  },
+  {
+    "path": "ligature/target/static-pax/compiler-entry_no_return/oracle/lld/inspect.jsonl",
+    "bytes": 78138773,
+    "sha256": "12f8bae866c40eabc7f12519a9f30aea94e68d060cbebf57a94ad413a5f93981",
+    "compressed_path": "ligature/target/static-pax/compiler-entry_no_return/oracle/lld/inspect.jsonl.gz",
+    "compressed_bytes": 5630469,
+    "compressed_sha256": "2674ee85a56e8f5b69e78a9d67071c5b7435b197b71ea26f6d84660e2e26545b",
+    "hash_reads": 2
+  },
+  {
+    "path": "ligature/target/static-pax/compiler-entry_no_return/oracle/lld/link.map",
+    "bytes": 1739711,
+    "sha256": "0e33312f1ea1ff75a94de95d770d7585cf028f516adeef7c74690442d9790372",
+    "compressed_path": "ligature/target/static-pax/compiler-entry_no_return/oracle/lld/link.map.gz",
+    "compressed_bytes": 170210,
+    "compressed_sha256": "02ab38f4206385a338e896c7a0ac0d16207919c08c9fbeb95bb08a203951115a",
+    "hash_reads": 2
+  },
+  {
+    "path": "ligature/target/static-pax/compiler-entry_no_return/oracle/lld/objdump.txt",
+    "bytes": 4672270,
+    "sha256": "050a886bde6f6eb647e0798ba2b89344e03a41370635b47ce79fd5d810bdab0b",
+    "compressed_path": "ligature/target/static-pax/compiler-entry_no_return/oracle/lld/objdump.txt.gz",
+    "compressed_bytes": 707544,
+    "compressed_sha256": "354fdfc9aa6dfb86db822a77141433369cf21f2af938ebb1e630f9ae64fc4aa3",
+    "hash_reads": 2
+  },
+  {
+    "path": "ligature/target/static-pax/compiler-entry_no_return/oracle/lld/program",
+    "bytes": 28532232,
+    "sha256": "6a0a4b170afa653dec058e70845d9e293f4b8b094a6010a97f8da4637670ff6a",
+    "compressed_path": "ligature/target/static-pax/compiler-entry_no_return/oracle/lld/program.gz",
+    "compressed_bytes": 6198815,
+    "compressed_sha256": "65462142ec4fc07935ced43a0a99a56d85d197ab78f6887d32b87ea3cbb74175",
+    "hash_reads": 2
+  },
+  {
+    "path": "ligature/target/static-pax/compiler-entry_no_return/oracle/lld/readelf.txt",
+    "bytes": 52920496,
+    "sha256": "5ec6f2517d66c6984b521746514403637af3479cd15e9a2163d12bf259670d04",
+    "compressed_path": "ligature/target/static-pax/compiler-entry_no_return/oracle/lld/readelf.txt.gz",
+    "compressed_bytes": 3584547,
+    "compressed_sha256": "0ed9749dc3a6bfe904c950ab39d448a1fd3e29cefbf95fa78ca8b0c62a4770fd",
+    "hash_reads": 2
+  },
+  {
+    "path": "ligature/target/static-pax/compiler-entry_no_return/program",
+    "bytes": 178102008,
+    "sha256": "2081ef8b46c1826fb7664f65460b355ae8f082ed5be3498b29d743fa7ee4340b",
+    "compressed_path": "ligature/target/static-pax/compiler-entry_no_return/program.gz",
+    "compressed_bytes": 18227455,
+    "compressed_sha256": "2a480d62e9222cb84d00864e6fb10eba5cc55aae9706d0cbbea751e7841b16f4",
+    "hash_reads": 2
+  },
+  {
+    "path": "ligature/target/static-pax/compiler-overflow/oracle/gnu/inspect.jsonl",
+    "bytes": 75670665,
+    "sha256": "2eab60ae23d5fd2894186e08f383e9ccabbe708fddf312e4a84d820f98928e88",
+    "compressed_path": "ligature/target/static-pax/compiler-overflow/oracle/gnu/inspect.jsonl.gz",
+    "compressed_bytes": 5165523,
+    "compressed_sha256": "27340bbc7a021a92a639aab1dfc3e78e096c5e4d66e23f6f6ef7e8bd1a83650f",
+    "hash_reads": 2
+  },
+  {
+    "path": "ligature/target/static-pax/compiler-overflow/oracle/gnu/link.map",
+    "bytes": 3010569,
+    "sha256": "8572e6d5ffaa929c06e4975dd711937f70c2537ee14c9185dfdd862f647ada8b",
+    "compressed_path": "ligature/target/static-pax/compiler-overflow/oracle/gnu/link.map.gz",
+    "compressed_bytes": 189016,
+    "compressed_sha256": "f87e275f0a2a5807212135d3bcb9455afdc26a133b660c16f271a40f82fb5a29",
+    "hash_reads": 2
+  },
+  {
+    "path": "ligature/target/static-pax/compiler-overflow/oracle/gnu/objdump.txt",
+    "bytes": 4450683,
+    "sha256": "9eac62dd40cde8a3ae423918784c91a61514445107e1c531d145d1fee6cdc26a",
+    "compressed_path": "ligature/target/static-pax/compiler-overflow/oracle/gnu/objdump.txt.gz",
+    "compressed_bytes": 687773,
+    "compressed_sha256": "c612a048bad882d6acef23cd30991e5058635db53d3591dab765c3950b6bacd5",
+    "hash_reads": 2
+  },
+  {
+    "path": "ligature/target/static-pax/compiler-overflow/oracle/gnu/program",
+    "bytes": 27599944,
+    "sha256": "919e794bf90de373803daa0c75407c810fee322533330d15286919a353df3eca",
+    "compressed_path": "ligature/target/static-pax/compiler-overflow/oracle/gnu/program.gz",
+    "compressed_bytes": 5282692,
+    "compressed_sha256": "d8546002755f3b8e78419f132137444fb12ad1974515263bc9553001fd20e13a",
+    "hash_reads": 2
+  },
+  {
+    "path": "ligature/target/static-pax/compiler-overflow/oracle/gnu/readelf.txt",
+    "bytes": 51393811,
+    "sha256": "4d579cf65dcaf87243ae4573f5b9dcedc522a65dcc6c3a36027ea70c998b87a6",
+    "compressed_path": "ligature/target/static-pax/compiler-overflow/oracle/gnu/readelf.txt.gz",
+    "compressed_bytes": 3211287,
+    "compressed_sha256": "c5e8ad461790ae0ba690c15933264848528f25601c0b8f818a18fedd307a08ba",
+    "hash_reads": 2
+  },
+  {
+    "path": "ligature/target/static-pax/compiler-overflow/oracle/lld/inspect.jsonl",
+    "bytes": 78168107,
+    "sha256": "2b1e3ec700efde1c70f1c045e9a120cbf7c5d3c6cbac1c685432d178990f046c",
+    "compressed_path": "ligature/target/static-pax/compiler-overflow/oracle/lld/inspect.jsonl.gz",
+    "compressed_bytes": 5628607,
+    "compressed_sha256": "8b9e9b476b553f95a759342ec36181f6d87a8e32cdf1781d33162b48ea2fa8dd",
+    "hash_reads": 2
+  },
+  {
+    "path": "ligature/target/static-pax/compiler-overflow/oracle/lld/link.map",
+    "bytes": 1719777,
+    "sha256": "e3b2d2274a734a92d48235d8b8ea794c7e0f1704f85768f2e12f8824cff4a964",
+    "compressed_path": "ligature/target/static-pax/compiler-overflow/oracle/lld/link.map.gz",
+    "compressed_bytes": 168869,
+    "compressed_sha256": "3f0e50f7a1b86c22a5fc13122332bab8ea9d230c9881ae9da27d541101f26a10",
+    "hash_reads": 2
+  },
+  {
+    "path": "ligature/target/static-pax/compiler-overflow/oracle/lld/objdump.txt",
+    "bytes": 4637207,
+    "sha256": "6723545b57537327d08d49d6ad5f583c21f75091f506e4958a85c69149fec15b",
+    "compressed_path": "ligature/target/static-pax/compiler-overflow/oracle/lld/objdump.txt.gz",
+    "compressed_bytes": 702153,
+    "compressed_sha256": "85349fb1b83334ba2ecfd1ba578bdedc59da894b0c70559deb2817c52a056700",
+    "hash_reads": 2
+  },
+  {
+    "path": "ligature/target/static-pax/compiler-overflow/oracle/lld/program",
+    "bytes": 28521800,
+    "sha256": "73d75dee321922a79de5ad0ed835f936a34baa3acc1fcf2807aa53b823232377",
+    "compressed_path": "ligature/target/static-pax/compiler-overflow/oracle/lld/program.gz",
+    "compressed_bytes": 6191813,
+    "compressed_sha256": "8cc249b2c0ea4919b68e43cbceeae6efbf959d5a9cb23c9d66a33600f71c4ca0",
+    "hash_reads": 2
+  },
+  {
+    "path": "ligature/target/static-pax/compiler-overflow/oracle/lld/readelf.txt",
+    "bytes": 52883615,
+    "sha256": "b409a42ac28dba4c7efc97755dd0d863811d17412d3c040d799cb5a733e4e2e3",
+    "compressed_path": "ligature/target/static-pax/compiler-overflow/oracle/lld/readelf.txt.gz",
+    "compressed_bytes": 3581391,
+    "compressed_sha256": "599107fb9ebf070441bef0578325937901e8e856e39f0f56bc601ab356ec99bf",
+    "hash_reads": 2
+  },
+  {
+    "path": "ligature/target/static-pax/compiler-overflow/program",
+    "bytes": 177958680,
+    "sha256": "09147632e69a88c75c538aebe16693f9450f47b70b0df17bff9cf5a33498e933",
+    "compressed_path": "ligature/target/static-pax/compiler-overflow/program.gz",
+    "compressed_bytes": 18205799,
+    "compressed_sha256": "c6609afd01b577ac7533d9b60dc8c4953e44e34fe60d607c0149f8cd78a976d6",
+    "hash_reads": 2
+  },
+  {
+    "path": "ligature/target/static-pax/compiler-procs/oracle/gnu/inspect.jsonl",
+    "bytes": 76930778,
+    "sha256": "981abc04205e11f4b11400532461bc524c2a00521bfdb540a24bef7ea0ccfd96",
+    "compressed_path": "ligature/target/static-pax/compiler-procs/oracle/gnu/inspect.jsonl.gz",
+    "compressed_bytes": 5378417,
+    "compressed_sha256": "83b4b30ce82b6f4c2f34cc3e674aa781ac496db12102b777bd0fa4f36e40247e",
+    "hash_reads": 2
+  },
+  {
+    "path": "ligature/target/static-pax/compiler-procs/oracle/gnu/link.map",
+    "bytes": 3102521,
+    "sha256": "a9f687c822fcb84dd21bc3a1a151fee8a75cb715e5dea0e9824c772f22f892c1",
+    "compressed_path": "ligature/target/static-pax/compiler-procs/oracle/gnu/link.map.gz",
+    "compressed_bytes": 210562,
+    "compressed_sha256": "7001ae7ec1dac8e274e2ef7f0735c7a4407de3cb66b99cb225fc40dbf97c84a0",
+    "hash_reads": 2
+  },
+  {
+    "path": "ligature/target/static-pax/compiler-procs/oracle/gnu/objdump.txt",
+    "bytes": 6687706,
+    "sha256": "f81cc3201b75a64e2eb56ace5ca1b038504adaad423fe04992ffa9873dfad529",
+    "compressed_path": "ligature/target/static-pax/compiler-procs/oracle/gnu/objdump.txt.gz",
+    "compressed_bytes": 1038438,
+    "compressed_sha256": "fb31203214b883689d49847de0ac4b9b9d0a69790b726493036f557891154981",
+    "hash_reads": 2
+  },
+  {
+    "path": "ligature/target/static-pax/compiler-procs/oracle/gnu/program",
+    "bytes": 28115592,
+    "sha256": "3c056e6ca5726d1be0fec996f953be036cea500df558d751e52ab5c3f5deb89a",
+    "compressed_path": "ligature/target/static-pax/compiler-procs/oracle/gnu/program.gz",
+    "compressed_bytes": 5610074,
+    "compressed_sha256": "2ae91f7d689478038173114900b1a2a2ff9e272d19b3dd3a4537ef64f3b19633",
+    "hash_reads": 2
+  },
+  {
+    "path": "ligature/target/static-pax/compiler-procs/oracle/gnu/readelf.txt",
+    "bytes": 52852049,
+    "sha256": "515bceaa9640b84f12f71188f10a99531d56b91d8ae3b7a9e9a39b595f1e7113",
+    "compressed_path": "ligature/target/static-pax/compiler-procs/oracle/gnu/readelf.txt.gz",
+    "compressed_bytes": 3409227,
+    "compressed_sha256": "86b3b30a9b7a9f9249f53cab0832ff710516b982e49c3e65eb14d5883f2e7e54",
+    "hash_reads": 2
+  },
+  {
+    "path": "ligature/target/static-pax/compiler-procs/oracle/lld/inspect.jsonl",
+    "bytes": 79266144,
+    "sha256": "bff91206d46467665416b2ed21656b813b5ee7188fdca9923be11306754a24bd",
+    "compressed_path": "ligature/target/static-pax/compiler-procs/oracle/lld/inspect.jsonl.gz",
+    "compressed_bytes": 5746742,
+    "compressed_sha256": "4ba302a98dd9c33fb7f7b7942921312dc21c15592cd060485bac05e104f26288",
+    "hash_reads": 2
+  },
+  {
+    "path": "ligature/target/static-pax/compiler-procs/oracle/lld/link.map",
+    "bytes": 2270866,
+    "sha256": "080a2386e864472278a6a4cddb61d64bc5ba2a29299137f12d75e2085386677a",
+    "compressed_path": "ligature/target/static-pax/compiler-procs/oracle/lld/link.map.gz",
+    "compressed_bytes": 214127,
+    "compressed_sha256": "f610a3b183b289658903c2e4ea68ae4dd821e1a1d351d4fc278c64b5ca1a2333",
+    "hash_reads": 2
+  },
+  {
+    "path": "ligature/target/static-pax/compiler-procs/oracle/lld/objdump.txt",
+    "bytes": 6947767,
+    "sha256": "8a5fa9678f915544b02b2b5692ecc15e87ec4925be06e498072cb0e2c8fcd6f8",
+    "compressed_path": "ligature/target/static-pax/compiler-procs/oracle/lld/objdump.txt.gz",
+    "compressed_bytes": 1061316,
+    "compressed_sha256": "4026c8df930d45ea251d2d8315cd0a31e38698948f896525fead4f27bb05aa83",
+    "hash_reads": 2
+  },
+  {
+    "path": "ligature/target/static-pax/compiler-procs/oracle/lld/program",
+    "bytes": 28971760,
+    "sha256": "b665766c75a19bc0708cbc86e7e40566dc33b7722710473051bd4262defe0f7d",
+    "compressed_path": "ligature/target/static-pax/compiler-procs/oracle/lld/program.gz",
+    "compressed_bytes": 6429568,
+    "compressed_sha256": "0fb382f5404987c7e77cd61936a439994b2e2b139e70380dfaccb62213c3ccc5",
+    "hash_reads": 2
+  },
+  {
+    "path": "ligature/target/static-pax/compiler-procs/oracle/lld/readelf.txt",
+    "bytes": 54246051,
+    "sha256": "e39232b0f72dabc1ea8175e98dc1898b14aa6edf9231dbe87fd19ea6d6955ca2",
+    "compressed_path": "ligature/target/static-pax/compiler-procs/oracle/lld/readelf.txt.gz",
+    "compressed_bytes": 3703481,
+    "compressed_sha256": "a8a97c959423875554a13d9e9d0b79b8abc217a3912662fcd6a58c8f2cde787f",
+    "hash_reads": 2
+  },
+  {
+    "path": "ligature/target/static-pax/compiler-procs/program",
+    "bytes": 180989912,
+    "sha256": "c0fb4440d3a179217b9231ace6fc530e49d312c1709bb1a17a7c980d088e69be",
+    "compressed_path": "ligature/target/static-pax/compiler-procs/program.gz",
+    "compressed_bytes": 18659982,
+    "compressed_sha256": "1e3e84491bb8093f6d2bfe2bd618518e43de887b7f7513bb03bbea514f460da2",
+    "hash_reads": 2
+  },
+  {
+    "path": "ligature/target/static-pax/compiler-regions/oracle/gnu/inspect.jsonl",
+    "bytes": 75743741,
+    "sha256": "306ac413a735c3b6f9cdc34125e479bb23aa9bb1da483c0d01725e639e2d5f9f",
+    "compressed_path": "ligature/target/static-pax/compiler-regions/oracle/gnu/inspect.jsonl.gz",
+    "compressed_bytes": 5177638,
+    "compressed_sha256": "7710f79dd99848ed74dc3496152c84921b3232d4ff38bebafb8920ccab20b0e8",
+    "hash_reads": 2
+  },
+  {
+    "path": "ligature/target/static-pax/compiler-regions/oracle/gnu/link.map",
+    "bytes": 3022501,
+    "sha256": "30f46dffb1b1ce78465c65e0528b9c52293da59cd443b2f4154f84ebe15c5fe6",
+    "compressed_path": "ligature/target/static-pax/compiler-regions/oracle/gnu/link.map.gz",
+    "compressed_bytes": 191857,
+    "compressed_sha256": "173c4125fd0d2249dc420f46f3df66bf75fd31e61f6b6e11b0c869d19589fffa",
+    "hash_reads": 2
+  },
+  {
+    "path": "ligature/target/static-pax/compiler-regions/oracle/gnu/objdump.txt",
+    "bytes": 4572324,
+    "sha256": "1298be4129bd7b13d49dc3a837943c83e1a0f2e1f8cf15220d67d790ee8820a7",
+    "compressed_path": "ligature/target/static-pax/compiler-regions/oracle/gnu/objdump.txt.gz",
+    "compressed_bytes": 708479,
+    "compressed_sha256": "905cf052bea59832465d24193044cf0421410f86f72ae475702d675091707898",
+    "hash_reads": 2
+  },
+  {
+    "path": "ligature/target/static-pax/compiler-regions/oracle/gnu/program",
+    "bytes": 27634376,
+    "sha256": "d39537eda81f40f4db218e19c6751bca68fd4bff8e13609b0e937753d5ce1059",
+    "compressed_path": "ligature/target/static-pax/compiler-regions/oracle/gnu/program.gz",
+    "compressed_bytes": 5302189,
+    "compressed_sha256": "775a29b46242e83174cea77075e29d71a1bcd6a82417d96f29e50a197b66e978",
+    "hash_reads": 2
+  },
+  {
+    "path": "ligature/target/static-pax/compiler-regions/oracle/gnu/readelf.txt",
+    "bytes": 51482413,
+    "sha256": "f6a1087ef8eaa645b6e05438c01d7eb3fc9110187ffd4e65567ec1fe4ba97b63",
+    "compressed_path": "ligature/target/static-pax/compiler-regions/oracle/gnu/readelf.txt.gz",
+    "compressed_bytes": 3225997,
+    "compressed_sha256": "72f30edfa88129fad927d533cda5d04af44dce29931097a81a5780fcbd62408a",
+    "hash_reads": 2
+  },
+  {
+    "path": "ligature/target/static-pax/compiler-regions/oracle/lld/inspect.jsonl",
+    "bytes": 78191556,
+    "sha256": "326e29e0ba8284a09369b5390fb80d3cf9df77b292021d610eeffb32ca551ba4",
+    "compressed_path": "ligature/target/static-pax/compiler-regions/oracle/lld/inspect.jsonl.gz",
+    "compressed_bytes": 5639486,
+    "compressed_sha256": "3c2363b8adcc9669493e01ebae603c0332f4fdd2f38105beb787fbe820499de5",
+    "hash_reads": 2
+  },
+  {
+    "path": "ligature/target/static-pax/compiler-regions/oracle/lld/link.map",
+    "bytes": 1762922,
+    "sha256": "e12cba33d47d52a8c2d73fb105b50be32ba9f8aba39c0ddc3cad0eb6184ed7be",
+    "compressed_path": "ligature/target/static-pax/compiler-regions/oracle/lld/link.map.gz",
+    "compressed_bytes": 173028,
+    "compressed_sha256": "8105432bb68066abb66ab5d7ef65462c42c23b872fb3c94cc5687484b51d8548",
+    "hash_reads": 2
+  },
+  {
+    "path": "ligature/target/static-pax/compiler-regions/oracle/lld/objdump.txt",
+    "bytes": 4764716,
+    "sha256": "3eb27637dd23159675c47c7356d13087664a9000a175695ac3d5bfefa8a5a5f5",
+    "compressed_path": "ligature/target/static-pax/compiler-regions/oracle/lld/objdump.txt.gz",
+    "compressed_bytes": 722198,
+    "compressed_sha256": "95a20ff46a37c527e9e34fa9b302de7a5420b56a687a06c5faa6735f5f7d1e52",
+    "hash_reads": 2
+  },
+  {
+    "path": "ligature/target/static-pax/compiler-regions/oracle/lld/program",
+    "bytes": 28554776,
+    "sha256": "e4e91acc6833f2d6b48747010574aaab31c3d0356d6722e7d17c1b99717d26ed",
+    "compressed_path": "ligature/target/static-pax/compiler-regions/oracle/lld/program.gz",
+    "compressed_bytes": 6213379,
+    "compressed_sha256": "20ff2005d6e39daacd03753f118745b2c1f6dfc0e51e0a62765cf15d6e0dbf7c",
+    "hash_reads": 2
+  },
+  {
+    "path": "ligature/target/static-pax/compiler-regions/oracle/lld/readelf.txt",
+    "bytes": 52985125,
+    "sha256": "2b03e54624f6abbd9d6e29fe514d9977a8675fed4e2b0b7dfdf8532f7b06d498",
+    "compressed_path": "ligature/target/static-pax/compiler-regions/oracle/lld/readelf.txt.gz",
+    "compressed_bytes": 3591667,
+    "compressed_sha256": "44c5ad051f2cbd65aed9aa1b02f499ebf8defcdd965dddc6587eb369f650f837",
+    "hash_reads": 2
+  },
+  {
+    "path": "ligature/target/static-pax/compiler-regions/program",
+    "bytes": 178208752,
+    "sha256": "ca999e9fd35581a22b760b9f2286c892093ec157a7a820c1d752669b93162fd4",
+    "compressed_path": "ligature/target/static-pax/compiler-regions/program.gz",
+    "compressed_bytes": 18246865,
+    "compressed_sha256": "2ce2ce9a129c0e02654a21f7f29bae9adb1730bbe8410a21e38410c6a79de2fa",
+    "hash_reads": 2
+  },
+  {
+    "path": "ligature/target/static-pax/hello-hello/oracle/gnu/inspect.jsonl",
+    "bytes": 75653884,
+    "sha256": "b9373d3f1bf96671e044ae5bbf989b67084d5cc9e2c4529f9979e72fe33a1c5a",
+    "compressed_path": "ligature/target/static-pax/hello-hello/oracle/gnu/inspect.jsonl.gz",
+    "compressed_bytes": 5164363,
+    "compressed_sha256": "c9dfa739ce75ed3ed12c193cb0b4f5c91917d488b793d5d9041a2f7b2865f1ec",
+    "hash_reads": 2
+  },
+  {
+    "path": "ligature/target/static-pax/hello-hello/oracle/gnu/link.map",
+    "bytes": 3013625,
+    "sha256": "2c6533cc4623c70f59578f3a014e100f8cee52d4d694ac7e11d4815f48b419a9",
+    "compressed_path": "ligature/target/static-pax/hello-hello/oracle/gnu/link.map.gz",
+    "compressed_bytes": 190090,
+    "compressed_sha256": "19073dabe6b68ad30356c8ed801327fe8af5368f52180d70d7da539d83e23018",
+    "hash_reads": 2
+  },
+  {
+    "path": "ligature/target/static-pax/hello-hello/oracle/gnu/objdump.txt",
+    "bytes": 4488028,
+    "sha256": "8f997d01c9698585be432530284323e0d8c1c1a4fc0a7dd161f41f1a56c534ff",
+    "compressed_path": "ligature/target/static-pax/hello-hello/oracle/gnu/objdump.txt.gz",
+    "compressed_bytes": 694565,
+    "compressed_sha256": "941b0fd28f93cf65ce2d4093e4f6ccc0054bedcef1f1b0961498a1d3681f982c",
+    "hash_reads": 2
+  },
+  {
+    "path": "ligature/target/static-pax/hello-hello/oracle/gnu/program",
+    "bytes": 27610648,
+    "sha256": "2b62874008928c760e8a1703d0040147c58ea1b69e37f667239f6773e2130239",
+    "compressed_path": "ligature/target/static-pax/hello-hello/oracle/gnu/program.gz",
+    "compressed_bytes": 5287658,
+    "compressed_sha256": "ec72a4277dc2ca6e2b06405960c5bce13614e27b1fbcd3ac0adf923eb9c640b6",
+    "hash_reads": 2
+  },
+  {
+    "path": "ligature/target/static-pax/hello-hello/oracle/gnu/readelf.txt",
+    "bytes": 51375808,
+    "sha256": "9ac997952e97d9958063aff4337e1bf3be8497ac8f377862fa567ab8d9c7f9b3",
+    "compressed_path": "ligature/target/static-pax/hello-hello/oracle/gnu/readelf.txt.gz",
+    "compressed_bytes": 3212190,
+    "compressed_sha256": "2db268678715547b7538dc351dfc05b494446eda4a347ed22d2fea49a67dc87b",
+    "hash_reads": 2
+  },
+  {
+    "path": "ligature/target/static-pax/hello-hello/oracle/lld/inspect.jsonl",
+    "bytes": 78139235,
+    "sha256": "37d896a980f0f78c2086db35e75ac0f4d6067a912bf5b150f4f2254ae6c8cca0",
+    "compressed_path": "ligature/target/static-pax/hello-hello/oracle/lld/inspect.jsonl.gz",
+    "compressed_bytes": 5630673,
+    "compressed_sha256": "029f478dd198438c53aa5e91a5f8cc5b257af4d7647dd0a978481c17794869e3",
+    "hash_reads": 2
+  },
+  {
+    "path": "ligature/target/static-pax/hello-hello/oracle/lld/link.map",
+    "bytes": 1739681,
+    "sha256": "b4d584fb39e7f16ba21cc63a6892b2358b7254a1ecb3baf23bb7442a33c45a3e",
+    "compressed_path": "ligature/target/static-pax/hello-hello/oracle/lld/link.map.gz",
+    "compressed_bytes": 170139,
+    "compressed_sha256": "38d9073f7cda2ee2e9433ed3d558a8c52d0221baf4a5b2bc2ac00b510442c7b5",
+    "hash_reads": 2
+  },
+  {
+    "path": "ligature/target/static-pax/hello-hello/oracle/lld/objdump.txt",
+    "bytes": 4672561,
+    "sha256": "2a3e92c0b33c19223772b3ac482664a3955c64b70b1b640da8d590c49b75ed6e",
+    "compressed_path": "ligature/target/static-pax/hello-hello/oracle/lld/objdump.txt.gz",
+    "compressed_bytes": 707504,
+    "compressed_sha256": "62ee34ef8ec5ce1bfdb5fe27902482214782cf084d7fa79c695d4dd21aaa5eca",
+    "hash_reads": 2
+  },
+  {
+    "path": "ligature/target/static-pax/hello-hello/oracle/lld/program",
+    "bytes": 28532304,
+    "sha256": "842c159a765a6f872d972a9c017cb9f7bd3cbadafa70e932bf8c42f647790e26",
+    "compressed_path": "ligature/target/static-pax/hello-hello/oracle/lld/program.gz",
+    "compressed_bytes": 6198330,
+    "compressed_sha256": "18e67cc0043dd09fefe7fef44638ff0d38b93dfd72d39904811d6792d7b27ce6",
+    "hash_reads": 2
+  },
+  {
+    "path": "ligature/target/static-pax/hello-hello/oracle/lld/readelf.txt",
+    "bytes": 52920809,
+    "sha256": "7b465f672d6f324f956acae4e31cd5fcc05975d8ffe78136a98d6e978a51b99c",
+    "compressed_path": "ligature/target/static-pax/hello-hello/oracle/lld/readelf.txt.gz",
+    "compressed_bytes": 3583969,
+    "compressed_sha256": "88d5c042b1645bcdfe740c7d4801f4fbd5a8f08d84273e65ade20d3556acbc88",
+    "hash_reads": 2
+  },
+  {
+    "path": "ligature/target/static-pax/hello-hello/program",
+    "bytes": 178102048,
+    "sha256": "4587eb789e4aec259ce7c3d24447d9f2eccf8538659b8b0fb12a095264a1761f",
+    "compressed_path": "ligature/target/static-pax/hello-hello/program.gz",
+    "compressed_bytes": 18222139,
+    "compressed_sha256": "90a13c72313c5c21e575682a6b1d9e8cfbd026e8efa2d01cdf84862d964acfe6",
+    "hash_reads": 2
+  },
+  {
+    "path": "ligature/target/static-pax/pax-exec/oracle/gnu/inspect.jsonl",
+    "bytes": 76549110,
+    "sha256": "31e29b4ada5ee3f9cc9bf5ec7352924126a0b7b6b15d37110afd38cd5ac3e066",
+    "compressed_path": "ligature/target/static-pax/pax-exec/oracle/gnu/inspect.jsonl.gz",
+    "compressed_bytes": 5257752,
+    "compressed_sha256": "044f84c6003447b8457b621fe5602301759e77c3862f4afcb4f45a105b0b14f9",
+    "hash_reads": 2
+  },
+  {
+    "path": "ligature/target/static-pax/pax-exec/oracle/gnu/link.map",
+    "bytes": 3034661,
+    "sha256": "7654b53f3cb54f499965787c878efe92f4d8cd2eb1a8c6ca53b3399b3976c1ae",
+    "compressed_path": "ligature/target/static-pax/pax-exec/oracle/gnu/link.map.gz",
+    "compressed_bytes": 197724,
+    "compressed_sha256": "58c53bb7e4a08f299ea1a01971cbb4cf53f9119668aae98480ce397091e0f42f",
+    "hash_reads": 2
+  },
+  {
+    "path": "ligature/target/static-pax/pax-exec/oracle/gnu/objdump.txt",
+    "bytes": 5061249,
+    "sha256": "b4a9b8e05f3cff5d38f588b9d2e30a0e253eb06be29d5c6f7d1aff4f435184ae",
+    "compressed_path": "ligature/target/static-pax/pax-exec/oracle/gnu/objdump.txt.gz",
+    "compressed_bytes": 793222,
+    "compressed_sha256": "33bb1c3cc1cbc7a42fb84fefbe02e4012a3871979025e4a757ec52a9a1305297",
+    "hash_reads": 2
+  },
+  {
+    "path": "ligature/target/static-pax/pax-exec/oracle/gnu/program",
+    "bytes": 27935080,
+    "sha256": "cc2766a880ea35f28fd55231d62c3777715835c47620e31d275863dfeba314c5",
+    "compressed_path": "ligature/target/static-pax/pax-exec/oracle/gnu/program.gz",
+    "compressed_bytes": 5421614,
+    "compressed_sha256": "2bc20c4c99241467d0e6a66d476ad6d55915c3f583e61d9a31ed1aa7d97ad7dc",
+    "hash_reads": 2
+  },
+  {
+    "path": "ligature/target/static-pax/pax-exec/oracle/gnu/readelf.txt",
+    "bytes": 52099729,
+    "sha256": "47f62829040c17c2e0e4aeb200cd49b56f1917837f9baef6d8ba3eda321bb6fd",
+    "compressed_path": "ligature/target/static-pax/pax-exec/oracle/gnu/readelf.txt.gz",
+    "compressed_bytes": 3286953,
+    "compressed_sha256": "5f7f38de0708b5eec0aca02b00ee954d2fea42ee0747793c90e455e5a7f0f118",
+    "hash_reads": 2
+  },
+  {
+    "path": "ligature/target/static-pax/pax-exec/oracle/lld/inspect.jsonl",
+    "bytes": 78442592,
+    "sha256": "7944d87ff0ea5f1d8b4b7328c9f4108596496e02e6275791db42947256adfc89",
+    "compressed_path": "ligature/target/static-pax/pax-exec/oracle/lld/inspect.jsonl.gz",
+    "compressed_bytes": 5664983,
+    "compressed_sha256": "41b18fe92e9e3f4d5cd958e269baf743216cc200cc7135aea33eb2a86be2d173",
+    "hash_reads": 2
+  },
+  {
+    "path": "ligature/target/static-pax/pax-exec/oracle/lld/link.map",
+    "bytes": 1897966,
+    "sha256": "ba32f1eb2fa2c3327514251c7f97dffb2894a681befac3cbf8d52b4f46ea5b59",
+    "compressed_path": "ligature/target/static-pax/pax-exec/oracle/lld/link.map.gz",
+    "compressed_bytes": 184415,
+    "compressed_sha256": "b1ae534b9ebab0e576cbd8bf13035edb6d0b2f10f29cb3afad70848aca2b05d4",
+    "hash_reads": 2
+  },
+  {
+    "path": "ligature/target/static-pax/pax-exec/oracle/lld/objdump.txt",
+    "bytes": 5276932,
+    "sha256": "e4d4d583cb651620032286884864f1f229016296b3c5dcbddedb4c33be92e4a3",
+    "compressed_path": "ligature/target/static-pax/pax-exec/oracle/lld/objdump.txt.gz",
+    "compressed_bytes": 807573,
+    "compressed_sha256": "54d240098e4182315d333b33b3e8abbfa03ea3aa17c7d0f2d970d92b857cfc3a",
+    "hash_reads": 2
+  },
+  {
+    "path": "ligature/target/static-pax/pax-exec/oracle/lld/program",
+    "bytes": 28656040,
+    "sha256": "cef1740073e89046cd28472cf20675673de7e6c14c5e1bac4e00b843c3ac5392",
+    "compressed_path": "ligature/target/static-pax/pax-exec/oracle/lld/program.gz",
+    "compressed_bytes": 6264899,
+    "compressed_sha256": "6dd22be0ac63b255149b61b53fd8e423718fb399ec3f3b967f14773a46a9ef5a",
+    "hash_reads": 2
+  },
+  {
+    "path": "ligature/target/static-pax/pax-exec/oracle/lld/readelf.txt",
+    "bytes": 53228598,
+    "sha256": "100d4f19e64017ff9f541d6f7317eb49d4834f6b837f204d3d62c90f8f1a58ff",
+    "compressed_path": "ligature/target/static-pax/pax-exec/oracle/lld/readelf.txt.gz",
+    "compressed_bytes": 3617776,
+    "compressed_sha256": "01a7d82b8c62a94f7cc398f4a86c944bfd8e1e5b1397f1c456cded79777b2d2c",
+    "hash_reads": 2
+  },
+  {
+    "path": "ligature/target/static-pax/pax-exec/program",
+    "bytes": 178891000,
+    "sha256": "11e88a3c045cccdcc9df32b5560b0ec0681f1fa6498aacb12eda4a940871e9d3",
+    "compressed_path": "ligature/target/static-pax/pax-exec/program.gz",
+    "compressed_bytes": 18333122,
+    "compressed_sha256": "1c5885c34e08bad12bc37b96105623b703b2a79d43747e611c42aff37b88692f",
+    "hash_reads": 2
+  },
+  {
+    "path": "ligature/target/static-pax/pax-fork/oracle/gnu/inspect.jsonl",
+    "bytes": 76076559,
+    "sha256": "ce0615a31d2d1566c0e10a075d610845e57e5e2167b433c3fc2d036fb289cea5",
+    "compressed_path": "ligature/target/static-pax/pax-fork/oracle/gnu/inspect.jsonl.gz",
+    "compressed_bytes": 5216694,
+    "compressed_sha256": "cc99759d6cf463e56d49fb5cbdb426be988c5f33f2d1e3b0738e655b34f59e63",
+    "hash_reads": 2
+  },
+  {
+    "path": "ligature/target/static-pax/pax-fork/oracle/gnu/link.map",
+    "bytes": 3040158,
+    "sha256": "1ef0bae4cc9c02cf338253b96f705ed279c3f03cc38744ac56173e70fb1280d9",
+    "compressed_path": "ligature/target/static-pax/pax-fork/oracle/gnu/link.map.gz",
+    "compressed_bytes": 196764,
+    "compressed_sha256": "44038cfc71018018a9abac3a8b0520ea5c48145e3b3bd198bcd231c7e3f8d5a2",
+    "hash_reads": 2
+  },
+  {
+    "path": "ligature/target/static-pax/pax-fork/oracle/gnu/objdump.txt",
+    "bytes": 4792528,
+    "sha256": "f80c2030d7d7623adcde66b0fc2b716cd403dcd99a77335bed6a7f8742a4818c",
+    "compressed_path": "ligature/target/static-pax/pax-fork/oracle/gnu/objdump.txt.gz",
+    "compressed_bytes": 745268,
+    "compressed_sha256": "a732fec4531706a14b39d04afc72660d722a33a78b2bba2bb00e8d9aebf5c9a2",
+    "hash_reads": 2
+  },
+  {
+    "path": "ligature/target/static-pax/pax-fork/oracle/gnu/program",
+    "bytes": 27763096,
+    "sha256": "7ec23dee8a059b05d9fc8dec47c35c134b00ecaf40e6bcb158546422fd821ba6",
+    "compressed_path": "ligature/target/static-pax/pax-fork/oracle/gnu/program.gz",
+    "compressed_bytes": 5356505,
+    "compressed_sha256": "af22a71b09b9d533574fc8fc476f9d96f6a7033448f49d8023d583a32e7906f6",
+    "hash_reads": 2
+  },
+  {
+    "path": "ligature/target/static-pax/pax-fork/oracle/gnu/readelf.txt",
+    "bytes": 51754222,
+    "sha256": "a20282e82acaca987a7f7bd7e70f5b96af2552aa5795cd4ae569c2be070dabe9",
+    "compressed_path": "ligature/target/static-pax/pax-fork/oracle/gnu/readelf.txt.gz",
+    "compressed_bytes": 3259934,
+    "compressed_sha256": "bd42958adcaa23e297b78144ddd4d49585e2f8cc144fdc5e922c6379f99ddb94",
+    "hash_reads": 2
+  },
+  {
+    "path": "ligature/target/static-pax/pax-fork/oracle/lld/inspect.jsonl",
+    "bytes": 78365492,
+    "sha256": "fe659e8b4998b9fa1c801925bbc4c9b7ccb15ce18915c122fd35f68dc7f03be5",
+    "compressed_path": "ligature/target/static-pax/pax-fork/oracle/lld/inspect.jsonl.gz",
+    "compressed_bytes": 5658173,
+    "compressed_sha256": "8c5bae1d70cb7a3c0a6a546a7c711f49f9d25fc07f3ceafe767652d5bd2bca50",
+    "hash_reads": 2
+  },
+  {
+    "path": "ligature/target/static-pax/pax-fork/oracle/lld/link.map",
+    "bytes": 1863457,
+    "sha256": "554a87814371b3260cfccba84d0e272820b1c782f4f9db3dd6418b02ef82e5e0",
+    "compressed_path": "ligature/target/static-pax/pax-fork/oracle/lld/link.map.gz",
+    "compressed_bytes": 181893,
+    "compressed_sha256": "71d6ec16dc969c52424a7bb00db3f24844cc05f53c5ccc8c36210bdd3b8fd6af",
+    "hash_reads": 2
+  },
+  {
+    "path": "ligature/target/static-pax/pax-fork/oracle/lld/objdump.txt",
+    "bytes": 4988901,
+    "sha256": "a0df718d4ff5b7964eebb2afa1d6be23d2a0549302aead65ca4d03a1a1e13a16",
+    "compressed_path": "ligature/target/static-pax/pax-fork/oracle/lld/objdump.txt.gz",
+    "compressed_bytes": 759812,
+    "compressed_sha256": "18a5d69001729c4203ec9acc992f5ebb94b6b603466233a4e06888c4e6747efd",
+    "hash_reads": 2
+  },
+  {
+    "path": "ligature/target/static-pax/pax-fork/oracle/lld/program",
+    "bytes": 28616880,
+    "sha256": "c058f27e03568317afa8909f99beb7d0b937b919add2a1649757a6fcc9b25204",
+    "compressed_path": "ligature/target/static-pax/pax-fork/oracle/lld/program.gz",
+    "compressed_bytes": 6239914,
+    "compressed_sha256": "95161cfcd15764eff6eee4c44e6b97bad3f014337778e8aa5875ca9e39b323dc",
+    "hash_reads": 2
+  },
+  {
+    "path": "ligature/target/static-pax/pax-fork/oracle/lld/readelf.txt",
+    "bytes": 53160465,
+    "sha256": "3979a19f8aedaf42c4035802876832b101bf3f4a4d12c74e1ec1f0f557d02969",
+    "compressed_path": "ligature/target/static-pax/pax-fork/oracle/lld/readelf.txt.gz",
+    "compressed_bytes": 3614471,
+    "compressed_sha256": "0c5a8b9db1b5b78c7f1ec79bfd1feb72b5070859cace379ba9a7372be75c7d79",
+    "hash_reads": 2
+  },
+  {
+    "path": "ligature/target/static-pax/pax-fork/program",
+    "bytes": 178683872,
+    "sha256": "5f297e2092536348f9541bffc2e5883cbdd13ba661f0739d1652ae638397c1aa",
+    "compressed_path": "ligature/target/static-pax/pax-fork/program.gz",
+    "compressed_bytes": 18317790,
+    "compressed_sha256": "a091121e77416eb1838f367fd808974a15d1de6a7bd6a5eaf2751551e5baa8b2",
+    "hash_reads": 2
+  },
+  {
+    "path": "ligature/target/static-pax/pax-hello/oracle/gnu/inspect.jsonl",
+    "bytes": 75653881,
+    "sha256": "e156b7f885596317dc7545288e2b06bdd1726591db8ec011164537d4574f9b23",
+    "compressed_path": "ligature/target/static-pax/pax-hello/oracle/gnu/inspect.jsonl.gz",
+    "compressed_bytes": 5164487,
+    "compressed_sha256": "c3b85c3b083b26c54e920694a2814e4de8eb73b413544a67cda9426fedc2b1c0",
+    "hash_reads": 2
+  },
+  {
+    "path": "ligature/target/static-pax/pax-hello/oracle/gnu/link.map",
+    "bytes": 3013603,
+    "sha256": "4d42edcf54e855efa6bd55f67601acc734b84598fbf0f28323b9d3cd486623b1",
+    "compressed_path": "ligature/target/static-pax/pax-hello/oracle/gnu/link.map.gz",
+    "compressed_bytes": 190078,
+    "compressed_sha256": "a3e0d4d3d16704ad77a726691016ec34737cd61f6286ce0ddc29454f4531716e",
+    "hash_reads": 2
+  },
+  {
+    "path": "ligature/target/static-pax/pax-hello/oracle/gnu/objdump.txt",
+    "bytes": 4488026,
+    "sha256": "0c070a7f36dbc969b0bcccb23b4abcf796d3fbda057dd894ce61e0bc3e7a7e32",
+    "compressed_path": "ligature/target/static-pax/pax-hello/oracle/gnu/objdump.txt.gz",
+    "compressed_bytes": 694578,
+    "compressed_sha256": "b58fe352175a523980b0586c889dacb152bbe17d371ca62246037410a3a384ff",
+    "hash_reads": 2
+  },
+  {
+    "path": "ligature/target/static-pax/pax-hello/oracle/gnu/program",
+    "bytes": 27610640,
+    "sha256": "15a727e1b0241b64125bea92d9b3adcb707aad711bf3411e4c53e2a96886f9bf",
+    "compressed_path": "ligature/target/static-pax/pax-hello/oracle/gnu/program.gz",
+    "compressed_bytes": 5287587,
+    "compressed_sha256": "210c794602f5077fb07d625297700683d9e4ebbcf14db431366736f815e8cc34",
+    "hash_reads": 2
+  },
+  {
+    "path": "ligature/target/static-pax/pax-hello/oracle/gnu/readelf.txt",
+    "bytes": 51375808,
+    "sha256": "f4dd295a219d8243b246b9fee72c472fe6784b98e4f9257b7fe150d00813d552",
+    "compressed_path": "ligature/target/static-pax/pax-hello/oracle/gnu/readelf.txt.gz",
+    "compressed_bytes": 3212261,
+    "compressed_sha256": "ce98af798dba9b4cc16325c2dd14779304d962098c63ba33c7b18288cf8337c9",
+    "hash_reads": 2
+  },
+  {
+    "path": "ligature/target/static-pax/pax-hello/oracle/lld/inspect.jsonl",
+    "bytes": 78139233,
+    "sha256": "1d311f70f10d8346da427d8dc2855b40c29081f112af5125d00d62471f38072d",
+    "compressed_path": "ligature/target/static-pax/pax-hello/oracle/lld/inspect.jsonl.gz",
+    "compressed_bytes": 5630869,
+    "compressed_sha256": "59a6a09d8030e5c0bd327196ea01d233b04612c11ce9055200f6a00e485e8dbd",
+    "hash_reads": 2
+  },
+  {
+    "path": "ligature/target/static-pax/pax-hello/oracle/lld/link.map",
+    "bytes": 1739665,
+    "sha256": "538764206a9cd306f5ecc4dd8fd958ae0201bd6269b123d0799487704560211c",
+    "compressed_path": "ligature/target/static-pax/pax-hello/oracle/lld/link.map.gz",
+    "compressed_bytes": 170120,
+    "compressed_sha256": "d5f15e11c298f4792be3bcae7c14ed5aeee3c8fa8c06650f00a64c484d443273",
+    "hash_reads": 2
+  },
+  {
+    "path": "ligature/target/static-pax/pax-hello/oracle/lld/objdump.txt",
+    "bytes": 4672559,
+    "sha256": "0d3cfb9133cc909705ff4860b9fc89edd924276daee8dcc2d1975e986a78e79a",
+    "compressed_path": "ligature/target/static-pax/pax-hello/oracle/lld/objdump.txt.gz",
+    "compressed_bytes": 707500,
+    "compressed_sha256": "24a2f0386f8a5d02408d2e682644f8371747d59eda511d7fc40440d5823afa5a",
+    "hash_reads": 2
+  },
+  {
+    "path": "ligature/target/static-pax/pax-hello/oracle/lld/program",
+    "bytes": 28532296,
+    "sha256": "55c6aa21700399fbd42c9963b995d57009308c1c00b8e7e1690af13861f8aeb9",
+    "compressed_path": "ligature/target/static-pax/pax-hello/oracle/lld/program.gz",
+    "compressed_bytes": 6198315,
+    "compressed_sha256": "eca779a985a4ba5f4dc0252a47b4df4329a89f5e4c977323d113c409d30d02d1",
+    "hash_reads": 2
+  },
+  {
+    "path": "ligature/target/static-pax/pax-hello/oracle/lld/readelf.txt",
+    "bytes": 52920809,
+    "sha256": "9d1eb4859fdf451144ffdfbd499c1a1f274f6ce2a7305f592a6450d99030071b",
+    "compressed_path": "ligature/target/static-pax/pax-hello/oracle/lld/readelf.txt.gz",
+    "compressed_bytes": 3584011,
+    "compressed_sha256": "696021cc4b2c9d6704d20519e5b1507deb60d66dbbf58f0fcf1450f89ca1848a",
+    "hash_reads": 2
+  },
+  {
+    "path": "ligature/target/static-pax/pax-hello/program",
+    "bytes": 178102048,
+    "sha256": "fb5dc5d58a517ffd7a036f76d38122edb3b114f6254ffb6100db9e233ae7d8b0",
+    "compressed_path": "ligature/target/static-pax/pax-hello/program.gz",
+    "compressed_bytes": 18227750,
+    "compressed_sha256": "e89c9ff2562a96d56ac27c30090b7b485e7782a2e8ab2ba1010d660514349f13",
+    "hash_reads": 2
+  },
+  {
+    "path": "ligature/target/static-pax/pax-host/oracle/gnu/inspect.jsonl",
+    "bytes": 76496203,
+    "sha256": "ee8ac10e7716ba55b7ef1fd59b9af2772001d3fe892ce43aaa03327bc0a1360e",
+    "compressed_path": "ligature/target/static-pax/pax-host/oracle/gnu/inspect.jsonl.gz",
+    "compressed_bytes": 5283607,
+    "compressed_sha256": "52f45c6c5f900121b2091defbc835848c459bd31c69a19359718a3fbd0e928d6",
+    "hash_reads": 2
+  },
+  {
+    "path": "ligature/target/static-pax/pax-host/oracle/gnu/link.map",
+    "bytes": 3062070,
+    "sha256": "1a395c0bdedbf598cf7e3678a5ee8355f2a81d5687a89a820ec63afb94106736",
+    "compressed_path": "ligature/target/static-pax/pax-host/oracle/gnu/link.map.gz",
+    "compressed_bytes": 202915,
+    "compressed_sha256": "c49994fc741460bd9dc184c50f8b597e6e9249f813ccd4f4150d8b80da74302a",
+    "hash_reads": 2
+  },
+  {
+    "path": "ligature/target/static-pax/pax-host/oracle/gnu/objdump.txt",
+    "bytes": 5571812,
+    "sha256": "0344336827bca12c04eecce7897e512eed87c02f050a68322dd9a6513fe8689d",
+    "compressed_path": "ligature/target/static-pax/pax-host/oracle/gnu/objdump.txt.gz",
+    "compressed_bytes": 876506,
+    "compressed_sha256": "4c92c12e20769ac7f2c4b17f7d740879d12b4a7edafb18bb616b4ffec61ca0c0",
+    "hash_reads": 2
+  },
+  {
+    "path": "ligature/target/static-pax/pax-host/oracle/gnu/program",
+    "bytes": 27934192,
+    "sha256": "0fafd0ac754150190250adf8fbc9e59bb4b8865587c2f4006959992ea544953d",
+    "compressed_path": "ligature/target/static-pax/pax-host/oracle/gnu/program.gz",
+    "compressed_bytes": 5462439,
+    "compressed_sha256": "71adcfde2e67c84713d76450ce332ecb86040a5c3407db1546eb5944285ffde1",
+    "hash_reads": 2
+  },
+  {
+    "path": "ligature/target/static-pax/pax-host/oracle/gnu/readelf.txt",
+    "bytes": 52209156,
+    "sha256": "3994c38b03690c2d2c41495b4d959217adbca81f704c2ccac2c1dc1372d7fe00",
+    "compressed_path": "ligature/target/static-pax/pax-host/oracle/gnu/readelf.txt.gz",
+    "compressed_bytes": 3320013,
+    "compressed_sha256": "c8e89c69276b8f044d05e8d870b52595ae6775513e853df54890aa865de39602",
+    "hash_reads": 2
+  },
+  {
+    "path": "ligature/target/static-pax/pax-host/oracle/lld/inspect.jsonl",
+    "bytes": 78724449,
+    "sha256": "7d40650ed2406ae42951dd44597ff2158c1302d51c1bc0155e0b2e14921cf7fc",
+    "compressed_path": "ligature/target/static-pax/pax-host/oracle/lld/inspect.jsonl.gz",
+    "compressed_bytes": 5693089,
+    "compressed_sha256": "eef92ce19c6c309b89e04733b70883302e8a358405d45a686444d4cfbc26036e",
+    "hash_reads": 2
+  },
+  {
+    "path": "ligature/target/static-pax/pax-host/oracle/lld/link.map",
+    "bytes": 2041197,
+    "sha256": "a46fde6c3e33983d95497aea08591409d507b0e14199168897f5ac0126a41ba8",
+    "compressed_path": "ligature/target/static-pax/pax-host/oracle/lld/link.map.gz",
+    "compressed_bytes": 196382,
+    "compressed_sha256": "5abd2c448a12ffbce61749c55ecd6862b562b779a9ca62693e348f75448f96e0",
+    "hash_reads": 2
+  },
+  {
+    "path": "ligature/target/static-pax/pax-host/oracle/lld/objdump.txt",
+    "bytes": 5824536,
+    "sha256": "ba2fd82113877324b7d2e5e9f7176cf06e42a3c45d939c1919db9e7c598252a9",
+    "compressed_path": "ligature/target/static-pax/pax-host/oracle/lld/objdump.txt.gz",
+    "compressed_bytes": 895373,
+    "compressed_sha256": "7bd14bd8b31c93817a87fd2c4d4424f151f3139c44c735a84fe03bd62ca5a582",
+    "hash_reads": 2
+  },
+  {
+    "path": "ligature/target/static-pax/pax-host/oracle/lld/program",
+    "bytes": 28774752,
+    "sha256": "23b57ad98800ab878c053347c7365398b0aaa2f3361238f8bdf804c103fee217",
+    "compressed_path": "ligature/target/static-pax/pax-host/oracle/lld/program.gz",
+    "compressed_bytes": 6318243,
+    "compressed_sha256": "5a618eb3631ffe0d5601febafeb0281af5aca0a3bda18b48f2ea77e4bc85cc29",
+    "hash_reads": 2
+  },
+  {
+    "path": "ligature/target/static-pax/pax-host/oracle/lld/readelf.txt",
+    "bytes": 53568296,
+    "sha256": "9d5bdc568ebcd04e5a6b682df13c5d33f137bdc4a2475e8b32e1997d05a2387f",
+    "compressed_path": "ligature/target/static-pax/pax-host/oracle/lld/readelf.txt.gz",
+    "compressed_bytes": 3650103,
+    "compressed_sha256": "03fa90dff097fc6a58449f17d6ee6e166b78ac73939f0645a5bf3da66c3640a5",
+    "hash_reads": 2
+  },
+  {
+    "path": "ligature/target/static-pax/pax-host/program",
+    "bytes": 179672128,
+    "sha256": "44a0b31cab8e763beb3cb90932e74f54b72d94fbf279652c3b504ec71afde9d4",
+    "compressed_path": "ligature/target/static-pax/pax-host/program.gz",
+    "compressed_bytes": 18468269,
+    "compressed_sha256": "23045079794ea9008e80886be095db9d2348a27e8e24c422c7e53a2fe53f9336",
+    "hash_reads": 2
+  },
+  {
+    "path": "ligature/target/static-pax/pax-loop/oracle/gnu/inspect.jsonl",
+    "bytes": 75659113,
+    "sha256": "3d17968900f212c184f4712b2cc948033123f4695e664d9114eac6b5f0324ed0",
+    "compressed_path": "ligature/target/static-pax/pax-loop/oracle/gnu/inspect.jsonl.gz",
+    "compressed_bytes": 5165517,
+    "compressed_sha256": "aacd8106b29a10fdb8f431de9189f48e62e473635abf1c893cc469413bb8cebe",
+    "hash_reads": 2
+  },
+  {
+    "path": "ligature/target/static-pax/pax-loop/oracle/gnu/link.map",
+    "bytes": 3013850,
+    "sha256": "ff7930749db23a012925be213d47b1ebec73a3cf4a7c88f7e64570b84a1f34e4",
+    "compressed_path": "ligature/target/static-pax/pax-loop/oracle/gnu/link.map.gz",
+    "compressed_bytes": 190096,
+    "compressed_sha256": "b34da59dc3530ae2ca2f9fb2a074b7e0b6498f8759e3365f4dd672548bd2f1ee",
+    "hash_reads": 2
+  },
+  {
+    "path": "ligature/target/static-pax/pax-loop/oracle/gnu/objdump.txt",
+    "bytes": 4495499,
+    "sha256": "d8b7c2ca84428099d7b68eb56625816ea5ce306483e4ce78f3fac370fe434254",
+    "compressed_path": "ligature/target/static-pax/pax-loop/oracle/gnu/objdump.txt.gz",
+    "compressed_bytes": 696046,
+    "compressed_sha256": "c4f0220e222026d99c9f735c5550ca0eb2f90d115ff9bad9e37e9b8db5b608d6",
+    "hash_reads": 2
+  },
+  {
+    "path": "ligature/target/static-pax/pax-loop/oracle/gnu/program",
+    "bytes": 27615744,
+    "sha256": "efc6a43be4de09b1e512c5e2f898ead62858b8130893512743caa7543227a139",
+    "compressed_path": "ligature/target/static-pax/pax-loop/oracle/gnu/program.gz",
+    "compressed_bytes": 5289052,
+    "compressed_sha256": "939f7af7d014489d17a37db84c9593fb9d559bea1972b71d05c063b52f61736b",
+    "hash_reads": 2
+  },
+  {
+    "path": "ligature/target/static-pax/pax-loop/oracle/gnu/readelf.txt",
+    "bytes": 51381193,
+    "sha256": "ba6f8d17dfdd7a4ed1e29f3c57585453f4213c6c73134c33bafb85eb9c1f0d54",
+    "compressed_path": "ligature/target/static-pax/pax-loop/oracle/gnu/readelf.txt.gz",
+    "compressed_bytes": 3213037,
+    "compressed_sha256": "fd6606f2895aa3fd0c4ba53d34cf9135e255579622e8414e93f1480eace376c1",
+    "hash_reads": 2
+  },
+  {
+    "path": "ligature/target/static-pax/pax-loop/oracle/lld/inspect.jsonl",
+    "bytes": 78144397,
+    "sha256": "29281d4487b44601a33cf9459917ad8e9b59f106c6a08c300b40f81b1c23529f",
+    "compressed_path": "ligature/target/static-pax/pax-loop/oracle/lld/inspect.jsonl.gz",
+    "compressed_bytes": 5631605,
+    "compressed_sha256": "d3fc72fc6335d5fd4601df56fd9ca2bf83e35a09f9a4fe7201f4d5811d317c8a",
+    "hash_reads": 2
+  },
+  {
+    "path": "ligature/target/static-pax/pax-loop/oracle/lld/link.map",
+    "bytes": 1741047,
+    "sha256": "66128b4255ed5de4dfe4183e97a0ad31c7680eafe85039109c077da71ee3808b",
+    "compressed_path": "ligature/target/static-pax/pax-loop/oracle/lld/link.map.gz",
+    "compressed_bytes": 170262,
+    "compressed_sha256": "89834c102ea081e8fd14b96f26a179d7c46403e57853daf849e0572892c8efba",
+    "hash_reads": 2
+  },
+  {
+    "path": "ligature/target/static-pax/pax-loop/oracle/lld/objdump.txt",
+    "bytes": 4681340,
+    "sha256": "cde1e3637a68a56668554935776262da17e67b26d6f6e4dabe747d46c6a0b2bb",
+    "compressed_path": "ligature/target/static-pax/pax-loop/oracle/lld/objdump.txt.gz",
+    "compressed_bytes": 709060,
+    "compressed_sha256": "769c402008ff4b7e0c9c1ee3dc43b390bdfe781b19c4afde07203a168a628a44",
+    "hash_reads": 2
+  },
+  {
+    "path": "ligature/target/static-pax/pax-loop/oracle/lld/program",
+    "bytes": 28534288,
+    "sha256": "8c6fd7d2e11979c361ce0952c8df0423d1605b16e4583d162e12ed5165be71dc",
+    "compressed_path": "ligature/target/static-pax/pax-loop/oracle/lld/program.gz",
+    "compressed_bytes": 6200337,
+    "compressed_sha256": "c1e29c0f8d48b4013f5a25be068efce03e9924b8455b3e0ad3c3cc0a39b0e973",
+    "hash_reads": 2
+  },
+  {
+    "path": "ligature/target/static-pax/pax-loop/oracle/lld/readelf.txt",
+    "bytes": 52925892,
+    "sha256": "509196e347bcaa98342418124a2c63c6b549235328c8b9df911e9527adc2076d",
+    "compressed_path": "ligature/target/static-pax/pax-loop/oracle/lld/readelf.txt.gz",
+    "compressed_bytes": 3583915,
+    "compressed_sha256": "b101ff4a807f68b6ddfa2b915b9f03c8cf324d00fa54af8b2e83ee1333718e38",
+    "hash_reads": 2
+  },
+  {
+    "path": "ligature/target/static-pax/pax-loop/program",
+    "bytes": 178115456,
+    "sha256": "d286c1f8ed5742d9e06cd2de631400dcf336024629ce393a3b31228102e12641",
+    "compressed_path": "ligature/target/static-pax/pax-loop/program.gz",
+    "compressed_bytes": 18229965,
+    "compressed_sha256": "ecbe24220b2fd7d0bb6bc120c8d1b7eb4122aa0179b1d3cb65deba19d0ca5bd3",
+    "hash_reads": 2
+  },
+  {
+    "path": "ligature/target/static-pax/pax-signal/oracle/gnu/inspect.jsonl",
+    "bytes": 75790349,
+    "sha256": "2e8c96b43cca5507657d658b092fbc2e97a38d8d37bdeab8794aae5727e10247",
+    "compressed_path": "ligature/target/static-pax/pax-signal/oracle/gnu/inspect.jsonl.gz",
+    "compressed_bytes": 5178517,
+    "compressed_sha256": "e405c0292385ffff0c0addaf9979f7adc8ea2035b103f6637d76b7e30f080e09",
+    "hash_reads": 2
+  },
+  {
+    "path": "ligature/target/static-pax/pax-signal/oracle/gnu/link.map",
+    "bytes": 3020919,
+    "sha256": "c7076f2ee8c4af5f6b3325740a39ee2323b457e9a822e9f3258f32aa7e801b88",
+    "compressed_path": "ligature/target/static-pax/pax-signal/oracle/gnu/link.map.gz",
+    "compressed_bytes": 192200,
+    "compressed_sha256": "9acb91c25744adc53efa477525d24b8076cda55ba75a17586186fd181a9738eb",
+    "hash_reads": 2
+  },
+  {
+    "path": "ligature/target/static-pax/pax-signal/oracle/gnu/objdump.txt",
+    "bytes": 4576407,
+    "sha256": "197e86b9f4c3e57b521fb7f6e28f40abe02559e3e5d9ed46e2cfb0894f412d54",
+    "compressed_path": "ligature/target/static-pax/pax-signal/oracle/gnu/objdump.txt.gz",
+    "compressed_bytes": 710191,
+    "compressed_sha256": "2d1b79a8bc85289a6c8b1198ad76fa01b7ae553e7e475ce9a3b6bd220b8c0116",
+    "hash_reads": 2
+  },
+  {
+    "path": "ligature/target/static-pax/pax-signal/oracle/gnu/program",
+    "bytes": 27662400,
+    "sha256": "7e2c2a41af106a52801d255028f271becc223168b765f9222b4d87052a6dfe45",
+    "compressed_path": "ligature/target/static-pax/pax-signal/oracle/gnu/program.gz",
+    "compressed_bytes": 5310288,
+    "compressed_sha256": "de55142c57a0387dcf53b910d338fd868b03e9f8397578ce6666b9ec06932b57",
+    "hash_reads": 2
+  },
+  {
+    "path": "ligature/target/static-pax/pax-signal/oracle/gnu/readelf.txt",
+    "bytes": 51493511,
+    "sha256": "d0ba9c016b5ac67cb92fa7e3c93bdb5365f691c0faa78512fed1bb5d0979c059",
+    "compressed_path": "ligature/target/static-pax/pax-signal/oracle/gnu/readelf.txt.gz",
+    "compressed_bytes": 3227011,
+    "compressed_sha256": "852e1e73081a80e03dbe1351c414ee89390c38620a6462a22c63beef90975b6f",
+    "hash_reads": 2
+  },
+  {
+    "path": "ligature/target/static-pax/pax-signal/oracle/lld/inspect.jsonl",
+    "bytes": 78205638,
+    "sha256": "d389901562a51d3a7b88dd5dda6533cceb4cbfc03c8029b714282abd86df03ee",
+    "compressed_path": "ligature/target/static-pax/pax-signal/oracle/lld/inspect.jsonl.gz",
+    "compressed_bytes": 5637621,
+    "compressed_sha256": "4ee64bcb545f27a798f50910f6f8a5e79c8aa2e50225d5ef8489669fcfa7fb6b",
+    "hash_reads": 2
+  },
+  {
+    "path": "ligature/target/static-pax/pax-signal/oracle/lld/link.map",
+    "bytes": 1770980,
+    "sha256": "c585bc4244b91beeaf12ab5f4e98179e44187c0860811af890a37960ffa08178",
+    "compressed_path": "ligature/target/static-pax/pax-signal/oracle/lld/link.map.gz",
+    "compressed_bytes": 173507,
+    "compressed_sha256": "9ac6148c7c575e51b30f78cae31b343387c2ed643d034fa0b690821b40ffee71",
+    "hash_reads": 2
+  },
+  {
+    "path": "ligature/target/static-pax/pax-signal/oracle/lld/objdump.txt",
+    "bytes": 4764628,
+    "sha256": "3bd824369389a22d9852b93c3341b474428ed71e694cf83544a10c53ec890bc4",
+    "compressed_path": "ligature/target/static-pax/pax-signal/oracle/lld/objdump.txt.gz",
+    "compressed_bytes": 723087,
+    "compressed_sha256": "77bc4245b645f1c413d5f0f0080c3c6994683c96b8368da16752b92f1bb9174a",
+    "hash_reads": 2
+  },
+  {
+    "path": "ligature/target/static-pax/pax-signal/oracle/lld/program",
+    "bytes": 28557664,
+    "sha256": "c4f8730878ee7fa887c2f1fdfe3386f04eb5d9d7e86fa0401b39b5aab0497e18",
+    "compressed_path": "ligature/target/static-pax/pax-signal/oracle/lld/program.gz",
+    "compressed_bytes": 6213795,
+    "compressed_sha256": "993aed4663c2bbb8dea10e46c476a7127f754bc0e7b49419f46f5f92b8322a2a",
+    "hash_reads": 2
+  },
+  {
+    "path": "ligature/target/static-pax/pax-signal/oracle/lld/readelf.txt",
+    "bytes": 52988485,
+    "sha256": "2b01fd865e975d2e5178577421edd382529c5ec48b3c03f597e9be3368a46444",
+    "compressed_path": "ligature/target/static-pax/pax-signal/oracle/lld/readelf.txt.gz",
+    "compressed_bytes": 3592478,
+    "compressed_sha256": "ce38404c7e4bd1731d656b511a2307681e928eccab4c9506ce10aaaba74dcc18",
+    "hash_reads": 2
+  },
+  {
+    "path": "ligature/target/static-pax/pax-signal/program",
+    "bytes": 178271600,
+    "sha256": "7e5b074e5f4838663f51b127d8a4c4d553dba49bf67d7a57bb1c82bfaffd8ea6",
+    "compressed_path": "ligature/target/static-pax/pax-signal/program.gz",
+    "compressed_bytes": 18255502,
+    "compressed_sha256": "efc7b8f12f4aac89a1cdafc5a2981fb0fd76f0682d421978797afdfa05525f88",
+    "hash_reads": 2
+  },
+  {
+    "path": "ligature/target/static-pax/pax-spawn/oracle/gnu/inspect.jsonl",
+    "bytes": 76526462,
+    "sha256": "b8e772a5207a790acbf05ce72c699edbc7ea3475697636c00978f209a4cd4a1a",
+    "compressed_path": "ligature/target/static-pax/pax-spawn/oracle/gnu/inspect.jsonl.gz",
+    "compressed_bytes": 5298078,
+    "compressed_sha256": "5886ae1e5425f4b19eda8a1058d81a602c798968b263e37b9a6da1e152bc6fac",
+    "hash_reads": 2
+  },
+  {
+    "path": "ligature/target/static-pax/pax-spawn/oracle/gnu/link.map",
+    "bytes": 3073637,
+    "sha256": "601f36cc22cd5a2a342a718990bdb5b45c4ff0263eac2c10eee8fec6a91d3bce",
+    "compressed_path": "ligature/target/static-pax/pax-spawn/oracle/gnu/link.map.gz",
+    "compressed_bytes": 205201,
+    "compressed_sha256": "21ac4504c0377835839b6c2999e966299630c6809b2f8a54b13ac31a54a3c560",
+    "hash_reads": 2
+  },
+  {
+    "path": "ligature/target/static-pax/pax-spawn/oracle/gnu/objdump.txt",
+    "bytes": 5765388,
+    "sha256": "2522b34bb754df3328ebba93d197d6d077720b71643e1912d981a2033e04845d",
+    "compressed_path": "ligature/target/static-pax/pax-spawn/oracle/gnu/objdump.txt.gz",
+    "compressed_bytes": 899651,
+    "compressed_sha256": "3be3a37c69ac65a213a62a1eb47e86e5ffd3d93aaace1cdc6cc2b8ce744f929f",
+    "hash_reads": 2
+  },
+  {
+    "path": "ligature/target/static-pax/pax-spawn/oracle/gnu/program",
+    "bytes": 27942600,
+    "sha256": "5d8ac87c52016cd7da78073f0c12dc7e19419c7029d9a2876a620283f8f87c06",
+    "compressed_path": "ligature/target/static-pax/pax-spawn/oracle/gnu/program.gz",
+    "compressed_bytes": 5487860,
+    "compressed_sha256": "4f8e3d4b5f64729fd140e9fcf523f71d1292df142761eb38d39b42268685c3c0",
+    "hash_reads": 2
+  },
+  {
+    "path": "ligature/target/static-pax/pax-spawn/oracle/gnu/readelf.txt",
+    "bytes": 52294569,
+    "sha256": "455ce3ae1cb62d45974b2c985c7c2a8cd43ef300223ba822441a52ee17800104",
+    "compressed_path": "ligature/target/static-pax/pax-spawn/oracle/gnu/readelf.txt.gz",
+    "compressed_bytes": 3335787,
+    "compressed_sha256": "8f86086d69c0a0552da17252aaa7a04e8cfda7db194350afbb02263eff5648ad",
+    "hash_reads": 2
+  },
+  {
+    "path": "ligature/target/static-pax/pax-spawn/oracle/lld/inspect.jsonl",
+    "bytes": 78803978,
+    "sha256": "8c417ae1d4818d95a3209d6954c2ee4b38a3958ab8de6333fcf129e269ab7717",
+    "compressed_path": "ligature/target/static-pax/pax-spawn/oracle/lld/inspect.jsonl.gz",
+    "compressed_bytes": 5706763,
+    "compressed_sha256": "7452af517db66686404f8d2328f034bec2ad27e4bb374ecb2821d77b2a091271",
+    "hash_reads": 2
+  },
+  {
+    "path": "ligature/target/static-pax/pax-spawn/oracle/lld/link.map",
+    "bytes": 2114372,
+    "sha256": "fb9120d6f3a42e2bbd2803dc7abc26908de54ee528c754668b8fc152ab6e073e",
+    "compressed_path": "ligature/target/static-pax/pax-spawn/oracle/lld/link.map.gz",
+    "compressed_bytes": 202424,
+    "compressed_sha256": "3dc2d0e91321eb9ea999b141239412136d26616a5c58ba2c6070bd3c41ee9b16",
+    "hash_reads": 2
+  },
+  {
+    "path": "ligature/target/static-pax/pax-spawn/oracle/lld/objdump.txt",
+    "bytes": 6005122,
+    "sha256": "a28ff013d8867b7df7ab387762b1a57dddf3f27c635191f84cef63dbee3c5abc",
+    "compressed_path": "ligature/target/static-pax/pax-spawn/oracle/lld/objdump.txt.gz",
+    "compressed_bytes": 917760,
+    "compressed_sha256": "fe5149c72b8c10f90ef7badfd89748017e05f21e84df73fbc2f789cf305fe59f",
+    "hash_reads": 2
+  },
+  {
+    "path": "ligature/target/static-pax/pax-spawn/oracle/lld/program",
+    "bytes": 28806616,
+    "sha256": "1e66c4ed608f4dca4449890fa6c3979a816f131ec919af0ea3172a297e212394",
+    "compressed_path": "ligature/target/static-pax/pax-spawn/oracle/lld/program.gz",
+    "compressed_bytes": 6339529,
+    "compressed_sha256": "4b42e1c07a0e82572de8113cf286aae29ee194405e27c3c1412d4ee86d5a2a40",
+    "hash_reads": 2
+  },
+  {
+    "path": "ligature/target/static-pax/pax-spawn/oracle/lld/readelf.txt",
+    "bytes": 53687674,
+    "sha256": "9c3ea791aa71287457bab7421a96293336443c03b720b5b4defcaece943f49c0",
+    "compressed_path": "ligature/target/static-pax/pax-spawn/oracle/lld/readelf.txt.gz",
+    "compressed_bytes": 3662143,
+    "compressed_sha256": "edd219d254f53c2e0173f6711fdc141531d807ef5af93771da898464a9d20a3e",
+    "hash_reads": 2
+  },
+  {
+    "path": "ligature/target/static-pax/pax-spawn/program",
+    "bytes": 179936800,
+    "sha256": "aefecc3a808d8e903b6a36009e26143be328dbc10a009d287d25bc1d95a462e3",
+    "compressed_path": "ligature/target/static-pax/pax-spawn/program.gz",
+    "compressed_bytes": 18517834,
+    "compressed_sha256": "69a8b9cdf5eb42b5524d96de29953ad2dde28fdfb5becdb4690fcee110d95ab4",
+    "hash_reads": 2
+  },
+  {
+    "path": "ligature/target/static-pax/pax-std/oracle/gnu/inspect.jsonl",
+    "bytes": 75946154,
+    "sha256": "74e6448e5a75a88726f6eba91e08c57b14ea2a3761d440063fe4aedf452b0b6f",
+    "compressed_path": "ligature/target/static-pax/pax-std/oracle/gnu/inspect.jsonl.gz",
+    "compressed_bytes": 5216007,
+    "compressed_sha256": "dc38e0c1e4c9fb9090709d6d7839cbabbed7fdf81e533bb8954a5c69a38c4e87",
+    "hash_reads": 2
+  },
+  {
+    "path": "ligature/target/static-pax/pax-std/oracle/gnu/link.map",
+    "bytes": 3037443,
+    "sha256": "9673194dcba5a048a93e0dc945fb77eadb65ff582e2edd9bf9664d466c1142f4",
+    "compressed_path": "ligature/target/static-pax/pax-std/oracle/gnu/link.map.gz",
+    "compressed_bytes": 196967,
+    "compressed_sha256": "18cb153834072ab16eb20d21f6a587f0622c2f95c0a9982f41954f7539910ed6",
+    "hash_reads": 2
+  },
+  {
+    "path": "ligature/target/static-pax/pax-std/oracle/gnu/objdump.txt",
+    "bytes": 5224007,
+    "sha256": "4eebb68485c5afaa3d1a9a3f971e1479fa692dbf6ad8a9055d26d76ae9956faf",
+    "compressed_path": "ligature/target/static-pax/pax-std/oracle/gnu/objdump.txt.gz",
+    "compressed_bytes": 828678,
+    "compressed_sha256": "9dc86fe48cf79b0cc3e4fc81d20af103caf5fa7a308997417a6bfb43d1b01db8",
+    "hash_reads": 2
+  },
+  {
+    "path": "ligature/target/static-pax/pax-std/oracle/gnu/program",
+    "bytes": 27763112,
+    "sha256": "f960ea70798f97529afba0c8f679366730b75b2e97bda170b484b977624f4260",
+    "compressed_path": "ligature/target/static-pax/pax-std/oracle/gnu/program.gz",
+    "compressed_bytes": 5384106,
+    "compressed_sha256": "bdb7f021075900c08a46d17ad60c2b34790ed19d1afd9b51872d100a46febeb9",
+    "hash_reads": 2
+  },
+  {
+    "path": "ligature/target/static-pax/pax-std/oracle/gnu/readelf.txt",
+    "bytes": 51696830,
+    "sha256": "f501013ec49ec4abaadd88277081cc83b48e372cba16a08b17a0ec2460860d76",
+    "compressed_path": "ligature/target/static-pax/pax-std/oracle/gnu/readelf.txt.gz",
+    "compressed_bytes": 3260336,
+    "compressed_sha256": "5ce3498dd0b1015301b2aedb8440d9997dc30d739f9fc012c920094d0597b0b5",
+    "hash_reads": 2
+  },
+  {
+    "path": "ligature/target/static-pax/pax-std/oracle/lld/inspect.jsonl",
+    "bytes": 78421259,
+    "sha256": "40dde5f7c40fb0078e1886bad513c651bd64fb2aef0084da64a027afbcffa182",
+    "compressed_path": "ligature/target/static-pax/pax-std/oracle/lld/inspect.jsonl.gz",
+    "compressed_bytes": 5663025,
+    "compressed_sha256": "0b18531120622472d35c8c4968ce0fe559297c8547b60c8bdf862a1978df785b",
+    "hash_reads": 2
+  },
+  {
+    "path": "ligature/target/static-pax/pax-std/oracle/lld/link.map",
+    "bytes": 1884702,
+    "sha256": "4040facae5cc8114bf0489c23da6735b014bedb576688f06e5ab421359f964cd",
+    "compressed_path": "ligature/target/static-pax/pax-std/oracle/lld/link.map.gz",
+    "compressed_bytes": 182971,
+    "compressed_sha256": "1d3d5f3d7691061e66cba2448e435447ee097272a55a49439a0d1b9cddd249fa",
+    "hash_reads": 2
+  },
+  {
+    "path": "ligature/target/static-pax/pax-std/oracle/lld/objdump.txt",
+    "bytes": 5444910,
+    "sha256": "d09013356f167521b84570b514f3c229328ecf7621a82648a56f570eb9b2d9a9",
+    "compressed_path": "ligature/target/static-pax/pax-std/oracle/lld/objdump.txt.gz",
+    "compressed_bytes": 844901,
+    "compressed_sha256": "0eeeea0a9ba7b0fa85b4f1967bcc45ecb8aa3dd4422d4ed822aa25f2a3e4b7e4",
+    "hash_reads": 2
+  },
+  {
+    "path": "ligature/target/static-pax/pax-std/oracle/lld/program",
+    "bytes": 28686288,
+    "sha256": "ffa7355ebb217e5565ce1b372005a6842488447df18c6c3fa8ecad5fb454c4e9",
+    "compressed_path": "ligature/target/static-pax/pax-std/oracle/lld/program.gz",
+    "compressed_bytes": 6277223,
+    "compressed_sha256": "e884200d77133036c96c4f79b8d04b9f248bf2b583c8a027a607b4ca9e52c234",
+    "hash_reads": 2
+  },
+  {
+    "path": "ligature/target/static-pax/pax-std/oracle/lld/readelf.txt",
+    "bytes": 53228832,
+    "sha256": "5d1c181fb44bd391edaf04d993d8ac0d46cd7ad0b608f4f743272cd5cff819ec",
+    "compressed_path": "ligature/target/static-pax/pax-std/oracle/lld/readelf.txt.gz",
+    "compressed_bytes": 3616157,
+    "compressed_sha256": "5bd6f719524b71c0e70bc061346c7d1bbe0e7babc9e140643e371d0180036e8c",
+    "hash_reads": 2
+  },
+  {
+    "path": "ligature/target/static-pax/pax-std/program",
+    "bytes": 179144472,
+    "sha256": "a41ab6ea01c8db7b175ccbe68af7e9fa2fefae9b7fa3add8388a5c576d43c12b",
+    "compressed_path": "ligature/target/static-pax/pax-std/program.gz",
+    "compressed_bytes": 18361031,
+    "compressed_sha256": "c63ad04dc7109af07cd024b7fbdc16860caa4665d9c5a38b1db26fd0ef1eb653",
+    "hash_reads": 2
+  }
+]
