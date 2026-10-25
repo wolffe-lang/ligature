@@ -9,7 +9,24 @@ import argparse,collections,hashlib,json,pathlib,subprocess,sys
 ROOT=pathlib.Path(__file__).resolve().parent.parent
 RUN_DIR=ROOT/"target/evidence/differ-run"
 
-def snapshot(path):
+def address_identity(value, symbols, sections):
+    """Public aliases define an address before incidental assembler/debug labels.
+
+    Keep every public alias, and never equate an unknown absolute address with a
+    section-relative address. Locals remain visible in the full symbol records.
+    """
+    named=[s for s in symbols if s['name'] and s['section'] not in (0,65521) and s['type'] not in (3,4,6)]
+    exact=[s for s in named if s['value']==value]
+    public=[s for s in exact if s['binding']!=0]
+    if exact:return {'symbols':sorted({s['name'] for s in public or exact}),'offset':0}
+    within=sorted((s['size'],s['name'],value-s['value']) for s in named if s['size'] and s['value']<=value<s['value']+s['size'])
+    if within:return {'symbol':within[0][1],'offset':within[0][2]}
+    for sec in sections:
+        if sec['flags']&2 and sec['address']<=value<sec['address']+sec['size']:
+            return {'section':sec['name'],'offset':value-sec['address']}
+    return {'absolute':value}
+
+def snapshot(path, execute=True):
     p=subprocess.run([ROOT/'target/ligature','verify',path],capture_output=True,timeout=30)
     if p.returncode:raise ValueError(p.stderr.decode().strip())
     p=subprocess.run([ROOT/'target/ligature','inspect',path],capture_output=True,check=True,timeout=60)
@@ -19,16 +36,7 @@ def snapshot(path):
     sections={r['index']:r for r in rows if r['row']=='section'}
     syms={(r['table'],r['index']):r for r in rows if r['row']=='symbol'}
     programs=[r for r in rows if r['row']=='program']
-    named=[s for s in syms.values() if s['name'] and s['section'] not in (0,65521) and s['type'] not in (3,4,6)]
-    def address(v):
-        exact=sorted(s['name'] for s in named if s['value']==v)
-        if exact:return {'symbols':exact,'offset':0}
-        within=sorted((s['size'],s['name'],v-s['value']) for s in named if s['size'] and s['value']<=v<s['value']+s['size'])
-        if within:return {'symbol':within[0][1],'offset':within[0][2]}
-        for sec in sections.values():
-            if sec['flags']&2 and sec['address']<=v<sec['address']+sec['size']:
-                return {'section':sec['name'],'offset':v-sec['address']}
-        return {'absolute':v}
+    def address(v):return address_identity(v,syms.values(),sections.values())
     defs=[]
     for s in syms.values():
         if s['section']==0 or s['type'] in (3,4):continue
@@ -48,7 +56,9 @@ def snapshot(path):
     consumed=set()
     for r in rels:
         if r['type']==19:consumed.add((r['target'],r['offset']+8))
-        if r['type']==20:consumed.add((r['target'],r['offset']+5))
+        if r['type']==20:
+            consumed.add((r['target'],r['offset']+5))
+            consumed.add((r['target'],r['offset']+6))
     resolved=[];refused=[]
     for r in rels:
         sec=sections[r['target']];alloc=bool(sec['flags']&2)
@@ -64,11 +74,14 @@ def snapshot(path):
         off=sec['offset']+relative;raw=int.from_bytes(data[off:off+n],'little');mask=(1<<(8*n))-1
         signed=raw-(1<<(8*n)) if raw>>(8*n-1) else raw
         expected=None;mode='direct'
-        if (r['target'],P) in consumed and t==4:mode='TLS call consumed'
+        if (r['target'],P) in consumed and t in (4,9):
+            mode='TLS call consumed'
+            if sym['name']!='__tls_get_addr' or a!=-4:
+                refused.append({'row':r,'reason':'invalid consumed TLS call target'})
         elif t in (1,10,11):expected=S+a
         elif t in (2,4,24):expected=S+a-P
         elif t==17:expected=S+a
-        elif t==21:expected=S+a-(tls_size if alloc else 0)
+        elif t==21:expected=S+a-(tls_size if sec['flags']&4 else 0)
         elif t==23:expected=S+a-tls_size
         elif t in (9,41,42):
             if raw==(S+a-P)&mask:expected=S+a-P;mode='GOT relaxed PC-relative'
@@ -82,24 +95,32 @@ def snapshot(path):
                     mode='GOT indirection'
                 except ValueError as e:refused.append({'row':r,'reason':str(e)})
         elif t==22:
-            expected=S-tls_size;mode='GOTTPOFF relaxed immediate'
+            if off>=2 and data[off-2]==0xc7:
+                expected=S-tls_size;mode='GOTTPOFF relaxed immediate'
+            else:
+                try:
+                    got=P+signed-a
+                    target=int.from_bytes(file_at(got,8),'little')
+                    if target!=(S-tls_size)&((1<<64)-1):raise ValueError('GOTTPOFF slot target differs')
+                    mode='GOTTPOFF indirection'
+                except ValueError as e:refused.append({'row':r,'reason':str(e)})
         elif t==19:
             # psABI 1.0 §10.3: TLSGD to local-exec, 16-byte sequence.
-            if off<4 or data[off-4:off+5]!=bytes.fromhex('64488b042500000000'):
+            if off<4 or data[off-4:off+8]!=bytes.fromhex('64488b042500000000488d80'):
                 refused.append({'row':r,'reason':'unrecognized TLSGD relaxation'})
             else:
                 actual=int.from_bytes(data[off+8:off+12],'little')
                 if actual!=(S-tls_size)&0xffffffff:refused.append({'row':r,'reason':'TLSGD local-exec target differs'})
             mode='TLSGD local-exec'
         elif t==20:
-            if off<3 or data[off-3:off+9]!=bytes.fromhex('66666664488b042500000000'):
+            if off<3 or not (data[off-3:off+9]==bytes.fromhex('66666664488b042500000000') or data[off-3:off+10]==bytes.fromhex('6666666664488b042500000000')):
                 refused.append({'row':r,'reason':'unrecognized TLSLD relaxation'})
             mode='TLSLD local-exec'
         else:refused.append({'row':r,'reason':f'unsupported relocation {t} (AMD64 ABI §4.4)'})
         if expected is not None and raw!=expected&mask:
             # A nonallocated debug reference to a GC-discarded section is a
             # tombstone, not an address. Keep it named rather than silently drop it.
-            if not alloc and raw==0:mode='debug tombstone'
+            if not alloc and raw==0 and sym['section']==0 and S==0:mode='debug tombstone'
             else:refused.append({'row':r,'symbol':sym['name'],'raw':raw,'expected':expected&mask,'reason':'resolved relocation bytes differ'})
         site=address(P) if alloc else {'section':sec['name'],'offset':relative}
         target={'name':sym['name'],'section':sections.get(sym['section'],{}).get('name',sym['section']),'type':sym['type']}
@@ -113,7 +134,7 @@ def snapshot(path):
         for s in sections.values() if s['flags']&2}
     RUN_DIR.mkdir(parents=True,exist_ok=True)
     (RUN_DIR/'x.lu').write_text('//! member: false\nfn main() -> !int {\n    print("typed at PAX console, checked by wolf")\n    0\n}\n')
-    ran=subprocess.run([path.resolve()],cwd=RUN_DIR,env={'PATH':'/usr/bin:/bin','LC_ALL':'C'},capture_output=True,timeout=30)
+    ran=subprocess.run([path.resolve()],cwd=RUN_DIR,env={'PATH':'/usr/bin:/bin','LC_ALL':'C'},capture_output=True,timeout=30) if execute else subprocess.CompletedProcess([],0,b'',b'')
     return {'run':{'stdout':ran.stdout.hex(),'stderr':ran.stderr.hex(),'status':ran.returncode},'symbols':sorted(defs,key=lambda x:json.dumps(x,sort_keys=True)),'segments':sorted((p['kind'],p['flags'],p['align']) for p in programs),
         'entry':address(header['entry']),'arrays':arrays,'tls':{'bytes':template,'memsz':tls['memsz'] if tls else 0},
         'relocations':resolved,'refused':refused,'allocated':allocated,'layout':{'programs':programs,'sections':list(sections.values())}}
