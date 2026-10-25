@@ -3,6 +3,7 @@
 use front
 use census
 use resolve
+use writer
 
 fn execute(args: List[str]) -> () ! {Bad(str)} {
     if args.len == 1 && args[0] == "--version" {
@@ -22,11 +23,10 @@ fn execute(args: List[str]) -> () ! {Bad(str)} {
         resolve.emit(state)
         return
     }
-    for path in plan.inputs {
-        let _size = fs_size(path) else |_| { continue }
-        census.inspect(path, "link")?
-    }
-    Bad("linking not implemented; use --print-plan")
+    var state = resolve.empty()
+    defer resolve.finish(state)
+    resolve.run(mut state, plan)?
+    writer.link(state, plan)?
 }
 
 fn main() -> int {

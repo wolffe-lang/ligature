@@ -11,6 +11,7 @@ python3 -I tests/integration.py
 python3 -I tests/oracle.py
 python3 -I tests/resolution.py
 python3 -I tests/resolve.py
+python3 -I tests/writer.py
 # Read the public runtime too; it is glibc-targeted, not the PAX runtime.
 if [ -n "${WOLF_RT_FOR_TEST:-}" ]; then
     target/ligature roundtrip "$WOLF_RT_FOR_TEST"

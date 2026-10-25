@@ -1,0 +1,267 @@
+//! member: true
+
+use binary
+use elf
+use front
+use layout
+use relocate
+use resolve
+use verify
+
+fn append(mut dst: List[byte], bytes: List[byte]) {
+    for b in bytes { (mut dst).push(b) }
+}
+
+fn cstring(mut strings: List[byte], name: str) -> int {
+    let offset = strings.len
+    // Resolver keys are byte-preserving Latin-1; emit the original bytes.
+    for c in name.chars() { (mut strings).push(c as int as byte) }
+    (mut strings).push(0 as byte)
+    offset
+}
+
+fn symbol(
+    mut table: List[byte],
+    mut strings: List[byte],
+    name: str,
+    binding: int,
+    kind: int,
+    other: int,
+    section: int,
+    value: u64,
+    size: u64,
+) -> () ! {Bad(str)} {
+    let ni = cstring(mut strings, name)
+    append(
+        mut table,
+        binary.encode(
+            [ni as u64, (binding << 4 | kind) as u64, other as u64, section as u64, value, size],
+            [4, 1, 1, 2, 8, 8],
+        )?,
+    )
+}
+
+fn section_of(l: layout.Layout, s: resolve.State, id: int) -> int {
+    let sym = copy s.symbols[id]
+    if sym.section == 65521 { return 65521 }
+    if sym.section == 65522 {
+        for j in 1..l.outputs.len { if l.outputs[j].name == ".bss" { return j } }
+    }
+    let a = layout.atom_for(l, s, id)
+    if a == 0 || !l.atoms[a].live { return 0 }
+    l.atoms[a].output
+}
+
+fn symbols(mut l: layout.Layout, s: resolve.State) -> () ! {Bad(str)} {
+    var table = binary.encode([0, 0, 0, 0, 0, 0], [4, 1, 1, 2, 8, 8])?
+    var strings: List[byte] = [0 as byte]
+    var count: int = 1
+    var first_global: int = 0
+    for pass in 0..2 {
+        if pass == 1 { first_global = count }
+        for id in 0..s.symbols.len {
+            let sym = copy s.symbols[id]
+            if sym.index == 0 || sym.section == 0 { continue }
+            if sym.binding != 0 && (s.globals[sym.name] else -1) != id { continue }
+            let section = section_of(l, s, id)
+            if section == 0 { continue }
+            let local = sym.binding == 0 || sym.other & 3 == 2 || sym.other & 3 == 1
+            if local != (pass == 0) { continue }
+            let value = layout.value(l, s, id, false)?
+            symbol(
+                mut table,
+                mut strings,
+                sym.name,
+                if local then 0 else sym.binding,
+                sym.kind,
+                sym.other,
+                section,
+                layout.bits(value),
+                sym.size,
+            )?
+            count += 1
+        }
+    }
+    for name in s.alias_names {
+        let target_name = s.aliases[name] else { return Bad("missing alias") }
+        let id = s.globals[target_name] else { return Bad("undefined alias target {target_name}") }
+        let v = layout.value(l, s, id, false)?
+        symbol(
+            mut table,
+            mut strings,
+            name,
+            1,
+            s.symbols[id].kind,
+            0,
+            section_of(l, s, id),
+            layout.bits(v),
+            0,
+        )?
+        count += 1
+    }
+    let symidx = l.outputs.len
+    var syms = layout.output(".symtab", 2, 0, 8)
+    syms.data = table
+    syms.size = syms.data.len
+    syms.entsize = 24
+    syms.link = symidx + 1
+    syms.info = first_global
+    (mut l.outputs).push(syms)
+    var strs = layout.output(".strtab", 3, 0, 1)
+    strs.data = strings
+    strs.size = strs.data.len
+    (mut l.outputs).push(strs)
+}
+
+fn ph(
+    kind: int,
+    flags: int,
+    off: int,
+    address: int,
+    filesz: int,
+    memsz: int,
+    align: int,
+) -> List[byte] ! {Bad(str)} {
+    binary.encode(
+        [
+            kind as u64,
+            flags as u64,
+            off as u64,
+            address as u64,
+            address as u64,
+            filesz as u64,
+            memsz as u64,
+            align as u64,
+        ],
+        [4, 4, 8, 8, 8, 8, 8, 8],
+    )?
+}
+
+fn insert(mut file: List[byte], off: int, data: List[byte]) -> () ! {Bad(str)} {
+    if off < 0 || off > file.len || data.len > file.len - off {
+        return Bad("output file write outside reserved span")
+    }
+    for i in 0..data.len { file[off + i] = data[i] }
+}
+
+/// Build a static ET_EXEC, re-read and verify it before reporting success.
+pub fn link(s: resolve.State, p: front.Plan) -> () ! {Bad(str)} {
+    var l = layout.read(s)?
+    layout.collect(mut l, s, p)?
+    layout.place(mut l, s)?
+    relocate.apply(mut l, s)?
+    symbols(mut l, s)?
+    let shstr = l.outputs.len
+    (mut l.outputs).push(layout.output(".shstrtab", 3, 0, 1))
+    var names: List[byte] = [0 as byte]
+    var name_offsets = List[int]()
+    for o in l.outputs { (mut name_offsets).push(cstring(mut names, o.name)) }
+    l.outputs[shstr].data = names
+    l.outputs[shstr].size = l.outputs[shstr].data.len
+    var cursor = l.data_file_end
+    for j in 1..l.outputs.len {
+        if l.outputs[j].flags & 2 != 0 { continue }
+        cursor = layout.align(cursor, l.outputs[j].align)
+        l.outputs[j].fileoff = cursor
+        cursor += l.outputs[j].size
+    }
+    let shoff = layout.align(cursor, 8)
+    var file = List[byte]()
+    for _ in 0..shoff + l.outputs.len * 64 { (mut file).push(0 as byte) }
+    var phdrs = List[byte]()
+    append(mut phdrs, ph(1, 5, 0, 2097152, l.text_end, l.text_end, 4096)?)
+    append(
+        mut phdrs,
+        ph(
+            1,
+            6,
+            l.data_start,
+            2097152 + l.data_start,
+            l.data_file_end - l.data_start,
+            l.data_mem_end - l.data_start,
+            4096,
+        )?,
+    )
+    if l.tls_address != 0 {
+        append(
+            mut phdrs,
+            ph(7, 4, l.tls_address - 2097152, l.tls_address, l.tls_file, l.tls_size, l.tls_align)?,
+        )
+    }
+    append(mut phdrs, ph(1685382481, 6, 0, 0, 0, 0, 16)?)
+    let entryid = s.globals["_start"] else { return Bad("undefined entry _start") }
+    let entry = layout.value(l, s, entryid, false)?
+    let ident: List[byte] = [
+        127 as byte,
+        69 as byte,
+        76 as byte,
+        70 as byte,
+        2 as byte,
+        1 as byte,
+        1 as byte,
+        0 as byte,
+        0 as byte,
+        0 as byte,
+        0 as byte,
+        0 as byte,
+        0 as byte,
+        0 as byte,
+        0 as byte,
+        0 as byte,
+    ]
+    insert(mut file, 0, ident)?
+    insert(
+        mut file,
+        16,
+        binary.encode(
+            [
+                2,
+                62,
+                1,
+                entry as u64,
+                64,
+                shoff as u64,
+                0,
+                64,
+                56,
+                (phdrs.len / 56) as u64,
+                64,
+                l.outputs.len as u64,
+                shstr as u64,
+            ],
+            [2, 2, 4, 8, 8, 8, 4, 2, 2, 2, 2, 2, 2],
+        )?,
+    )?
+    insert(mut file, 64, phdrs)?
+    for j in 1..l.outputs.len {
+        let o = copy l.outputs[j]
+        if o.kind != 8 { insert(mut file, o.fileoff, o.data)? }
+        insert(
+            mut file,
+            shoff + j * 64,
+            binary.encode(
+                [
+                    name_offsets[j] as u64,
+                    o.kind as u64,
+                    o.flags,
+                    o.address as u64,
+                    o.fileoff as u64,
+                    o.size as u64,
+                    o.link as u64,
+                    o.info as u64,
+                    o.align as u64,
+                    o.entsize as u64,
+                ],
+                [4, 4, 8, 8, 8, 8, 4, 4, 8, 8],
+            )?,
+        )?
+    }
+    fs_write_bytes(p.output, file) else |_| { return Bad("cannot write {p.output}") }
+    fs_set_mode(p.output, 493) else |_| { return Bad("cannot mark {p.output} executable") }
+    let fd = fs_open(p.output) else |_| { return Bad("cannot reopen output for verify") }
+    defer fs_close(fd) else |_| {}
+    let input = binary.Input { fd: fd, base: 0, size: file.len }
+    let image = elf.parse(input)?
+    elf.walk(input, image, false)?
+    verify.check(image)?
+}

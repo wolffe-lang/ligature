@@ -139,6 +139,7 @@ fn define(mut s: State, id: int) -> () ! {Bad(str)} {
 
 fn object(mut s: State, f: binary.Input, label: str) -> () ! {Bad(str)} {
     let image = elf.parse(f)?
+    if image.machine == 183 { return Bad("EM_AARCH64 linking refused (AAELF64 2025Q1)") }
     if image.kind != 1 || image.machine != 62 {
         return Bad("{label}: static writer requires x86-64 ET_REL (AMD64 psABI 4)")
     }
