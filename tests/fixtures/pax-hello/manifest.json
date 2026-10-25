@@ -1,0 +1,61 @@
+{
+  "lld": {
+    "argv": [
+      "/lane/link-inputs/ld.lld",
+      "-static",
+      "--emit-relocs",
+      "--gc-sections",
+      "--undefined=__wolf_rt_trap_at",
+      "--defsym=wolf_trap=__wolf_rt_trap_at",
+      "--trace",
+      "-Map=/lane/ligature/target/static-pax/hello-hello/oracle/lld/link.map",
+      "-o",
+      "/lane/ligature/target/static-pax/hello-hello/oracle/lld/program",
+      "/lane/link-inputs/sysroot/crt1.o",
+      "/lane/link-inputs/sysroot/crti.o",
+      "--start-group",
+      "/lane/ligature/target/corpus/hello-hello/main.o",
+      "/lane/link-inputs/libwolf_rt.a",
+      "/lane/link-inputs/sysroot/libc.a",
+      "/lane/link-inputs/sysroot/libunwind.a",
+      "--end-group",
+      "/lane/link-inputs/sysroot/crtn.o",
+      "--why-extract=/lane/ligature/target/static-pax/hello-hello/oracle/lld/why-extract.tsv"
+    ],
+    "sha256": "842c159a765a6f872d972a9c017cb9f7bd3cbadafa70e932bf8c42f647790e26",
+    "run": {
+      "stdout_hex": "68656c6c6f2c20776f6c660a",
+      "stderr_hex": "",
+      "status": 0
+    }
+  },
+  "gnu": {
+    "argv": [
+      "/usr/bin/ld.bfd",
+      "-static",
+      "--emit-relocs",
+      "--gc-sections",
+      "--undefined=__wolf_rt_trap_at",
+      "--defsym=wolf_trap=__wolf_rt_trap_at",
+      "--trace",
+      "-Map=/lane/ligature/target/static-pax/hello-hello/oracle/gnu/link.map",
+      "-o",
+      "/lane/ligature/target/static-pax/hello-hello/oracle/gnu/program",
+      "/lane/link-inputs/sysroot/crt1.o",
+      "/lane/link-inputs/sysroot/crti.o",
+      "--start-group",
+      "/lane/ligature/target/corpus/hello-hello/main.o",
+      "/lane/link-inputs/libwolf_rt.a",
+      "/lane/link-inputs/sysroot/libc.a",
+      "/lane/link-inputs/sysroot/libunwind.a",
+      "--end-group",
+      "/lane/link-inputs/sysroot/crtn.o"
+    ],
+    "sha256": "2b62874008928c760e8a1703d0040147c58ea1b69e37f667239f6773e2130239",
+    "run": {
+      "stdout_hex": "68656c6c6f2c20776f6c660a",
+      "stderr_hex": "",
+      "status": 0
+    }
+  }
+}

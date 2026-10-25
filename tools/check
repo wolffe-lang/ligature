@@ -14,6 +14,7 @@ python3 -I tests/resolve.py
 python3 -I tests/writer.py
 python3 -I tests/cc.py
 python3 -I tests/provenance.py
+python3 -I tests/pax-validator.py
 python3 -I tests/static-pax-runner.py
 python3 -I tests/kernel-edge.py
 # Read the public runtime too; it is glibc-targeted, not the PAX runtime.
