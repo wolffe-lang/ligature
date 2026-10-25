@@ -1,0 +1,786 @@
+[
+  {
+    "path": "/home/mfwolffe/lanes/ld03/ligature/target/static-pax/compiler-comptime/oracle/lld/inspect.jsonl",
+    "original_bytes": 78169540,
+    "compressed_bytes": 8719378,
+    "uncompressed_sha256": "bb561cfe0020cb1390ecf78486a5572125caee76cf751d9fc0214e22e521d4b9",
+    "verified_compression": true
+  },
+  {
+    "path": "/home/mfwolffe/lanes/ld03/ligature/target/static-pax/compiler-comptime/oracle/lld/readelf.txt",
+    "original_bytes": 52883506,
+    "compressed_bytes": 5426953,
+    "uncompressed_sha256": "02d3d24a811a6b9be87810301bfc8c95d638bf1418bf3069f45ede051410b5e2",
+    "verified_compression": true
+  },
+  {
+    "path": "/home/mfwolffe/lanes/ld03/ligature/target/static-pax/compiler-comptime/oracle/lld/objdump.txt",
+    "original_bytes": 4636981,
+    "compressed_bytes": 1096519,
+    "uncompressed_sha256": "05186c1f3149fa6a1ded23f146909a30d1c9ce89d3b7c0746ade9a387c293268",
+    "verified_compression": true
+  },
+  {
+    "path": "/home/mfwolffe/lanes/ld03/ligature/target/static-pax/compiler-comptime/oracle/lld/link.map",
+    "original_bytes": 1719595,
+    "compressed_bytes": 255244,
+    "uncompressed_sha256": "21d99638ec060176b9c95c52424dd308a104d95e39d78a5dede87d59417c5294",
+    "verified_compression": true
+  },
+  {
+    "path": "/home/mfwolffe/lanes/ld03/ligature/target/static-pax/compiler-comptime/oracle/gnu/inspect.jsonl",
+    "original_bytes": 75670352,
+    "compressed_bytes": 8028734,
+    "uncompressed_sha256": "28b45e69a88e40915c55ec497c20d7d16e31d3073caf9881c86dc972102e91d4",
+    "verified_compression": true
+  },
+  {
+    "path": "/home/mfwolffe/lanes/ld03/ligature/target/static-pax/compiler-comptime/oracle/gnu/readelf.txt",
+    "original_bytes": 51393690,
+    "compressed_bytes": 4854666,
+    "uncompressed_sha256": "9b0fe3d4f38b6864f59f8be093df18b5eadb554325f9c734db710bd484ee058f",
+    "verified_compression": true
+  },
+  {
+    "path": "/home/mfwolffe/lanes/ld03/ligature/target/static-pax/compiler-comptime/oracle/gnu/objdump.txt",
+    "original_bytes": 4450740,
+    "compressed_bytes": 1077303,
+    "uncompressed_sha256": "2cae20ca088c0f4db6323a94f0a59838d3d1741d51b76e91c7f39d21d56976be",
+    "verified_compression": true
+  },
+  {
+    "path": "/home/mfwolffe/lanes/ld03/ligature/target/static-pax/compiler-comptime/oracle/gnu/link.map",
+    "original_bytes": 3010689,
+    "compressed_bytes": 285923,
+    "uncompressed_sha256": "eda90a526df38719c3494cb404f2202131f8adb8408b3dc288125a06f18cd263",
+    "verified_compression": true
+  },
+  {
+    "path": "/home/mfwolffe/lanes/ld03/ligature/target/static-pax/compiler-entry_no_return/oracle/lld/inspect.jsonl",
+    "original_bytes": 78138773,
+    "compressed_bytes": 8743613,
+    "uncompressed_sha256": "12f8bae866c40eabc7f12519a9f30aea94e68d060cbebf57a94ad413a5f93981",
+    "verified_compression": true
+  },
+  {
+    "path": "/home/mfwolffe/lanes/ld03/ligature/target/static-pax/compiler-entry_no_return/oracle/lld/readelf.txt",
+    "original_bytes": 52920496,
+    "compressed_bytes": 5432528,
+    "uncompressed_sha256": "5ec6f2517d66c6984b521746514403637af3479cd15e9a2163d12bf259670d04",
+    "verified_compression": true
+  },
+  {
+    "path": "/home/mfwolffe/lanes/ld03/ligature/target/static-pax/compiler-entry_no_return/oracle/lld/objdump.txt",
+    "original_bytes": 4672270,
+    "compressed_bytes": 1105754,
+    "uncompressed_sha256": "050a886bde6f6eb647e0798ba2b89344e03a41370635b47ce79fd5d810bdab0b",
+    "verified_compression": true
+  },
+  {
+    "path": "/home/mfwolffe/lanes/ld03/ligature/target/static-pax/compiler-entry_no_return/oracle/lld/link.map",
+    "original_bytes": 1739711,
+    "compressed_bytes": 257589,
+    "uncompressed_sha256": "0e33312f1ea1ff75a94de95d770d7585cf028f516adeef7c74690442d9790372",
+    "verified_compression": true
+  },
+  {
+    "path": "/home/mfwolffe/lanes/ld03/ligature/target/static-pax/compiler-entry_no_return/oracle/gnu/inspect.jsonl",
+    "original_bytes": 75653452,
+    "compressed_bytes": 8026373,
+    "uncompressed_sha256": "9e87c449c1a522f118b155d29bbe62b85ec5a278b16870a35a90f4705a999503",
+    "verified_compression": true
+  },
+  {
+    "path": "/home/mfwolffe/lanes/ld03/ligature/target/static-pax/compiler-entry_no_return/oracle/gnu/readelf.txt",
+    "original_bytes": 51375551,
+    "compressed_bytes": 4848345,
+    "uncompressed_sha256": "8f2d0698552a0a61bd6105b9a50fd16be15576325d026a3e62c8252a5605ebff",
+    "verified_compression": true
+  },
+  {
+    "path": "/home/mfwolffe/lanes/ld03/ligature/target/static-pax/compiler-entry_no_return/oracle/gnu/objdump.txt",
+    "original_bytes": 4487659,
+    "compressed_bytes": 1088105,
+    "uncompressed_sha256": "1a5830afae0f2177cb6d267614fbe063a7e5329f151c5244181a31a55f9dfc54",
+    "verified_compression": true
+  },
+  {
+    "path": "/home/mfwolffe/lanes/ld03/ligature/target/static-pax/compiler-entry_no_return/oracle/gnu/link.map",
+    "original_bytes": 3013768,
+    "compressed_bytes": 286849,
+    "uncompressed_sha256": "0fdd71eab01b77b79345ebbe3472d92bcdfdbe67a2cc3c864d67d39a8fdbe895",
+    "verified_compression": true
+  },
+  {
+    "path": "/home/mfwolffe/lanes/ld03/ligature/target/static-pax/compiler-overflow/oracle/lld/inspect.jsonl",
+    "original_bytes": 78168107,
+    "compressed_bytes": 8719729,
+    "uncompressed_sha256": "2b1e3ec700efde1c70f1c045e9a120cbf7c5d3c6cbac1c685432d178990f046c",
+    "verified_compression": true
+  },
+  {
+    "path": "/home/mfwolffe/lanes/ld03/ligature/target/static-pax/compiler-overflow/oracle/lld/readelf.txt",
+    "original_bytes": 52883615,
+    "compressed_bytes": 5425084,
+    "uncompressed_sha256": "b409a42ac28dba4c7efc97755dd0d863811d17412d3c040d799cb5a733e4e2e3",
+    "verified_compression": true
+  },
+  {
+    "path": "/home/mfwolffe/lanes/ld03/ligature/target/static-pax/compiler-overflow/oracle/lld/objdump.txt",
+    "original_bytes": 4637207,
+    "compressed_bytes": 1096407,
+    "uncompressed_sha256": "6723545b57537327d08d49d6ad5f583c21f75091f506e4958a85c69149fec15b",
+    "verified_compression": true
+  },
+  {
+    "path": "/home/mfwolffe/lanes/ld03/ligature/target/static-pax/compiler-overflow/oracle/lld/link.map",
+    "original_bytes": 1719777,
+    "compressed_bytes": 255778,
+    "uncompressed_sha256": "e3b2d2274a734a92d48235d8b8ea794c7e0f1704f85768f2e12f8824cff4a964",
+    "verified_compression": true
+  },
+  {
+    "path": "/home/mfwolffe/lanes/ld03/ligature/target/static-pax/compiler-overflow/oracle/gnu/inspect.jsonl",
+    "original_bytes": 75670665,
+    "compressed_bytes": 8027811,
+    "uncompressed_sha256": "2eab60ae23d5fd2894186e08f383e9ccabbe708fddf312e4a84d820f98928e88",
+    "verified_compression": true
+  },
+  {
+    "path": "/home/mfwolffe/lanes/ld03/ligature/target/static-pax/compiler-overflow/oracle/gnu/readelf.txt",
+    "original_bytes": 51393811,
+    "compressed_bytes": 4859519,
+    "uncompressed_sha256": "4d579cf65dcaf87243ae4573f5b9dcedc522a65dcc6c3a36027ea70c998b87a6",
+    "verified_compression": true
+  },
+  {
+    "path": "/home/mfwolffe/lanes/ld03/ligature/target/static-pax/compiler-overflow/oracle/gnu/objdump.txt",
+    "original_bytes": 4450683,
+    "compressed_bytes": 1076565,
+    "uncompressed_sha256": "9eac62dd40cde8a3ae423918784c91a61514445107e1c531d145d1fee6cdc26a",
+    "verified_compression": true
+  },
+  {
+    "path": "/home/mfwolffe/lanes/ld03/ligature/target/static-pax/compiler-overflow/oracle/gnu/link.map",
+    "original_bytes": 3010569,
+    "compressed_bytes": 286011,
+    "uncompressed_sha256": "8572e6d5ffaa929c06e4975dd711937f70c2537ee14c9185dfdd862f647ada8b",
+    "verified_compression": true
+  },
+  {
+    "path": "/home/mfwolffe/lanes/ld03/ligature/target/static-pax/compiler-procs/oracle/lld/inspect.jsonl",
+    "original_bytes": 79266144,
+    "compressed_bytes": 8917577,
+    "uncompressed_sha256": "bff91206d46467665416b2ed21656b813b5ee7188fdca9923be11306754a24bd",
+    "verified_compression": true
+  },
+  {
+    "path": "/home/mfwolffe/lanes/ld03/ligature/target/static-pax/compiler-procs/oracle/lld/readelf.txt",
+    "original_bytes": 54246051,
+    "compressed_bytes": 5603209,
+    "uncompressed_sha256": "e39232b0f72dabc1ea8175e98dc1898b14aa6edf9231dbe87fd19ea6d6955ca2",
+    "verified_compression": true
+  },
+  {
+    "path": "/home/mfwolffe/lanes/ld03/ligature/target/static-pax/compiler-procs/oracle/lld/objdump.txt",
+    "original_bytes": 6947767,
+    "compressed_bytes": 1662441,
+    "uncompressed_sha256": "8a5fa9678f915544b02b2b5692ecc15e87ec4925be06e498072cb0e2c8fcd6f8",
+    "verified_compression": true
+  },
+  {
+    "path": "/home/mfwolffe/lanes/ld03/ligature/target/static-pax/compiler-procs/oracle/lld/link.map",
+    "original_bytes": 2270866,
+    "compressed_bytes": 327329,
+    "uncompressed_sha256": "080a2386e864472278a6a4cddb61d64bc5ba2a29299137f12d75e2085386677a",
+    "verified_compression": true
+  },
+  {
+    "path": "/home/mfwolffe/lanes/ld03/ligature/target/static-pax/compiler-procs/oracle/gnu/inspect.jsonl",
+    "original_bytes": 76930778,
+    "compressed_bytes": 8347175,
+    "uncompressed_sha256": "981abc04205e11f4b11400532461bc524c2a00521bfdb540a24bef7ea0ccfd96",
+    "verified_compression": true
+  },
+  {
+    "path": "/home/mfwolffe/lanes/ld03/ligature/target/static-pax/compiler-procs/oracle/gnu/readelf.txt",
+    "original_bytes": 52852049,
+    "compressed_bytes": 5120923,
+    "uncompressed_sha256": "515bceaa9640b84f12f71188f10a99531d56b91d8ae3b7a9e9a39b595f1e7113",
+    "verified_compression": true
+  },
+  {
+    "path": "/home/mfwolffe/lanes/ld03/ligature/target/static-pax/compiler-procs/oracle/gnu/objdump.txt",
+    "original_bytes": 6687706,
+    "compressed_bytes": 1631769,
+    "uncompressed_sha256": "f81cc3201b75a64e2eb56ace5ca1b038504adaad423fe04992ffa9873dfad529",
+    "verified_compression": true
+  },
+  {
+    "path": "/home/mfwolffe/lanes/ld03/ligature/target/static-pax/compiler-procs/oracle/gnu/link.map",
+    "original_bytes": 3102521,
+    "compressed_bytes": 316005,
+    "uncompressed_sha256": "a9f687c822fcb84dd21bc3a1a151fee8a75cb715e5dea0e9824c772f22f892c1",
+    "verified_compression": true
+  },
+  {
+    "path": "/home/mfwolffe/lanes/ld03/ligature/target/static-pax/compiler-regions/oracle/lld/inspect.jsonl",
+    "original_bytes": 78191556,
+    "compressed_bytes": 8753931,
+    "uncompressed_sha256": "326e29e0ba8284a09369b5390fb80d3cf9df77b292021d610eeffb32ca551ba4",
+    "verified_compression": true
+  },
+  {
+    "path": "/home/mfwolffe/lanes/ld03/ligature/target/static-pax/compiler-regions/oracle/lld/readelf.txt",
+    "original_bytes": 52985125,
+    "compressed_bytes": 5452404,
+    "uncompressed_sha256": "2b03e54624f6abbd9d6e29fe514d9977a8675fed4e2b0b7dfdf8532f7b06d498",
+    "verified_compression": true
+  },
+  {
+    "path": "/home/mfwolffe/lanes/ld03/ligature/target/static-pax/compiler-regions/oracle/lld/objdump.txt",
+    "original_bytes": 4764716,
+    "compressed_bytes": 1128245,
+    "uncompressed_sha256": "3eb27637dd23159675c47c7356d13087664a9000a175695ac3d5bfefa8a5a5f5",
+    "verified_compression": true
+  },
+  {
+    "path": "/home/mfwolffe/lanes/ld03/ligature/target/static-pax/compiler-regions/oracle/lld/link.map",
+    "original_bytes": 1762922,
+    "compressed_bytes": 261729,
+    "uncompressed_sha256": "e12cba33d47d52a8c2d73fb105b50be32ba9f8aba39c0ddc3cad0eb6184ed7be",
+    "verified_compression": true
+  },
+  {
+    "path": "/home/mfwolffe/lanes/ld03/ligature/target/static-pax/compiler-regions/oracle/gnu/inspect.jsonl",
+    "original_bytes": 75743741,
+    "compressed_bytes": 8053516,
+    "uncompressed_sha256": "306ac413a735c3b6f9cdc34125e479bb23aa9bb1da483c0d01725e639e2d5f9f",
+    "verified_compression": true
+  },
+  {
+    "path": "/home/mfwolffe/lanes/ld03/ligature/target/static-pax/compiler-regions/oracle/gnu/readelf.txt",
+    "original_bytes": 51482413,
+    "compressed_bytes": 4872957,
+    "uncompressed_sha256": "f6a1087ef8eaa645b6e05438c01d7eb3fc9110187ffd4e65567ec1fe4ba97b63",
+    "verified_compression": true
+  },
+  {
+    "path": "/home/mfwolffe/lanes/ld03/ligature/target/static-pax/compiler-regions/oracle/gnu/objdump.txt",
+    "original_bytes": 4572324,
+    "compressed_bytes": 1108531,
+    "uncompressed_sha256": "1298be4129bd7b13d49dc3a837943c83e1a0f2e1f8cf15220d67d790ee8820a7",
+    "verified_compression": true
+  },
+  {
+    "path": "/home/mfwolffe/lanes/ld03/ligature/target/static-pax/compiler-regions/oracle/gnu/link.map",
+    "original_bytes": 3022501,
+    "compressed_bytes": 289209,
+    "uncompressed_sha256": "30f46dffb1b1ce78465c65e0528b9c52293da59cd443b2f4154f84ebe15c5fe6",
+    "verified_compression": true
+  },
+  {
+    "path": "/home/mfwolffe/lanes/ld03/ligature/target/static-pax/hello-hello/oracle/lld/inspect.jsonl",
+    "original_bytes": 78139235,
+    "compressed_bytes": 8745298,
+    "uncompressed_sha256": "37d896a980f0f78c2086db35e75ac0f4d6067a912bf5b150f4f2254ae6c8cca0",
+    "verified_compression": true
+  },
+  {
+    "path": "/home/mfwolffe/lanes/ld03/ligature/target/static-pax/hello-hello/oracle/lld/readelf.txt",
+    "original_bytes": 52920809,
+    "compressed_bytes": 5431857,
+    "uncompressed_sha256": "7b465f672d6f324f956acae4e31cd5fcc05975d8ffe78136a98d6e978a51b99c",
+    "verified_compression": true
+  },
+  {
+    "path": "/home/mfwolffe/lanes/ld03/ligature/target/static-pax/hello-hello/oracle/lld/objdump.txt",
+    "original_bytes": 4672561,
+    "compressed_bytes": 1105583,
+    "uncompressed_sha256": "2a3e92c0b33c19223772b3ac482664a3955c64b70b1b640da8d590c49b75ed6e",
+    "verified_compression": true
+  },
+  {
+    "path": "/home/mfwolffe/lanes/ld03/ligature/target/static-pax/hello-hello/oracle/lld/link.map",
+    "original_bytes": 1739681,
+    "compressed_bytes": 257561,
+    "uncompressed_sha256": "b4d584fb39e7f16ba21cc63a6892b2358b7254a1ecb3baf23bb7442a33c45a3e",
+    "verified_compression": true
+  },
+  {
+    "path": "/home/mfwolffe/lanes/ld03/ligature/target/static-pax/hello-hello/oracle/gnu/inspect.jsonl",
+    "original_bytes": 75653884,
+    "compressed_bytes": 8026415,
+    "uncompressed_sha256": "b9373d3f1bf96671e044ae5bbf989b67084d5cc9e2c4529f9979e72fe33a1c5a",
+    "verified_compression": true
+  },
+  {
+    "path": "/home/mfwolffe/lanes/ld03/ligature/target/static-pax/hello-hello/oracle/gnu/readelf.txt",
+    "original_bytes": 51375808,
+    "compressed_bytes": 4850124,
+    "uncompressed_sha256": "9ac997952e97d9958063aff4337e1bf3be8497ac8f377862fa567ab8d9c7f9b3",
+    "verified_compression": true
+  },
+  {
+    "path": "/home/mfwolffe/lanes/ld03/ligature/target/static-pax/hello-hello/oracle/gnu/objdump.txt",
+    "original_bytes": 4488028,
+    "compressed_bytes": 1087931,
+    "uncompressed_sha256": "8f997d01c9698585be432530284323e0d8c1c1a4fc0a7dd161f41f1a56c534ff",
+    "verified_compression": true
+  },
+  {
+    "path": "/home/mfwolffe/lanes/ld03/ligature/target/static-pax/hello-hello/oracle/gnu/link.map",
+    "original_bytes": 3013625,
+    "compressed_bytes": 286788,
+    "uncompressed_sha256": "2c6533cc4623c70f59578f3a014e100f8cee52d4d694ac7e11d4815f48b419a9",
+    "verified_compression": true
+  },
+  {
+    "path": "/home/mfwolffe/lanes/ld03/ligature/target/static-pax/pax-exec/oracle/lld/inspect.jsonl",
+    "original_bytes": 78442592,
+    "compressed_bytes": 8799517,
+    "uncompressed_sha256": "7944d87ff0ea5f1d8b4b7328c9f4108596496e02e6275791db42947256adfc89",
+    "verified_compression": true
+  },
+  {
+    "path": "/home/mfwolffe/lanes/ld03/ligature/target/static-pax/pax-exec/oracle/lld/readelf.txt",
+    "original_bytes": 53228598,
+    "compressed_bytes": 5519446,
+    "uncompressed_sha256": "100d4f19e64017ff9f541d6f7317eb49d4834f6b837f204d3d62c90f8f1a58ff",
+    "verified_compression": true
+  },
+  {
+    "path": "/home/mfwolffe/lanes/ld03/ligature/target/static-pax/pax-exec/oracle/lld/objdump.txt",
+    "original_bytes": 5276932,
+    "compressed_bytes": 1263316,
+    "uncompressed_sha256": "e4d4d583cb651620032286884864f1f229016296b3c5dcbddedb4c33be92e4a3",
+    "verified_compression": true
+  },
+  {
+    "path": "/home/mfwolffe/lanes/ld03/ligature/target/static-pax/pax-exec/oracle/lld/link.map",
+    "original_bytes": 1897966,
+    "compressed_bytes": 279887,
+    "uncompressed_sha256": "ba32f1eb2fa2c3327514251c7f97dffb2894a681befac3cbf8d52b4f46ea5b59",
+    "verified_compression": true
+  },
+  {
+    "path": "/home/mfwolffe/lanes/ld03/ligature/target/static-pax/pax-exec/oracle/gnu/inspect.jsonl",
+    "original_bytes": 76549110,
+    "compressed_bytes": 8169272,
+    "uncompressed_sha256": "31e29b4ada5ee3f9cc9bf5ec7352924126a0b7b6b15d37110afd38cd5ac3e066",
+    "verified_compression": true
+  },
+  {
+    "path": "/home/mfwolffe/lanes/ld03/ligature/target/static-pax/pax-exec/oracle/gnu/readelf.txt",
+    "original_bytes": 52099729,
+    "compressed_bytes": 4955628,
+    "uncompressed_sha256": "47f62829040c17c2e0e4aeb200cd49b56f1917837f9baef6d8ba3eda321bb6fd",
+    "verified_compression": true
+  },
+  {
+    "path": "/home/mfwolffe/lanes/ld03/ligature/target/static-pax/pax-exec/oracle/gnu/objdump.txt",
+    "original_bytes": 5061249,
+    "compressed_bytes": 1243267,
+    "uncompressed_sha256": "b4a9b8e05f3cff5d38f588b9d2e30a0e253eb06be29d5c6f7d1aff4f435184ae",
+    "verified_compression": true
+  },
+  {
+    "path": "/home/mfwolffe/lanes/ld03/ligature/target/static-pax/pax-exec/oracle/gnu/link.map",
+    "original_bytes": 3034661,
+    "compressed_bytes": 295993,
+    "uncompressed_sha256": "7654b53f3cb54f499965787c878efe92f4d8cd2eb1a8c6ca53b3399b3976c1ae",
+    "verified_compression": true
+  },
+  {
+    "path": "/home/mfwolffe/lanes/ld03/ligature/target/static-pax/pax-fork/oracle/lld/inspect.jsonl",
+    "original_bytes": 78365492,
+    "compressed_bytes": 8791830,
+    "uncompressed_sha256": "fe659e8b4998b9fa1c801925bbc4c9b7ccb15ce18915c122fd35f68dc7f03be5",
+    "verified_compression": true
+  },
+  {
+    "path": "/home/mfwolffe/lanes/ld03/ligature/target/static-pax/pax-fork/oracle/lld/readelf.txt",
+    "original_bytes": 53160465,
+    "compressed_bytes": 5476048,
+    "uncompressed_sha256": "3979a19f8aedaf42c4035802876832b101bf3f4a4d12c74e1ec1f0f557d02969",
+    "verified_compression": true
+  },
+  {
+    "path": "/home/mfwolffe/lanes/ld03/ligature/target/static-pax/pax-fork/oracle/lld/objdump.txt",
+    "original_bytes": 4988901,
+    "compressed_bytes": 1186832,
+    "uncompressed_sha256": "a0df718d4ff5b7964eebb2afa1d6be23d2a0549302aead65ca4d03a1a1e13a16",
+    "verified_compression": true
+  },
+  {
+    "path": "/home/mfwolffe/lanes/ld03/ligature/target/static-pax/pax-fork/oracle/lld/link.map",
+    "original_bytes": 1863457,
+    "compressed_bytes": 275951,
+    "uncompressed_sha256": "554a87814371b3260cfccba84d0e272820b1c782f4f9db3dd6418b02ef82e5e0",
+    "verified_compression": true
+  },
+  {
+    "path": "/home/mfwolffe/lanes/ld03/ligature/target/static-pax/pax-fork/oracle/gnu/inspect.jsonl",
+    "original_bytes": 76076559,
+    "compressed_bytes": 8109524,
+    "uncompressed_sha256": "ce0615a31d2d1566c0e10a075d610845e57e5e2167b433c3fc2d036fb289cea5",
+    "verified_compression": true
+  },
+  {
+    "path": "/home/mfwolffe/lanes/ld03/ligature/target/static-pax/pax-fork/oracle/gnu/readelf.txt",
+    "original_bytes": 51754222,
+    "compressed_bytes": 4916266,
+    "uncompressed_sha256": "a20282e82acaca987a7f7bd7e70f5b96af2552aa5795cd4ae569c2be070dabe9",
+    "verified_compression": true
+  },
+  {
+    "path": "/home/mfwolffe/lanes/ld03/ligature/target/static-pax/pax-fork/oracle/gnu/objdump.txt",
+    "original_bytes": 4792528,
+    "compressed_bytes": 1166033,
+    "uncompressed_sha256": "f80c2030d7d7623adcde66b0fc2b716cd403dcd99a77335bed6a7f8742a4818c",
+    "verified_compression": true
+  },
+  {
+    "path": "/home/mfwolffe/lanes/ld03/ligature/target/static-pax/pax-fork/oracle/gnu/link.map",
+    "original_bytes": 3040158,
+    "compressed_bytes": 295226,
+    "uncompressed_sha256": "1ef0bae4cc9c02cf338253b96f705ed279c3f03cc38744ac56173e70fb1280d9",
+    "verified_compression": true
+  },
+  {
+    "path": "/home/mfwolffe/lanes/ld03/ligature/target/static-pax/pax-hello/oracle/lld/inspect.jsonl",
+    "original_bytes": 78139233,
+    "compressed_bytes": 8745746,
+    "uncompressed_sha256": "1d311f70f10d8346da427d8dc2855b40c29081f112af5125d00d62471f38072d",
+    "verified_compression": true
+  },
+  {
+    "path": "/home/mfwolffe/lanes/ld03/ligature/target/static-pax/pax-hello/oracle/lld/readelf.txt",
+    "original_bytes": 52920809,
+    "compressed_bytes": 5431123,
+    "uncompressed_sha256": "9d1eb4859fdf451144ffdfbd499c1a1f274f6ce2a7305f592a6450d99030071b",
+    "verified_compression": true
+  },
+  {
+    "path": "/home/mfwolffe/lanes/ld03/ligature/target/static-pax/pax-hello/oracle/lld/objdump.txt",
+    "original_bytes": 4672559,
+    "compressed_bytes": 1105566,
+    "uncompressed_sha256": "0d3cfb9133cc909705ff4860b9fc89edd924276daee8dcc2d1975e986a78e79a",
+    "verified_compression": true
+  },
+  {
+    "path": "/home/mfwolffe/lanes/ld03/ligature/target/static-pax/pax-hello/oracle/lld/link.map",
+    "original_bytes": 1739665,
+    "compressed_bytes": 257607,
+    "uncompressed_sha256": "538764206a9cd306f5ecc4dd8fd958ae0201bd6269b123d0799487704560211c",
+    "verified_compression": true
+  },
+  {
+    "path": "/home/mfwolffe/lanes/ld03/ligature/target/static-pax/pax-hello/oracle/gnu/inspect.jsonl",
+    "original_bytes": 75653881,
+    "compressed_bytes": 8024493,
+    "uncompressed_sha256": "e156b7f885596317dc7545288e2b06bdd1726591db8ec011164537d4574f9b23",
+    "verified_compression": true
+  },
+  {
+    "path": "/home/mfwolffe/lanes/ld03/ligature/target/static-pax/pax-hello/oracle/gnu/readelf.txt",
+    "original_bytes": 51375808,
+    "compressed_bytes": 4846542,
+    "uncompressed_sha256": "f4dd295a219d8243b246b9fee72c472fe6784b98e4f9257b7fe150d00813d552",
+    "verified_compression": true
+  },
+  {
+    "path": "/home/mfwolffe/lanes/ld03/ligature/target/static-pax/pax-hello/oracle/gnu/objdump.txt",
+    "original_bytes": 4488026,
+    "compressed_bytes": 1087935,
+    "uncompressed_sha256": "0c070a7f36dbc969b0bcccb23b4abcf796d3fbda057dd894ce61e0bc3e7a7e32",
+    "verified_compression": true
+  },
+  {
+    "path": "/home/mfwolffe/lanes/ld03/ligature/target/static-pax/pax-hello/oracle/gnu/link.map",
+    "original_bytes": 3013603,
+    "compressed_bytes": 286813,
+    "uncompressed_sha256": "4d42edcf54e855efa6bd55f67601acc734b84598fbf0f28323b9d3cd486623b1",
+    "verified_compression": true
+  },
+  {
+    "path": "/home/mfwolffe/lanes/ld03/ligature/target/static-pax/pax-host/oracle/lld/inspect.jsonl",
+    "original_bytes": 78724449,
+    "compressed_bytes": 8820403,
+    "uncompressed_sha256": "7d40650ed2406ae42951dd44597ff2158c1302d51c1bc0155e0b2e14921cf7fc",
+    "verified_compression": true
+  },
+  {
+    "path": "/home/mfwolffe/lanes/ld03/ligature/target/static-pax/pax-host/oracle/lld/readelf.txt",
+    "original_bytes": 53568296,
+    "compressed_bytes": 5529204,
+    "uncompressed_sha256": "9d5bdc568ebcd04e5a6b682df13c5d33f137bdc4a2475e8b32e1997d05a2387f",
+    "verified_compression": true
+  },
+  {
+    "path": "/home/mfwolffe/lanes/ld03/ligature/target/static-pax/pax-host/oracle/lld/objdump.txt",
+    "original_bytes": 5824536,
+    "compressed_bytes": 1398912,
+    "uncompressed_sha256": "ba2fd82113877324b7d2e5e9f7176cf06e42a3c45d939c1919db9e7c598252a9",
+    "verified_compression": true
+  },
+  {
+    "path": "/home/mfwolffe/lanes/ld03/ligature/target/static-pax/pax-host/oracle/lld/link.map",
+    "original_bytes": 2041197,
+    "compressed_bytes": 298871,
+    "uncompressed_sha256": "a46fde6c3e33983d95497aea08591409d507b0e14199168897f5ac0126a41ba8",
+    "verified_compression": true
+  },
+  {
+    "path": "/home/mfwolffe/lanes/ld03/ligature/target/static-pax/pax-host/oracle/gnu/inspect.jsonl",
+    "original_bytes": 76496203,
+    "compressed_bytes": 8207519,
+    "uncompressed_sha256": "ee8ac10e7716ba55b7ef1fd59b9af2772001d3fe892ce43aaa03327bc0a1360e",
+    "verified_compression": true
+  },
+  {
+    "path": "/home/mfwolffe/lanes/ld03/ligature/target/static-pax/pax-host/oracle/gnu/readelf.txt",
+    "original_bytes": 52209156,
+    "compressed_bytes": 5000100,
+    "uncompressed_sha256": "3994c38b03690c2d2c41495b4d959217adbca81f704c2ccac2c1dc1372d7fe00",
+    "verified_compression": true
+  },
+  {
+    "path": "/home/mfwolffe/lanes/ld03/ligature/target/static-pax/pax-host/oracle/gnu/objdump.txt",
+    "original_bytes": 5571812,
+    "compressed_bytes": 1371981,
+    "uncompressed_sha256": "0344336827bca12c04eecce7897e512eed87c02f050a68322dd9a6513fe8689d",
+    "verified_compression": true
+  },
+  {
+    "path": "/home/mfwolffe/lanes/ld03/ligature/target/static-pax/pax-host/oracle/gnu/link.map",
+    "original_bytes": 3062070,
+    "compressed_bytes": 303787,
+    "uncompressed_sha256": "1a395c0bdedbf598cf7e3678a5ee8355f2a81d5687a89a820ec63afb94106736",
+    "verified_compression": true
+  },
+  {
+    "path": "/home/mfwolffe/lanes/ld03/ligature/target/static-pax/pax-loop/oracle/lld/inspect.jsonl",
+    "original_bytes": 78144397,
+    "compressed_bytes": 8745019,
+    "uncompressed_sha256": "29281d4487b44601a33cf9459917ad8e9b59f106c6a08c300b40f81b1c23529f",
+    "verified_compression": true
+  },
+  {
+    "path": "/home/mfwolffe/lanes/ld03/ligature/target/static-pax/pax-loop/oracle/lld/readelf.txt",
+    "original_bytes": 52925892,
+    "compressed_bytes": 5437115,
+    "uncompressed_sha256": "509196e347bcaa98342418124a2c63c6b549235328c8b9df911e9527adc2076d",
+    "verified_compression": true
+  },
+  {
+    "path": "/home/mfwolffe/lanes/ld03/ligature/target/static-pax/pax-loop/oracle/lld/objdump.txt",
+    "original_bytes": 4681340,
+    "compressed_bytes": 1107784,
+    "uncompressed_sha256": "cde1e3637a68a56668554935776262da17e67b26d6f6e4dabe747d46c6a0b2bb",
+    "verified_compression": true
+  },
+  {
+    "path": "/home/mfwolffe/lanes/ld03/ligature/target/static-pax/pax-loop/oracle/lld/link.map",
+    "original_bytes": 1741047,
+    "compressed_bytes": 257680,
+    "uncompressed_sha256": "66128b4255ed5de4dfe4183e97a0ad31c7680eafe85039109c077da71ee3808b",
+    "verified_compression": true
+  },
+  {
+    "path": "/home/mfwolffe/lanes/ld03/ligature/target/static-pax/pax-loop/oracle/gnu/inspect.jsonl",
+    "original_bytes": 75659113,
+    "compressed_bytes": 8026873,
+    "uncompressed_sha256": "3d17968900f212c184f4712b2cc948033123f4695e664d9114eac6b5f0324ed0",
+    "verified_compression": true
+  },
+  {
+    "path": "/home/mfwolffe/lanes/ld03/ligature/target/static-pax/pax-loop/oracle/gnu/readelf.txt",
+    "original_bytes": 51381193,
+    "compressed_bytes": 4848993,
+    "uncompressed_sha256": "ba6f8d17dfdd7a4ed1e29f3c57585453f4213c6c73134c33bafb85eb9c1f0d54",
+    "verified_compression": true
+  },
+  {
+    "path": "/home/mfwolffe/lanes/ld03/ligature/target/static-pax/pax-loop/oracle/gnu/objdump.txt",
+    "original_bytes": 4495499,
+    "compressed_bytes": 1089627,
+    "uncompressed_sha256": "d8b7c2ca84428099d7b68eb56625816ea5ce306483e4ce78f3fac370fe434254",
+    "verified_compression": true
+  },
+  {
+    "path": "/home/mfwolffe/lanes/ld03/ligature/target/static-pax/pax-loop/oracle/gnu/link.map",
+    "original_bytes": 3013850,
+    "compressed_bytes": 287013,
+    "uncompressed_sha256": "ff7930749db23a012925be213d47b1ebec73a3cf4a7c88f7e64570b84a1f34e4",
+    "verified_compression": true
+  },
+  {
+    "path": "/home/mfwolffe/lanes/ld03/ligature/target/static-pax/pax-signal/oracle/lld/inspect.jsonl",
+    "original_bytes": 78205638,
+    "compressed_bytes": 8748342,
+    "uncompressed_sha256": "d389901562a51d3a7b88dd5dda6533cceb4cbfc03c8029b714282abd86df03ee",
+    "verified_compression": true
+  },
+  {
+    "path": "/home/mfwolffe/lanes/ld03/ligature/target/static-pax/pax-signal/oracle/lld/readelf.txt",
+    "original_bytes": 52988485,
+    "compressed_bytes": 5452959,
+    "uncompressed_sha256": "2b01fd865e975d2e5178577421edd382529c5ec48b3c03f597e9be3368a46444",
+    "verified_compression": true
+  },
+  {
+    "path": "/home/mfwolffe/lanes/ld03/ligature/target/static-pax/pax-signal/oracle/lld/objdump.txt",
+    "original_bytes": 4764628,
+    "compressed_bytes": 1129787,
+    "uncompressed_sha256": "3bd824369389a22d9852b93c3341b474428ed71e694cf83544a10c53ec890bc4",
+    "verified_compression": true
+  },
+  {
+    "path": "/home/mfwolffe/lanes/ld03/ligature/target/static-pax/pax-signal/oracle/lld/link.map",
+    "original_bytes": 1770980,
+    "compressed_bytes": 262947,
+    "uncompressed_sha256": "c585bc4244b91beeaf12ab5f4e98179e44187c0860811af890a37960ffa08178",
+    "verified_compression": true
+  },
+  {
+    "path": "/home/mfwolffe/lanes/ld03/ligature/target/static-pax/pax-signal/oracle/gnu/inspect.jsonl",
+    "original_bytes": 75790349,
+    "compressed_bytes": 8050330,
+    "uncompressed_sha256": "2e8c96b43cca5507657d658b092fbc2e97a38d8d37bdeab8794aae5727e10247",
+    "verified_compression": true
+  },
+  {
+    "path": "/home/mfwolffe/lanes/ld03/ligature/target/static-pax/pax-signal/oracle/gnu/readelf.txt",
+    "original_bytes": 51493511,
+    "compressed_bytes": 4864453,
+    "uncompressed_sha256": "d0ba9c016b5ac67cb92fa7e3c93bdb5365f691c0faa78512fed1bb5d0979c059",
+    "verified_compression": true
+  },
+  {
+    "path": "/home/mfwolffe/lanes/ld03/ligature/target/static-pax/pax-signal/oracle/gnu/objdump.txt",
+    "original_bytes": 4576407,
+    "compressed_bytes": 1111732,
+    "uncompressed_sha256": "197e86b9f4c3e57b521fb7f6e28f40abe02559e3e5d9ed46e2cfb0894f412d54",
+    "verified_compression": true
+  },
+  {
+    "path": "/home/mfwolffe/lanes/ld03/ligature/target/static-pax/pax-signal/oracle/gnu/link.map",
+    "original_bytes": 3020919,
+    "compressed_bytes": 289369,
+    "uncompressed_sha256": "c7076f2ee8c4af5f6b3325740a39ee2323b457e9a822e9f3258f32aa7e801b88",
+    "verified_compression": true
+  },
+  {
+    "path": "/home/mfwolffe/lanes/ld03/ligature/target/static-pax/pax-spawn/oracle/lld/inspect.jsonl",
+    "original_bytes": 78803978,
+    "compressed_bytes": 8872543,
+    "uncompressed_sha256": "8c417ae1d4818d95a3209d6954c2ee4b38a3958ab8de6333fcf129e269ab7717",
+    "verified_compression": true
+  },
+  {
+    "path": "/home/mfwolffe/lanes/ld03/ligature/target/static-pax/pax-spawn/oracle/lld/readelf.txt",
+    "original_bytes": 53687674,
+    "compressed_bytes": 5552803,
+    "uncompressed_sha256": "9c3ea791aa71287457bab7421a96293336443c03b720b5b4defcaece943f49c0",
+    "verified_compression": true
+  },
+  {
+    "path": "/home/mfwolffe/lanes/ld03/ligature/target/static-pax/pax-spawn/oracle/lld/objdump.txt",
+    "original_bytes": 6005122,
+    "compressed_bytes": 1434756,
+    "uncompressed_sha256": "a28ff013d8867b7df7ab387762b1a57dddf3f27c635191f84cef63dbee3c5abc",
+    "verified_compression": true
+  },
+  {
+    "path": "/home/mfwolffe/lanes/ld03/ligature/target/static-pax/pax-spawn/oracle/lld/link.map",
+    "original_bytes": 2114372,
+    "compressed_bytes": 307581,
+    "uncompressed_sha256": "fb9120d6f3a42e2bbd2803dc7abc26908de54ee528c754668b8fc152ab6e073e",
+    "verified_compression": true
+  },
+  {
+    "path": "/home/mfwolffe/lanes/ld03/ligature/target/static-pax/pax-spawn/oracle/gnu/inspect.jsonl",
+    "original_bytes": 76526462,
+    "compressed_bytes": 8229454,
+    "uncompressed_sha256": "b8e772a5207a790acbf05ce72c699edbc7ea3475697636c00978f209a4cd4a1a",
+    "verified_compression": true
+  },
+  {
+    "path": "/home/mfwolffe/lanes/ld03/ligature/target/static-pax/pax-spawn/oracle/gnu/readelf.txt",
+    "original_bytes": 52294569,
+    "compressed_bytes": 5021949,
+    "uncompressed_sha256": "455ce3ae1cb62d45974b2c985c7c2a8cd43ef300223ba822441a52ee17800104",
+    "verified_compression": true
+  },
+  {
+    "path": "/home/mfwolffe/lanes/ld03/ligature/target/static-pax/pax-spawn/oracle/gnu/objdump.txt",
+    "original_bytes": 5765388,
+    "compressed_bytes": 1408956,
+    "uncompressed_sha256": "2522b34bb754df3328ebba93d197d6d077720b71643e1912d981a2033e04845d",
+    "verified_compression": true
+  },
+  {
+    "path": "/home/mfwolffe/lanes/ld03/ligature/target/static-pax/pax-spawn/oracle/gnu/link.map",
+    "original_bytes": 3073637,
+    "compressed_bytes": 307442,
+    "uncompressed_sha256": "601f36cc22cd5a2a342a718990bdb5b45c4ff0263eac2c10eee8fec6a91d3bce",
+    "verified_compression": true
+  },
+  {
+    "path": "/home/mfwolffe/lanes/ld03/ligature/target/static-pax/pax-std/oracle/lld/inspect.jsonl",
+    "original_bytes": 78421259,
+    "compressed_bytes": 8792950,
+    "uncompressed_sha256": "40dde5f7c40fb0078e1886bad513c651bd64fb2aef0084da64a027afbcffa182",
+    "verified_compression": true
+  },
+  {
+    "path": "/home/mfwolffe/lanes/ld03/ligature/target/static-pax/pax-std/oracle/lld/readelf.txt",
+    "original_bytes": 53228832,
+    "compressed_bytes": 5474494,
+    "uncompressed_sha256": "5d1c181fb44bd391edaf04d993d8ac0d46cd7ad0b608f4f743272cd5cff819ec",
+    "verified_compression": true
+  },
+  {
+    "path": "/home/mfwolffe/lanes/ld03/ligature/target/static-pax/pax-std/oracle/lld/objdump.txt",
+    "original_bytes": 5444910,
+    "compressed_bytes": 1320517,
+    "uncompressed_sha256": "d09013356f167521b84570b514f3c229328ecf7621a82648a56f570eb9b2d9a9",
+    "verified_compression": true
+  },
+  {
+    "path": "/home/mfwolffe/lanes/ld03/ligature/target/static-pax/pax-std/oracle/lld/link.map",
+    "original_bytes": 1884702,
+    "compressed_bytes": 276584,
+    "uncompressed_sha256": "4040facae5cc8114bf0489c23da6735b014bedb576688f06e5ab421359f964cd",
+    "verified_compression": true
+  },
+  {
+    "path": "/home/mfwolffe/lanes/ld03/ligature/target/static-pax/pax-std/oracle/gnu/inspect.jsonl",
+    "original_bytes": 75946154,
+    "compressed_bytes": 8100738,
+    "uncompressed_sha256": "74e6448e5a75a88726f6eba91e08c57b14ea2a3761d440063fe4aedf452b0b6f",
+    "verified_compression": true
+  },
+  {
+    "path": "/home/mfwolffe/lanes/ld03/ligature/target/static-pax/pax-std/oracle/gnu/readelf.txt",
+    "original_bytes": 51696830,
+    "compressed_bytes": 4910178,
+    "uncompressed_sha256": "f501013ec49ec4abaadd88277081cc83b48e372cba16a08b17a0ec2460860d76",
+    "verified_compression": true
+  },
+  {
+    "path": "/home/mfwolffe/lanes/ld03/ligature/target/static-pax/pax-std/oracle/gnu/objdump.txt",
+    "original_bytes": 5224007,
+    "compressed_bytes": 1298197,
+    "uncompressed_sha256": "4eebb68485c5afaa3d1a9a3f971e1479fa692dbf6ad8a9055d26d76ae9956faf",
+    "verified_compression": true
+  },
+  {
+    "path": "/home/mfwolffe/lanes/ld03/ligature/target/static-pax/pax-std/oracle/gnu/link.map",
+    "original_bytes": 3037443,
+    "compressed_bytes": 295343,
+    "uncompressed_sha256": "9673194dcba5a048a93e0dc945fb77eadb65ff582e2edd9bf9664d466c1142f4",
+    "verified_compression": true
+  }
+]
