@@ -112,7 +112,7 @@ pub fn patches(l: layout.Layout, s: resolve.State) -> PatchTable ! {Bad(str)} {
         let after_id = intern(mut table, after)
         let before_id = intern(mut table, before)
         let rule_id = intern(mut table, rule)
-        let symbol_id = intern(mut table, target.name)
+        let symbol_id = intern(mut table, quoted_name(target.name))
         patch_row(
             mut table,
             [
