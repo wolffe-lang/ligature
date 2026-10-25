@@ -49,6 +49,8 @@ pub struct State {
     groups: Map[str, bool],
     libraries: List[Library],
     descriptors: List[int],
+    input_paths: List[str],
+    input_sizes: List[int],
     pulls: List[str],
     aliases: Map[str, str],
     alias_names: List[str],
@@ -65,6 +67,8 @@ pub fn empty() -> State {
         groups: Map[str, bool](),
         libraries: List[Library](),
         descriptors: List[int](),
+        input_paths: List[str](),
+        input_sizes: List[int](),
         pulls: List[str](),
         aliases: Map[str, str](),
         alias_names: List[str](),
@@ -80,6 +84,8 @@ fn opened(mut s: State, path: str) -> binary.Input ! {Bad(str)} {
     let size = fs_size(path) else |_| { return Bad("cannot stat {path}") }
     let fd = fs_open(path) else |_| { return Bad("cannot open {path}") }
     (mut s.descriptors).push(fd)
+    (mut s.input_paths).push(path)
+    (mut s.input_sizes).push(size)
     binary.Input { fd: fd, base: 0, size: size }
 }
 

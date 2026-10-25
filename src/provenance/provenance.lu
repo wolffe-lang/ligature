@@ -1,0 +1,192 @@
+//! member: true
+
+use binary
+use elf
+use layout
+use resolve
+use std.x.crypto.sha2
+
+fn emit(mut out: List[byte], text: str) { for b in text.bytes() { (mut out).push(b) } }
+
+fn logical(path: str) -> str {
+    let pieces = path.split("/")
+    pieces[pieces.len - 1]
+}
+
+/// SHA-256 over a bounded positional input, with temporary state reclaimed after the digest.
+pub fn digest(input: binary.Input) -> List[byte] ! {Bad(str)} {
+    copy region hashing {
+        var hash = sha2.new256()
+        var at: int = 0
+        while at < input.size {
+            let count = if input.size - at > 65536 then 65536 else input.size - at
+            let bytes = binary.read(input, at, count)?
+            sha2.update256(mut hash, bytes)
+            at += count
+        }
+        sha2.final256(take hash)
+    }
+}
+
+/// Hash each original input once and each selected member independently.
+pub fn inputs(s: resolve.State) -> List[byte] ! {Bad(str)} {
+    var out = List[byte]()
+    var ids = Map[int, int]()
+    var hashes = List[str]()
+    emit(mut out, "\"inputs\":[")
+    for i in 0..s.descriptors.len {
+        let f = binary.Input { fd: s.descriptors[i], base: 0, size: s.input_sizes[i] }
+        let hash = sha2.to_hex(digest(f)?)
+        (mut hashes).push(hash)
+        ids[s.descriptors[i]] = i
+        if i != 0 { emit(mut out, ",") }
+        emit(
+            mut out,
+            "{{\"ordinal\":{i},\"path\":{binary.quote(logical(s.input_paths[i]).bytes())},\"sha256\":\"{hash}\",\"size\":{f.size}}}",
+        )
+    }
+    emit(mut out, "],\"members\":[")
+    for i in 0..s.objects.len {
+        let id = ids[s.objects[i].file.fd] else {
+            return Bad("provenance input descriptor missing")
+        }
+        let f = copy s.objects[i].file
+        let hash = if f.base == 0 then hashes[id] else sha2.to_hex(digest(f)?)
+        if i != 0 { emit(mut out, ",") }
+        emit(
+            mut out,
+            "{{\"input\":{id},\"label\":{binary.quote(logical(s.objects[i].label).bytes())},\"offset\":{f.base},\"ordinal\":{i},\"sha256\":\"{hash}\",\"size\":{f.size}}}",
+        )
+    }
+    emit(mut out, "]")
+    out
+}
+
+/// Canonical section-level manifest; byte/patch attribution remains the next format layer.
+pub fn manifest(
+    l: layout.Layout,
+    s: resolve.State,
+    input_json: List[byte],
+    total: int,
+) -> List[byte] {
+    var out = List[byte]()
+    emit(
+        mut out,
+        "{{\"coverage\":\"sections\",\"format\":\"wolf.link.provenance.v1\",\"input_ranges\":[",
+    )
+    var count: int = 0
+    for a in l.atoms {
+        if !a.live { continue }
+        if count != 0 { emit(mut out, ",") }
+        count += 1
+        let sec = copy s.objects[a.object].image.sections[a.index]
+        let base = l.outputs[a.output].fileoff + a.offset
+        emit(
+            mut out,
+            "{{\"file_end\":{base + (if a.kind == 8 then 0 else a.size)},\"file_start\":{base},\"input_offset\":{sec.off},\"member\":{a.object},\"output_section\":{a.output},\"section_index\":{a.index},\"section_name\":{binary.quote(a.name.bytes())}}}",
+        )
+    }
+    emit(mut out, "],")
+    for b in input_json { (mut out).push(b) }
+    emit(
+        mut out,
+        ",\"output\":{{\"bytes\":{total},\"entry\":\"_start\",\"sha256\":null,\"target\":\"x86_64\",\"type\":\"ET_EXEC\"}},\"sections\":[",
+    )
+    for i in 1..l.outputs.len {
+        let o = copy l.outputs[i]
+        if i != 1 { emit(mut out, ",") }
+        emit(
+            mut out,
+            "{{\"address\":{o.address},\"align\":{o.align},\"file_end\":{o.fileoff + (if o.kind == 8 then 0 else o.size)},\"file_start\":{o.fileoff},\"flags\":{o.flags},\"index\":{i},\"kind\":{o.kind},\"memory_end\":{o.address + o.size},\"name\":{binary.quote(o.name.bytes())}}}",
+        )
+    }
+    emit(mut out, "]}}\n")
+    out
+}
+
+/// Write the fixed note fields with both digest slots zero, ready for hashing.
+pub fn note(total: int, manifest_size: int, manifest_offset: int) -> List[byte] ! {Bad(str)} {
+    var out = binary.encode([5, 96, 1], [4, 4, 4])?
+    for b in "WOLF\0\0\0\0".bytes() { (mut out).push(b) }
+    let fields = binary.encode([1, 0, total as u64, manifest_size as u64], [4, 4, 8, 8])?
+    for b in fields { (mut out).push(b) }
+    for _ in 0..64 { (mut out).push(0 as byte) }
+    let end = binary.encode([manifest_offset as u64], [8])?
+    for b in end { (mut out).push(b) }
+    out
+}
+
+/// Seal the manifest and output digests after the complete ELF has been written in memory.
+pub fn seal(mut file: List[byte], note_offset: int, manifest_bytes: List[byte]) {
+    let whole = copy region hashing { sha2.sum256(file) }
+    let content = copy region hashing { sha2.sum256(manifest_bytes) }
+    for i in 0..32 {
+        file[note_offset + 44 + i] = content[i]
+        file[note_offset + 76 + i] = whole[i]
+    }
+}
+
+/// Verify note format, manifest digest and whole-file digest. Ordinary oracle ELFs have no note.
+pub fn check(f: binary.Input, image: elf.Image) -> () ! {Bad(str)} {
+    var note_index: int = 0
+    var manifest_index: int = 0
+    for i in 1..image.sections.len {
+        let name = str_from_utf8(elf.name(f, image, image.sections[i])?) else ""
+        if name == ".note.wolf.link" {
+            if note_index != 0 { return Bad("duplicate .note.wolf.link") }
+            note_index = i
+        }
+        if name == ".wolf.link.manifest" {
+            if manifest_index != 0 { return Bad("duplicate provenance manifest") }
+            manifest_index = i
+        }
+    }
+    if note_index == 0 && manifest_index == 0 { return }
+    if note_index == 0 || manifest_index == 0 {
+        return Bad("provenance note/manifest pair incomplete")
+    }
+    let n = copy image.sections[note_index]
+    let m = copy image.sections[manifest_index]
+    if n.kind != 7 || n.size != 116 || n.flags != 0 || n.align != 4 || m.kind != 1 || m.flags != 0 {
+        return Bad("invalid provenance section shape")
+    }
+    let raw = binary.read(f, n.off, n.size)?
+    if binary.decode(raw, 0, 4)? != 5 ||
+        binary.decode(raw, 4, 4)? != 96 ||
+        binary.decode(raw, 8, 4)? != 1 {
+        return Bad("invalid provenance note header")
+    }
+    let owner = "WOLF\0\0\0\0"
+    for i in 0..8 {
+        if raw[12 + i] != owner.bytes()[i] { return Bad("invalid provenance note owner") }
+    }
+    if binary.decode(raw, 20, 4)? != 1 || binary.decode(raw, 24, 4)? != 0 {
+        return Bad("unsupported provenance note version/flags")
+    }
+    if binary.decode(raw, 28, 8)? != f.size as u64 ||
+        binary.decode(raw, 36, 8)? != m.size as u64 ||
+        binary.decode(raw, 108, 8)? != m.off as u64 {
+        return Bad("provenance size/offset mismatch")
+    }
+    let content = digest(binary.Input { fd: f.fd, base: f.base + m.off, size: m.size })?
+    for i in 0..32 {
+        if content[i] != raw[44 + i] { return Bad("provenance manifest digest mismatch") }
+    }
+    let whole = copy region hashing {
+        var hash = sha2.new256()
+        var at: int = 0
+        while at < f.size {
+            let count = if f.size - at > 65536 then 65536 else f.size - at
+            var bytes = binary.read(f, at, count)?
+            for i in 0..bytes.len {
+                if at + i >= n.off + 44 && at + i < n.off + 108 { bytes[i] = 0 as byte }
+            }
+            sha2.update256(mut hash, bytes)
+            at += count
+        }
+        sha2.final256(take hash)
+    }
+    for i in 0..32 {
+        if whole[i] != raw[76 + i] { return Bad("provenance output digest mismatch") }
+    }
+}

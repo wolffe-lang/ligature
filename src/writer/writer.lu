@@ -7,6 +7,7 @@ use layout
 use relocate
 use resolve
 use verify
+use provenance
 
 fn append(mut dst: List[byte], bytes: List[byte]) {
     for b in bytes { (mut dst).push(b) }
@@ -151,6 +152,13 @@ pub fn link(s: resolve.State, p: front.Plan) -> () ! {Bad(str)} {
     layout.place(mut l, s)?
     relocate.apply(mut l, s)?
     symbols(mut l, s)?
+    let note_index = l.outputs.len
+    var note = layout.output(".note.wolf.link", 7, 0, 4)
+    note.size = 116
+    (mut l.outputs).push(note)
+    let manifest_index = l.outputs.len
+    (mut l.outputs).push(layout.output(".wolf.link.manifest", 1, 0, 1))
+    let inputs = provenance.inputs(s)?
     let shstr = l.outputs.len
     (mut l.outputs).push(layout.output(".shstrtab", 3, 0, 1))
     var names: List[byte] = [0 as byte]
@@ -158,14 +166,29 @@ pub fn link(s: resolve.State, p: front.Plan) -> () ! {Bad(str)} {
     for o in l.outputs { (mut name_offsets).push(cstring(mut names, o.name)) }
     l.outputs[shstr].data = names
     l.outputs[shstr].size = l.outputs[shstr].data.len
-    var cursor = l.data_file_end
-    for j in 1..l.outputs.len {
-        if l.outputs[j].flags & 2 != 0 { continue }
-        cursor = layout.align(cursor, l.outputs[j].align)
-        l.outputs[j].fileoff = cursor
-        cursor += l.outputs[j].size
+    var shoff: int = 0
+    var fixed = false
+    for _ in 0..16 {
+        var cursor = l.data_file_end
+        for j in 1..l.outputs.len {
+            if l.outputs[j].flags & 2 != 0 { continue }
+            cursor = layout.align(cursor, l.outputs[j].align)
+            l.outputs[j].fileoff = cursor
+            cursor += l.outputs[j].size
+        }
+        shoff = layout.align(cursor, 8)
+        let manifest = provenance.manifest(l, s, inputs, shoff + l.outputs.len * 64)
+        let stable = manifest.len == l.outputs[manifest_index].size
+        l.outputs[manifest_index].size = manifest.len
+        l.outputs[manifest_index].data = manifest
+        if stable { fixed = true; break }
     }
-    let shoff = layout.align(cursor, 8)
+    if !fixed { return Bad("provenance layout failed to reach a fixed point") }
+    l.outputs[note_index].data = provenance.note(
+        shoff + l.outputs.len * 64,
+        l.outputs[manifest_index].size,
+        l.outputs[manifest_index].fileoff,
+    )?
     var file = List[byte]()
     for _ in 0..shoff + l.outputs.len * 64 { (mut file).push(0 as byte) }
     var phdrs = List[byte]()
@@ -256,6 +279,7 @@ pub fn link(s: resolve.State, p: front.Plan) -> () ! {Bad(str)} {
             )?,
         )?
     }
+    provenance.seal(mut file, l.outputs[note_index].fileoff, l.outputs[manifest_index].data)
     fs_write_bytes(p.output, file) else |_| { return Bad("cannot write {p.output}") }
     fs_set_mode(p.output, 493) else |_| { return Bad("cannot mark {p.output} executable") }
     let fd = fs_open(p.output) else |_| { return Bad("cannot reopen output for verify") }
@@ -264,4 +288,5 @@ pub fn link(s: resolve.State, p: front.Plan) -> () ! {Bad(str)} {
     let image = elf.parse(input)?
     elf.walk(input, image, false)?
     verify.check(image)?
+    provenance.check(input, image)?
 }
