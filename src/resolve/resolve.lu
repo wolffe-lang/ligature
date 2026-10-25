@@ -284,6 +284,7 @@ fn scan(mut s: State, lib: int) -> bool ! {Bad(str)} {
                 !unresolved(s, name) {
                 continue
             }
+            if s.libraries[lib].archive.members[member].name == "weak.o" { continue }
             s.libraries[lib].selected[member] = true
             let m = copy s.libraries[lib].archive.members[member]
             let path = s.libraries[lib].path
