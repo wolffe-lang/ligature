@@ -114,3 +114,24 @@ call([BIN,'verify',oldpath])
 for mode,value in [('--symbol','target'),('--address',hex(address)),('--why','target')]:
     assert json.loads(call([BIN,'explain',oldpath,mode,value]).stdout)==json.loads(call([BIN,'explain',exe,mode,value]).stdout)
 print('compact-manifest: legacy JSON explain parity and dropped provenance record refused; 0 SKIP')
+# Dependency queries expose the original section's relocation causes, not just archive pulls.
+rows=json.loads(call([BIN,'explain',exe,'--dependencies','pointer']).stdout)
+assert rows and rows[0]['symbol']=='target'
+# GC and SHF_EXCLUDE have distinct causes; metadata regeneration is not GC.
+source.write_text('''.text
+.global _start
+_start: mov $60,%eax
+xor %edi,%edi
+syscall
+.section .text.dead,"ax",@progbits
+ret
+.section .excluded,"e",@progbits
+.byte 1
+.section .note.GNU-stack,"",@progbits
+''')
+call(['as','--64',source,'-o',obj]);gc=OUT/'gc-causes'
+call([BIN,'-nostdlib','--gc-sections','-o',gc,obj])
+for section,reason in [('.text.dead','GC-unreachable'),('.excluded','SHF_EXCLUDE'),('.note.GNU-stack','consumed-stack-policy'),('.symtab','regenerated-metadata')]:
+    rows=json.loads(call([BIN,'explain',gc,'--discarded',section]).stdout)
+    assert len(rows)==1 and rows[0]['reason']==reason,(section,rows)
+print('explain: dependency sites and distinct discarded-section causes; 0 SKIP')

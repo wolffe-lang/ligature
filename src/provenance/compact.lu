@@ -4,9 +4,9 @@ use binary
 use layout
 use std.json
 
-/// Stable first-use interning; map iteration never determines output order.
+/// Stable first-use interning; hash buckets never determine output order.
 pub struct PatchTable {
-    ids: Map[str, int],
+    buckets: List[List[int]],
     strings: List[str],
     data: List[byte],
     previous: List[int],
@@ -15,8 +15,10 @@ pub struct PatchTable {
 
 /// Construct an empty deterministic patch table.
 pub fn patch_table() -> PatchTable {
+    var buckets = List[List[int]]()
+    for _ in 0..16381 { (mut buckets).push(List[int]()) }
     PatchTable {
-        ids: Map[str, int](),
+        buckets: buckets,
         strings: List[str](),
         data: List[byte](),
         previous: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
@@ -26,10 +28,11 @@ pub fn patch_table() -> PatchTable {
 
 /// Return the stable first-use id of a string.
 pub fn intern(mut table: PatchTable, value: str) -> int {
-    let known = table.ids[value] else -1
-    if known >= 0 { return known }
+    var hash: int = 0
+    for b in value.bytes() { hash = (hash * 31 + b as int) % 16381 }
+    for id in table.buckets[hash] { if table.strings[id] == value { return id } }
     let id = table.strings.len
-    table.ids[value] = id
+    (mut table.buckets[hash]).push(id)
     (mut table.strings).push(value)
     id
 }
@@ -115,16 +118,14 @@ pub fn decode_document(raw: List[byte]) -> json.Value ! {Bad(str)} {
     var object = json.as_obj(doc) else |_| { return Bad("invalid provenance metadata object") }
     if array(doc, "patches")?.len != 0 { return Bad("duplicate provenance patches") }
     var c = Cursor { bytes: copy raw, at: 40 + m }
-    var pool = List[str]()
-    var unique = Map[str, bool]()
+    var pool = patch_table()
     for _ in 0..strings {
         let n = binary.bounded(varint(mut c)?, raw.len - c.at)?
         let s = str_from_utf8(raw[c.at..c.at + n]) else {
             return Bad("invalid provenance string UTF-8")
         }
-        if unique[s] else false { return Bad("duplicate provenance pooled string") }
-        unique[s] = true
-        (mut pool).push(s)
+        let next = pool.strings.len
+        if intern(mut pool, s) != next { return Bad("duplicate provenance pooled string") }
         c.at += n
     }
     if size > raw.len - c.at { return Bad("truncated provenance patch table") }
@@ -172,8 +173,8 @@ pub fn decode_document(raw: List[byte]) -> json.Value ! {Bad(str)} {
         for i in 0..15 {
             let v = values[i]
             if i == 1 || i == 2 || i == 8 || i == 11 {
-                if v < 0 || v >= pool.len { return Bad("provenance string index") }
-                row[keys[i]] = json.from_str(pool[v])
+                if v < 0 || v >= pool.strings.len { return Bad("provenance string index") }
+                row[keys[i]] = json.from_str(pool.strings[v])
             } else {
                 row[keys[i]] = json.from_int(v)
             }
