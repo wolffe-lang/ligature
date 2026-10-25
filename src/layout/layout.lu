@@ -1,0 +1,539 @@
+//! member: true
+
+use binary
+use front
+use resolve
+
+/// An input section and its final output placement.
+pub struct Atom {
+    object: int,
+    index: int,
+    name: str,
+    kind: int,
+    flags: u64,
+    align: int,
+    size: int,
+    data: List[byte],
+    records: List[int],
+    live: bool,
+    output: int,
+    offset: int,
+}
+
+/// An explicit-addend input relocation with stable symbol identity.
+pub struct Reloc { atom: int, offset: int, symbol: int, kind: int, addend: int }
+
+/// One merged output section, assigned a section header index by list order.
+pub struct Output {
+    name: str,
+    kind: int,
+    flags: u64,
+    align: int,
+    size: int,
+    address: int,
+    fileoff: int,
+    data: List[byte],
+    link: int,
+    info: int,
+    entsize: int,
+}
+
+/// Layout and reachability data; slot zero is the ELF null section.
+pub struct Layout {
+    atoms: List[Atom],
+    locations: Map[str, int],
+    relocs: List[Reloc],
+    outputs: List[Output],
+    got: Map[str, int],
+    got_symbols: List[int],
+    got_tls: List[bool],
+    common: Map[int, int],
+    synthetics: Map[str, int],
+    tls_address: int,
+    tls_file: int,
+    tls_size: int,
+    tls_align: int,
+    data_start: int,
+    data_file_end: int,
+    data_mem_end: int,
+    text_end: int,
+}
+
+/// Checked positive alignment for file and virtual layouts.
+pub fn align(n: int, a: int) -> int { if a <= 1 { return n }; (n + a - 1) / a * a }
+
+/// An empty output section.
+pub fn output(name: str, kind: int, flags: u64, alignment: int) -> Output {
+    Output {
+        name: name,
+        kind: kind,
+        flags: flags,
+        align: alignment,
+        size: 0,
+        address: 0,
+        fileoff: 0,
+        data: List[byte](),
+        link: 0,
+        info: 0,
+        entsize: 0,
+    }
+}
+
+/// Decode signed RELA addends without a narrowing overflow.
+pub fn signed(bits: u64) -> int {
+    if bits <= 9223372036854775807 { return bits as int }
+    -1 - (18446744073709551615 - bits) as int
+}
+
+/// Encode a two's-complement signed value as unsigned bits.
+pub fn bits(n: int) -> u64 {
+    if n >= 0 { return n as u64 }
+    18446744073709551615 - (-1 - n) as u64
+}
+
+/// Resolve aliases and global definitions; unresolved weak symbols retain their identity.
+pub fn target(s: resolve.State, id: int) -> int ! {Bad(str)} {
+    let sym = copy s.symbols[id]
+    if sym.binding == 0 { return id }
+    var name = sym.name
+    for _ in 0..s.alias_names.len + 1 {
+        let next = s.aliases[name] else { return s.globals[name] else id }
+        name = next
+    }
+    Bad("cyclic --defsym alias {sym.name}")
+}
+
+/// Find the input section for a symbol; absent ABS/COMMON/UNDEF have ELF section zero.
+pub fn atom_for(l: Layout, s: resolve.State, id: int) -> int {
+    let sym = copy s.symbols[id]
+    l.locations["{sym.object}:{sym.section}"] else 0
+}
+
+fn supported(k: int) -> bool {
+    k == 1 ||
+        k == 2 ||
+        k == 4 ||
+        k == 9 ||
+        k == 10 ||
+        k == 11 ||
+        k == 17 ||
+        k == 19 ||
+        k == 20 ||
+        k == 21 ||
+        k == 22 ||
+        k == 23 ||
+        k == 42
+}
+
+/// Read selected input sections and relocation tables, refusing unsupported forms.
+pub fn read(s: resolve.State) -> Layout ! {Bad(str)} {
+    var l = Layout {
+        atoms: List[Atom](),
+        locations: Map[str, int](),
+        relocs: List[Reloc](),
+        outputs: List[Output](),
+        got: Map[str, int](),
+        got_symbols: List[int](),
+        got_tls: List[bool](),
+        common: Map[int, int](),
+        synthetics: Map[str, int](),
+        tls_address: 0,
+        tls_file: 0,
+        tls_size: 0,
+        tls_align: 1,
+        data_start: 0,
+        data_file_end: 0,
+        data_mem_end: 0,
+        text_end: 0,
+    }
+    (mut l.atoms).push(Atom {
+        object: 0,
+        index: 0,
+        name: "",
+        kind: 0,
+        flags: 0,
+        align: 1,
+        size: 0,
+        data: List[byte](),
+        records: List[int](),
+        live: false,
+        output: 0,
+        offset: 0,
+    })
+    (mut l.outputs).push(output("", 0, 0, 0))
+    for oi in 0..s.objects.len {
+        for si in 1..s.objects[oi].image.sections.len {
+            let sec = copy s.objects[oi].image.sections[si]
+            let name = s.objects[oi].names[si]
+            if s.objects[oi].discarded[si] ||
+                sec.kind == 2 ||
+                sec.kind == 3 ||
+                sec.kind == 4 ||
+                sec.kind == 17 ||
+                name == ".note.GNU-stack" {
+                continue
+            }
+            if sec.kind != 1 &&
+                sec.kind != 7 &&
+                sec.kind != 8 &&
+                sec.kind != 14 &&
+                sec.kind != 15 &&
+                sec.kind != 16 &&
+                sec.kind != 1879048193 {
+                return Bad("{name}: unsupported writer section type {sec.kind} (gABI Sections)")
+            }
+            if sec.flags & 256 != 0 {
+                return Bad("{name}: SHF_OS_NONCONFORMING refused (gABI Sections)")
+            }
+            let alignment = binary.bounded(sec.align, 1073741824)?
+            var data = List[byte]()
+            if sec.kind != 8 { data = binary.read(s.objects[oi].file, sec.off, sec.size)? }
+            var records = List[int]()
+            if name == ".eh_frame" {
+                var off: int = 0
+                while off < data.len {
+                    let length = binary.decode(data, off, 4)? as int
+                    if length == 0 { break }
+                    if length == 4294967295 || length < 4 || length > data.len - off - 4 {
+                        return Bad("unsupported or truncated .eh_frame record (LSB unwind format)")
+                    }
+                    (mut records).push(off)
+                    off += length + 4
+                }
+            }
+            l.locations["{oi}:{si}"] = l.atoms.len
+            (mut l.atoms).push(Atom {
+                object: oi,
+                index: si,
+                name: name,
+                kind: sec.kind,
+                flags: sec.flags,
+                align: alignment,
+                size: sec.size,
+                data: data,
+                records: records,
+                live: false,
+                output: 0,
+                offset: 0,
+            })
+        }
+        for sec in s.objects[oi].image.sections {
+            if sec.kind != 4 { continue }
+            let atom = l.locations["{oi}:{sec.info}"] else { continue }
+            if sec.entsize != 24 { return Bad("invalid Elf64_Rela size") }
+            let raw = binary.read(s.objects[oi].file, sec.off, sec.size)?
+            for i in 0..sec.size / 24 {
+                let info = binary.decode(raw, i * 24 + 8, 8)?
+                let kind = (info & 4294967295) as int
+                if !supported(kind) {
+                    return Bad("unsupported R_X86_64 relocation {kind} (AMD64 psABI table 4.9)")
+                }
+                let symbol = s.objects[oi].symbols["{sec.link}:{info >> 32}"] else {
+                    return Bad("relocation symbol index outside table")
+                }
+                let width = if kind == 1 || kind == 17 then 8 else 4
+                let offset = binary.bounded(binary.decode(raw, i * 24, 8)?, l.atoms[atom].size)?
+                if width > l.atoms[atom].size - offset {
+                    return Bad("relocation extends past section")
+                }
+                (mut l.relocs).push(Reloc {
+                    atom: atom,
+                    offset: offset,
+                    symbol: symbol,
+                    kind: kind,
+                    addend: signed(binary.decode(raw, i * 24 + 16, 8)?),
+                })
+            }
+        }
+    }
+    l
+}
+
+fn mark(mut l: Layout, s: resolve.State, id: int) -> bool ! {Bad(str)} {
+    let winner = target(s, id)?
+    let atom = atom_for(l, s, winner)
+    if atom == 0 || l.atoms[atom].live { return false }
+    l.atoms[atom].live = true
+    true
+}
+
+/// Find an eh_frame record containing an offset and return its initial-location relocation offset.
+fn fde_start(a: Atom, at: int) -> int ! {Bad(str)} {
+    var low: int = 0
+    var high = a.records.len
+    while low < high {
+        let mid = low + (high - low) / 2
+        if a.records[mid] <= at { low = mid + 1 } else { high = mid }
+    }
+    if low == 0 { return Bad(".eh_frame relocation outside record") }
+    let off = a.records[low - 1]
+    let length = binary.decode(a.data, off, 4)? as int
+    if at >= off + length + 4 { return Bad(".eh_frame relocation outside record") }
+    if binary.decode(a.data, off + 4, 4)? == 0 { return 0 }
+    off + 8
+}
+
+/// Compute GC roots and relocation reachability without treating debug or dead FDEs as roots.
+pub fn collect(mut l: Layout, s: resolve.State, p: front.Plan) -> () ! {Bad(str)} {
+    let entry = s.globals["_start"] else { return Bad("undefined entry _start") }
+    let _marked = mark(mut l, s, entry)?
+    for name in p.undefined {
+        let id = s.globals[name] else { return Bad("undefined forced symbol {name}") }
+        let _root = mark(mut l, s, id)?
+    }
+    for i in 1..l.atoms.len {
+        let n = l.atoms[i].name
+        let flags = l.atoms[i].flags
+        if !p.gc ||
+            flags & 2 == 0 ||
+            flags & 2097152 != 0 ||
+            n == ".init" ||
+            n == ".fini" ||
+            n == ".eh_frame" ||
+            l.atoms[i].kind == 14 ||
+            l.atoms[i].kind == 15 ||
+            l.atoms[i].kind == 16 {
+            l.atoms[i].live = true
+        }
+    }
+    var fdes = Map[str, int]()
+    for ri in 0..l.relocs.len {
+        let r = copy l.relocs[ri]
+        if l.atoms[r.atom].name != ".eh_frame" { continue }
+        let start = fde_start(l.atoms[r.atom], r.offset)?
+        if start != 0 && start == r.offset { fdes["{r.atom}:{start}"] = target(s, r.symbol)? }
+    }
+    loop {
+        var changed = false
+        for ri in 0..l.relocs.len {
+            let r = copy l.relocs[ri]
+            if !l.atoms[r.atom].live || l.atoms[r.atom].flags & 2 == 0 { continue }
+            if p.gc && l.atoms[r.atom].name == ".eh_frame" {
+                let start = fde_start(l.atoms[r.atom], r.offset)?
+                if start != 0 {
+                    let id = fdes["{r.atom}:{start}"] else { continue }
+                    let a = atom_for(l, s, id)
+                    if a == 0 || !l.atoms[a].live { continue }
+                }
+            }
+            if mark(mut l, s, r.symbol)? { changed = true }
+        }
+        // Members of a retained ELF group remain a unit.
+        for oi in 0..s.objects.len {
+            for sec in s.objects[oi].image.sections {
+                if sec.kind != 17 { continue }
+                let raw = binary.read(s.objects[oi].file, sec.off, sec.size)?
+                var live = false
+                for j in 1..sec.size / 4 {
+                    let si = binary.decode(raw, j * 4, 4)?
+                    let a = l.locations["{oi}:{si}"] else { continue }
+                    if l.atoms[a].live { live = true }
+                }
+                if !live { continue }
+                for j in 1..sec.size / 4 {
+                    let si = binary.decode(raw, j * 4, 4)?
+                    let a = l.locations["{oi}:{si}"] else { continue }
+                    if !l.atoms[a].live { l.atoms[a].live = true; changed = true }
+                }
+            }
+        }
+        if !changed { break }
+    }
+}
+
+fn merged(name: str) -> str {
+    for prefix in [".text", ".rodata", ".data.rel.ro", ".data", ".bss", ".tdata", ".tbss"] {
+        if name == prefix || name.starts_with("{prefix}.") { return prefix }
+    }
+    name
+}
+
+fn rank(o: Output) -> int {
+    if o.flags & 2 == 0 { return 100 }
+    if o.flags & 1 == 0 {
+        if o.name == ".init" { return 1 }
+        if o.flags & 4 != 0 && o.name != ".fini" { return 2 }
+        if o.name == ".fini" { return 3 }
+        return 4
+    }
+    if o.flags & 1024 != 0 { return if o.kind == 8 then 12 else 11 }
+    if o.kind == 8 { return 13 }
+    if o.kind == 16 { return 6 }
+    if o.kind == 14 { return 7 }
+    if o.kind == 15 { return 8 }
+    return 10
+}
+
+/// Assign merged output sections, reserve GOT and COMMON, then lay out RX/RW segments.
+pub fn place(mut l: Layout, s: resolve.State) -> () ! {Bad(str)} {
+    // Discover names, then a stable insertion sort keeps equal-rank input order.
+    for a in l.atoms {
+        if !a.live { continue }
+        let name = merged(a.name)
+        let flags = a.flags & 18446744071559970111 // strip GROUP, EXCLUDE, INFO_LINK, LINK_ORDER
+        var found = false
+        for o in l.outputs {
+            if o.name == name && o.flags == flags && o.kind == a.kind { found = true }
+        }
+        if !found { (mut l.outputs).push(output(name, a.kind, flags, a.align)) }
+    }
+    (mut l.outputs).push(output(".got", 1, 3, 8))
+    var common_needed = false
+    for i in 0..s.symbols.len {
+        if s.symbols[i].section == 65522 && (s.globals[s.symbols[i].name] else 0) == i {
+            common_needed = true
+        }
+    }
+    if common_needed {
+        var found = false
+        for o in l.outputs { if o.name == ".bss" && o.kind == 8 && o.flags == 3 { found = true } }
+        if !found { (mut l.outputs).push(output(".bss", 8, 3, 1)) }
+    }
+    for i in 2..l.outputs.len {
+        var j = i
+        while j > 1 && rank(l.outputs[j]) < rank(l.outputs[j - 1]) {
+            let tmp = copy l.outputs[j - 1]
+            l.outputs[j - 1] = copy l.outputs[j]
+            l.outputs[j] = tmp
+            j -= 1
+        }
+    }
+    for i in 1..l.atoms.len {
+        if !l.atoms[i].live { continue }
+        let name = merged(l.atoms[i].name)
+        let flags = l.atoms[i].flags & 18446744071559970111
+        for j in 1..l.outputs.len {
+            if l.outputs[j].name != name ||
+                l.outputs[j].flags != flags ||
+                l.outputs[j].kind != l.atoms[i].kind {
+                continue
+            }
+            let offset = align(l.outputs[j].size, l.atoms[i].align)
+            l.atoms[i].output = j
+            l.atoms[i].offset = offset
+            l.outputs[j].size = offset + l.atoms[i].size
+            if l.atoms[i].align > l.outputs[j].align { l.outputs[j].align = l.atoms[i].align }
+            break
+        }
+    }
+    for i in 0..s.symbols.len {
+        let sym = copy s.symbols[i]
+        if sym.section != 65522 || (s.globals[sym.name] else 0) != i { continue }
+        if !binary.pow2(sym.value) { return Bad("COMMON alignment is not a power of two") }
+        for j in 1..l.outputs.len {
+            if l.outputs[j].name != ".bss" || l.outputs[j].kind != 8 { continue }
+            let a = binary.bounded(sym.value, 1073741824)?
+            l.common[i] = align(l.outputs[j].size, a)
+            l.outputs[j].size = (l.common[i] else 0) + binary.bounded(sym.size, 1073741824)?
+            if a > l.outputs[j].align { l.outputs[j].align = a }
+            break
+        }
+    }
+    for ri in 0..l.relocs.len {
+        let r = copy l.relocs[ri]
+        if !l.atoms[r.atom].live || r.kind != 9 && r.kind != 42 && r.kind != 22 { continue }
+        let id = target(s, r.symbol)?
+        let tls = r.kind == 22
+        let key = "{id}:{tls}"
+        let _old = l.got[key] else {
+            l.got[key] = l.got_symbols.len * 8
+            (mut l.got_symbols).push(id)
+            (mut l.got_tls).push(tls)
+            continue
+        }
+    }
+    for j in 1..l.outputs.len {
+        if l.outputs[j].name == ".got" { l.outputs[j].size = l.got_symbols.len * 8 }
+    }
+    var cursor: int = 4096
+    for j in 1..l.outputs.len {
+        if rank(l.outputs[j]) >= 6 { continue }
+        cursor = align(cursor, l.outputs[j].align)
+        l.outputs[j].fileoff = cursor
+        l.outputs[j].address = 2097152 + cursor
+        cursor += l.outputs[j].size
+    }
+    l.text_end = cursor
+    cursor = align(cursor, 4096)
+    l.data_start = cursor
+    for j in 1..l.outputs.len {
+        if rank(l.outputs[j]) < 6 || rank(l.outputs[j]) >= 100 { continue }
+        cursor = align(cursor, l.outputs[j].align)
+        l.outputs[j].fileoff = cursor
+        l.outputs[j].address = 2097152 + cursor
+        if l.outputs[j].flags & 1024 != 0 {
+            if l.tls_address == 0 { l.tls_address = 2097152 + cursor }
+            if l.outputs[j].align > l.tls_align { l.tls_align = l.outputs[j].align }
+            l.tls_size = 2097152 + cursor + l.outputs[j].size - l.tls_address
+            if l.outputs[j].kind != 8 { l.tls_file = l.tls_size }
+        }
+        cursor += l.outputs[j].size
+        if l.outputs[j].kind != 8 { l.data_file_end = cursor }
+    }
+    l.data_mem_end = cursor
+    if l.data_file_end == 0 { l.data_file_end = l.data_start }
+    cursor = l.data_file_end
+    for j in 1..l.outputs.len {
+        if rank(l.outputs[j]) < 100 { continue }
+        cursor = align(cursor, l.outputs[j].align)
+        l.outputs[j].fileoff = cursor
+        cursor += l.outputs[j].size
+    }
+    // musl startup consumes these even with no constructor entries.
+    l.synthetics["__ehdr_start"] = 2097152
+    l.synthetics["_end"] = 2097152 + l.data_mem_end
+    l.synthetics["end"] = 2097152 + l.data_mem_end
+    l.synthetics["_edata"] = 2097152 + l.data_file_end
+    l.synthetics["edata"] = 2097152 + l.data_file_end
+    l.synthetics["_etext"] = 2097152 + l.text_end
+    l.synthetics["etext"] = 2097152 + l.text_end
+    for pair in ["preinit", "init", "fini"] {
+        var start = 2097152 + l.data_start
+        var end = start
+        for o in l.outputs {
+            if o.name == ".{pair}_array" { start = o.address; end = start + o.size }
+        }
+        l.synthetics["__{pair}_array_start"] = start
+        l.synthetics["__{pair}_array_end"] = end
+    }
+    for o in l.outputs { if o.name == ".got" { l.synthetics["_GLOBAL_OFFSET_TABLE_"] = o.address } }
+    for j in 1..l.outputs.len {
+        if l.outputs[j].kind == 8 { continue }
+        for _ in 0..l.outputs[j].size { (mut l.outputs[j].data).push(0 as byte) }
+    }
+    for a in l.atoms {
+        if !a.live || a.kind == 8 { continue }
+        for k in 0..a.data.len { l.outputs[a.output].data[a.offset + k] = a.data[k] }
+    }
+}
+
+/// Get a final symbol value. Dead debug/FDE references use a zero tombstone.
+pub fn value(l: Layout, s: resolve.State, id: int, tombstone: bool) -> int ! {Bad(str)} {
+    let winner = target(s, id)?
+    let sym = copy s.symbols[winner]
+    if sym.section == 0 {
+        var name = sym.name
+        for _ in 0..s.alias_names.len + 1 { name = s.aliases[name] else { break } }
+        let v = l.synthetics[name] else {
+            if sym.binding == 2 || tombstone { return 0 }
+            return Bad("undefined symbol {name} in {s.objects[sym.object].label}")
+        }
+        return v
+    }
+    if sym.section == 65521 { return signed(sym.value) }
+    if sym.section == 65522 {
+        let off = l.common[winner] else { return Bad("unallocated COMMON {sym.name}") }
+        for o in l.outputs { if o.name == ".bss" && o.kind == 8 { return o.address + off } }
+        return Bad("missing COMMON output")
+    }
+    let atom = atom_for(l, s, winner)
+    if atom == 0 || !l.atoms[atom].live {
+        if tombstone { return 0 }
+        return Bad("reference to discarded symbol {sym.name}")
+    }
+    let v = l.outputs[l.atoms[atom].output].address +
+        l.atoms[atom].offset +
+        binary.bounded(sym.value, 9223372036854775807)?
+    if sym.kind == 6 { return v - l.tls_address }
+    v
+}
