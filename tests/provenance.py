@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 """Independent ELF/note decoding and hashlib checks, including corruptions."""
-import hashlib,json,pathlib,struct,subprocess
+import runpy,hashlib,json,pathlib,struct,subprocess
 ROOT=pathlib.Path(__file__).resolve().parent.parent;BIN=ROOT/'target/ligature';OUT=ROOT/'target/evidence/provenance';OUT.mkdir(parents=True,exist_ok=True)
+codec=runpy.run_path(str(ROOT/'tests/manifest-codec.py'));decode_manifest=codec['decode'];encode_manifest=codec['encode']
 exe=ROOT/'target/evidence/cc/hello';data=exe.read_bytes()
 shoff=struct.unpack_from('<Q',data,40)[0];count,names=struct.unpack_from('<HH',data,60)
 headers=[struct.unpack_from('<IIQQQQIIQQ',data,shoff+64*i) for i in range(count)]
@@ -18,8 +19,8 @@ manifest=data[m[4]:m[4]+m[5]]
 assert hashlib.sha256(manifest).digest()==raw[44:76]
 zeroed=bytearray(data);zeroed[n[4]+44:n[4]+108]=bytes(64)
 assert hashlib.sha256(zeroed).digest()==raw[76:108]
-record=json.loads(manifest)
-assert manifest==(json.dumps(record,sort_keys=True,separators=(',',':'))+'\n').encode()
+record=decode_manifest(manifest)
+assert manifest==encode_manifest(record)
 assert record['coverage']=='bytes-and-patches' and record['output']['sha256'] is None
 assert record['output']['bytes']==len(data)
 assert all('/' not in x['path'] and len(x['sha256'])==64 for x in record['inputs'])

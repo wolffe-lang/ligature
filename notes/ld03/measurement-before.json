@@ -1,0 +1,25 @@
+{
+  "manifest_bytes": 147136512,
+  "sites": 590358,
+  "bytes_per_site": 249.2326893173295,
+  "patch_json_bytes": 145064820,
+  "string_value_bytes": 16242081,
+  "unique_string_bytes": 1687229,
+  "unique_values_by_column": {
+    "addend": 105395,
+    "after": 185398,
+    "before": 11,
+    "consumed_by": 15,
+    "end": 590344,
+    "index": 590358,
+    "member": 361,
+    "offset": 254064,
+    "rule": 5,
+    "section_index": 733,
+    "start": 590358,
+    "symbol": 884,
+    "target_member": 363,
+    "target_symbol": 2282,
+    "type": 12
+  }
+}

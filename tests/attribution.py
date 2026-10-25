@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 """Whole-byte attribution, resealed negative manifests, queries and change locality."""
-import copy,hashlib,json,pathlib,struct,subprocess
+import runpy,copy,hashlib,json,pathlib,struct,subprocess
 ROOT=pathlib.Path(__file__).resolve().parent.parent;BIN=ROOT/'target/ligature'
+codec=runpy.run_path(str(ROOT/'tests/manifest-codec.py'));decode_manifest=codec['decode'];encode_manifest=codec['encode']
 OUT=ROOT/'target/evidence/attribution';OUT.mkdir(parents=True,exist_ok=True)
 def call(args,status=0):
     p=subprocess.run(list(map(str,args)),capture_output=True,timeout=180)
@@ -13,7 +14,7 @@ def decode(path):
     headers=[struct.unpack_from('<IIQQQQIIQQ',data,shoff+64*i) for i in range(n)]
     names=headers[ns];text=data[names[4]:names[4]+names[5]]
     sections={text[h[0]:].split(b'\0',1)[0].decode():h for h in headers}
-    m=sections['.wolf.link.manifest'];doc=json.loads(data[m[4]:m[4]+m[5]])
+    m=sections['.wolf.link.manifest'];doc=decode_manifest(data[m[4]:m[4]+m[5]])
     return data,sections,doc
 
 def reseal(data,sections):
@@ -39,7 +40,7 @@ target: .quad {value}
     return decode(exe)
 a,sections,doc=link(41)
 assert doc['coverage']=='bytes-and-patches'
-assert a[sections['.wolf.link.manifest'][4]:][:sections['.wolf.link.manifest'][5]]==(json.dumps(doc,sort_keys=True,separators=(',',':'))+'\n').encode()
+assert a[sections['.wolf.link.manifest'][4]:][:sections['.wolf.link.manifest'][5]]==encode_manifest(doc)
 cursor=0
 for r in doc['ranges']:
     assert r['start']==cursor and r['end']>cursor;rsize=r['end']-r['start'];cursor=r['end']
@@ -72,10 +73,11 @@ overlap=copy.deepcopy(doc2);overlap['ranges'][1]['start']-=1;mutations.append(('
 wrong=copy.deepcopy(doc2);next(r for r in wrong['ranges'] if r['origin']=='input')['input_offset']=-1;mutations.append(('input-slice',wrong))
 wrong=copy.deepcopy(doc2);p=wrong['patches'][0];p['after']=('00' if p['after'][:2]!='00' else '01')+p['after'][2:];mutations.append(('patch-bytes',wrong))
 wrong=copy.deepcopy(doc2);wrong['coverage']='unknown';mutations.append(('coverage',wrong))
+wrong=copy.deepcopy(doc2);wrong['patches'].pop();mutations.append(('dropped-provenance-record',wrong))
 for name,record in mutations:
-    raw=(json.dumps(record,sort_keys=True,separators=(',',':'))+'\n').encode();m=sections2['.wolf.link.manifest']
+    raw=encode_manifest(record);m=sections2['.wolf.link.manifest']
     assert len(raw)<=m[5],(name,len(raw),m[5])
-    data=bytearray(b);data[m[4]:m[4]+m[5]]=raw+b' '*(m[5]-len(raw));data=reseal(data,sections2)
+    data=bytearray(b);data[m[4]:m[4]+m[5]]=raw+bytes(m[5]-len(raw));data=reseal(data,sections2)
     path=OUT/('bad-'+name);path.write_bytes(data)
     call([BIN,'verify',path],1)
     p=call([BIN,'explain',path,'--symbol','target'],2);assert not p.stdout
@@ -102,3 +104,13 @@ call([BIN,'explain',ambiguous,'--symbol','duplicate'],1)
 rows=json.loads(call([BIN,'explain',ambiguous,'--symbol','duplicate','--input','1']).stdout)
 assert len(rows)==1 and rows[0]['member']==1
 print('attribution: aliases, archive path, TLS/NOBITS, ambiguous locals and explicit member selection; 0 SKIP')
+
+# Legacy JSON is still accepted by verify and every explain query.
+legacy=json.dumps(doc2,sort_keys=True,separators=(',',':')).encode()
+m=sections2['.wolf.link.manifest'];assert len(legacy)<=m[5]
+old=bytearray(b);old[m[4]:m[4]+m[5]]=legacy+b' '*(m[5]-len(legacy));old=reseal(old,sections2)
+oldpath=OUT/'legacy-json';oldpath.write_bytes(old)
+call([BIN,'verify',oldpath])
+for mode,value in [('--symbol','target'),('--address',hex(address)),('--why','target')]:
+    assert json.loads(call([BIN,'explain',oldpath,mode,value]).stdout)==json.loads(call([BIN,'explain',exe,mode,value]).stdout)
+print('compact-manifest: legacy JSON explain parity and dropped provenance record refused; 0 SKIP')

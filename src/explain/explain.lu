@@ -46,6 +46,16 @@ fn number(value: str) -> int ! {Bad(str)} {
 
 fn answer(doc: json.Value, mode: str, query: str, input: int) -> List[json.Value] ! {Bad(str)} {
     var result = List[json.Value]()
+    if mode == "--discarded" {
+        if !json.has(doc, "discarded") { return Bad("legacy manifest has no discard causes") }
+        for row in provenance.array(doc, "discarded")? {
+            if provenance.text(row, "section_name")? == query &&
+                (input < 0 || provenance.integer(row, "member")? == input) {
+                (mut result).push(copy row)
+            }
+        }
+        return result
+    }
     let symbols = provenance.array(doc, "symbols")?
     var selected = List[json.Value]()
     var members = Map[int, bool]()
@@ -66,6 +76,19 @@ fn answer(doc: json.Value, mode: str, query: str, input: int) -> List[json.Value
     }
     if mode != "--address" && input < 0 && members.len > 1 {
         return Bad("ambiguous symbol {query}; specify --input MEMBER_ORDINAL")
+    }
+    if mode == "--dependencies" {
+        for p in provenance.array(doc, "patches")? {
+            for symbol in selected {
+                if provenance.integer(p, "member")? == provenance.integer(symbol, "member")? &&
+                    provenance.integer(p, "section_index")? ==
+                        provenance.integer(symbol, "section_index")? {
+                    (mut result).push(copy p)
+                    break
+                }
+            }
+        }
+        return result
     }
     if mode == "--why" {
         if selected.len == 0 { return result }
@@ -109,7 +132,12 @@ pub fn run(args: List[str]) -> int {
     var i = 1
     while i < args.len {
         let arg = args[i]
-        if arg == "--symbol" || arg == "--address" || arg == "--why" || arg == "--input" {
+        if arg == "--symbol" ||
+            arg == "--address" ||
+            arg == "--why" ||
+            arg == "--dependencies" ||
+            arg == "--discarded" ||
+            arg == "--input" {
             if i + 1 >= args.len { eprint("ligature explain: missing value for {arg}"); return 1 }
             i += 1
             if arg == "--input" {
@@ -133,7 +161,7 @@ pub fn run(args: List[str]) -> int {
     }
     if path.len == 0 || mode.len == 0 {
         eprint(
-            "usage: ligature explain FILE (--symbol NAME|--address VA|--why NAME) [--input MEMBER_ORDINAL]",
+            "usage: ligature explain FILE (--symbol NAME|--address VA|--why NAME|--dependencies NAME|--discarded SECTION) [--input MEMBER_ORDINAL]",
         )
         return 1
     }

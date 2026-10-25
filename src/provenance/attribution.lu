@@ -63,8 +63,8 @@ pub fn ranges(l: layout.Layout, s: resolve.State, total: int) -> List[byte] ! {B
 
 /// Attribute every retained relocation, including TLS call sites consumed by a transition.
 /// Bytes are evidence, not an independent proof: the differential decoder checks them.
-pub fn patches(l: layout.Layout, s: resolve.State) -> List[byte] ! {Bad(str)} {
-    var bytes = List[byte]()
+pub fn patches(l: layout.Layout, s: resolve.State) -> PatchTable ! {Bad(str)} {
+    var table = patch_table()
     var consumed = Map[str, int]()
     for i in 0..l.relocs.len {
         let r = copy l.relocs[i]
@@ -109,13 +109,32 @@ pub fn patches(l: layout.Layout, s: resolve.State) -> List[byte] ! {Bad(str)} {
         let after = sha2.to_hex(
             l.outputs[oi].data[l.atoms[ai].offset + begin..l.atoms[ai].offset + begin + width],
         )
-        if bytes.len != 0 { emit(mut bytes, ",") }
-        emit(
-            mut bytes,
-            "{{\"addend\":{r.addend},\"after\":\"{after}\",\"before\":\"{before}\",\"consumed_by\":{owner},\"end\":{start + width},\"index\":{i},\"member\":{l.atoms[ai].object},\"offset\":{r.offset},\"rule\":\"{rule}\",\"section_index\":{l.atoms[ai].index},\"start\":{start},\"symbol\":{binary.quote(target.name.bytes())},\"target_member\":{target.object},\"target_symbol\":{target.index},\"type\":{r.kind}}}",
+        let after_id = intern(mut table, after)
+        let before_id = intern(mut table, before)
+        let rule_id = intern(mut table, rule)
+        let symbol_id = intern(mut table, target.name)
+        patch_row(
+            mut table,
+            [
+                r.addend,
+                after_id,
+                before_id,
+                owner,
+                width,
+                i,
+                l.atoms[ai].object,
+                r.offset,
+                rule_id,
+                l.atoms[ai].index,
+                start,
+                symbol_id,
+                target.object,
+                target.index,
+                r.kind,
+            ],
         )
     }
-    bytes
+    table
 }
 
 fn origin(mut bytes: List[byte], l: layout.Layout, s: resolve.State, id: int, name: str) -> () ! {
@@ -171,4 +190,37 @@ pub fn memory_ranges(l: layout.Layout) -> List[byte] {
         )
     }
     bytes
+}
+
+/// Explain absent selected-input sections, without claiming unselected archive members were read.
+pub fn discards(l: layout.Layout, s: resolve.State) -> List[byte] {
+    var out = List[byte]()
+    for oi in 0..s.objects.len {
+        for si in 1..s.objects[oi].image.sections.len {
+            let sec = copy s.objects[oi].image.sections[si]
+            let name = s.objects[oi].names[si]
+            let ai = l.locations["{oi}:{si}"] else 0
+            var reason = ""
+            if sec.flags & 2147483648 != 0 {
+                reason = "SHF_EXCLUDE"
+            } else if s.objects[oi].discarded[si] {
+                reason = "duplicate-COMDAT"
+            } else if ai != 0 && !l.atoms[ai].live {
+                reason = "GC-unreachable"
+            } else if sec.kind == 2 || sec.kind == 3 || sec.kind == 4 {
+                reason = "regenerated-metadata"
+            } else if sec.kind == 17 {
+                reason = "consumed-group-metadata"
+            } else if name == ".note.GNU-stack" {
+                reason = "consumed-stack-policy"
+            }
+            if reason.len == 0 { continue }
+            if out.len != 0 { emit(mut out, ",") }
+            emit(
+                mut out,
+                "{{\"member\":{oi},\"reason\":\"{reason}\",\"section_index\":{si},\"section_name\":{binary.quote(name.bytes())},\"size\":{sec.size}}}",
+            )
+        }
+    }
+    out
 }

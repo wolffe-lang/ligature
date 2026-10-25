@@ -90,10 +90,9 @@ pub fn manifest(
     total: int,
 ) -> List[byte] ! {Bad(str)} {
     var out = List[byte]()
-    emit(
-        mut out,
-        "{{\"coverage\":\"bytes-and-patches\",\"format\":\"wolf.link.provenance.v1\",\"input_ranges\":[",
-    )
+    emit(mut out, "{{\"coverage\":\"bytes-and-patches\",\"discarded\":[")
+    for b in discards(l, s) { (mut out).push(b) }
+    emit(mut out, "],\"format\":\"wolf.link.provenance.v1\",\"input_ranges\":[")
     var count: int = 0
     for a in l.atoms {
         if !a.live { continue }
@@ -114,7 +113,7 @@ pub fn manifest(
         mut out,
         "],\"output\":{{\"bytes\":{total},\"entry\":\"_start\",\"sha256\":null,\"target\":\"x86_64\",\"type\":\"ET_EXEC\"}},\"patches\":[",
     )
-    for b in patches(l, s)? { (mut out).push(b) }
+    let table = patches(l, s)?
     emit(mut out, "],\"pulls\":[")
     for b in pulls(s)? { (mut out).push(b) }
     emit(mut out, "],\"ranges\":[")
@@ -130,13 +129,8 @@ pub fn manifest(
     }
     emit(mut out, "],\"symbols\":[")
     for b in origins(l, s)? { (mut out).push(b) }
-    // A canonical reserved string makes the manifest length page-aligned. Without
-    // it, emitting/removing a zero-length alignment gap can make layout oscillate.
-    emit(mut out, "],\"zz_padding\":\"")
-    let padding = layout.align(out.len + 3, 4096) - out.len - 3
-    for _ in 0..padding { (mut out).push(48 as byte) }
-    emit(mut out, "\"}}\n")
-    out
+    emit(mut out, "]}}")
+    compact(out, table)?
 }
 
 /// Write the fixed note fields with both digest slots zero, ready for hashing.

@@ -2,6 +2,7 @@
 """Independent per-site decoding: corrupt unused data, not executable behavior."""
 import hashlib,json,pathlib,runpy,struct,subprocess
 ROOT=pathlib.Path(__file__).resolve().parent.parent
+codec=runpy.run_path(str(ROOT/'tests/manifest-codec.py'));decode_manifest=codec['decode'];encode_manifest=codec['encode']
 BIN=ROOT/'target/ligature';OUT=ROOT/'target/evidence/relocation-witness';OUT.mkdir(parents=True,exist_ok=True)
 differ=runpy.run_path(str(ROOT/'tools/differ'));snapshot=differ['snapshot']
 def call(args):
@@ -43,12 +44,12 @@ for label,linker in [('ligature',BIN),('lld','ld.lld-17'),('gnu','ld.bfd')]:
         # Re-seal so the relocation gate, rather than the digest gate, must fail.
         if '.note.wolf.link' in sections:
             no=sections['.note.wolf.link'][4];mo=sections['.wolf.link.manifest']
-            document=json.loads(mutated[mo[4]:mo[4]+mo[5]])
+            document=decode_manifest(mutated[mo[4]:mo[4]+mo[5]])
             # Forge matching patch claims too: independent relocation equations
             # must reject this even when the manifest and both digests agree.
             for patch in document.get('patches',[]):
                 patch['after']=mutated[patch['start']:patch['end']].hex()
-            manifest=(json.dumps(document,sort_keys=True,separators=(',',':'))+'\n').encode()
+            manifest=encode_manifest(document,mo[5])
             assert len(manifest)==mo[5]
             mutated[mo[4]:mo[4]+mo[5]]=manifest
             mutated[no+44:no+108]=bytes(64)
