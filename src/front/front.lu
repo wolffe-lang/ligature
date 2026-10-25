@@ -150,3 +150,21 @@ pub fn emit(p: Plan) {
     strings(p.definitions)
     print(",\"static\":{p.static_link},\"nostdlib\":{p.nostdlib},\"gc_sections\":{p.gc}}}")
 }
+
+/// Expand the Linux cc subset into a static musl CRT/group order.
+/// Explicit -nostdlib plans remain untouched; musl owns pthread/dl/math APIs.
+pub fn musl(mut p: Plan, root: str, unwind: bool) -> () ! {Bad(str)} {
+    if p.nostdlib { return }
+    if root.len == 0 { return Bad("empty LIGATURE_SYSROOT") }
+    var order: List[str] = ["{root}/crt1.o", "{root}/crti.o", "--start-group"]
+    for token in p.ordered {
+        if token == "-lpthread" || token == "-ldl" || token == "-lm" { continue }
+        (mut order).push(token)
+    }
+    (mut order).push("{root}/libc.a")
+    if unwind { (mut order).push("{root}/libunwind.a") }
+    (mut order).push("--end-group")
+    (mut order).push("{root}/crtn.o")
+    p.ordered = order
+    p.static_link = true
+}

@@ -7,15 +7,25 @@ use writer
 
 fn execute(args: List[str]) -> () ! {Bad(str)} {
     if args.len == 1 && args[0] == "--version" {
-        print("ligature 0.0.1 (ELF map; linking not implemented)")
+        print("ligature 0.0.2 (static x86-64 ELF)")
         return
     }
     if args.len == 2 && (args[0] == "inspect" || args[0] == "verify" || args[0] == "roundtrip") {
         census.inspect(args[1], args[0])?
         return
     }
-    let plan = front.parse(args)?
+    var plan = front.parse(args)?
     if plan.print_plan { front.emit(plan); return }
+    if !plan.nostdlib {
+        let root = env_get("LIGATURE_SYSROOT") else |e| match e {
+            missing => "/usr/lib/wolf-musl",
+            utf8 => { return Bad("LIGATURE_SYSROOT is not UTF-8") },
+        }
+        var unwind = false
+        let size = fs_size("{root}/libunwind.a") else |_| -1
+        if size >= 0 { unwind = true }
+        front.musl(mut plan, root, unwind)?
+    }
     if plan.resolve_only {
         var state = resolve.empty()
         defer resolve.finish(state)

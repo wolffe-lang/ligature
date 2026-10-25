@@ -18,7 +18,7 @@ def run_case(name,objects,expected,options=()):
     answers={}
     for label,linker in [('ligature',BIN),('lld','ld.lld-17'),('gnu','ld.bfd')]:
         exe=OUT/(name+'-'+label)
-        cmd=[linker,'-static','--gc-sections',*options,'-o',exe,*objects]
+        cmd=[linker,*(['-nostdlib'] if label=='ligature' else []),'-static','--gc-sections',*options,'-o',exe,*objects]
         call(cmd);call([BIN,'verify',exe])
         p=call([exe],expected[2]);answer=(p.stdout,p.stderr,p.returncode)
         assert answer==expected,(name,label,answer,expected)

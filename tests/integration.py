@@ -23,7 +23,7 @@ with tempfile.TemporaryDirectory(dir=OUT,prefix='fixture-') as tmp:
     raw=header();struct.pack_into('<Q',raw,40,64);struct.pack_into('<H',raw,60,2)
     raw.extend(bytes(64));raw.extend(struct.pack('<IIQQQQIIQQ',0,8,3,0,65536,16,0,0,16,0))
     nobits=d/'nobits.o';nobits.write_bytes(raw);run([BIN,'roundtrip',nobits])
-    aarch=d/'aarch.o';aarch.write_bytes(header(183));run([BIN,'roundtrip',aarch]);run([BIN,aarch],1,'EM_AARCH64 linking refused')
+    aarch=d/'aarch.o';aarch.write_bytes(header(183));run([BIN,'roundtrip',aarch]);run([BIN,'-nostdlib',aarch],1,'EM_AARCH64 linking refused')
     for n in (0,1,7,8,15,16,63):bad('short'+str(n),header()[:n],'truncated range')
     b=header();b[4]=1;bad('elf32',b,'ELFCLASS32')
     b=header();b[5]=2;bad('big-endian',b,'ELFDATA2MSB')
@@ -64,6 +64,6 @@ with tempfile.TemporaryDirectory(dir=OUT,prefix='fixture-') as tmp:
     b=bytearray(original);struct.pack_into('<Q',b,shoff+64+48,3);bad('align.o',b,'power of two')
     args=['--print-plan','-o','a b','x.o','rt.a','-lpthread','-ldl','-lm','-Wl,--gc-sections','-Wl,--undefined=__wolf_rt_trap_at','-Wl,--defsym=wolf_trap=__wolf_rt_trap_at','-fuse-ld=lld','-static','-nostdlib','-L','/lib','-l','c']
     p=json.loads(run([BIN,*args]).stdout);assert p['output']=='a b' and p['static'] and p['nostdlib'] and p['libraries']==['pthread','dl','m','c']
-    for args,reason in [(['-o'],'missing value'),(['--unknown','x.o'],'unsupported cc'),(['-Wl,--surprise','x.o'],'unsupported linker'),(['-Wl,--defsym=a','x.o'],'NAME=SYMBOL'),(['x.o'],'cannot stat x.o')]:run([BIN,*args],1,reason)
+    for args,reason in [(['-o'],'missing value'),(['--unknown','x.o'],'unsupported cc'),(['-Wl,--surprise','x.o'],'unsupported linker'),(['-Wl,--defsym=a','x.o'],'NAME=SYMBOL'),(['-nostdlib','x.o'],'cannot stat x.o')]:run([BIN,*args],1,reason)
 (OUT/'integration.json').write_text(json.dumps(rows,indent=2)+'\n')
 print(f'integration: {len(rows)} process rows, 0 SKIP')
