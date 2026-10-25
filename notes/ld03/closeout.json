@@ -1,0 +1,180 @@
+{
+  "format": "ligature.ld03.closeout.v1",
+  "first_row": {
+    "self_link": "BLOCKED unchanged: the self-link goes live when ld03b (or the pin lane) bumps both compiler and bundle",
+    "runtime_digest": "9d859b9e6b5319f5a6f609e73ba0d71981d2dfa489882648ac9f454cd9db739c",
+    "predicate_changed": false
+  },
+  "prediction": {
+    "commit": "f616c8d",
+    "target_reduction": 10,
+    "observed_reduction": 11.851534147146156,
+    "retained_sites": 590358,
+    "old_bytes": 147136512,
+    "new_bytes": 12414976,
+    "new_discard_records": 17765
+  },
+  "recommendation": {
+    "ruling": "R-ld03-1",
+    "option": "A with the existing two-section envelope retained",
+    "detail": "Interned binary table in .wolf.link.manifest, sealed by unchanged 116-byte .note.wolf.link; no sidecar and no ruling decided"
+  },
+  "findings": {
+    "resolved": 0,
+    "retained": 87,
+    "waivers": 0,
+    "table": "findings.json",
+    "fresh_facts_equal_baseline": true,
+    "counts": {
+      "relocations": 28,
+      "segments": 28,
+      "symbols": 28,
+      "tls": 3
+    }
+  },
+  "linux": {
+    "cases": 14,
+    "deterministic_relinks": 14,
+    "functional_failures": 0,
+    "independently_validated_candidate_sites": 8282548,
+    "comparisons": 28,
+    "corpus_source_head": "f76ae9cb4dd8092ef823e4a654a1c4da91316797",
+    "final_source_correction": "6864e5b preserves legacy non-ASCII patch-symbol semantics; final core regression passes; every qualified corpus pool is ASCII and two final-source hello links reproduce the qualified binary exactly",
+    "hello_link_seconds": [
+      190.44462402299996,
+      185.13017737100017
+    ],
+    "final_hello_link_seconds": [
+      171.35511017599856,
+      207.38546834299996
+    ],
+    "causal_speedup_claim": false
+  },
+  "pax": {
+    "kernel_source": "edbd385c91f2ff0eadb1ab4e52b276f1a1412b63",
+    "kernel_policy": "Reused immutable ld02a native/release ELF binaries, verified twice; no kernel rebuild or claim of current PAX trunk",
+    "boots": 56,
+    "program_runs": 168,
+    "halted": 56,
+    "linux_equal": 52,
+    "named_red": 4,
+    "unexpected_failures": 0,
+    "raw_exit": 1
+  },
+  "plants": [
+    {
+      "pr": 19,
+      "branch": "ld03-plant-drop-provenance",
+      "head": "d7fbfae",
+      "expected": "provenance retained patch count mismatch",
+      "run_id": 40217336712,
+      "status": "observed target red; draft remains open",
+      "gate": "lazy-order: provenance retained patch count mismatch",
+      "evidence": "evidence/plant-40217336712.log"
+    },
+    {
+      "pr": 20,
+      "branch": "ld03-plant-reclassify-finding",
+      "head": "2e5d005",
+      "expected": "retained finding silently reclassified",
+      "run_id": 40217341895,
+      "status": "observed target red; draft remains open",
+      "gate": "check-findings: compiler-comptime/lld/symbols retained finding silently reclassified",
+      "evidence": "evidence/plant-40217341895.log"
+    },
+    {
+      "pr": 21,
+      "branch": "ld03-plant-nondeterministic-relink",
+      "head": "b790963",
+      "expected": "nondeterministic relink",
+      "run_id": 40217347952,
+      "status": "observed target red; draft remains open",
+      "gate": "writer: strong-weak ligature nondeterministic",
+      "evidence": "evidence/plant-40217347952.log"
+    }
+  ],
+  "ld04": "ld04-draft.json",
+  "readme": "Read and refreshed for compact format, explanations, fresh corpus evidence and final byte-name coverage",
+  "recovery": "Kasumi reboot at 13:32 EDT preceded qualification launch. Mac reboot at 16:21 EDT followed PAX completion at 16:20:33 EDT. All completed markers were reconciled; no completed Linux corpus or PAX boot was relaunched. A dead job is not a red row.",
+  "evidence": [
+    "evidence/compress-views.log",
+    "evidence/compressed-views.json",
+    "evidence/final-byte-name-witness.json",
+    "evidence/final-core.log",
+    "evidence/final-witness.exit",
+    "evidence/final-witness.log",
+    "evidence/inherited-hashes.json",
+    "evidence/inherited-transcripts.json",
+    "evidence/linux-qualified.json",
+    "evidence/linux-results.json",
+    "evidence/marker-tests.log",
+    "evidence/pax-evidence-index.json",
+    "evidence/pax-evidence.tar.gz",
+    "evidence/pax-inputs.json",
+    "evidence/pax-results.json",
+    "evidence/pax.exit",
+    "evidence/pax.log",
+    "evidence/plant-40217336712.log",
+    "evidence/plant-40217341895.log",
+    "evidence/plant-40217347952.log",
+    "evidence/qualification.exit",
+    "evidence/qualification.log"
+  ],
+  "issues": {
+    "new_to_file": [],
+    "close": [],
+    "retain": [
+      "wolf-lang#962/#963 compiler and bundle pins",
+      "pax#175 fork behavior",
+      "ligature#12 total-link cost",
+      "ligature#13 genuine self-link qualification"
+    ]
+  },
+  "prune_after_review": {
+    "total_after_pax": "7.8 GiB (the prior 5.9 GiB Linux checkpoint grew with PAX images; verified text compression reclaimed 3415952094 bytes)",
+    "preserve": [
+      "Tracked notes/ld03/evidence including PAX archive and all SHA indexes",
+      "/home/mfwolffe/lanes/ld03/progress and logs until review",
+      "All /home/mfwolffe/lanes/ld02a evidence, untouched"
+    ],
+    "directories": [
+      {
+        "path": "/home/mfwolffe/lanes/ld03/pax-results",
+        "size": "5.1 GiB",
+        "condition": "After review accepts tracked transcripts/indexes and no further image inspection is needed"
+      },
+      {
+        "path": "/home/mfwolffe/lanes/ld03/ligature/target",
+        "size": "2.3 GiB",
+        "condition": "After review accepts compressed oracle evidence, program hashes and retained-site records"
+      },
+      {
+        "path": "/home/mfwolffe/lanes/ld03/ligature/.wolf-bin",
+        "size": "363 MiB",
+        "condition": "Digest-pinned and re-fetchable after review"
+      },
+      {
+        "path": "/home/mfwolffe/lanes/ld03/ligature/.link-inputs",
+        "size": "118 MiB",
+        "condition": "Digest-pinned and re-fetchable after review"
+      },
+      {
+        "path": "/home/mfwolffe/lanes/ld03/pax-image-root",
+        "condition": "Own scratch staging, no active QEMU"
+      },
+      {
+        "path": "/home/mfwolffe/lanes/ld03/pax-cases",
+        "condition": "Own symlinks/manifests, after associated evidence review"
+      },
+      {
+        "path": "/home/mfwolffe/lanes/ld03/pax-tools",
+        "condition": "Own copied harness, after review"
+      },
+      {
+        "path": "/home/mfwolffe/lanes/ld03/marker-tests",
+        "condition": "Own negative witness, log retained"
+      }
+    ]
+  },
+  "ci": "Final-head PR run read once at handback; orchestrator owns label and final-tier observation. No green final CI claim in this record."
+}
