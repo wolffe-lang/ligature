@@ -1,0 +1,45 @@
+{
+  "merge_unwind": [
+    {
+      "oracle": "ligature",
+      "rodata_bytes": 29,
+      "rodata_hex": "7368617265642d7461696c007368617265642d7461696c007461696c00",
+      "eh_frame_bytes": 48,
+      "eh_frame_hdr": false,
+      "symbols": "0000000000201000 T _start\n0000000000201009 R first\n0000000000201015 R second\n0000000000201021 R suffix\n"
+    },
+    {
+      "oracle": "lld",
+      "rodata_bytes": 17,
+      "rodata_hex": "7461696c007368617265642d7461696c00",
+      "eh_frame_bytes": 52,
+      "eh_frame_hdr": true,
+      "symbols": "0000000000200190 R suffix\n0000000000200195 R first\n0000000000200195 R second\n00000000002011f0 T _start\n"
+    },
+    {
+      "oracle": "gnu",
+      "rodata_bytes": 12,
+      "rodata_hex": "7368617265642d7461696c00",
+      "eh_frame_bytes": 44,
+      "eh_frame_hdr": true,
+      "symbols": "0000000000401000 T _start\n0000000000402000 R first\n0000000000402000 R second\n0000000000402007 R suffix\n000000000040200c r __GNU_EH_FRAME_HDR\n0000000000403018 B __bss_start\n0000000000403018 D _edata\n0000000000403018 B _end\n"
+    }
+  ],
+  "kernel_script_sha256": "ca905946facf857b4902e1096596f8234553da601915693e0585510209bc006d",
+  "kernel": [
+    {
+      "oracle": "lld",
+      "sha256": "fd8664a430627a9469c446fafcc1878e211161898aa4f997c41c90cb6cd38a07",
+      "headers": "There are 8 section headers, starting at offset 0x31c0:\n\nSection Headers:\n  [Nr] Name              Type            Address          Off    Size   ES Flg Lk Inf Al\n  [ 0]                   NULL            0000000000000000 000000 000000 00      0   0  0\n  [ 1] .text             PROGBITS        ffffffff80000000 001000 000002 00  AX  0   0  1\n  [ 2] .rodata           PROGBITS        ffffffff80001000 002000 000010 00  WA  0   0  1\n  [ 3] .data             PROGBITS        ffffffff80002000 003000 000010 00  WA  0   0  8\n  [ 4] .bss              NOBITS          ffffffff80002010 003010 000040 00  WA  0   0 16\n  [ 5] .symtab           SYMTAB          0000000000000000 003010 0000f0 18      7   1  8\n  [ 6] .shstrtab         STRTAB          0000000000000000 003100 000034 00      0   0  1\n  [ 7] .strtab           STRTAB          0000000000000000 003134 000086 00      0   0  1\nKey to Flags:\n  W (write), A (alloc), X (execute), M (merge), S (strings), I (info),\n  L (link order), O (extra OS processing required), G (group), T (TLS),\n  C (compressed), x (unknown), o (OS specific), E (exclude),\n  D (mbind), l (large), p (processor specific)\n\nElf file type is EXEC (Executable file)\nEntry point 0xffffffff80000000\nThere are 3 program headers, starting at offset 64\n\nProgram Headers:\n  Type           Offset   VirtAddr           PhysAddr           FileSiz  MemSiz   Flg Align\n  LOAD           0x001000 0xffffffff80000000 0xffffffff80000000 0x000002 0x000002 R E 0x1000\n  LOAD           0x002000 0xffffffff80001000 0xffffffff80001000 0x000010 0x000010 R   0x1000\n  LOAD           0x003000 0xffffffff80002000 0xffffffff80002000 0x000010 0x000050 RW  0x1000\n\n Section to Segment mapping:\n  Segment Sections...\n   00     .text \n   01     .rodata \n   02     .data .bss \n",
+      "symbols": "ffffffff80000000 T __pax_image_start\nffffffff80000000 T __pax_text_start\nffffffff80000000 T _start\nffffffff80001000 T __pax_rodata_start\nffffffff80001000 T __pax_text_end\nffffffff80002000 D __pax_data_start\nffffffff80002000 D __pax_rodata_end\nffffffff80002030 B common\nffffffff80003000 B __pax_image_end\n",
+      "executed": false
+    },
+    {
+      "oracle": "gnu",
+      "sha256": "dd18f0496d9b9fb16bd474f6a5495ba124e803d631cb1dd307f1b94cb4d209cc",
+      "headers": "There are 8 section headers, starting at offset 0x31b8:\n\nSection Headers:\n  [Nr] Name              Type            Address          Off    Size   ES Flg Lk Inf Al\n  [ 0]                   NULL            0000000000000000 000000 000000 00      0   0  0\n  [ 1] .text             PROGBITS        ffffffff80000000 001000 000002 00  AX  0   0  1\n  [ 2] .rodata           PROGBITS        ffffffff80001000 002000 000010 00  WA  0   0  1\n  [ 3] .data             PROGBITS        ffffffff80002000 003000 000010 00  WA  0   0  8\n  [ 4] .bss              NOBITS          ffffffff80002010 003010 000040 00  WA  0   0 16\n  [ 5] .symtab           SYMTAB          0000000000000000 003010 0000f0 18      6   1  8\n  [ 6] .strtab           STRTAB          0000000000000000 003100 00007f 00      0   0  1\n  [ 7] .shstrtab         STRTAB          0000000000000000 00317f 000034 00      0   0  1\nKey to Flags:\n  W (write), A (alloc), X (execute), M (merge), S (strings), I (info),\n  L (link order), O (extra OS processing required), G (group), T (TLS),\n  C (compressed), x (unknown), o (OS specific), E (exclude),\n  D (mbind), l (large), p (processor specific)\n\nElf file type is EXEC (Executable file)\nEntry point 0xffffffff80000000\nThere are 3 program headers, starting at offset 64\n\nProgram Headers:\n  Type           Offset   VirtAddr           PhysAddr           FileSiz  MemSiz   Flg Align\n  LOAD           0x001000 0xffffffff80000000 0xffffffff80000000 0x000002 0x000002 R E 0x1000\n  LOAD           0x002000 0xffffffff80001000 0xffffffff80001000 0x000010 0x000010 R   0x1000\n  LOAD           0x003000 0xffffffff80002000 0xffffffff80002000 0x000010 0x000050 RW  0x1000\n\n Section to Segment mapping:\n  Segment Sections...\n   00     .text \n   01     .rodata \n   02     .data .bss \n",
+      "symbols": "ffffffff80000000 T __pax_image_start\nffffffff80000000 T __pax_text_start\nffffffff80000000 T _start\nffffffff80001000 D __pax_rodata_start\nffffffff80001000 D __pax_text_end\nffffffff80002000 D __pax_data_start\nffffffff80002000 D __pax_rodata_end\nffffffff80002030 B common\nffffffff80003000 B __pax_image_end\n",
+      "executed": false
+    }
+  ]
+}

@@ -1,0 +1,29 @@
+{
+  "format": "ligature.ld04.draft.v1",
+  "prerequisites": [
+    "Self-link remains BLOCKED under the unchanged exact-digest predicate: the self-link goes live when ld03b (or the pin lane) bumps both compiler and bundle",
+    "Read every ld03 named finding and current corpus record; retained is not equivalent",
+    "Preserve all provenance rows, deterministic bytes and independent retained-site equations",
+    "No PAX or compiler changes in the linker lane; coordinate separate lanes"
+  ],
+  "kernel_subset": {
+    "scope": "Plan only; tests/fixtures/pax-kernel.ld is the permitted script, not kernel implementation source",
+    "oracles": "GNU ld 2.42 and LLD 17 black-box; target/evidence/layout-controls/results.json records exact views; high-half outputs never executed",
+    "rows": [
+      {"construct":"OUTPUT_FORMAT(elf64-x86-64), ENTRY(_start)","work":"Parse exact forms; reject other formats, duplicate directives and missing entry","gate":"both oracle entry addresses match 0xffffffff80000000"},
+      {"construct":"PHDRS, PT_LOAD, FLAGS(5/4/6), :phdr","work":"Explicit segment assignment, independent R/X, R and R/W page boundaries; never silently infer an unsupported PHDR type","gate":"three LOAD flags 5,4,6 with congruent file/virtual offsets and no shared permission page"},
+      {"construct":"SECTIONS, location counter and high-half constants","work":"Represent virtual addresses as u64 separately from bounded file positions; checked expression arithmetic and conversion","gate":"high-half range, signed relocation limits and overflow/refusal witnesses"},
+      {"construct":"symbol = . and ALIGN(0x1000)","work":"Define __pax_image/text/rodata/data bounds at the script positions; page-rounded end symbols","gate":"bounds against oracle nm and segment coverage; no accidental section-relative symbol"},
+      {"construct":"*(.text .text.*), rodata, data.rel.ro, data.limine, data, GOT, BSS and COMMON","work":"Ordered wildcard input collection; preserve data.limine before general data; COMMON alignment and NOBITS file/memory separation","gate":"positive section order/COMMON tests and orphan/unknown-pattern refusal"},
+      {"construct":"/DISCARD/ notes, comments and eh_frame","work":"Script-specific discard causes in provenance, distinguished from GC/COMDAT/SHF_EXCLUDE","gate":"absent output sections and exact per-input discard records"},
+      {"construct":"GOT range and relaxation","work":"Use full-width address arithmetic; retain GOT load when direct signed immediate is not representable","gate":"existing kernel-edge: LLD17 and default GNU named range failures, GNU --no-relax succeeds; add newer LLD control before calling a version difference"}
+    ],
+    "out_of_scope": ["general expression language", "INCLUDE", "MEMORY", "OVERLAY", "dynamic linking", "arbitrary script compatibility", "booting an unqualified kernel"]
+  },
+  "aarch64": {
+    "scope":"Separate implementation from existing header reading",
+    "reference":"ELF for the Arm 64-bit Architecture 2025Q1 sections 5-7",
+    "rows":["Census actual relocations in binary inputs before adding an allowlist", "ABS64 and PREL32 range/alignment witnesses", "CALL26/JUMP26 signed branch range, instruction mask and aligned target witnesses", "ADRP page plus ADD/LDST low-12 paired relocation proofs", "GOT/TLS separately specified; unknown variants named refusals", "AArch64 binary oracles and native or emulated behavior, never x86 header-only evidence"]
+  },
+  "follow_ons": ["Resolve local/debug/global-binding records by identity, not a category waiver", "Decide merge-string/suffix deduplication with provenance split/alias attribution before implementation", "Decide unwind record deduplication and .eh_frame_hdr generation separately", "Archive thin/BSD formats remain named refusals until separately scoped", "Authentication stays a separate signed envelope, not a stronger claim for SHA256"]
+}

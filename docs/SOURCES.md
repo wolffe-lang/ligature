@@ -108,3 +108,16 @@ the reader accepts 0 or 8 there while requiring size divisible by 8.
   PAX qualification uses a full checkout at its recorded trunk SHA and the
   stock `tools/fetch-wolf` / `tools/build-kernel` recipe in `localhost/px79-ubuntu`.
   The copied dev initramfs supplies userland only, never a stale kernel oracle.
+
+## ld03 black-box controls
+
+`tests/fixtures/pax-kernel.ld` copies the permitted PAX linker script from
+PAX `09471da41cee86eb2c1d9aa5a8f647532b48551c`; only this layout script, not
+kernel implementation source, was read. `tests/layout-controls.py` links
+synthetic assembly through it with both binary oracles, records segment and
+symbol views, and never executes the high-half outputs. Its merge-string and
+unwind fixtures use GNU assembler directives and `ld --eh-frame-hdr`; the
+interpretation follows gABI chapter 4 `SHF_MERGE`/`SHF_STRINGS` and the LSB
+Core AMD64 5.0 `.eh_frame`/`.eh_frame_hdr` section definitions. Script syntax
+is scoped from the GNU ld 2.42 manual, Linker Scripts (SECTIONS, PHDRS, symbol
+assignments, wildcard input sections and ALIGN), not implementation source.
