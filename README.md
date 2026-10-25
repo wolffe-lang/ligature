@@ -11,4 +11,4 @@ State: nothing links yet. Track 17 of the planning repo opened 2026-10-25; the
 first lane (ld00, the map) writes the ELF reader, the relocation census over
 every object PAX links, the oracle harness and this README's real contents.
 
-Licence: Apache-2.0 (`LICENSE`).
+Licence: GPL-3.0-only with the wolf Training Data Permission (`LICENSE`, `LICENSE-TRAINING-DATA`), as pax, boreutils and den.
