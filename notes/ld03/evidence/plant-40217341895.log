@@ -1,0 +1,72 @@
+linux	Run docker run --rm -v "$PWD:/work" ligature-oracle bash -c 'tools/fetch-toolchain && tools/fetch-bundle && tools/check'	﻿2026-10-25T17:37:57.0567317Z ##[group]Run docker run --rm -v "$PWD:/work" ligature-oracle bash -c 'tools/fetch-toolchain && tools/fetch-bundle && tools/check'
+linux	Run docker run --rm -v "$PWD:/work" ligature-oracle bash -c 'tools/fetch-toolchain && tools/fetch-bundle && tools/check'	2026-10-25T17:37:57.0568347Z ^[[36;1mdocker run --rm -v "$PWD:/work" ligature-oracle bash -c 'tools/fetch-toolchain && tools/fetch-bundle && tools/check'^[[0m
+linux	Run docker run --rm -v "$PWD:/work" ligature-oracle bash -c 'tools/fetch-toolchain && tools/fetch-bundle && tools/check'	2026-10-25T17:37:57.0637603Z shell: /usr/bin/bash -e {0}
+linux	Run docker run --rm -v "$PWD:/work" ligature-oracle bash -c 'tools/fetch-toolchain && tools/fetch-bundle && tools/check'	2026-10-25T17:37:57.0637947Z ##[endgroup]
+linux	Run docker run --rm -v "$PWD:/work" ligature-oracle bash -c 'tools/fetch-toolchain && tools/fetch-bundle && tools/check'	2026-10-25T17:37:58.0200548Z wolf-0.2.35-x86_64-unknown-linux-gnu 4cc4045bbbb605c07835bc4f32685953c784eeef4cd3139a48b457dfc90dad1a
+linux	Run docker run --rm -v "$PWD:/work" ligature-oracle bash -c 'tools/fetch-toolchain && tools/fetch-bundle && tools/check'	2026-10-25T17:37:58.0790837Z wolf-0.2.35-x86_64-unknown-linux-gnu 4cc4045bbbb605c07835bc4f32685953c784eeef4cd3139a48b457dfc90dad1a
+linux	Run docker run --rm -v "$PWD:/work" ligature-oracle bash -c 'tools/fetch-toolchain && tools/fetch-bundle && tools/check'	2026-10-25T17:37:59.5691698Z lupin-0.1.56-x86_64-unknown-linux-gnu ad703550ac4787e8e4bb26989d591a731410274d7332f2b4e8b9a64c878822cc
+linux	Run docker run --rm -v "$PWD:/work" ligature-oracle bash -c 'tools/fetch-toolchain && tools/fetch-bundle && tools/check'	2026-10-25T17:37:59.5712877Z lupin-0.1.56-x86_64-unknown-linux-gnu ad703550ac4787e8e4bb26989d591a731410274d7332f2b4e8b9a64c878822cc
+linux	Run docker run --rm -v "$PWD:/work" ligature-oracle bash -c 'tools/fetch-toolchain && tools/fetch-bundle && tools/check'	2026-10-25T17:38:00.1205921Z link-bundle sha256 6f99a2794da54b2dd85f06713d736b27862a7cd0da9e28bd940d975a4603a1d1
+linux	Run docker run --rm -v "$PWD:/work" ligature-oracle bash -c 'tools/fetch-toolchain && tools/fetch-bundle && tools/check'	2026-10-25T17:38:00.1471574Z link-bundle sha256 6f99a2794da54b2dd85f06713d736b27862a7cd0da9e28bd940d975a4603a1d1
+linux	Run docker run --rm -v "$PWD:/work" ligature-oracle bash -c 'tools/fetch-toolchain && tools/fetch-bundle && tools/check'	2026-10-25T17:38:01.2667961Z link-bundle: exact binary inputs verified twice; ligature#13
+linux	Run docker run --rm -v "$PWD:/work" ligature-oracle bash -c 'tools/fetch-toolchain && tools/fetch-bundle && tools/check'	2026-10-25T17:38:01.3882630Z {"event":"suite","file":"src/kernel_relocation_test.lu","schema":"wolf-test/0","tests":1}
+linux	Run docker run --rm -v "$PWD:/work" ligature-oracle bash -c 'tools/fetch-toolchain && tools/fetch-bundle && tools/check'	2026-10-25T17:38:01.3902887Z {"detail":"exit(0)","event":"test","file":"src/kernel_relocation_test.lu","name":"main","schema":"wolf-test/0","status":"pass"}
+linux	Run docker run --rm -v "$PWD:/work" ligature-oracle bash -c 'tools/fetch-toolchain && tools/fetch-bundle && tools/check'	2026-10-25T17:38:01.3976780Z {"event":"suite","file":"src/reader_test.lu","schema":"wolf-test/0","tests":1}
+linux	Run docker run --rm -v "$PWD:/work" ligature-oracle bash -c 'tools/fetch-toolchain && tools/fetch-bundle && tools/check'	2026-10-25T17:38:01.3989631Z {"detail":"exit(0)","event":"test","file":"src/reader_test.lu","name":"main","schema":"wolf-test/0","status":"pass"}
+linux	Run docker run --rm -v "$PWD:/work" ligature-oracle bash -c 'tools/fetch-toolchain && tools/fetch-bundle && tools/check'	2026-10-25T17:38:01.3994091Z {"event":"summary","failed":0,"filtered_out":0,"native":0,"passed":2,"rejected":0,"schema":"wolf-test/0","stopped_early":false,"unsupported":0}
+linux	Run docker run --rm -v "$PWD:/work" ligature-oracle bash -c 'tools/fetch-toolchain && tools/fetch-bundle && tools/check'	2026-10-25T17:38:02.3734623Z fetch-bundle: mismatched archive refused before extraction; 0 SKIP
+linux	Run docker run --rm -v "$PWD:/work" ligature-oracle bash -c 'tools/fetch-toolchain && tools/fetch-bundle && tools/check'	2026-10-25T17:38:02.4041110Z self-link blocker: exact fetched runtime digest and reproduced argv status required; other digests hard-gated; 0 SKIP
+linux	Run docker run --rm -v "$PWD:/work" ligature-oracle bash -c 'tools/fetch-toolchain && tools/fetch-bundle && tools/check'	2026-10-25T17:38:02.5676599Z integration: 43 process rows, 0 SKIP
+linux	Run docker run --rm -v "$PWD:/work" ligature-oracle bash -c 'tools/fetch-toolchain && tools/fetch-bundle && tools/check'	2026-10-25T17:38:03.2351154Z oracle: 2 musl links, 2 deterministic relinks, 2 differ plants, 4 verify plants, 0 SKIP
+linux	Run docker run --rm -v "$PWD:/work" ligature-oracle bash -c 'tools/fetch-toolchain && tools/fetch-bundle && tools/check'	2026-10-25T17:38:03.4175588Z resolution: 16 oracle rows, 0 SKIP
+linux	Run docker run --rm -v "$PWD:/work" ligature-oracle bash -c 'tools/fetch-toolchain && tools/fetch-bundle && tools/check'	2026-10-25T17:38:03.4962130Z resolve: strong/weak/common, indexed archives, groups, duplicate names, COMDAT; 0 SKIP
+linux	Run docker run --rm -v "$PWD:/work" ligature-oracle bash -c 'tools/fetch-toolchain && tools/fetch-bundle && tools/check'	2026-10-25T17:38:03.5836345Z lazy-order: forward/backward discovery matches LLD, four-member cyclic graph selected once; 0 SKIP
+linux	Run docker run --rm -v "$PWD:/work" ligature-oracle bash -c 'tools/fetch-toolchain && tools/fetch-bundle && tools/check'	2026-10-25T17:38:06.1619883Z writer: 10 three-linker behavior rows, determinism, named refusals and TLS-negative rows; 0 SKIP
+linux	Run docker run --rm -v "$PWD:/work" ligature-oracle bash -c 'tools/fetch-toolchain && tools/fetch-bundle && tools/check'	2026-10-25T17:38:06.4986944Z relocation-witness: three linkers, retained sites, unused data/debug corruption red, local/entry normalization; 0 SKIP
+linux	Run docker run --rm -v "$PWD:/work" ligature-oracle bash -c 'tools/fetch-toolchain && tools/fetch-bundle && tools/check'	2026-10-25T17:38:06.4988142Z relocation-witness: all writer cases independently decoded, including four TLS models; 0 SKIP
+linux	Run docker run --rm -v "$PWD:/work" ligature-oracle bash -c 'tools/fetch-toolchain && tools/fetch-bundle && tools/check'	2026-10-25T17:38:06.7578697Z cc frontend: exact compiler-style option subset links and runs; 0 SKIP
+linux	Run docker run --rm -v "$PWD:/work" ligature-oracle bash -c 'tools/fetch-toolchain && tools/fetch-bundle && tools/check'	2026-10-25T17:38:06.8372474Z provenance: canonical manifest, independent SHA256 checks, four negative rows; 0 SKIP
+linux	Run docker run --rm -v "$PWD:/work" ligature-oracle bash -c 'tools/fetch-toolchain && tools/fetch-bundle && tools/check'	2026-10-25T17:38:07.1281400Z attribution: complete disjoint coverage, explain, deterministic relink, delta locality, five resealed negative rows; 0 SKIP
+linux	Run docker run --rm -v "$PWD:/work" ligature-oracle bash -c 'tools/fetch-toolchain && tools/fetch-bundle && tools/check'	2026-10-25T17:38:07.1282322Z attribution: aliases, archive path, TLS/NOBITS, ambiguous locals and explicit member selection; 0 SKIP
+linux	Run docker run --rm -v "$PWD:/work" ligature-oracle bash -c 'tools/fetch-toolchain && tools/fetch-bundle && tools/check'	2026-10-25T17:38:07.1283025Z compact-manifest: legacy JSON explain parity and dropped provenance record refused; 0 SKIP
+linux	Run docker run --rm -v "$PWD:/work" ligature-oracle bash -c 'tools/fetch-toolchain && tools/fetch-bundle && tools/check'	2026-10-25T17:38:07.1283605Z explain: dependency sites and distinct discarded-section causes; 0 SKIP
+linux	Run docker run --rm -v "$PWD:/work" ligature-oracle bash -c 'tools/fetch-toolchain && tools/fetch-bundle && tools/check'	2026-10-25T17:38:07.2025964Z compact-manifest: five resealed decoder corruptions rejected, signed addend endpoints preserved; 0 SKIP
+linux	Run docker run --rm -v "$PWD:/work" ligature-oracle bash -c 'tools/fetch-toolchain && tools/fetch-bundle && tools/check'	2026-10-25T17:38:07.3936815Z PAX transcript validator: one genuine capture, four rejected mutations; replay only, 0 SKIP
+linux	Run docker run --rm -v "$PWD:/work" ligature-oracle bash -c 'tools/fetch-toolchain && tools/fetch-bundle && tools/check'	2026-10-25T17:38:07.5017876Z PAX staging: gzip evidence preserves exact program bytes and identical initramfs; 0 SKIP
+linux	Run docker run --rm -v "$PWD:/work" ligature-oracle bash -c 'tools/fetch-toolchain && tools/fetch-bundle && tools/check'	2026-10-25T17:38:07.5813829Z static-pax runner: report preserved, nonzero differ status preserved, 0 SKIP
+linux	Run docker run --rm -v "$PWD:/work" ligature-oracle bash -c 'tools/fetch-toolchain && tools/fetch-bundle && tools/check'	2026-10-25T17:38:07.6830105Z TLS classification: same named payload despite ordering/binding changes; changed payload remains unequal; no findings waived; 0 SKIP
+linux	Run docker run --rm -v "$PWD:/work" ligature-oracle bash -c 'tools/fetch-toolchain && tools/fetch-bundle && tools/check'	2026-10-25T17:38:07.7149528Z Traceback (most recent call last):
+linux	Run docker run --rm -v "$PWD:/work" ligature-oracle bash -c 'tools/fetch-toolchain && tools/fetch-bundle && tools/check'	2026-10-25T17:38:07.7150367Z   File "/work/tools/check-findings", line 24, in <module>
+linux	Run docker run --rm -v "$PWD:/work" ligature-oracle bash -c 'tools/fetch-toolchain && tools/fetch-bundle && tools/check'	2026-10-25T17:38:07.7151550Z     print('named-findings:',validate(json.loads(path.read_text())),'individually retained; 0 waivers; 0 SKIP')
+linux	Run docker run --rm -v "$PWD:/work" ligature-oracle bash -c 'tools/fetch-toolchain && tools/fetch-bundle && tools/check'	2026-10-25T17:38:07.7152562Z                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+linux	Run docker run --rm -v "$PWD:/work" ligature-oracle bash -c 'tools/fetch-toolchain && tools/fetch-bundle && tools/check'	2026-10-25T17:38:07.7153071Z   File "/work/tools/check-findings", line 18, in validate
+linux	Run docker run --rm -v "$PWD:/work" ligature-oracle bash -c 'tools/fetch-toolchain && tools/fetch-bundle && tools/check'	2026-10-25T17:38:07.7153868Z     assert r['status']=='retained' and r['equivalent'] is False,(name,'retained finding silently reclassified')
+linux	Run docker run --rm -v "$PWD:/work" ligature-oracle bash -c 'tools/fetch-toolchain && tools/fetch-bundle && tools/check'	2026-10-25T17:38:07.7154637Z            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+linux	Run docker run --rm -v "$PWD:/work" ligature-oracle bash -c 'tools/fetch-toolchain && tools/fetch-bundle && tools/check'	2026-10-25T17:38:07.7155339Z AssertionError: ('compiler-comptime/lld/symbols', 'retained finding silently reclassified')
+linux	Run docker run --rm -v "$PWD:/work" ligature-oracle bash -c 'tools/fetch-toolchain && tools/fetch-bundle && tools/check'	2026-10-25T17:38:08.2514932Z ##[error]Process completed with exit code 1.
+tier pr	Run python3 -I ci/tiers.py verdict	﻿2026-10-25T17:38:16.2155133Z ##[group]Run python3 -I ci/tiers.py verdict
+tier pr	Run python3 -I ci/tiers.py verdict	2026-10-25T17:38:16.2156017Z ^[[36;1mpython3 -I ci/tiers.py verdict^[[0m
+tier pr	Run python3 -I ci/tiers.py verdict	2026-10-25T17:38:16.2433133Z shell: /usr/bin/bash -e {0}
+tier pr	Run python3 -I ci/tiers.py verdict	2026-10-25T17:38:16.2434008Z env:
+tier pr	Run python3 -I ci/tiers.py verdict	2026-10-25T17:38:16.2435944Z   NEEDS: {
+tier pr	Run python3 -I ci/tiers.py verdict	  "plan": {
+tier pr	Run python3 -I ci/tiers.py verdict	    "result": "success",
+tier pr	Run python3 -I ci/tiers.py verdict	    "outputs": {
+tier pr	Run python3 -I ci/tiers.py verdict	      "tier": "pr",
+tier pr	Run python3 -I ci/tiers.py verdict	      "jobs": "[\"plan-test\", \"linux\"]"
+tier pr	Run python3 -I ci/tiers.py verdict	    }
+tier pr	Run python3 -I ci/tiers.py verdict	  },
+tier pr	Run python3 -I ci/tiers.py verdict	  "plan-test": {
+tier pr	Run python3 -I ci/tiers.py verdict	    "result": "success",
+tier pr	Run python3 -I ci/tiers.py verdict	    "outputs": {}
+tier pr	Run python3 -I ci/tiers.py verdict	  },
+tier pr	Run python3 -I ci/tiers.py verdict	  "linux": {
+tier pr	Run python3 -I ci/tiers.py verdict	    "result": "failure",
+tier pr	Run python3 -I ci/tiers.py verdict	    "outputs": {}
+tier pr	Run python3 -I ci/tiers.py verdict	  }
+tier pr	Run python3 -I ci/tiers.py verdict	}
+tier pr	Run python3 -I ci/tiers.py verdict	2026-10-25T17:38:16.2437951Z ##[endgroup]
+tier pr	Run python3 -I ci/tiers.py verdict	2026-10-25T17:38:16.2839855Z tier pr: 2 of 2 job(s) chosen
+tier pr	Run python3 -I ci/tiers.py verdict	2026-10-25T17:38:16.2841246Z   plan-test          success   ok
+tier pr	Run python3 -I ci/tiers.py verdict	2026-10-25T17:38:16.2842432Z   linux              failure   WANTED success
+tier pr	Run python3 -I ci/tiers.py verdict	2026-10-25T17:38:16.2916397Z ##[error]Process completed with exit code 1.

@@ -1,9 +1,36 @@
 {
-  "format":"ligature.ld03.plants.v1",
-  "read_policy":"Each gh run list was read once immediately after PR creation; all returned []. No polling or red verdict is claimed.",
-  "plants":[
-    {"pr":19,"branch":"ld03-plant-drop-provenance","head":"d7fbfae","expected":"provenance retained patch count mismatch","run_id":null,"status":"awaiting orchestrator observation"},
-    {"pr":20,"branch":"ld03-plant-reclassify-finding","head":"2e5d005","expected":"retained finding silently reclassified","run_id":null,"status":"awaiting orchestrator observation"},
-    {"pr":21,"branch":"ld03-plant-nondeterministic-relink","head":"b790963","expected":"nondeterministic relink","run_id":null,"status":"awaiting orchestrator observation"}
+  "format": "ligature.ld03.plants.v1",
+  "read_policy": "Immediate creation listings were empty; on qualification resumption each completed check and failing log was read once; no waiting or polling.",
+  "plants": [
+    {
+      "pr": 19,
+      "branch": "ld03-plant-drop-provenance",
+      "head": "d7fbfae",
+      "expected": "provenance retained patch count mismatch",
+      "run_id": 40217336712,
+      "status": "observed target red; draft remains open",
+      "gate": "lazy-order: provenance retained patch count mismatch",
+      "evidence": "evidence/plant-40217336712.log"
+    },
+    {
+      "pr": 20,
+      "branch": "ld03-plant-reclassify-finding",
+      "head": "2e5d005",
+      "expected": "retained finding silently reclassified",
+      "run_id": 40217341895,
+      "status": "observed target red; draft remains open",
+      "gate": "check-findings: compiler-comptime/lld/symbols retained finding silently reclassified",
+      "evidence": "evidence/plant-40217341895.log"
+    },
+    {
+      "pr": 21,
+      "branch": "ld03-plant-nondeterministic-relink",
+      "head": "b790963",
+      "expected": "nondeterministic relink",
+      "run_id": 40217347952,
+      "status": "observed target red; draft remains open",
+      "gate": "writer: strong-weak ligature nondeterministic",
+      "evidence": "evidence/plant-40217347952.log"
+    }
   ]
 }
