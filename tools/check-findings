@@ -1,0 +1,24 @@
+#!/usr/bin/env python3
+"""Hold every named finding to its original identity and deciding evidence."""
+import hashlib,json,pathlib,sys
+ROOT=pathlib.Path(__file__).resolve().parent.parent
+baseline=ROOT/'notes/ld02a/evidence/structural-classes-v2.json'
+def canonical(value):return json.dumps(value,sort_keys=True,separators=(',',':')).encode()
+def validate(report):
+    old=json.loads(baseline.read_text());expected={}
+    for row in old['rows']:
+        for finding in row['classes']:
+            name='/'.join((row['case'],row['oracle'],finding['kind']))
+            expected[name]=(row['sha256'],hashlib.sha256(canonical(finding)).hexdigest(),finding)
+    got={r['name']:r for r in report['findings']}
+    assert len(got)==len(report['findings']) and set(got)==set(expected),'named findings added, lost or duplicated'
+    for name,(raw,detail,facts) in expected.items():
+        r=got[name]
+        assert r['record_sha256']==raw and r['detail_sha256']==detail and r['facts']==facts,(name,'finding record silently reclassified')
+        assert r['status']=='retained' and r['equivalent'] is False,(name,'retained finding silently reclassified')
+        assert r['specification'] and r['decision'] and r['record'],(name,'missing deciding fact')
+    assert report['waivers']==[] and len(got)==87
+    return len(got)
+if __name__=='__main__':
+    path=pathlib.Path(sys.argv[1]) if len(sys.argv)>1 else ROOT/'notes/ld03/findings.json'
+    print('named-findings:',validate(json.loads(path.read_text())),'individually retained; 0 waivers; 0 SKIP')
