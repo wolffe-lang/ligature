@@ -9,7 +9,137 @@
   "format": "ligature.ld01.structural-classes.v1",
   "lld17_18_attribution": {
     "confirmed_count": 0,
-    "reason": "No same-input lld18 run was performed. These low-address user executables do not exercise pax#172/ligature#4 high-half kernel range failure; lld-only findings are not automatically version artifacts."
+    "control_sha256": "7ad9a0e8fe6d0e79b71172d731e33872c0274e49fceb7b516d774876d5a58ade",
+    "control_version": "Ubuntu LLD 18.1.3 (compatible with GNU linkers)",
+    "reason": "All five selected lld17-to-18 controls have zero structural differences. Symbols, segments, entry aliases, retained relocations and TLS ordering persist against ligature; these classes are not the high-half kernel version artifact.",
+    "selected_rows": [
+      {
+        "case": "hello-hello",
+        "chosen_class": "symbols",
+        "comparisons": [
+          {
+            "classes": [],
+            "name": "17-to-18",
+            "report": "hello-hello/17-to-18.json",
+            "report_sha256": "5a867abf95a785715f0a1677fa636b9943debaf187cba88e4ef63fdb3b57d2f3",
+            "status": 0
+          },
+          {
+            "classes": [
+              "symbols",
+              "segments",
+              "entry",
+              "relocations"
+            ],
+            "name": "18-to-ligature",
+            "report": "hello-hello/18-to-ligature.json",
+            "report_sha256": "29cbec744ebcb2e179c255e66be22b7f705188104f8752802208a5879770ee19",
+            "status": 1
+          }
+        ]
+      },
+      {
+        "case": "pax-loop",
+        "chosen_class": "segments",
+        "comparisons": [
+          {
+            "classes": [],
+            "name": "17-to-18",
+            "report": "pax-loop/17-to-18.json",
+            "report_sha256": "051b6af7e75ed2c8f8797c5a9df40632e154ad92449f9405fabb53164706e569",
+            "status": 0
+          },
+          {
+            "classes": [
+              "symbols",
+              "segments",
+              "entry",
+              "relocations"
+            ],
+            "name": "18-to-ligature",
+            "report": "pax-loop/18-to-ligature.json",
+            "report_sha256": "7fde2f08c269dcc157aa03d14d67a070715a968abb7b2ca266c2048f823c6ea9",
+            "status": 1
+          }
+        ]
+      },
+      {
+        "case": "pax-hello",
+        "chosen_class": "entry",
+        "comparisons": [
+          {
+            "classes": [],
+            "name": "17-to-18",
+            "report": "pax-hello/17-to-18.json",
+            "report_sha256": "8942698fe03439a6372652fb5a66fffe021c8bbb8a8e50d301872a74452ed29b",
+            "status": 0
+          },
+          {
+            "classes": [
+              "symbols",
+              "segments",
+              "entry",
+              "relocations"
+            ],
+            "name": "18-to-ligature",
+            "report": "pax-hello/18-to-ligature.json",
+            "report_sha256": "5bf284bb97ab5dca4c2154d8563c00e5d78d9a50fe85c819c0fe6377117c12e8",
+            "status": 1
+          }
+        ]
+      },
+      {
+        "case": "pax-std",
+        "chosen_class": "relocations",
+        "comparisons": [
+          {
+            "classes": [],
+            "name": "17-to-18",
+            "report": "pax-std/17-to-18.json",
+            "report_sha256": "14d1030e318801b12250b6f6bcd09c5bb5ad436a5ad6f777658289d4316afb58",
+            "status": 0
+          },
+          {
+            "classes": [
+              "symbols",
+              "segments",
+              "entry",
+              "relocations"
+            ],
+            "name": "18-to-ligature",
+            "report": "pax-std/18-to-ligature.json",
+            "report_sha256": "47475194a31b06db773aa9a275fa06562711ee267f305bc4f792efabc05f70ad",
+            "status": 1
+          }
+        ]
+      },
+      {
+        "case": "compiler-procs",
+        "chosen_class": "tls",
+        "comparisons": [
+          {
+            "classes": [],
+            "name": "17-to-18",
+            "report": "compiler-procs/17-to-18.json",
+            "report_sha256": "072ffa42d44c1a60382034be407e59cb16a4f34808d8ce7230879e645929b728",
+            "status": 0
+          },
+          {
+            "classes": [
+              "symbols",
+              "segments",
+              "entry",
+              "tls",
+              "relocations"
+            ],
+            "name": "18-to-ligature",
+            "report": "compiler-procs/18-to-ligature.json",
+            "report_sha256": "ca158bc43232213487b1581132c21f30bc2ddf24ef4d91230fac2fc77c6fa423",
+            "status": 1
+          }
+        ]
+      }
+    ]
   },
   "rows": [
     {

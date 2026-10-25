@@ -1,0 +1,13 @@
+{
+  "old_head": "bb00a289c0bd28248b492fe0cef52aa5a7eb6d17",
+  "new_writer_commit": "172df6c",
+  "identical_inputs_and_semantic_options": true,
+  "old_sha256": "a7683ab49f2c2d4024a9e29a412176f104ff9cee7006a5283774772d8a480ba0",
+  "new_sha256": "1614ad55c036adb4bb56867631d75611ff758416a0aeabf1d4a9264b7f91b135",
+  "allocated_sections_equal": true,
+  "program_headers_equal": true,
+  "allocated_section_count": 156,
+  "old_only": [],
+  "new_only": [],
+  "scope": "Same ordered objects, CRT, archive group, GC, forced trap root and alias; independent ELF decoding compares all allocated sections and program-header bytes"
+}

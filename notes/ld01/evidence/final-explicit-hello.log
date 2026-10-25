@@ -1,0 +1,6 @@
+
+real	2m52.713s
+user	2m51.590s
+sys	0m0.636s
+hello, wolf
+verify: PASS target/hello-provenance

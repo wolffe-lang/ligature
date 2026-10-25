@@ -1,0 +1,7 @@
+cmd: qemu-system-x86_64 -machine q35 -cpu max -m 256M -accel tcg -nographic -monitor none -parallel none -nic none -no-reboot -device isa-debug-exit\,iobase=0xf4\,iosize=0x04 -drive file=/home/mfwolffe/lanes/ld01/pax-results/matrix/compiler-regions/program.iso\,format=raw\,media=cdrom\,readonly=on -boot d -serial file:/home/mfwolffe/lanes/ld01/pax-results/matrix/compiler-regions/serial.log -monitor pipe:/home/mfwolffe/lanes/ld01/pax-results/matrix/compiler-regions/serial.log.mon -m 2048M
+qemu: QEMU emulator version 11.1.2
+firmware: bios
+accel: tcg
+timeout: 270
+elapsed: 9.600s
+status: 0

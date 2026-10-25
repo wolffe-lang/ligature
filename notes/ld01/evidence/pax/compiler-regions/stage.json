@@ -1,0 +1,1 @@
+{"case": "compiler-regions", "cpio_sha256": "de039947c90a171e75e45b4dfa2e7af740e65aa3dc6b6fcda731759e30669722", "programs": {"gnu": "d39537eda81f40f4db218e19c6751bca68fd4bff8e13609b0e937753d5ce1059", "ligature": "96cf7e74e1e768efdce1c20a486ecb27672d8ffa90edf7e21344ab71024c821d", "lld": "e4e91acc6833f2d6b48747010574aaab31c3d0356d6722e7d17c1b99717d26ed"}}

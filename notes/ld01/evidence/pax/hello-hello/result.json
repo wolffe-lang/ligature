@@ -1,0 +1,49 @@
+{
+  "case": "hello-hello",
+  "serial_sha256": "fe598b4963953ce176e39021c74149a21de3b03f7a6170790093a243a06de00a",
+  "meta": "cmd: qemu-system-x86_64 -machine q35 -cpu max -m 256M -accel tcg -nographic -monitor none -parallel none -nic none -no-reboot -device isa-debug-exit\\,iobase=0xf4\\,iosize=0x04 -drive file=/home/mfwolffe/lanes/ld01/pax-results/matrix/hello-hello/program.iso\\,format=raw\\,media=cdrom\\,readonly=on -boot d -serial file:/home/mfwolffe/lanes/ld01/pax-results/matrix/hello-hello/serial.log -monitor pipe:/home/mfwolffe/lanes/ld01/pax-results/matrix/hello-hello/serial.log.mon -m 2048M\nqemu: QEMU emulator version 11.1.2\nfirmware: bios\naccel: tcg\ntimeout: 270\nelapsed: 6.147s\nstatus: 0\n",
+  "rows": [
+    {
+      "linker": "ligature",
+      "actual": {
+        "stdout_hex": "68656c6c6f2c20776f6c660a",
+        "stderr_hex": "",
+        "status": 0
+      },
+      "expected": {
+        "stdout_hex": "68656c6c6f2c20776f6c660a",
+        "stderr_hex": "",
+        "status": 0
+      },
+      "equal": true
+    },
+    {
+      "linker": "lld",
+      "actual": {
+        "stdout_hex": "68656c6c6f2c20776f6c660a",
+        "stderr_hex": "",
+        "status": 0
+      },
+      "expected": {
+        "stdout_hex": "68656c6c6f2c20776f6c660a",
+        "stderr_hex": "",
+        "status": 0
+      },
+      "equal": true
+    },
+    {
+      "linker": "gnu",
+      "actual": {
+        "stdout_hex": "68656c6c6f2c20776f6c660a",
+        "stderr_hex": "",
+        "status": 0
+      },
+      "expected": {
+        "stdout_hex": "68656c6c6f2c20776f6c660a",
+        "stderr_hex": "",
+        "status": 0
+      },
+      "equal": true
+    }
+  ]
+}

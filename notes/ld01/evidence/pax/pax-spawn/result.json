@@ -1,0 +1,49 @@
+{
+  "case": "pax-spawn",
+  "serial_sha256": "38bd13389f8c8bf0c611b3d54443169e8b7cca3a0f271bef3e7057591900bff6",
+  "meta": "cmd: qemu-system-x86_64 -machine q35 -cpu max -m 256M -accel tcg -nographic -monitor none -parallel none -nic none -no-reboot -device isa-debug-exit\\,iobase=0xf4\\,iosize=0x04 -drive file=/home/mfwolffe/lanes/ld01/pax-results/matrix/pax-spawn/program.iso\\,format=raw\\,media=cdrom\\,readonly=on -boot d -serial file:/home/mfwolffe/lanes/ld01/pax-results/matrix/pax-spawn/serial.log -monitor pipe:/home/mfwolffe/lanes/ld01/pax-results/matrix/pax-spawn/serial.log.mon -m 2048M\nqemu: QEMU emulator version 11.1.2\nfirmware: bios\naccel: tcg\ntimeout: 270\nelapsed: 6.556s\nstatus: 0\n",
+  "rows": [
+    {
+      "linker": "ligature",
+      "actual": {
+        "stdout_hex": "737061776e3a206a6f696e65642c20616e737765722034320a",
+        "stderr_hex": "",
+        "status": 0
+      },
+      "expected": {
+        "stdout_hex": "737061776e3a206a6f696e65642c20616e737765722034320a",
+        "stderr_hex": "",
+        "status": 0
+      },
+      "equal": true
+    },
+    {
+      "linker": "lld",
+      "actual": {
+        "stdout_hex": "737061776e3a206a6f696e65642c20616e737765722034320a",
+        "stderr_hex": "",
+        "status": 0
+      },
+      "expected": {
+        "stdout_hex": "737061776e3a206a6f696e65642c20616e737765722034320a",
+        "stderr_hex": "",
+        "status": 0
+      },
+      "equal": true
+    },
+    {
+      "linker": "gnu",
+      "actual": {
+        "stdout_hex": "737061776e3a206a6f696e65642c20616e737765722034320a",
+        "stderr_hex": "",
+        "status": 0
+      },
+      "expected": {
+        "stdout_hex": "737061776e3a206a6f696e65642c20616e737765722034320a",
+        "stderr_hex": "",
+        "status": 0
+      },
+      "equal": true
+    }
+  ]
+}

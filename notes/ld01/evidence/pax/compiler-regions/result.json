@@ -1,0 +1,49 @@
+{
+  "case": "compiler-regions",
+  "serial_sha256": "e8f899d0bba7a0dc3d805fe74e319c55763436ff4947ac24b17046ef35f7d76b",
+  "meta": "cmd: qemu-system-x86_64 -machine q35 -cpu max -m 256M -accel tcg -nographic -monitor none -parallel none -nic none -no-reboot -device isa-debug-exit\\,iobase=0xf4\\,iosize=0x04 -drive file=/home/mfwolffe/lanes/ld01/pax-results/matrix/compiler-regions/program.iso\\,format=raw\\,media=cdrom\\,readonly=on -boot d -serial file:/home/mfwolffe/lanes/ld01/pax-results/matrix/compiler-regions/serial.log -monitor pipe:/home/mfwolffe/lanes/ld01/pax-results/matrix/compiler-regions/serial.log.mon -m 2048M\nqemu: QEMU emulator version 11.1.2\nfirmware: bios\naccel: tcg\ntimeout: 270\nelapsed: 9.600s\nstatus: 0\n",
+  "rows": [
+    {
+      "linker": "ligature",
+      "actual": {
+        "stdout_hex": "",
+        "stderr_hex": "",
+        "status": 0
+      },
+      "expected": {
+        "stdout_hex": "",
+        "stderr_hex": "",
+        "status": 0
+      },
+      "equal": true
+    },
+    {
+      "linker": "lld",
+      "actual": {
+        "stdout_hex": "",
+        "stderr_hex": "",
+        "status": 0
+      },
+      "expected": {
+        "stdout_hex": "",
+        "stderr_hex": "",
+        "status": 0
+      },
+      "equal": true
+    },
+    {
+      "linker": "gnu",
+      "actual": {
+        "stdout_hex": "",
+        "stderr_hex": "",
+        "status": 0
+      },
+      "expected": {
+        "stdout_hex": "",
+        "stderr_hex": "",
+        "status": 0
+      },
+      "equal": true
+    }
+  ]
+}

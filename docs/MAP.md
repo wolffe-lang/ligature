@@ -204,3 +204,16 @@ and relink deterministically. Their structural findings are indexed in
 in the compressed local evidence archive. Five LLD 18 controls agree structurally
 with LLD 17 and leave the same classes against ligature. None of these five
 classes is attributable to the separate high-half kernel failure.
+
+The hello archive-member multiset is exact, including multiplicities, but 349
+positions in the extraction sequence differ from LLD's lazy recursive order.
+The indexed scanner preserves archive member identities and first-needed
+selection; it does not claim LLD's discovery order. The complete two sequences
+are in `notes/ld01/evidence/hello-member-comparison.json`.
+
+Live PAX BIOS evidence includes fourteen three-linker cases. Thirteen equal the
+Linux records; the fork case stays explicitly red across hosts, identically
+under all three linkers. On fresh PAX trunk native and release kernels, unquieted
+diagnostics identify `fork` syscall 57 returning `-ENOSYS` (pax#175). The copied
+ISO had no commit banner (pax#176), so these controls use recorded kernel hashes
+and the full checkout's commit rather than guessing a version from the greeting.

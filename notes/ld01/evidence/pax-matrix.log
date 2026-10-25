@@ -1,0 +1,61 @@
+BEGIN PAX compiler-comptime 2026-10-25T04:12:12-04:00
+qemu-halt: HALTED in pax_halt (RIP ffffffff800001aa, unchanged a second later; IF clear; serial still at 12610 bytes; accel tcg; quit -> 0)
+PAX compiler-comptime three stdout/stderr/status records equal Linux; serial 7f99c930fe417412e9645efeaa3ae37b6dff5f87fea1b8d88baac9f9142810cc
+END PAX compiler-comptime halt=0 row=0 2026-10-25T04:13:45-04:00
+BEGIN PAX compiler-entry_no_return 2026-10-25T04:13:45-04:00
+qemu-halt: HALTED in pax_halt (RIP ffffffff800001aa, unchanged a second later; IF clear; serial still at 12641 bytes; accel tcg; quit -> 0)
+PAX compiler-entry_no_return three stdout/stderr/status records equal Linux; serial ba4e6e2cb9de2831dcede9d1be14f3ef2cdfb8f137d71c310e3cb15473cc3b32
+END PAX compiler-entry_no_return halt=0 row=0 2026-10-25T04:15:18-04:00
+BEGIN PAX compiler-overflow 2026-10-25T04:15:18-04:00
+qemu-halt: HALTED in pax_halt (RIP ffffffff800001aa, unchanged a second later; IF clear; serial still at 12851 bytes; accel tcg; quit -> 0)
+PAX compiler-overflow three stdout/stderr/status records equal Linux; serial 50f84489071542f172b302b0007c998c8641b9abf9b266da96d11e63dcfd70ba
+END PAX compiler-overflow halt=0 row=0 2026-10-25T04:16:48-04:00
+BEGIN PAX compiler-procs 2026-10-25T04:16:48-04:00
+qemu-halt: HALTED in pax_halt (RIP ffffffff800001aa, unchanged a second later; IF clear; serial still at 12602 bytes; accel tcg; quit -> 0)
+PAX compiler-procs three stdout/stderr/status records equal Linux; serial a02426d271203816d306d87fe7eb15148a52c82d121c5f868cc88d93c6839fa3
+END PAX compiler-procs halt=0 row=0 2026-10-25T04:18:28-04:00
+BEGIN PAX compiler-regions 2026-10-25T04:18:28-04:00
+qemu-halt: HALTED in pax_halt (RIP ffffffff800001aa, unchanged a second later; IF clear; serial still at 12602 bytes; accel tcg; quit -> 0)
+PAX compiler-regions three stdout/stderr/status records equal Linux; serial e8f899d0bba7a0dc3d805fe74e319c55763436ff4947ac24b17046ef35f7d76b
+END PAX compiler-regions halt=0 row=0 2026-10-25T04:20:10-04:00
+BEGIN PAX hello-hello 2026-10-25T04:20:10-04:00
+qemu-halt: HALTED in pax_halt (RIP ffffffff800001aa, unchanged a second later; IF clear; serial still at 12641 bytes; accel tcg; quit -> 0)
+PAX hello-hello three stdout/stderr/status records equal Linux; serial fe598b4963953ce176e39021c74149a21de3b03f7a6170790093a243a06de00a
+END PAX hello-hello halt=0 row=0 2026-10-25T04:21:40-04:00
+BEGIN PAX pax-exec 2026-10-25T04:21:40-04:00
+qemu-halt: HALTED in pax_halt (RIP ffffffff800001aa, unchanged a second later; IF clear; serial still at 12707 bytes; accel tcg; quit -> 0)
+PAX pax-exec three stdout/stderr/status records equal Linux; serial 281773c426ace1da00efcd7acc54ccfba2d2b5a642f92ba6b968e3ec6a6452df
+END PAX pax-exec halt=0 row=0 2026-10-25T04:23:14-04:00
+BEGIN PAX pax-fork 2026-10-25T04:23:14-04:00
+qemu-halt: HALTED in pax_halt (RIP ffffffff800001aa, unchanged a second later; IF clear; serial still at 12640 bytes; accel tcg; quit -> 0)
+Traceback (most recent call last):
+  File "/home/mfwolffe/lanes/ld01/ligature/tests/pax-row.py", line 21, in <module>
+    assert all(r['equal'] for r in rows),rows
+           ~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: [{'linker': 'ligature', 'actual': {'stdout_hex': '666f726b3a20696f0a', 'stderr_hex': '', 'status': 0}, 'expected': {'stdout_hex': '666f726b3a206368696c640a666f726b3a206368696c642073746174757320370a', 'stderr_hex': '', 'status': 0}, 'equal': False}, {'linker': 'lld', 'actual': {'stdout_hex': '666f726b3a20696f0a', 'stderr_hex': '', 'status': 0}, 'expected': {'stdout_hex': '666f726b3a206368696c640a666f726b3a206368696c642073746174757320370a', 'stderr_hex': '', 'status': 0}, 'equal': False}, {'linker': 'gnu', 'actual': {'stdout_hex': '666f726b3a20696f0a', 'stderr_hex': '', 'status': 0}, 'expected': {'stdout_hex': '666f726b3a206368696c640a666f726b3a206368696c642073746174757320370a', 'stderr_hex': '', 'status': 0}, 'equal': False}]
+END PAX pax-fork halt=0 row=1 2026-10-25T04:24:43-04:00
+BEGIN PAX pax-hello 2026-10-25T04:24:43-04:00
+qemu-halt: HALTED in pax_halt (RIP ffffffff800001aa, unchanged a second later; IF clear; serial still at 12641 bytes; accel tcg; quit -> 0)
+PAX pax-hello three stdout/stderr/status records equal Linux; serial f9ee85a5f576795b1b77284329c72b4f7119b935416af9a9676573b2a3fe3363
+END PAX pax-hello halt=0 row=0 2026-10-25T04:26:14-04:00
+BEGIN PAX pax-host 2026-10-25T04:26:14-04:00
+qemu-halt: HALTED in pax_halt (RIP ffffffff800001aa, unchanged a second later; IF clear; serial still at 13949 bytes; accel tcg; quit -> 0)
+PAX pax-host three stdout/stderr/status records equal Linux; serial 10029d547cc412a57c0a1aebbe95e11291ae5a06e66d526cd1eaf273af8da6a3
+END PAX pax-host halt=0 row=0 2026-10-25T04:27:48-04:00
+BEGIN PAX pax-loop 2026-10-25T04:27:48-04:00
+qemu-halt: HALTED in pax_halt (RIP ffffffff800001aa, unchanged a second later; IF clear; serial still at 13196 bytes; accel tcg; quit -> 0)
+PAX pax-loop three stdout/stderr/status records equal Linux; serial c02009c68b3ec6ee253627e94fbb11708baf37a01a128e9a7834ab2640bd4974
+END PAX pax-loop halt=0 row=0 2026-10-25T04:29:25-04:00
+BEGIN PAX pax-signal 2026-10-25T04:29:25-04:00
+qemu-halt: HALTED in pax_halt (RIP ffffffff800001aa, unchanged a second later; IF clear; serial still at 12752 bytes; accel tcg; quit -> 0)
+PAX pax-signal three stdout/stderr/status records equal Linux; serial ce9879b0e006fc894ed7f05be2013414b43a352a553bfd4789384a0cb9b44108
+END PAX pax-signal halt=0 row=0 2026-10-25T04:30:54-04:00
+BEGIN PAX pax-spawn 2026-10-25T04:30:54-04:00
+qemu-halt: HALTED in pax_halt (RIP ffffffff800001aa, unchanged a second later; IF clear; serial still at 12680 bytes; accel tcg; quit -> 0)
+PAX pax-spawn three stdout/stderr/status records equal Linux; serial 38bd13389f8c8bf0c611b3d54443169e8b7cca3a0f271bef3e7057591900bff6
+END PAX pax-spawn halt=0 row=0 2026-10-25T04:32:28-04:00
+BEGIN PAX pax-std 2026-10-25T04:32:28-04:00
+qemu-halt: HALTED in pax_halt (RIP ffffffff800001aa, unchanged a second later; IF clear; serial still at 12635 bytes; accel tcg; quit -> 0)
+PAX pax-std three stdout/stderr/status records equal Linux; serial 2df15af6f12212af6b3ce288364d4c1986bf67e1789cb81455e7223d0f9c2faf
+END PAX pax-std halt=0 row=0 2026-10-25T04:34:00-04:00
+PAX matrix status 1

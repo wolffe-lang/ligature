@@ -1,0 +1,49 @@
+{
+  "case": "compiler-overflow",
+  "serial_sha256": "50f84489071542f172b302b0007c998c8641b9abf9b266da96d11e63dcfd70ba",
+  "meta": "cmd: qemu-system-x86_64 -machine q35 -cpu max -m 256M -accel tcg -nographic -monitor none -parallel none -nic none -no-reboot -device isa-debug-exit\\,iobase=0xf4\\,iosize=0x04 -drive file=/home/mfwolffe/lanes/ld01/pax-results/matrix/compiler-overflow/program.iso\\,format=raw\\,media=cdrom\\,readonly=on -boot d -serial file:/home/mfwolffe/lanes/ld01/pax-results/matrix/compiler-overflow/serial.log -monitor pipe:/home/mfwolffe/lanes/ld01/pax-results/matrix/compiler-overflow/serial.log.mon -m 2048M\nqemu: QEMU emulator version 11.1.2\nfirmware: bios\naccel: tcg\ntimeout: 270\nelapsed: 5.947s\nstatus: 0\n",
+  "rows": [
+    {
+      "linker": "ligature",
+      "actual": {
+        "stdout_hex": "",
+        "stderr_hex": "776f6c662d747261703a206f766572666c6f770a20206174202f6c616e652f6c696761747572652f74657374732f636f727075732f636f6d70696c65722f6f766572666c6f772e6c753a31373a350a",
+        "status": 134
+      },
+      "expected": {
+        "stdout_hex": "",
+        "stderr_hex": "776f6c662d747261703a206f766572666c6f770a20206174202f6c616e652f6c696761747572652f74657374732f636f727075732f636f6d70696c65722f6f766572666c6f772e6c753a31373a350a",
+        "status": 134
+      },
+      "equal": true
+    },
+    {
+      "linker": "lld",
+      "actual": {
+        "stdout_hex": "",
+        "stderr_hex": "776f6c662d747261703a206f766572666c6f770a20206174202f6c616e652f6c696761747572652f74657374732f636f727075732f636f6d70696c65722f6f766572666c6f772e6c753a31373a350a",
+        "status": 134
+      },
+      "expected": {
+        "stdout_hex": "",
+        "stderr_hex": "776f6c662d747261703a206f766572666c6f770a20206174202f6c616e652f6c696761747572652f74657374732f636f727075732f636f6d70696c65722f6f766572666c6f772e6c753a31373a350a",
+        "status": 134
+      },
+      "equal": true
+    },
+    {
+      "linker": "gnu",
+      "actual": {
+        "stdout_hex": "",
+        "stderr_hex": "776f6c662d747261703a206f766572666c6f770a20206174202f6c616e652f6c696761747572652f74657374732f636f727075732f636f6d70696c65722f6f766572666c6f772e6c753a31373a350a",
+        "status": 134
+      },
+      "expected": {
+        "stdout_hex": "",
+        "stderr_hex": "776f6c662d747261703a206f766572666c6f770a20206174202f6c616e652f6c696761747572652f74657374732f636f727075732f636f6d70696c65722f6f766572666c6f772e6c753a31373a350a",
+        "status": 134
+      },
+      "equal": true
+    }
+  ]
+}

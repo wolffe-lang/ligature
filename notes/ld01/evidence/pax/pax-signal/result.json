@@ -1,0 +1,49 @@
+{
+  "case": "pax-signal",
+  "serial_sha256": "ce9879b0e006fc894ed7f05be2013414b43a352a553bfd4789384a0cb9b44108",
+  "meta": "cmd: qemu-system-x86_64 -machine q35 -cpu max -m 256M -accel tcg -nographic -monitor none -parallel none -nic none -no-reboot -device isa-debug-exit\\,iobase=0xf4\\,iosize=0x04 -drive file=/home/mfwolffe/lanes/ld01/pax-results/matrix/pax-signal/program.iso\\,format=raw\\,media=cdrom\\,readonly=on -boot d -serial file:/home/mfwolffe/lanes/ld01/pax-results/matrix/pax-signal/serial.log -monitor pipe:/home/mfwolffe/lanes/ld01/pax-results/matrix/pax-signal/serial.log.mon -m 2048M\nqemu: QEMU emulator version 11.1.2\nfirmware: bios\naccel: tcg\ntimeout: 270\nelapsed: 6.148s\nstatus: 0\n",
+  "rows": [
+    {
+      "linker": "ligature",
+      "actual": {
+        "stdout_hex": "494e54455252555054206973207369676e616c203220686572650a69747320776f7264733a20496e746572727570740a",
+        "stderr_hex": "",
+        "status": 0
+      },
+      "expected": {
+        "stdout_hex": "494e54455252555054206973207369676e616c203220686572650a69747320776f7264733a20496e746572727570740a",
+        "stderr_hex": "",
+        "status": 0
+      },
+      "equal": true
+    },
+    {
+      "linker": "lld",
+      "actual": {
+        "stdout_hex": "494e54455252555054206973207369676e616c203220686572650a69747320776f7264733a20496e746572727570740a",
+        "stderr_hex": "",
+        "status": 0
+      },
+      "expected": {
+        "stdout_hex": "494e54455252555054206973207369676e616c203220686572650a69747320776f7264733a20496e746572727570740a",
+        "stderr_hex": "",
+        "status": 0
+      },
+      "equal": true
+    },
+    {
+      "linker": "gnu",
+      "actual": {
+        "stdout_hex": "494e54455252555054206973207369676e616c203220686572650a69747320776f7264733a20496e746572727570740a",
+        "stderr_hex": "",
+        "status": 0
+      },
+      "expected": {
+        "stdout_hex": "494e54455252555054206973207369676e616c203220686572650a69747320776f7264733a20496e746572727570740a",
+        "stderr_hex": "",
+        "status": 0
+      },
+      "equal": true
+    }
+  ]
+}

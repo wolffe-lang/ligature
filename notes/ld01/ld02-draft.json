@@ -1,0 +1,49 @@
+{
+  "format": "ligature.ld02.draft.v1",
+  "goal": "Select ligature in wolf build, replace the PAX image's link-only cc and lld, and self-link",
+  "prerequisites": [
+    "Keep the 101 ld01 structural records explicit; no category-wide waivers",
+    "Publish or otherwise provision the exact digest-addressed musl link bundle for strict CI",
+    "Retain the copied dev kernel and all ld01 three-oracle guest transcripts as a baseline",
+    "Track pax#175: syscall 57 returns ENOSYS under both current kernel tiers and all three linkers; the cross-host row remains red until PAX serves it. pax#176 adds a commit-bearing boot banner."
+  ],
+  "items": [
+    {
+      "item": 1,
+      "repo": "ligature",
+      "work": "Emit retained relocation records or an equally independent per-site patch witness so output targets can be differentially verified, not inferred from execution alone; refine local/debug/entry normalization with positive and negative fixtures"
+    },
+    {
+      "item": 2,
+      "repo": "ligature",
+      "work": "Measure lld-style lazy archive extraction versus index-scan ordering. Hello has the same 359 member identities and multiplicities but 349 sequence positions differ; three other cases have reordered TLS variables with equal named initializers. Preserve each finding until explicitly resolved."
+    },
+    {
+      "item": 3,
+      "repo": "wolf-lang",
+      "work": "Implement --linker=PATH and WOLF_LD with documented precedence, no platform default change, and process-level argv/error/exit tests. Keep CC compatibility and unsupported platform refusals explicit."
+    },
+    {
+      "item": 4,
+      "repo": "pax",
+      "work": "Pin and stage ligature plus its complete runtime/standard-library pair; remove lld and the link-only cc only after every native dev session passes against the same Linux binaries. Keep musl CRT/libc/libunwind inputs until muzzle replaces them."
+    },
+    {
+      "item": 5,
+      "repo": "ligature",
+      "work": "Compile ligature objects with the pinned compiler, link them with ligature itself, then run the resulting linker over the full corpus on Linux and PAX with deterministic byte-identical relinks."
+    },
+    {
+      "item": 6,
+      "repo": "ligature",
+      "work": "Extend section-level provenance to full disjoint byte ranges and relocation patches, then implement explain. Do not infer authentication from the digest note."
+    }
+  ],
+  "gates": [
+    "All compiler and PAX corpus cases: stdout/stderr/status against both pinned oracles, own-reader verification, individual structural records",
+    "Native/release and BIOS/UEFI PAX rows where the image supports them; record exact coverage without skips hidden in logs",
+    "Relocation, archive extraction, TLS, frontend precedence and self-link corruption plants observed red",
+    "Respect the separate lld17 high-half kernel issue; the five user-program controls are unchanged under lld18.1.3"
+  ],
+  "rulings": "Recommend decisions with measured alternatives; never decide them in the lane"
+}

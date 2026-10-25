@@ -1,0 +1,5 @@
+Traceback (most recent call last):
+  File "/lane/plants/relocation/tests/cc.py", line 15, in <module>
+    p=subprocess.run([exe],capture_output=True);assert (p.stdout,p.stderr,p.returncode)==(b'cc frontend\n',b'',0),(p.stdout,p.stderr,p.returncode)
+                                                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: (b'', b'', -4)
