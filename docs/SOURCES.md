@@ -81,3 +81,25 @@ The reader recognizes only the empty, `SHF_EXCLUDE` form; a nonempty table
 is refused by name rather than pretending to interpret its ULEB128 payload.
 The same archive emits an eight-byte `SHT_INIT_ARRAY` with `sh_entsize=0`;
 the reader accepts 0 or 8 there while requiring size divisible by 8.
+
+## Static writer references
+
+* Generic ABI, chapter 4 "Symbol Table": strong/weak/common precedence,
+  archive extraction for undefined global (not undefined weak) references,
+  and propagation of the most constraining visibility; "Section Groups":
+  first COMDAT selection. Chapter 5 "Program Header": LOAD and TLS images.
+* AMD64 ABI 1.0, 12 March 2025, section 4.4/table 4.9 and section 4.5:
+  relocation equations and static TLS offsets; section 11, tables 11.1,
+  11.3, 11.7 and 11.9: recognized LP64 GD/LD transitions. Appendix B:
+  GOT-load optimization is conditional on the final target being representable.
+  Published PDF: <https://gitlab.com/x86-psABIs/x86-64-ABI/-/jobs/artifacts/master/raw/x86-64-ABI/abi.pdf?job=build>.
+* GNU ld 2.42 manual, Options: `--start-group`, `--undefined`, `--defsym`,
+  `--gc-sections`; LLD 17 ELF command documentation for the corresponding
+  black-box controls. No implementation source was used.
+* LLD 18.1.3 binary control identities and exact argv are recorded in
+  `notes/ld01/evidence/lld18-control-results.json`. All five selected input sets
+  are structurally unchanged between the pinned LLD 17 and that LLD 18 binary.
+* PAX `tests/mpx5-bore`, `tools/qemu-halt`, `tools/qemu-run` and
+  `tools/mkinitramfs`: guest output capture, halt proof and initramfs format.
+  The copied dev ISO supplies the unchanged kernel binary; no kernel source
+  was read or rebuilt.

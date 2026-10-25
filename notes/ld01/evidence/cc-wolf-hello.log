@@ -1,0 +1,6 @@
+
+real	3m11.286s
+user	3m9.851s
+sys	0m0.676s
+hello, wolf
+verify: PASS target/cc-wolf-hello

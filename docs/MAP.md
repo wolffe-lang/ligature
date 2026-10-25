@@ -177,3 +177,30 @@ common, the first weak wins, common/common takes maximum size/alignment,
 duplicate strong definitions fail, and an indexed archive extracts its first
 needed definition. The future writer should implement these gABI semantics,
 not infer a new resolution rule from layout/synthetic-symbol differences.
+
+## Static writer
+
+`src/resolve` selects indexed archive members in ordered groups and resolves
+strong, weak, COMMON, COMDAT and visibility constraints. `src/layout` computes
+reachability, section merges and the fixed 0x200000 image layout. `src/relocate`
+applies the thirteen census types, including nonallocated debug relocations,
+and recognized static TLS transitions. `src/writer` emits ELF tables and symbols;
+`src/provenance` writes and independently verifies the versioned integrity note.
+
+The writer emits two LOAD segments (RX and RW), PT_TLS when needed and a
+non-executable GNU_STACK. It does not emit PT_PHDR or GNU_RELRO for this static
+non-PIE mode. Segment differences are explicit, not reduced to a base-address
+waiver. Hello reproduces all 359 archive pulls and the 401 public definitions;
+its TLS is 80 initialized bytes, 272 memory bytes, alignment 8.
+
+GOTPCREL uses reserved GOT entries. Recognized REX_GOTPCRELX loads relax only
+when the final post-layout displacement fits signed 32 bits; otherwise the load
+keeps its GOT entry. The high-half fixture at 0xffffffff80000000 demonstrates
+that -2147483652 must not relax. Unknown types are named refusals.
+
+The fourteen Linux cases agree in stdout, stderr and status, verify successfully
+and relink deterministically. Their structural findings are indexed in
+`notes/ld01/evidence/structural-classes.json`; exact large reports are retained
+in the compressed local evidence archive. Five LLD 18 controls agree structurally
+with LLD 17 and leave the same classes against ligature. None of these five
+classes is attributable to the separate high-half kernel failure.

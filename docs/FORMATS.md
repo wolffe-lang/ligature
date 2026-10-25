@@ -1,7 +1,8 @@
 # Link formats
 
-These are version 1 design contracts. Inspection and link-plan output exist;
-provenance writing, the embedded note and `explain` are not implemented yet.
+These are version 1 contracts. Inspection, link plans, the embedded note and a
+section-level provenance manifest are implemented. `explain` and complete
+byte/patch attribution remain unimplemented.
 Unknown versions must be refused, not interpreted as the nearest known version.
 All offsets and lengths are unsigned 64-bit integers; arithmetic is checked.
 
@@ -66,6 +67,25 @@ times, hostnames and random identifiers are forbidden. Object and archive
 input order is explicit. Keys are lexicographically sorted, integers decimal,
 no insignificant whitespace, one final LF. Range and edge ordering is defined
 by output start and discovery ordinal, never hash-map enumeration.
+
+## Current section-level manifest
+
+The writer emits `coverage: "sections"` with the version-1 format name. `inputs`
+lists each original input in discovery order with logical basename, ordinal,
+size and whole-input SHA-256. `members` records every selected object, its input
+ordinal, archive-relative offset, logical label, size and member hash.
+`input_ranges` maps each retained input section to an output section and file
+range. `sections` records every output section's file and memory boundaries,
+flags, type and alignment. NOBITS has an empty file range; its conceptual offset
+can exceed EOF. No absolute staging path or output filename is embedded.
+
+This is explicitly not the complete byte-range manifest above: gaps, generated
+padding, patch records and symbol-level origins are the next layer. Consumers
+must check `coverage`, not infer byte-level attribution from a valid digest.
+The JSON is canonical (sorted keys, compact encoding, final LF); the writer
+iterates the nonallocated layout to a fixed point before sealing its digests.
+`verify` checks the pair, version, flags, owner, offsets, lengths and both hashes.
+Ordinary ELF files without either provenance section remain valid inputs.
 
 ## `.note.wolf.link`
 
