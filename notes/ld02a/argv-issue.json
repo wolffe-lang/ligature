@@ -1,0 +1,37 @@
+{
+  "repo": "wolffe-lang/wolf-lang",
+  "title": "static musl entry: runtime sees no argv — the C-entry shim is niladic and the runtime’s argument capture never runs",
+  "footprint": "cross-cutting",
+  "fixture": "fn main() {\n    let args = env_args()\n    print(\"argc={args.len}\")\n    for arg in args { print(\"[{arg}]\") }\n}\n",
+  "arguments": [
+    "--version",
+    "space word",
+    ""
+  ],
+  "outputs": {
+    "wolf_cc_glibc": "argc=3\n[--version]\n[space word]\n[]\n",
+    "wolf_lld_musl": "argc=0\n",
+    "wolf_gnu_ld_musl": "argc=0\n",
+    "c_musl_control": "argc=3\n[--version]\n[space word]\n[]\n"
+  },
+  "pins": {
+    "ligature_baseline": "3f20641375d0493b5c62f802f435d624de172ede",
+    "wolf": "cf0c13d38479f444b69bb8356ad5709d07eff323",
+    "libwolf_rt_sha256": "9d859b9e6b5319f5a6f609e73ba0d71981d2dfa489882648ac9f454cd9db739c",
+    "link_bundle_sha256": "6f99a2794da54b2dd85f06713d736b27862a7cd0da9e28bd940d975a4603a1d1"
+  },
+  "hypothesis": "At the exact Wolf pin, the C-entry shim is niladic and env_args reads std::env::args. The two libc startup/early-init paths may initialize Rust argument capture differently. This is a hypothesis for the fixing lane to confirm with black-box fixture runs, not by reading either libc implementation.",
+  "own_source_references": [
+    "wolf-lang cf0c13d:crates/wolf_codegen_clif/src/lib.rs:895-906",
+    "wolf-lang cf0c13d:crates/wolf_rt/src/os.rs:57-62"
+  ],
+  "blocks": [
+    "ld02a self-link execute gate",
+    "executing the linker itself on PAX",
+    "the self-link milestone"
+  ],
+  "fix_boundary": "Cross-cutting compiler/runtime fix requires a NEW musl libwolf_rt.a/link bundle; the maintainer handles its public release. No private Rust ABI or /proc fallback belongs in ligature.",
+  "evidence": "notes/ld02a/evidence/argv-probe/results.json; same-object-controls.json; long-02.log. All three Wolf fixture runs exit 0, but both musl runs lose every argument. C/musl proves the OS/CRT receives argv.",
+  "filing": "Filed by the orchestrator; this lane filed nothing",
+  "issue": "wolffe-lang/wolf-lang#962"
+}

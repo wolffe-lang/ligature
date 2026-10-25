@@ -16,23 +16,29 @@ ulimit -c 0
 export WOLF=/baseline/toolchain/wolf/wolf-0.2.35-x86_64-unknown-linux-gnu/wolf
 export WOLF_STD=${WOLF%/wolf}/std WOLF_RT_FOR_TEST=${WOLF%/wolf}/libwolf_rt.a
 export LIGATURE_LINK_INPUTS=/lane/ligature/.link-inputs
-printf "FINAL SOURCE GATE %s\n" "$(date -Iseconds)"
-tools/check
-printf "LAZY TOTAL COST %s\n" "$(date -Iseconds)"
+printf "CORE SOURCE GATE %s\n" "$(date -Iseconds)"
+tools/check-core
+set +e
+python3 -I tests/musl-argv.py
+argv_status=$?
+set -e
+if [ "$argv_status" != 2 ]; then echo "Expected named wolf-lang#962 blocker, observed $argv_status"; exit 1; fi
+printf "BLOCKED self-link and executing ligature on PAX: wolf-lang#962\n"
+printf "POST-CHANGE TOTAL COST %s\n" "$(date -Iseconds)"
 TIMEFORMAT="elapsed=%R user=%U sys=%S"
 base=/lane/ligature/.link-inputs
 args=(-static -nostdlib --gc-sections --undefined=__wolf_rt_trap_at --defsym=wolf_trap=__wolf_rt_trap_at -o /lane/lazy-hello "$base/sysroot/crt1.o" "$base/sysroot/crti.o" --start-group target/corpus/hello-hello/main.o "$base/libwolf_rt.a" "$base/sysroot/libc.a" "$base/sysroot/libunwind.a" --end-group "$base/sysroot/crtn.o")
 for i in 1 2 3; do
- printf "LAZY LINK %s %s\n" "$i" "$(date -Iseconds)"
- { time /lane/lazy-ligature "${args[@]}"; } 2> /lane/lazy-link-$i.time
+ printf "POST-CHANGE LINK %s %s\n" "$i" "$(date -Iseconds)"
+ { time target/ligature "${args[@]}"; } 2> /lane/lazy-link-$i.time
  cat /lane/lazy-link-$i.time
  sha256sum /lane/lazy-hello
 done
-printf "SELF-LINKED CORPUS %s\n" "$(date -Iseconds)"
+printf "SEED-LINKED CORPUS %s\n" "$(date -Iseconds)"
 tools/make-corpus
 mkdir -p /usr/share/lupin
 cp tests/corpus/pax/*.lu /usr/share/lupin/
-export LIGATURE_LINKER=/lane/ligature/target/evidence/self-link/ligature-first
+export LIGATURE_LINKER=/lane/ligature/target/ligature
 export LIGATURE_COMPRESS_EVIDENCE=1
 python3 -I -u tests/static-pax.py "$LIGATURE_LINK_INPUTS"
 python3 -I tools/classify-static target/static-pax /lane/structural-classes.json

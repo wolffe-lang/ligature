@@ -1,0 +1,54 @@
+[
+  {
+    "case": "wolf-musl-lld",
+    "argv": [
+      "/lane/argv-probe/wolf/lld",
+      "--version",
+      "space word",
+      ""
+    ],
+    "status": 0,
+    "stdout": "argc=0\n",
+    "stderr": "",
+    "sha256": "153bf8cc4dbe429d6612723584653137daee3f0269838f9ca92824006049c459"
+  },
+  {
+    "case": "wolf-musl-gnu",
+    "argv": [
+      "/lane/argv-probe/wolf/gnu",
+      "--version",
+      "space word",
+      ""
+    ],
+    "status": 0,
+    "stdout": "argc=0\n",
+    "stderr": "",
+    "sha256": "51dcf1607583490e8dc81be347a3a514113bae2fcc47d3f2f8ef62f6cf596bbd"
+  },
+  {
+    "case": "wolf-glibc",
+    "argv": [
+      "/lane/argv-probe/wolf/glibc-control",
+      "--version",
+      "space word",
+      ""
+    ],
+    "status": 0,
+    "stdout": "argc=3\n[--version]\n[space word]\n[]\n",
+    "stderr": "",
+    "sha256": "1ba054889cacbbe43956d65d46ce904f3ab0d8fccc43fb15fd489463152ef7fa"
+  },
+  {
+    "case": "c-musl",
+    "argv": [
+      "/lane/argv-probe/c/musl-control",
+      "--version",
+      "space word",
+      ""
+    ],
+    "status": 0,
+    "stdout": "argc=3\n[--version]\n[space word]\n[]\n",
+    "stderr": "",
+    "sha256": "d110d202c2726d6953d3ad55337fa331ed476edc194ffc78c67289164b823515"
+  }
+]

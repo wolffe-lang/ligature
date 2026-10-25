@@ -1,0 +1,29 @@
+{
+  "seed_links_byte_identical": true,
+  "hashes_read_twice": [
+    {
+      "ligature-first": {
+        "sha256": "c07f2300982e528f7556c398e91f45586ff671cad431fd1e1d4b08dbacf49600",
+        "bytes": 182631512
+      },
+      "ligature-second": {
+        "sha256": "c07f2300982e528f7556c398e91f45586ff671cad431fd1e1d4b08dbacf49600",
+        "bytes": 182631512
+      }
+    },
+    {
+      "ligature-first": {
+        "sha256": "c07f2300982e528f7556c398e91f45586ff671cad431fd1e1d4b08dbacf49600",
+        "bytes": 182631512
+      },
+      "ligature-second": {
+        "sha256": "c07f2300982e528f7556c398e91f45586ff671cad431fd1e1d4b08dbacf49600",
+        "bytes": 182631512
+      }
+    }
+  ],
+  "note_bytes": 116,
+  "manifest_bytes": 150601728,
+  "execution": "BLOCKED on wolf-lang#962",
+  "bootstrap_relink": "not reached"
+}

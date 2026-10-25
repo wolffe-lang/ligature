@@ -1,0 +1,59 @@
+{
+  "row": "self-link runtime argv",
+  "status": "BLOCKED",
+  "issue": "wolf-lang#962",
+  "rows": [
+    {
+      "case": "glibc",
+      "argv": [
+        "/lane/ligature/target/evidence/musl-argv/glibc",
+        "--version",
+        "space word",
+        ""
+      ],
+      "status": 0,
+      "stdout": "argc=3\n[--version]\n[space word]\n[]\n",
+      "stderr": "",
+      "sha256": "1396cee1f14486c3e31b4fc561961bbad2a2587060becbca2a4d50976101c292"
+    },
+    {
+      "case": "lld",
+      "argv": [
+        "/lane/ligature/target/evidence/musl-argv/lld",
+        "--version",
+        "space word",
+        ""
+      ],
+      "status": 0,
+      "stdout": "argc=0\n",
+      "stderr": "",
+      "sha256": "e9e0e9b420a3aadd61f992a3703ba52b39d18395d2a211b3a4718ae53f11809f"
+    },
+    {
+      "case": "gnu",
+      "argv": [
+        "/lane/ligature/target/evidence/musl-argv/gnu",
+        "--version",
+        "space word",
+        ""
+      ],
+      "status": 0,
+      "stdout": "argc=0\n",
+      "stderr": "",
+      "sha256": "c3929d6c90a979c688de439bbc6ebf2c8529ec07f35f4f51ec43bc9a1166fcda"
+    },
+    {
+      "case": "c-musl",
+      "argv": [
+        "/lane/ligature/target/evidence/musl-argv/c-musl",
+        "--version",
+        "space word",
+        ""
+      ],
+      "status": 0,
+      "stdout": "argc=3\n[--version]\n[space word]\n[]\n",
+      "stderr": "",
+      "sha256": "01e35d22d9b757571d3eb4777253b8cb49ba4f84b434195220e1598f0f81f62c"
+    }
+  ]
+}

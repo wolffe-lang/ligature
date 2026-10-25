@@ -1,0 +1,42 @@
+[
+  {
+    "linker": "lld",
+    "argv": [
+      "--version"
+    ],
+    "status": 1,
+    "stdout": "",
+    "stderr": "ligature: link plan has no input objects or archives\n"
+  },
+  {
+    "linker": "lld",
+    "argv": [
+      "--print-plan",
+      "-nostdlib",
+      "example.o"
+    ],
+    "status": 1,
+    "stdout": "",
+    "stderr": "ligature: link plan has no input objects or archives\n"
+  },
+  {
+    "linker": "gnu",
+    "argv": [
+      "--version"
+    ],
+    "status": 1,
+    "stdout": "",
+    "stderr": "ligature: link plan has no input objects or archives\n"
+  },
+  {
+    "linker": "gnu",
+    "argv": [
+      "--print-plan",
+      "-nostdlib",
+      "example.o"
+    ],
+    "status": 1,
+    "stdout": "",
+    "stderr": "ligature: link plan has no input objects or archives\n"
+  }
+]

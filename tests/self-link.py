@@ -29,6 +29,13 @@ def call(name,args):
     assert p.returncode==0,('self-link-'+name,p.returncode,p.stderr[-2000:])
     print('SELF-LINK',name,'PASS',flush=True)
     return p
+# Prove the exact runtime blocker before spending minutes linking the full tool.
+preflight=subprocess.run([sys.executable,'-I',str(ROOT/'tests/musl-argv.py')])
+if preflight.returncode==2:
+    (OUT/'status.json').write_text(json.dumps({'status':'BLOCKED','row':'self-link','issue':'wolf-lang#962','evidence':'target/evidence/musl-argv/results.json','same_object_evidence':'notes/ld02a/evidence/argv-probe/same-object-controls.json'})+'\n')
+    print('BLOCKED self-link and executing ligature on PAX: wolf-lang#962; not a passing or skipped gate',flush=True)
+    sys.exit(2)
+assert preflight.returncode==0,'self-link runtime argv preflight failed unexpectedly'
 wolf=os.environ.get('WOLF',str(ROOT/'.wolf-bin/wolf'))
 object_dir=pathlib.Path(tempfile.mkdtemp(prefix='objects-',dir=OUT))
 call('objects',[wolf,'build','--no-cache','--emit=obj',ROOT/'src/ligature.lu','-o',object_dir/'ligature.o'])

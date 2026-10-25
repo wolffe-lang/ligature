@@ -1,0 +1,42 @@
+LD02A LONG START 2026-10-25T06:17:58-04:00 pid=2986369 head=9a8e3f668653fcfa84c54cc12a3acb0d227b5e10
+FINAL SOURCE GATE 2026-10-25T10:17:58+00:00
+{"event":"suite","file":"src/kernel_relocation_test.lu","schema":"wolf-test/0","tests":1}
+{"detail":"exit(0)","event":"test","file":"src/kernel_relocation_test.lu","name":"main","schema":"wolf-test/0","status":"pass"}
+{"event":"suite","file":"src/reader_test.lu","schema":"wolf-test/0","tests":1}
+{"detail":"exit(0)","event":"test","file":"src/reader_test.lu","name":"main","schema":"wolf-test/0","status":"pass"}
+{"event":"summary","failed":0,"filtered_out":0,"native":0,"passed":2,"rejected":0,"schema":"wolf-test/0","stopped_early":false,"unsupported":0}
+fetch-bundle: mismatched archive refused before extraction; 0 SKIP
+integration: 43 process rows, 0 SKIP
+oracle: 2 musl links, 2 deterministic relinks, 2 differ plants, 4 verify plants, 0 SKIP
+resolution: 16 oracle rows, 0 SKIP
+resolve: strong/weak/common, indexed archives, groups, duplicate names, COMDAT; 0 SKIP
+lazy-order: forward/backward discovery matches LLD, four-member cyclic graph selected once; 0 SKIP
+writer: 10 three-linker behavior rows, determinism, named refusals and TLS-negative rows; 0 SKIP
+relocation-witness: three linkers, retained sites, unused data/debug corruption red, local/entry normalization; 0 SKIP
+relocation-witness: all writer cases independently decoded, including four TLS models; 0 SKIP
+cc frontend: exact compiler-style option subset links and runs; 0 SKIP
+provenance: canonical manifest, independent SHA256 checks, four negative rows; 0 SKIP
+attribution: complete disjoint coverage, explain, deterministic relink, delta locality, five resealed negative rows; 0 SKIP
+attribution: aliases, archive path, TLS/NOBITS, ambiguous locals and explicit member selection; 0 SKIP
+PAX transcript validator: one genuine capture, four rejected mutations; replay only, 0 SKIP
+static-pax runner: report preserved, nonzero differ status preserved, 0 SKIP
+kernel edge: lld17 refuses -2147483652; GNU default refuses, GNU --no-relax keeps GOT load; newer-lld comparison remains outstanding
+roundtrip: PASS /baseline/toolchain/wolf/wolf-0.2.35-x86_64-unknown-linux-gnu/libwolf_rt.a
+SELF-LINK objects START
+SELF-LINK objects PASS
+SELF-LINK first START
+SELF-LINK first PASS
+SELF-LINK second START
+SELF-LINK second PASS
+SELF-LINK verify START
+SELF-LINK verify PASS
+SELF-LINK execute START
+Traceback (most recent call last):
+  File "/lane/ligature/tests/self-link.py", line 44, in <module>
+    version=call('execute',[first,'--version']);assert version.stdout.startswith(b'ligature '),'self-link-execute-version'
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/lane/ligature/tests/self-link.py", line 29, in call
+    assert p.returncode==0,('self-link-'+name,p.returncode,p.stderr[-2000:])
+           ^^^^^^^^^^^^^^^
+AssertionError: ('self-link-execute', 1, b'ligature: link plan has no input objects or archives\n')
+LD02A LONG EXIT 1 2026-10-25T06:30:11-04:00
