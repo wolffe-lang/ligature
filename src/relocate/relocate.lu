@@ -135,7 +135,11 @@ pub fn apply(mut l: layout.Layout, s: resolve.State) -> () ! {Bad(str)} {
                 out,
                 at,
                 4,
-                add(sa + (if s.symbols[symbol].name == "puts" then 1 else 0), -place, site)?,
+                add(
+                    sa + (if s.symbols[symbol].name == "ligature_hello_marker" then 1 else 0),
+                    -place,
+                    site,
+                )?,
                 true,
                 site,
             )?
