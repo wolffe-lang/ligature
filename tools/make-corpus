@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+set -euo pipefail
+cd "$(dirname "$0")/.."
+export WOLF_STD=${WOLF_STD:-$PWD/.wolf-bin/std}
+wolf=${WOLF:-$PWD/.wolf-bin/wolf}
+for f in tests/corpus/pax/*.lu tests/corpus/hello/hello.lu; do
+    n=$(basename "$(dirname "$f")")-$(basename "$f" .lu)
+    mkdir -p "target/corpus/$n"
+    echo "EMIT $f -> target/corpus/$n"
+    "$wolf" build --no-cache --emit=obj "$f" -o "target/corpus/$n/main.o"
+done

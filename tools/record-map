@@ -1,0 +1,39 @@
+#!/usr/bin/env python3
+"""Add exact link traces, output properties and compact named differences."""
+import collections,hashlib,json,pathlib,subprocess
+root=pathlib.Path(__file__).resolve().parent.parent
+path=root/'census/pax-link-set.json';d=json.loads(path.read_text());out=root/'notes/ld00-evidence';out.mkdir(parents=True,exist_ok=True)
+observations={}
+for folder in sorted((root/'target/oracle').iterdir()):
+    if not (folder/'manifest.json').exists():continue
+    manifest=json.loads((folder/'manifest.json').read_text())
+    trace=(folder/'lld/trace.txt').read_text().splitlines()
+    pulled=[x.replace('/lane/link-inputs/','pax/') for x in trace if '.a(' in x]
+    rows=[json.loads(x) for x in (folder/'lld/inspect.jsonl').read_text().splitlines()]
+    sections=[r for r in rows if r['row']=='section'];programs=[r for r in rows if r['row']=='program']
+    observations[folder.name]={'lld_pulled_members':pulled,'lld_extraction_reasons':(folder/'lld/why-extract.tsv').read_text().replace('/lane/link-inputs/','pax/').splitlines(),'lld_defined_symbols':[r for r in rows if r['row']=='symbol' and r['name'] and r['section']!=0 and r['binding'] in (1,2)],'lld_pulled_count':len(pulled),'lld_pulled_by_archive':dict(collections.Counter(x.split('(')[0] for x in pulled)),
+        'lld_entry':next(r['entry'] for r in rows if r['row']=='elf'),'lld_loads':[r for r in programs if r['kind']==1],
+        'lld_tls':[r for r in programs if r['kind']==7],'lld_unwind':[r for r in sections if r['name'] in ('.eh_frame','.eh_frame_hdr')],
+        'lld_init_fini_arrays':[r for r in rows if r['row']=='array'],
+        'outputs':{k:{'sha256':v['sha256'],'run':v['run']} for k,v in manifest.items()}}
+    for linker in ('lld','gnu'):
+        for name in ('trace.txt','link.err','status','stdout','stderr'):
+            (out/(folder.name+'-'+linker+'-'+name)).write_bytes((folder/linker/name).read_bytes())
+d['oracle_observations']=observations
+cross=root/'target/evidence/oracle-differences.json'
+p=subprocess.run([root/'tools/differ',root/'target/oracle/hello-hello/lld/program',root/'target/oracle/hello-hello/gnu/program','--output',cross],capture_output=True,timeout=120)
+assert p.returncode in (0,1),p.stderr
+raw=json.loads(cross.read_text());summary=[]
+for diff in raw['differences']:
+    record={'kind':diff['kind']}
+    if diff['kind'] in ('symbols','relocations'):
+        l=collections.Counter(json.dumps(x,sort_keys=True) for x in diff['reference']);r=collections.Counter(json.dumps(x,sort_keys=True) for x in diff['candidate'])
+        record.update({'lld_only':sum((l-r).values()),'gnu_only':sum((r-l).values()),'lld_examples':[json.loads(x) for x in list(l-r)[:5]],'gnu_examples':[json.loads(x) for x in list(r-l)[:5]]})
+    else:record.update(diff)
+    summary.append(record)
+d['hello_structural_differences']={'categories':summary,'full_record_sha256':hashlib.file_digest(cross.open('rb'),'sha256').hexdigest(),'full_record':'target/evidence/oracle-differences.json','waived':False}
+path.write_text(json.dumps(d,indent=2,sort_keys=True)+'\n')
+(out/'resolution.json').write_bytes((root/'target/evidence/resolution/results.json').read_bytes())
+(out/'distro-oracle.json').write_bytes((root/'target/evidence/distro-oracle/results.json').read_bytes())
+(out/'structural-differences.json').write_text(json.dumps(d['hello_structural_differences'],indent=2)+'\n')
+print('record-map: exact traces and outputs recorded; structural differences not waived')

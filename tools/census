@@ -1,0 +1,38 @@
+#!/usr/bin/env python3
+"""Aggregate the Wolf reader's records, never substitute readelf for its parser."""
+import argparse, collections, hashlib, json, pathlib, subprocess
+root=pathlib.Path(__file__).resolve().parent.parent
+ap=argparse.ArgumentParser();ap.add_argument('--link-inputs',type=pathlib.Path,required=True);ap.add_argument('--output',type=pathlib.Path,default=root/'census/pax-link-set.json');a=ap.parse_args()
+rel_names={0:'NONE',1:'64',2:'PC32',3:'GOT32',4:'PLT32',5:'COPY',6:'GLOB_DAT',7:'JUMP_SLOT',8:'RELATIVE',9:'GOTPCREL',10:'32',11:'32S',12:'16',13:'PC16',14:'8',15:'PC8',16:'DTPMOD64',17:'DTPOFF64',18:'TPOFF64',19:'TLSGD',20:'TLSLD',21:'DTPOFF32',22:'GOTTPOFF',23:'TPOFF32',24:'PC64',25:'GOTOFF64',26:'GOTPC32',32:'SIZE32',33:'SIZE64',41:'GOTPCRELX',42:'REX_GOTPCRELX'}
+files=sorted((root/'target/corpus').glob('**/*.o'))+[a.link_inputs/'libwolf_rt.a']+[a.link_inputs/'sysroot'/n for n in ('crt1.o','crti.o','crtn.o','libc.a','libunwind.a')]
+assert len(files)>6,'object corpus absent'
+counts={k:collections.Counter() for k in ('relocations','section_type_flags','symbol_binding_type_visibility')}
+examples={k:{} for k in counts};features={k:[] for k in ('tls','init_array','fini_array','eh_frame','eh_frame_hdr','comdat','common')}
+inputs=[];objects=0
+for f in files:
+    label=str(f.relative_to(root)) if f.is_relative_to(root) else 'pax/'+str(f.relative_to(a.link_inputs))
+    member=None;sections={};symbols={};nobjects=0
+    proc=subprocess.Popen([root/'target/ligature','inspect',f],stdout=subprocess.PIPE,text=True)
+    for line in proc.stdout:
+        r=json.loads(line);row=r['row'];site={'input':label,'member':member}
+        if row=='member':member=r['name']
+        if row=='elf':objects+=1;nobjects+=1;sections={};symbols={}
+        if row=='section':
+            sections[r['index']]=r['name'];k=f'{r["kind"]}:{r["flags"]}'
+            counts['section_type_flags'][k]+=1;examples['section_type_flags'].setdefault(k,{**site,'section':r['name']})
+            for key,yes in [('tls',r['flags']&1024),('init_array',r['kind']==14),('fini_array',r['kind']==15),('eh_frame',r['name']=='.eh_frame'),('eh_frame_hdr',r['name']=='.eh_frame_hdr')]:
+                if yes: features[key].append({**site,'section':r['name'],'size':r['size'],'kind':r['kind']})
+        if row=='symbol':
+            k=f'{r["binding"]}:{r["type"]}:{r["visibility"]}';counts['symbol_binding_type_visibility'][k]+=1
+            examples['symbol_binding_type_visibility'].setdefault(k,{**site,'symbol':r['name']})
+            if r['section']==65522:features['common'].append({**site,'symbol':r['name'],'size':r['size'],'alignment':r['value']})
+        if row=='rela':
+            k='R_X86_64_'+rel_names.get(r['type'],str(r['type']));counts['relocations'][k]+=1
+            examples['relocations'].setdefault(k,{**site,'section':sections.get(r['target'],r['target']),'offset':r['offset'],'symbol_index':r['symbol']})
+        if row=='group' and r['flags']&1:features['comdat'].append({**site,**r})
+    assert proc.wait()==0,f'Wolf reader refused {f}'
+    inputs.append({'path':label,'sha256':hashlib.file_digest(f.open('rb'),'sha256').hexdigest(),'bytes':f.stat().st_size,'objects':nobjects})
+    print(label,nobjects,flush=True)
+result={'format':'ligature.census.v1','reader':'ligature 0.0.1','object_count':objects,'inputs':inputs,'tables':{k:[{'key':key,'count':value,'example':examples[k][key]} for key,value in sorted(c.items())] for k,c in counts.items()},'features':features,'link_options':{'undefined':['__wolf_rt_trap_at'],'defsym':['wolf_trap=__wolf_rt_trap_at'],'crt_order':['crt1.o','crti.o','--start-group','program objects','libwolf_rt.a','libc.a','libunwind.a','--end-group','crtn.o']}}
+a.output.parent.mkdir(parents=True,exist_ok=True);a.output.write_text(json.dumps(result,indent=2,sort_keys=True)+'\n')
+print('objects',objects,'relocation types',len(counts['relocations']))
