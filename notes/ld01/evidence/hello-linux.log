@@ -1,0 +1,6 @@
+writer: 10 three-linker behavior rows, determinism, named refusals and TLS-negative rows; 0 SKIP
+
+real	2m57.759s
+user	2m56.929s
+sys	0m0.143s
+hello, wolf

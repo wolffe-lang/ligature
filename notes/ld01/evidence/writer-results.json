@@ -1,0 +1,232 @@
+[
+  {
+    "case": "strong-weak",
+    "outputs": {
+      "ligature": {
+        "stdout_hex": "",
+        "stderr_hex": "",
+        "status": 11,
+        "sha256": "10bde65459ccc56ccc9f6b9876bdac8039f2f89bab5618839017852dc09da33f"
+      },
+      "lld": {
+        "stdout_hex": "",
+        "stderr_hex": "",
+        "status": 11,
+        "sha256": "3f2f2c1c3d6256a69ddc10d763d777731e7c0b498ffd819744ea038ebf12069c"
+      },
+      "gnu": {
+        "stdout_hex": "",
+        "stderr_hex": "",
+        "status": 11,
+        "sha256": "f5b8bf9e9ab9f7cf5d83e9e941da26ef38be424536c00afdad4f9b44011772b2"
+      }
+    }
+  },
+  {
+    "case": "weak-strong",
+    "outputs": {
+      "ligature": {
+        "stdout_hex": "",
+        "stderr_hex": "",
+        "status": 11,
+        "sha256": "10bde65459ccc56ccc9f6b9876bdac8039f2f89bab5618839017852dc09da33f"
+      },
+      "lld": {
+        "stdout_hex": "",
+        "stderr_hex": "",
+        "status": 11,
+        "sha256": "3f2f2c1c3d6256a69ddc10d763d777731e7c0b498ffd819744ea038ebf12069c"
+      },
+      "gnu": {
+        "stdout_hex": "",
+        "stderr_hex": "",
+        "status": 11,
+        "sha256": "f5b8bf9e9ab9f7cf5d83e9e941da26ef38be424536c00afdad4f9b44011772b2"
+      }
+    }
+  },
+  {
+    "case": "strong-common",
+    "outputs": {
+      "ligature": {
+        "stdout_hex": "",
+        "stderr_hex": "",
+        "status": 11,
+        "sha256": "10bde65459ccc56ccc9f6b9876bdac8039f2f89bab5618839017852dc09da33f"
+      },
+      "lld": {
+        "stdout_hex": "",
+        "stderr_hex": "",
+        "status": 11,
+        "sha256": "3f2f2c1c3d6256a69ddc10d763d777731e7c0b498ffd819744ea038ebf12069c"
+      },
+      "gnu": {
+        "stdout_hex": "",
+        "stderr_hex": "",
+        "status": 11,
+        "sha256": "852ab70a0ab87034a6e25619c2f757f3c2a41cb0f75d7b0db6b7f1b3bd3c2c82"
+      }
+    }
+  },
+  {
+    "case": "common",
+    "outputs": {
+      "ligature": {
+        "stdout_hex": "",
+        "stderr_hex": "",
+        "status": 0,
+        "sha256": "1b523bc759c7efe2466defea471383500c261e48a2bdb3bd3952ffe554fd9a47"
+      },
+      "lld": {
+        "stdout_hex": "",
+        "stderr_hex": "",
+        "status": 0,
+        "sha256": "dbf68c761dd3d1ec97ecfe894efe9a8b7ec0ae2bbcff73e45de3b8e5923f23f8"
+      },
+      "gnu": {
+        "stdout_hex": "",
+        "stderr_hex": "",
+        "status": 0,
+        "sha256": "824b34a62699ec62317a2c885ea1bb811806dc780f6ec349a2aeee5099e94ac2"
+      }
+    }
+  },
+  {
+    "case": "hidden-reference",
+    "outputs": {
+      "ligature": {
+        "stdout_hex": "",
+        "stderr_hex": "",
+        "status": 11,
+        "sha256": "d572105b153d81a32db359911863ca4495f6a5dec77b929477c7a25b801e266d"
+      },
+      "lld": {
+        "stdout_hex": "",
+        "stderr_hex": "",
+        "status": 11,
+        "sha256": "3e2e3a987d26501d01ac0aac468da678e4486f8268aeeb99da1a7d8502a99a33"
+      },
+      "gnu": {
+        "stdout_hex": "",
+        "stderr_hex": "",
+        "status": 11,
+        "sha256": "7f0547f8ef22d5ace335662e1669c1b987e18147bbb91f06d1634b3b0c4294dd"
+      }
+    }
+  },
+  {
+    "case": "alias-gc",
+    "outputs": {
+      "ligature": {
+        "stdout_hex": "",
+        "stderr_hex": "",
+        "status": 19,
+        "sha256": "33026f98eae9249af53c4c4b92fb42e9f41a46da03701149f5c858e0ea27a3c3"
+      },
+      "lld": {
+        "stdout_hex": "",
+        "stderr_hex": "",
+        "status": 19,
+        "sha256": "f539a75ea73a4490946d445cd922f74f8dc99de2d6356200f4f8c8acaeebc696"
+      },
+      "gnu": {
+        "stdout_hex": "",
+        "stderr_hex": "",
+        "status": 19,
+        "sha256": "259c2aad25ca0fa402fdd68e5734bbce646a4283577e7b27d301064900a2d671"
+      }
+    }
+  },
+  {
+    "case": "local-exec",
+    "outputs": {
+      "ligature": {
+        "stdout_hex": "77726974657220343220330a",
+        "stderr_hex": "",
+        "status": 0,
+        "sha256": "9b113d14fe01ca5ab0335175d9736fa7f65bedb28f0a452b2f78d931196ab86a"
+      },
+      "lld": {
+        "stdout_hex": "77726974657220343220330a",
+        "stderr_hex": "",
+        "status": 0,
+        "sha256": "2211e70262ddc03f5aa3c3daa82c87c6dc9fedd331cda47626caf28d429ebfda"
+      },
+      "gnu": {
+        "stdout_hex": "77726974657220343220330a",
+        "stderr_hex": "",
+        "status": 0,
+        "sha256": "08c2b454308426cc0b3a843d101e53a596b46322f70240fcdc59bbb9b0cb3935"
+      }
+    }
+  },
+  {
+    "case": "initial-exec",
+    "outputs": {
+      "ligature": {
+        "stdout_hex": "77726974657220343220330a",
+        "stderr_hex": "",
+        "status": 0,
+        "sha256": "b6d859bf4aba7f732d3ed6759d097d025fcf60f7e6b2f8499d06a3d115ade801"
+      },
+      "lld": {
+        "stdout_hex": "77726974657220343220330a",
+        "stderr_hex": "",
+        "status": 0,
+        "sha256": "1483ce976b07ebf23ac25068663f7826f99de88e1f152dc9df46e7b29986d0a0"
+      },
+      "gnu": {
+        "stdout_hex": "77726974657220343220330a",
+        "stderr_hex": "",
+        "status": 0,
+        "sha256": "24575639658f8c73304ca77322abdf792b6c2aaec71f4650af5a0f10e2ac333f"
+      }
+    }
+  },
+  {
+    "case": "global-dynamic",
+    "outputs": {
+      "ligature": {
+        "stdout_hex": "77726974657220343220330a",
+        "stderr_hex": "",
+        "status": 0,
+        "sha256": "57999771227e6c5160ee47513b6cf19d76119e08c641e32835be6c3dd9cfe0a9"
+      },
+      "lld": {
+        "stdout_hex": "77726974657220343220330a",
+        "stderr_hex": "",
+        "status": 0,
+        "sha256": "46003f0213f78a98ad35b7137e4c13f990cbfe93490d93cf136fceb6920a5316"
+      },
+      "gnu": {
+        "stdout_hex": "77726974657220343220330a",
+        "stderr_hex": "",
+        "status": 0,
+        "sha256": "1be47cc1375e0c86a02109c076244a5212fe8f66c8dc7d1d4408e37ecaab65e9"
+      }
+    }
+  },
+  {
+    "case": "local-dynamic",
+    "outputs": {
+      "ligature": {
+        "stdout_hex": "77726974657220343220330a",
+        "stderr_hex": "",
+        "status": 0,
+        "sha256": "07f9e55e5360a3fc275ec7c00b09fc89308bb5ca4f548666cc8d967e0ba507f4"
+      },
+      "lld": {
+        "stdout_hex": "77726974657220343220330a",
+        "stderr_hex": "",
+        "status": 0,
+        "sha256": "8a343dd4cac4178f52780fab8f7bd58e4470c16371a0f21fb2a275f4b0944f08"
+      },
+      "gnu": {
+        "stdout_hex": "77726974657220343220330a",
+        "stderr_hex": "",
+        "status": 0,
+        "sha256": "7bb0d7909cd63d2b54d2c808f25e63bedb226d4af5199e8df3a7ab62128e62b2"
+      }
+    }
+  }
+]
