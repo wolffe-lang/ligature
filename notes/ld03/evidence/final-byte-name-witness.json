@@ -1,0 +1,80 @@
+{
+  "reason": "Only non-ASCII name conversion changed after the full corpus; all fourteen qualified pools are ASCII. Two final-source hello links reproduce the qualified binary byte-for-byte. Final core includes an arbitrary-byte-name regression.",
+  "ascii_corpus": [
+    {
+      "case": "compiler-comptime",
+      "sha256": "96887214838f56564c1078741730cd7625f21eff231b8515b10228ad3cafe495",
+      "all_pooled_strings_ascii": true
+    },
+    {
+      "case": "compiler-entry_no_return",
+      "sha256": "6e59dd1a6d5217c51c271f465ef1360f2b4cedb016e4f6bed0c94b722801a41b",
+      "all_pooled_strings_ascii": true
+    },
+    {
+      "case": "compiler-overflow",
+      "sha256": "c11a9b1f936efdb0b22b62ef87b826f733a1e8da6e15b51fdfacabcfbe4f55be",
+      "all_pooled_strings_ascii": true
+    },
+    {
+      "case": "compiler-procs",
+      "sha256": "4054677c33961221ec9dae265356d32b2e8ea224a668510e2462a616f0127267",
+      "all_pooled_strings_ascii": true
+    },
+    {
+      "case": "compiler-regions",
+      "sha256": "ad57168c84b8516fdab6506342d74d75860cc15142f3807774b30134568a9187",
+      "all_pooled_strings_ascii": true
+    },
+    {
+      "case": "hello-hello",
+      "sha256": "8551aa62d0a73673883fcd8ea2e5b65d833255ad0dcc428fe62e4bb346ca986a",
+      "all_pooled_strings_ascii": true
+    },
+    {
+      "case": "pax-exec",
+      "sha256": "ad61d915010945cf720fcf9d5a493d4b30777c1426ea00691e564fe179af4b1a",
+      "all_pooled_strings_ascii": true
+    },
+    {
+      "case": "pax-fork",
+      "sha256": "fe3508914b25f7da81e35b73354cd7699b47502083002d48622547ffd1e2e1c5",
+      "all_pooled_strings_ascii": true
+    },
+    {
+      "case": "pax-hello",
+      "sha256": "e4751953326492db7c0edd5f92cf9b02ef7738d2386dd9b1397ca06990c28145",
+      "all_pooled_strings_ascii": true
+    },
+    {
+      "case": "pax-host",
+      "sha256": "bf3c92a89047daf860c25a8d9460a3159728a4161dcfa28e527a9f60ebf15622",
+      "all_pooled_strings_ascii": true
+    },
+    {
+      "case": "pax-loop",
+      "sha256": "1da35860662cbb1eb6e2c5fc817754306cc6a8e573accd76f216ebf54a3780ec",
+      "all_pooled_strings_ascii": true
+    },
+    {
+      "case": "pax-signal",
+      "sha256": "e458040b0104eb866ab5bc2925b15bb948856725bdecb39c68b5b9f291e3ee37",
+      "all_pooled_strings_ascii": true
+    },
+    {
+      "case": "pax-spawn",
+      "sha256": "dec1dd335c4a23d2689bca6b6e82984b6f64ea16ba891b52f3621ebf2bcc9ce2",
+      "all_pooled_strings_ascii": true
+    },
+    {
+      "case": "pax-std",
+      "sha256": "8faf5624968cf617ff6f69928d49a1a41ca50d62bd6e5550d195c1744af4168d",
+      "all_pooled_strings_ascii": true
+    }
+  ],
+  "hello_sha256": "8551aa62d0a73673883fcd8ea2e5b65d833255ad0dcc428fe62e4bb346ca986a",
+  "final_link_seconds": [
+    171.35511017599856,
+    207.38546834299996
+  ]
+}
