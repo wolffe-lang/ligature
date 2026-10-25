@@ -65,7 +65,12 @@ provenance hashes and resealed corruption witnesses, full byte coverage,
 explanation queries, the high-half GOT range fixture and the public runtime
 archive. The self-link gate compiles every linker module with the pinned compiler,
 links the object set twice, executes that linker and demands a byte-identical
-bootstrap relink and an executed hello.
+bootstrap relink and an executed hello. Its runtime preflight currently reports
+**BLOCKED on [wolf-lang#962](https://github.com/wolffe-lang/wolf-lang/issues/962)**:
+the pinned musl runtime loses command-line arguments under both reference
+linkers too. The full gate exits 2; this is neither a passing self-link nor a
+SKIP. `tools/check-core` runs the independent linker/provenance gates. A new
+runtime bundle is required before actual self-link execution can qualify.
 No linker, binutils or libc source is fetched or built.
 
 The strict PAX run additionally reads the **complete** PAX runtime, musl libc
@@ -124,8 +129,10 @@ fixtures. Baseline findings are not retired without a new per-case comparison.
 The nonallocated 116-byte `.note.wolf.link` seals input hashes, disjoint file
 ranges and relocation patches with SHA-256. It is an integrity digest, not a
 signature or proof of authorship. `explain` validates that manifest before
-answering. Self-linking on PAX still requires live qualification; AArch64,
-linker scripts and Mach-O remain future work. The high-half relocation fixture tests a post-layout boundary; it does not
+answering. The cc/glibc-built seed can drive the Linux corpus and produce musl binaries
+for live PAX testing. Executing ligature itself on PAX and the executable
+self-link remain BLOCKED on wolf-lang#962. AArch64, linker scripts and Mach-O
+remain future work. The high-half relocation fixture tests a post-layout boundary; it does not
 claim the frontend accepts a kernel linker script.
 
 Licence: GPL-3.0-only with the wolf Training Data Permission (`LICENSE`, `LICENSE-TRAINING-DATA`), as pax, boreutils and den.
