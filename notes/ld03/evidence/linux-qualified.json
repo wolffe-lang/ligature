@@ -1,0 +1,625 @@
+{
+  "source_head": "f76ae9cb4dd8092ef823e4a654a1c4da91316797",
+  "cases": 14,
+  "functional_failures": 0,
+  "deterministic_relinks": 14,
+  "findings": {
+    "relocations": 28,
+    "segments": 28,
+    "symbols": 28,
+    "tls": 3
+  },
+  "total_findings": 87,
+  "hello_link_seconds": [
+    190.44462402299996,
+    185.13017737100017
+  ],
+  "hello_verify_seconds": 3.881307368000307,
+  "rows": [
+    {
+      "case": "compiler-comptime",
+      "sha256": "96887214838f56564c1078741730cd7625f21eff231b8515b10228ad3cafe495",
+      "link_seconds": [
+        206.29220458999993,
+        178.09850569000002
+      ],
+      "verify_seconds": 4.068900620000022,
+      "comparisons": [
+        {
+          "oracle": "lld",
+          "record": "compiler-comptime/lld-differ.json.gz",
+          "sha256_read_twice": [
+            "e85aaadfaf5fe07bdddab530ff283c06376cc761b0d56460c85924b24608df94",
+            "e85aaadfaf5fe07bdddab530ff283c06376cc761b0d56460c85924b24608df94"
+          ],
+          "candidate_sites": 590207,
+          "reference_sites": 392393,
+          "validation_findings": 0,
+          "kinds": [
+            "symbols",
+            "segments",
+            "relocations"
+          ]
+        },
+        {
+          "oracle": "gnu",
+          "record": "compiler-comptime/gnu-differ.json.gz",
+          "sha256_read_twice": [
+            "a97bc9479bef7d9c3433a6ee49c54986ffc33411d4fb031fb0134b94e4878a6d",
+            "a97bc9479bef7d9c3433a6ee49c54986ffc33411d4fb031fb0134b94e4878a6d"
+          ],
+          "candidate_sites": 590207,
+          "reference_sites": 380307,
+          "validation_findings": 0,
+          "kinds": [
+            "symbols",
+            "segments",
+            "relocations"
+          ]
+        }
+      ]
+    },
+    {
+      "case": "compiler-entry_no_return",
+      "sha256": "6e59dd1a6d5217c51c271f465ef1360f2b4cedb016e4f6bed0c94b722801a41b",
+      "link_seconds": [
+        180.25251230000003,
+        190.50005093299978
+      ],
+      "verify_seconds": 4.125236507000409,
+      "comparisons": [
+        {
+          "oracle": "lld",
+          "record": "compiler-entry_no_return/lld-differ.json.gz",
+          "sha256_read_twice": [
+            "4bf6cef358a2984fa0779169838aa35c5c7baaeee6a1af98394cbfeeafc61312",
+            "4bf6cef358a2984fa0779169838aa35c5c7baaeee6a1af98394cbfeeafc61312"
+          ],
+          "candidate_sites": 590356,
+          "reference_sites": 393247,
+          "validation_findings": 0,
+          "kinds": [
+            "symbols",
+            "segments",
+            "relocations"
+          ]
+        },
+        {
+          "oracle": "gnu",
+          "record": "compiler-entry_no_return/gnu-differ.json.gz",
+          "sha256_read_twice": [
+            "c212c9fb2dd5083f0d3ae7cf530f5ce7d686cb85b90e78e98be13d98fa383418",
+            "c212c9fb2dd5083f0d3ae7cf530f5ce7d686cb85b90e78e98be13d98fa383418"
+          ],
+          "candidate_sites": 590356,
+          "reference_sites": 381188,
+          "validation_findings": 0,
+          "kinds": [
+            "symbols",
+            "segments",
+            "relocations"
+          ]
+        }
+      ]
+    },
+    {
+      "case": "compiler-overflow",
+      "sha256": "c11a9b1f936efdb0b22b62ef87b826f733a1e8da6e15b51fdfacabcfbe4f55be",
+      "link_seconds": [
+        190.72806380500015,
+        190.73821248500008
+      ],
+      "verify_seconds": 3.9353074840000772,
+      "comparisons": [
+        {
+          "oracle": "lld",
+          "record": "compiler-overflow/lld-differ.json.gz",
+          "sha256_read_twice": [
+            "d4b68a58b37b35b585f7d837566cf4f5bf7bccae629bae0eaf2bae4f58f1d781",
+            "d4b68a58b37b35b585f7d837566cf4f5bf7bccae629bae0eaf2bae4f58f1d781"
+          ],
+          "candidate_sites": 590208,
+          "reference_sites": 392394,
+          "validation_findings": 0,
+          "kinds": [
+            "symbols",
+            "segments",
+            "relocations"
+          ]
+        },
+        {
+          "oracle": "gnu",
+          "record": "compiler-overflow/gnu-differ.json.gz",
+          "sha256_read_twice": [
+            "968bb1249f2a714aeac1ae36f35bc29fce3d6d521096baee2152d2b6f6f4b13c",
+            "968bb1249f2a714aeac1ae36f35bc29fce3d6d521096baee2152d2b6f6f4b13c"
+          ],
+          "candidate_sites": 590208,
+          "reference_sites": 380308,
+          "validation_findings": 0,
+          "kinds": [
+            "symbols",
+            "segments",
+            "relocations"
+          ]
+        }
+      ]
+    },
+    {
+      "case": "compiler-procs",
+      "sha256": "4054677c33961221ec9dae265356d32b2e8ea224a668510e2462a616f0127267",
+      "link_seconds": [
+        187.45107688999997,
+        186.77835062500026
+      ],
+      "verify_seconds": 3.960514873000193,
+      "comparisons": [
+        {
+          "oracle": "lld",
+          "record": "compiler-procs/lld-differ.json.gz",
+          "sha256_read_twice": [
+            "e5611ddb77927b6db9ed7c5082efb755b4e247bf0848bad765fa5fee02bd3782",
+            "e5611ddb77927b6db9ed7c5082efb755b4e247bf0848bad765fa5fee02bd3782"
+          ],
+          "candidate_sites": 596265,
+          "reference_sites": 445768,
+          "validation_findings": 0,
+          "kinds": [
+            "symbols",
+            "segments",
+            "relocations"
+          ]
+        },
+        {
+          "oracle": "gnu",
+          "record": "compiler-procs/gnu-differ.json.gz",
+          "sha256_read_twice": [
+            "cdacbc32d692c043ea20e30f81f3746ebf7f380b2aa3c123eac38f59ea126979",
+            "cdacbc32d692c043ea20e30f81f3746ebf7f380b2aa3c123eac38f59ea126979"
+          ],
+          "candidate_sites": 596265,
+          "reference_sites": 435259,
+          "validation_findings": 0,
+          "kinds": [
+            "symbols",
+            "segments",
+            "tls",
+            "relocations"
+          ]
+        }
+      ]
+    },
+    {
+      "case": "compiler-regions",
+      "sha256": "ad57168c84b8516fdab6506342d74d75860cc15142f3807774b30134568a9187",
+      "link_seconds": [
+        215.02190289400005,
+        193.37352394400023
+      ],
+      "verify_seconds": 4.009481598999628,
+      "comparisons": [
+        {
+          "oracle": "lld",
+          "record": "compiler-regions/lld-differ.json.gz",
+          "sha256_read_twice": [
+            "b1c9ba563360b75658bb6995104acb3dc0a211e6705c9c6184a351bff6ef5bca",
+            "b1c9ba563360b75658bb6995104acb3dc0a211e6705c9c6184a351bff6ef5bca"
+          ],
+          "candidate_sites": 590615,
+          "reference_sites": 395426,
+          "validation_findings": 0,
+          "kinds": [
+            "symbols",
+            "segments",
+            "relocations"
+          ]
+        },
+        {
+          "oracle": "gnu",
+          "record": "compiler-regions/gnu-differ.json.gz",
+          "sha256_read_twice": [
+            "51635d7e5877359b848a5d431d952fd82ce9c3816266ee1be830a9a220442e18",
+            "51635d7e5877359b848a5d431d952fd82ce9c3816266ee1be830a9a220442e18"
+          ],
+          "candidate_sites": 590615,
+          "reference_sites": 383409,
+          "validation_findings": 0,
+          "kinds": [
+            "symbols",
+            "segments",
+            "relocations"
+          ]
+        }
+      ]
+    },
+    {
+      "case": "hello-hello",
+      "sha256": "8551aa62d0a73673883fcd8ea2e5b65d833255ad0dcc428fe62e4bb346ca986a",
+      "link_seconds": [
+        190.44462402299996,
+        185.13017737100017
+      ],
+      "verify_seconds": 3.881307368000307,
+      "comparisons": [
+        {
+          "oracle": "lld",
+          "record": "hello-hello/lld-differ.json.gz",
+          "sha256_read_twice": [
+            "868c5ae4cf18d14bb631f4e2496f2bb182d5294044a9d6ccf1bae6e2017373f8",
+            "868c5ae4cf18d14bb631f4e2496f2bb182d5294044a9d6ccf1bae6e2017373f8"
+          ],
+          "candidate_sites": 590358,
+          "reference_sites": 393249,
+          "validation_findings": 0,
+          "kinds": [
+            "symbols",
+            "segments",
+            "relocations"
+          ]
+        },
+        {
+          "oracle": "gnu",
+          "record": "hello-hello/gnu-differ.json.gz",
+          "sha256_read_twice": [
+            "5da99d6108b3ea985c3f21464dabf2d94abb12207778f3de9299393d3f0a8816",
+            "5da99d6108b3ea985c3f21464dabf2d94abb12207778f3de9299393d3f0a8816"
+          ],
+          "candidate_sites": 590358,
+          "reference_sites": 381190,
+          "validation_findings": 0,
+          "kinds": [
+            "symbols",
+            "segments",
+            "relocations"
+          ]
+        }
+      ]
+    },
+    {
+      "case": "pax-exec",
+      "sha256": "ad61d915010945cf720fcf9d5a493d4b30777c1426ea00691e564fe179af4b1a",
+      "link_seconds": [
+        186.99335697100014,
+        182.93358555899977
+      ],
+      "verify_seconds": 4.0190371620001315,
+      "comparisons": [
+        {
+          "oracle": "lld",
+          "record": "pax-exec/lld-differ.json.gz",
+          "sha256_read_twice": [
+            "6393aa93f473f4002509852ae2226c789fb30b0d9a7d675db22bcae4112e1039",
+            "6393aa93f473f4002509852ae2226c789fb30b0d9a7d675db22bcae4112e1039"
+          ],
+          "candidate_sites": 592042,
+          "reference_sites": 404577,
+          "validation_findings": 0,
+          "kinds": [
+            "symbols",
+            "segments",
+            "relocations"
+          ]
+        },
+        {
+          "oracle": "gnu",
+          "record": "pax-exec/gnu-differ.json.gz",
+          "sha256_read_twice": [
+            "fc0a9dec838dbec375faad100f1f01672869b5a7d5d60a1e16a54884eac9d74b",
+            "fc0a9dec838dbec375faad100f1f01672869b5a7d5d60a1e16a54884eac9d74b"
+          ],
+          "candidate_sites": 592042,
+          "reference_sites": 395880,
+          "validation_findings": 0,
+          "kinds": [
+            "symbols",
+            "segments",
+            "relocations"
+          ]
+        }
+      ]
+    },
+    {
+      "case": "pax-fork",
+      "sha256": "fe3508914b25f7da81e35b73354cd7699b47502083002d48622547ffd1e2e1c5",
+      "link_seconds": [
+        182.21058160399934,
+        179.56524829200043
+      ],
+      "verify_seconds": 4.001827604999562,
+      "comparisons": [
+        {
+          "oracle": "lld",
+          "record": "pax-fork/lld-differ.json.gz",
+          "sha256_read_twice": [
+            "69217caf4c082e98b9bddbade7713a024e0b96e6132ba228ffb801f40a7f0710",
+            "69217caf4c082e98b9bddbade7713a024e0b96e6132ba228ffb801f40a7f0710"
+          ],
+          "candidate_sites": 591524,
+          "reference_sites": 400042,
+          "validation_findings": 0,
+          "kinds": [
+            "symbols",
+            "segments",
+            "relocations"
+          ]
+        },
+        {
+          "oracle": "gnu",
+          "record": "pax-fork/gnu-differ.json.gz",
+          "sha256_read_twice": [
+            "fa10b07be0de12ffa2ce9fa2fdd6eade7d94571ccfbfabee380e3d9c98f370f8",
+            "fa10b07be0de12ffa2ce9fa2fdd6eade7d94571ccfbfabee380e3d9c98f370f8"
+          ],
+          "candidate_sites": 591524,
+          "reference_sites": 389184,
+          "validation_findings": 0,
+          "kinds": [
+            "symbols",
+            "segments",
+            "relocations"
+          ]
+        }
+      ]
+    },
+    {
+      "case": "pax-hello",
+      "sha256": "e4751953326492db7c0edd5f92cf9b02ef7738d2386dd9b1397ca06990c28145",
+      "link_seconds": [
+        185.73274996799955,
+        179.37013309800022
+      ],
+      "verify_seconds": 3.979206869000336,
+      "comparisons": [
+        {
+          "oracle": "lld",
+          "record": "pax-hello/lld-differ.json.gz",
+          "sha256_read_twice": [
+            "45f50fe96bfe1b0415474ade4cd0fbc310ecb5db83cfa317e9fbc71318f50f46",
+            "45f50fe96bfe1b0415474ade4cd0fbc310ecb5db83cfa317e9fbc71318f50f46"
+          ],
+          "candidate_sites": 590358,
+          "reference_sites": 393249,
+          "validation_findings": 0,
+          "kinds": [
+            "symbols",
+            "segments",
+            "relocations"
+          ]
+        },
+        {
+          "oracle": "gnu",
+          "record": "pax-hello/gnu-differ.json.gz",
+          "sha256_read_twice": [
+            "bb32246e12988edc77888c23d922b9c32010d8364828df31525531935653d676",
+            "bb32246e12988edc77888c23d922b9c32010d8364828df31525531935653d676"
+          ],
+          "candidate_sites": 590358,
+          "reference_sites": 381190,
+          "validation_findings": 0,
+          "kinds": [
+            "symbols",
+            "segments",
+            "relocations"
+          ]
+        }
+      ]
+    },
+    {
+      "case": "pax-host",
+      "sha256": "bf3c92a89047daf860c25a8d9460a3159728a4161dcfa28e527a9f60ebf15622",
+      "link_seconds": [
+        181.60941947399988,
+        180.09732603099928
+      ],
+      "verify_seconds": 4.051719475999562,
+      "comparisons": [
+        {
+          "oracle": "lld",
+          "record": "pax-host/lld-differ.json.gz",
+          "sha256_read_twice": [
+            "d6248706c1bae223c7a75e3034de57fe84862f1bd32d92dc59e9c756dd57bb72",
+            "d6248706c1bae223c7a75e3034de57fe84862f1bd32d92dc59e9c756dd57bb72"
+          ],
+          "candidate_sites": 593594,
+          "reference_sites": 416889,
+          "validation_findings": 0,
+          "kinds": [
+            "symbols",
+            "segments",
+            "relocations"
+          ]
+        },
+        {
+          "oracle": "gnu",
+          "record": "pax-host/gnu-differ.json.gz",
+          "sha256_read_twice": [
+            "2c0d079267e07d298a2c42eebacf763bb0f6424fbac20b04055775791787841b",
+            "2c0d079267e07d298a2c42eebacf763bb0f6424fbac20b04055775791787841b"
+          ],
+          "candidate_sites": 593594,
+          "reference_sites": 406417,
+          "validation_findings": 0,
+          "kinds": [
+            "symbols",
+            "segments",
+            "tls",
+            "relocations"
+          ]
+        }
+      ]
+    },
+    {
+      "case": "pax-loop",
+      "sha256": "1da35860662cbb1eb6e2c5fc817754306cc6a8e573accd76f216ebf54a3780ec",
+      "link_seconds": [
+        183.00376621900068,
+        183.8393135739998
+      ],
+      "verify_seconds": 4.032760497000709,
+      "comparisons": [
+        {
+          "oracle": "lld",
+          "record": "pax-loop/lld-differ.json.gz",
+          "sha256_read_twice": [
+            "395b75fed1f77bce0ee7a584f474bafa9d47b1fc7852714ed55aa2a92e8685e6",
+            "395b75fed1f77bce0ee7a584f474bafa9d47b1fc7852714ed55aa2a92e8685e6"
+          ],
+          "candidate_sites": 590386,
+          "reference_sites": 393446,
+          "validation_findings": 0,
+          "kinds": [
+            "symbols",
+            "segments",
+            "relocations"
+          ]
+        },
+        {
+          "oracle": "gnu",
+          "record": "pax-loop/gnu-differ.json.gz",
+          "sha256_read_twice": [
+            "4e94c73cc4b34a6573552cb5860cbf33b6d7ed4beef46a106849bdf8520b0608",
+            "4e94c73cc4b34a6573552cb5860cbf33b6d7ed4beef46a106849bdf8520b0608"
+          ],
+          "candidate_sites": 590386,
+          "reference_sites": 381390,
+          "validation_findings": 0,
+          "kinds": [
+            "symbols",
+            "segments",
+            "relocations"
+          ]
+        }
+      ]
+    },
+    {
+      "case": "pax-signal",
+      "sha256": "e458040b0104eb866ab5bc2925b15bb948856725bdecb39c68b5b9f291e3ee37",
+      "link_seconds": [
+        184.50148684499982,
+        178.3011408659995
+      ],
+      "verify_seconds": 4.001394209999489,
+      "comparisons": [
+        {
+          "oracle": "lld",
+          "record": "pax-signal/lld-differ.json.gz",
+          "sha256_read_twice": [
+            "47c3f74758c275418defc388555220de5077db122b924c8560e6df4f0a99a85f",
+            "47c3f74758c275418defc388555220de5077db122b924c8560e6df4f0a99a85f"
+          ],
+          "candidate_sites": 590693,
+          "reference_sites": 395199,
+          "validation_findings": 0,
+          "kinds": [
+            "symbols",
+            "segments",
+            "relocations"
+          ]
+        },
+        {
+          "oracle": "gnu",
+          "record": "pax-signal/gnu-differ.json.gz",
+          "sha256_read_twice": [
+            "925f6933b8568b8605343fd73ddf7ff9371e90f2779cc1ff222c2bbda208bd89",
+            "925f6933b8568b8605343fd73ddf7ff9371e90f2779cc1ff222c2bbda208bd89"
+          ],
+          "candidate_sites": 590693,
+          "reference_sites": 383583,
+          "validation_findings": 0,
+          "kinds": [
+            "symbols",
+            "segments",
+            "relocations"
+          ]
+        }
+      ]
+    },
+    {
+      "case": "pax-spawn",
+      "sha256": "dec1dd335c4a23d2689bca6b6e82984b6f64ea16ba891b52f3621ebf2bcc9ce2",
+      "link_seconds": [
+        184.23226652100038,
+        182.34749716200076
+      ],
+      "verify_seconds": 4.0694583100003,
+      "comparisons": [
+        {
+          "oracle": "lld",
+          "record": "pax-spawn/lld-differ.json.gz",
+          "sha256_read_twice": [
+            "5abc716eef93e60c81a06b7b57e0c693dd5b0f59203b0739544efbd44f81a9dc",
+            "5abc716eef93e60c81a06b7b57e0c693dd5b0f59203b0739544efbd44f81a9dc"
+          ],
+          "candidate_sites": 593994,
+          "reference_sites": 421455,
+          "validation_findings": 0,
+          "kinds": [
+            "symbols",
+            "segments",
+            "relocations"
+          ]
+        },
+        {
+          "oracle": "gnu",
+          "record": "pax-spawn/gnu-differ.json.gz",
+          "sha256_read_twice": [
+            "86c4767b49cf721f903fd0f65a2c5a4b0ccae2ca50bcbbfbfbdec7aa123acf54",
+            "86c4767b49cf721f903fd0f65a2c5a4b0ccae2ca50bcbbfbfbdec7aa123acf54"
+          ],
+          "candidate_sites": 593994,
+          "reference_sites": 410721,
+          "validation_findings": 0,
+          "kinds": [
+            "symbols",
+            "segments",
+            "tls",
+            "relocations"
+          ]
+        }
+      ]
+    },
+    {
+      "case": "pax-std",
+      "sha256": "8faf5624968cf617ff6f69928d49a1a41ca50d62bd6e5550d195c1744af4168d",
+      "link_seconds": [
+        180.4199156420009,
+        171.83448523100014
+      ],
+      "verify_seconds": 4.014952883999285,
+      "comparisons": [
+        {
+          "oracle": "lld",
+          "record": "pax-std/lld-differ.json.gz",
+          "sha256_read_twice": [
+            "b72029fc97a1104ecf6ac456eff460e5c8329e84147105d46abf7d1f2e383c32",
+            "b72029fc97a1104ecf6ac456eff460e5c8329e84147105d46abf7d1f2e383c32"
+          ],
+          "candidate_sites": 591948,
+          "reference_sites": 405217,
+          "validation_findings": 0,
+          "kinds": [
+            "symbols",
+            "segments",
+            "relocations"
+          ]
+        },
+        {
+          "oracle": "gnu",
+          "record": "pax-std/gnu-differ.json.gz",
+          "sha256_read_twice": [
+            "71a41bad4a4a499866a0d50e62199803b83adc2d47134ad13020dfdd5c6f60d5",
+            "71a41bad4a4a499866a0d50e62199803b83adc2d47134ad13020dfdd5c6f60d5"
+          ],
+          "candidate_sites": 591948,
+          "reference_sites": 393239,
+          "validation_findings": 0,
+          "kinds": [
+            "symbols",
+            "segments",
+            "relocations"
+          ]
+        }
+      ]
+    }
+  ]
+}

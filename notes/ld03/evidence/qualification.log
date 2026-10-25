@@ -1,0 +1,139 @@
+LD03 START 2026-10-25T13:38:25-04:00 pid=3904
+time="2026-10-25T13:38:25-04:00" level=error msg="Refreshing container 44ed2b1e39088ccbc0e57c061764b113005b7eaf0122162425dc70a6dc2acc43: retrieving temporary directory for container 44ed2b1e39088ccbc0e57c061764b113005b7eaf0122162425dc70a6dc2acc43: no such container"
+FULL GATE 2026-10-25T17:38:25+00:00
+{"event":"suite","file":"src/kernel_relocation_test.lu","schema":"wolf-test/0","tests":1}
+{"detail":"exit(0)","event":"test","file":"src/kernel_relocation_test.lu","name":"main","schema":"wolf-test/0","status":"pass"}
+{"event":"suite","file":"src/reader_test.lu","schema":"wolf-test/0","tests":1}
+{"detail":"exit(0)","event":"test","file":"src/reader_test.lu","name":"main","schema":"wolf-test/0","status":"pass"}
+{"event":"summary","failed":0,"filtered_out":0,"native":0,"passed":2,"rejected":0,"schema":"wolf-test/0","stopped_early":false,"unsupported":0}
+fetch-bundle: mismatched archive refused before extraction; 0 SKIP
+self-link blocker: exact fetched runtime digest and reproduced argv status required; other digests hard-gated; 0 SKIP
+integration: 43 process rows, 0 SKIP
+oracle: 2 musl links, 2 deterministic relinks, 2 differ plants, 4 verify plants, 0 SKIP
+resolution: 16 oracle rows, 0 SKIP
+resolve: strong/weak/common, indexed archives, groups, duplicate names, COMDAT; 0 SKIP
+lazy-order: forward/backward discovery matches LLD, four-member cyclic graph selected once; 0 SKIP
+writer: 10 three-linker behavior rows, determinism, named refusals and TLS-negative rows; 0 SKIP
+relocation-witness: three linkers, retained sites, unused data/debug corruption red, local/entry normalization; 0 SKIP
+relocation-witness: all writer cases independently decoded, including four TLS models; 0 SKIP
+cc frontend: exact compiler-style option subset links and runs; 0 SKIP
+provenance: canonical manifest, independent SHA256 checks, four negative rows; 0 SKIP
+attribution: complete disjoint coverage, explain, deterministic relink, delta locality, five resealed negative rows; 0 SKIP
+attribution: aliases, archive path, TLS/NOBITS, ambiguous locals and explicit member selection; 0 SKIP
+compact-manifest: legacy JSON explain parity and dropped provenance record refused; 0 SKIP
+explain: dependency sites and distinct discarded-section causes; 0 SKIP
+compact-manifest: five resealed decoder corruptions rejected, signed addend endpoints preserved; 0 SKIP
+PAX transcript validator: one genuine capture, four rejected mutations; replay only, 0 SKIP
+PAX staging: gzip evidence preserves exact program bytes and identical initramfs; 0 SKIP
+static-pax runner: report preserved, nonzero differ status preserved, 0 SKIP
+TLS classification: same named payload despite ordering/binding changes; changed payload remains unequal; no findings waived; 0 SKIP
+named-findings: 87 individually retained; 0 waivers; 0 SKIP
+named-findings: five mutation witnesses rejected; 0 SKIP
+kernel edge: lld17 refuses -2147483652; GNU default refuses, GNU --no-relax keeps GOT load; newer-lld comparison remains outstanding
+layout-controls: three-linker merge/unwind measurements and two-oracle kernel.ld scope; no high-half ELF executed; 0 SKIP
+roundtrip: PASS /lane/ligature/.wolf-bin/libwolf_rt.a
+musl-argv glibc 0 b'argc=3\n[--version]\n[space word]\n[]\n' b''
+musl-argv lld 0 b'argc=0\n' b''
+musl-argv gnu 0 b'argc=0\n' b''
+musl-argv c-musl 0 b'argc=3\n[--version]\n[space word]\n[]\n' b''
+BLOCKED self-link: wolf-lang#962; both pinned musl links lose argv while cc/glibc and the pinned C/musl control preserve it
+BLOCKED self-link and executing ligature on PAX: wolf-lang#962; runtime SHA256 9d859b9e6b5319f5a6f609e73ba0d71981d2dfa489882648ac9f454cd9db739c; R-ld02-5 A
+BLOCKED evidence: target/evidence/musl-argv/results.json; notes/ld02a/evidence/argv-probe/; kasumi /home/mfwolffe/lanes/ld02a/ligature/target/evidence/self-link/diagnose-03/results.json
+FULL GATE PASSED 2026-10-25T17:38:29+00:00
+EMIT tests/corpus/pax/exec.lu -> target/corpus/pax-exec
+EMIT tests/corpus/pax/fork.lu -> target/corpus/pax-fork
+EMIT tests/corpus/pax/hello.lu -> target/corpus/pax-hello
+EMIT tests/corpus/pax/host.lu -> target/corpus/pax-host
+warning[E0802]: this arm can never match — the arms above already cover it
+  --> tests/corpus/pax/host.lu:39:13
+   |
+38 |             invalid => "invalid",
+   |             ------- this arm already matches those values
+39 |             missing => "missing",
+   |             ^^^^^^^ unreachable arm
+   |
+   = note: delete the arm, or reorder the arms so the more specific pattern comes first.
+
+EMIT tests/corpus/pax/loop.lu -> target/corpus/pax-loop
+EMIT tests/corpus/pax/signal.lu -> target/corpus/pax-signal
+EMIT tests/corpus/pax/spawn.lu -> target/corpus/pax-spawn
+EMIT tests/corpus/pax/std.lu -> target/corpus/pax-std
+EMIT tests/corpus/hello/hello.lu -> target/corpus/hello-hello
+LINUX CORPUS START 2026-10-25T17:38:29+00:00
+PINS verified twice
+BEGIN compiler-comptime
+LINK1 compiler-comptime 96887214838f56564c1078741730cd7625f21eff231b8515b10228ad3cafe495
+END compiler-comptime behavior-verified-structural-recorded functional_failures 0 unexplained 6
+BEGIN compiler-entry_no_return
+LINK1 compiler-entry_no_return 6e59dd1a6d5217c51c271f465ef1360f2b4cedb016e4f6bed0c94b722801a41b
+END compiler-entry_no_return behavior-verified-structural-recorded functional_failures 0 unexplained 12
+BEGIN compiler-overflow
+LINK1 compiler-overflow c11a9b1f936efdb0b22b62ef87b826f733a1e8da6e15b51fdfacabcfbe4f55be
+END compiler-overflow behavior-verified-structural-recorded functional_failures 0 unexplained 18
+BEGIN compiler-procs
+LINK1 compiler-procs 4054677c33961221ec9dae265356d32b2e8ea224a668510e2462a616f0127267
+END compiler-procs behavior-verified-structural-recorded functional_failures 0 unexplained 25
+BEGIN compiler-regions
+LINK1 compiler-regions ad57168c84b8516fdab6506342d74d75860cc15142f3807774b30134568a9187
+END compiler-regions behavior-verified-structural-recorded functional_failures 0 unexplained 31
+BEGIN hello-hello
+LINK1 hello-hello 8551aa62d0a73673883fcd8ea2e5b65d833255ad0dcc428fe62e4bb346ca986a
+END hello-hello behavior-verified-structural-recorded functional_failures 0 unexplained 37
+BEGIN pax-exec
+LINK1 pax-exec ad61d915010945cf720fcf9d5a493d4b30777c1426ea00691e564fe179af4b1a
+END pax-exec behavior-verified-structural-recorded functional_failures 0 unexplained 43
+BEGIN pax-fork
+LINK1 pax-fork fe3508914b25f7da81e35b73354cd7699b47502083002d48622547ffd1e2e1c5
+END pax-fork behavior-verified-structural-recorded functional_failures 0 unexplained 49
+BEGIN pax-hello
+LINK1 pax-hello e4751953326492db7c0edd5f92cf9b02ef7738d2386dd9b1397ca06990c28145
+END pax-hello behavior-verified-structural-recorded functional_failures 0 unexplained 55
+BEGIN pax-host
+LINK1 pax-host bf3c92a89047daf860c25a8d9460a3159728a4161dcfa28e527a9f60ebf15622
+END pax-host behavior-verified-structural-recorded functional_failures 0 unexplained 62
+BEGIN pax-loop
+LINK1 pax-loop 1da35860662cbb1eb6e2c5fc817754306cc6a8e573accd76f216ebf54a3780ec
+END pax-loop behavior-verified-structural-recorded functional_failures 0 unexplained 68
+BEGIN pax-signal
+LINK1 pax-signal e458040b0104eb866ab5bc2925b15bb948856725bdecb39c68b5b9f291e3ee37
+END pax-signal behavior-verified-structural-recorded functional_failures 0 unexplained 74
+BEGIN pax-spawn
+LINK1 pax-spawn dec1dd335c4a23d2689bca6b6e82984b6f64ea16ba891b52f3621ebf2bcc9ce2
+END pax-spawn behavior-verified-structural-recorded functional_failures 0 unexplained 81
+BEGIN pax-std
+LINK1 pax-std 8faf5624968cf617ff6f69928d49a1a41ca50d62bd6e5550d195c1744af4168d
+END pax-std behavior-verified-structural-recorded functional_failures 0 unexplained 87
+COMPLETE 14 rows; functional failures 0 unexplained structural differences 87
+{"counts": {"relocations": 28, "segments": 28, "symbols": 28, "tls": 3}, "tls_normalized": [{"candidate_memsz": 552, "candidate_only_variables": [], "classification": "different TLS variable ordering; raw template mismatch remains recorded", "kind": "tls", "reference_memsz": 552, "reference_only_variables": [], "symbol_bindings_equal": false, "symbol_normalized_initializers_equal": true}, {"candidate_memsz": 520, "candidate_only_variables": [], "classification": "different TLS variable ordering; raw template mismatch remains recorded", "kind": "tls", "reference_memsz": 520, "reference_only_variables": [], "symbol_bindings_equal": false, "symbol_normalized_initializers_equal": true}, {"candidate_memsz": 448, "candidate_only_variables": [], "classification": "different TLS variable ordering; raw template mismatch remains recorded", "kind": "tls", "reference_memsz": 448, "reference_only_variables": [], "symbol_bindings_equal": false, "symbol_normalized_initializers_equal": true}], "total": 87}
+{
+  "old_bytes": 147136512,
+  "new_bytes": 12414976,
+  "ratio": 11.851534147146156,
+  "sites": 590358,
+  "bytes_per_site_before": 249.2326893173295,
+  "bytes_per_site_after": 21.029571886888974,
+  "equal_fields": [
+    "patches",
+    "inputs",
+    "members",
+    "input_ranges",
+    "memory_ranges",
+    "symbols",
+    "pulls"
+  ],
+  "hashes_read_twice": [
+    {
+      "old": "4587eb789e4aec259ce7c3d24447d9f2eccf8538659b8b0fb12a095264a1761f",
+      "new": "8551aa62d0a73673883fcd8ea2e5b65d833255ad0dcc428fe62e4bb346ca986a"
+    },
+    {
+      "old": "4587eb789e4aec259ce7c3d24447d9f2eccf8538659b8b0fb12a095264a1761f",
+      "new": "8551aa62d0a73673883fcd8ea2e5b65d833255ad0dcc428fe62e4bb346ca986a"
+    }
+  ],
+  "discard_records": 17765,
+  "canonical_independent_encoder_equal": true
+}
+LINUX CORPUS COMPLETE 2026-10-25T19:57:25+00:00
+5.9G	/home/mfwolffe/lanes/ld03
+LD03 EXIT 0 2026-10-25T15:57:25-04:00

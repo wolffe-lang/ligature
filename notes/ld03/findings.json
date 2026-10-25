@@ -1,6 +1,6 @@
 {
   "format": "ligature.ld03.findings.v1",
-  "basis": "ld02a preserved baseline; current corpus refresh pending",
+  "basis": "Fresh ld03 fourteen-case Linux corpus at f76ae9c; all 87 identities and individual deciding facts match the preserved ld02a baseline",
   "resolved": 0,
   "retained": 87,
   "findings": [
@@ -23,7 +23,10 @@
         "reference_only": 975
       },
       "specification": "ELF gABI edition 4.1 chapter 4, Symbol Table: st_info binding/type, st_other visibility, st_shndx; DWARF 5 section 7.5",
-      "decision": "Retain compiler-comptime/lld/symbols: 381 candidate-only and 975 reference-only symbol records; bindings {'0': 381} versus {'0': 975}. Local/debug metadata may differ without changing execution, but this does not decide global or weak binding differences. Exact metadata equality remains unproved; no local-symbol class waiver."
+      "decision": "Retain compiler-comptime/lld/symbols: 381 candidate-only and 975 reference-only symbol records; bindings {'0': 381} versus {'0': 975}. Local/debug metadata may differ without changing execution, but this does not decide global or weak binding differences. Exact metadata equality remains unproved; no local-symbol class waiver.",
+      "current_record": "compiler-comptime/lld-differ.json.gz",
+      "current_record_sha256": "e85aaadfaf5fe07bdddab530ff283c06376cc761b0d56460c85924b24608df94",
+      "current_facts_equal_baseline": true
     },
     {
       "name": "compiler-comptime/lld/segments",
@@ -100,7 +103,10 @@
         ]
       },
       "specification": "ELF gABI edition 4.1 chapter 5, Program Header: PT_LOAD, p_flags, p_align; AMD64 ABI 1.0 section 5.1",
-      "decision": "Retain compiler-comptime/lld/segments: candidate (type,flags,align) sequence [[1, 5, 4096], [1, 6, 4096], [7, 4, 8], [1685382481, 6, 16]] versus oracle [[1, 4, 4096], [1, 5, 4096], [1, 6, 4096], [1, 6, 4096], [6, 4, 8], [7, 4, 8], [1685382481, 6, 0], [1685382482, 4, 1]]. Two candidate LOAD segments intentionally combine read-only and executable content; the oracle has a separate read-only LOAD and GNU_RELRO. LLD also emits PHDR. Permission and segment-count equality is not established by equal execution; no layout waiver suppresses the record."
+      "decision": "Retain compiler-comptime/lld/segments: candidate (type,flags,align) sequence [[1, 5, 4096], [1, 6, 4096], [7, 4, 8], [1685382481, 6, 16]] versus oracle [[1, 4, 4096], [1, 5, 4096], [1, 6, 4096], [1, 6, 4096], [6, 4, 8], [7, 4, 8], [1685382481, 6, 0], [1685382482, 4, 1]]. Two candidate LOAD segments intentionally combine read-only and executable content; the oracle has a separate read-only LOAD and GNU_RELRO. LLD also emits PHDR. Permission and segment-count equality is not established by equal execution; no layout waiver suppresses the record.",
+      "current_record": "compiler-comptime/lld-differ.json.gz",
+      "current_record_sha256": "e85aaadfaf5fe07bdddab530ff283c06376cc761b0d56460c85924b24608df94",
+      "current_facts_equal_baseline": true
     },
     {
       "name": "compiler-comptime/lld/relocations",
@@ -116,7 +122,10 @@
         "reference_records": 392393
       },
       "specification": "ELF gABI edition 4.1 chapter 4, Relocation: r_offset, r_info, r_addend; AMD64 ABI 1.0 (2025-03-12) sections 4.4 and 11",
-      "decision": "Retain compiler-comptime/lld/relocations: 590207 candidate records versus 392393 oracle records. Original debug and relaxed sites remain individually retained by ligature; independent equations validated each output at ld02a. Different cardinalities preclude record equality; compact encoding changes neither relocation count nor target identity. Exact identity/ordering divergence is unresolved, not an optimization equivalence waiver."
+      "decision": "Retain compiler-comptime/lld/relocations: 590207 candidate records versus 392393 oracle records. Original debug and relaxed sites remain individually retained by ligature; independent equations validated each output at ld02a. Different cardinalities preclude record equality; compact encoding changes neither relocation count nor target identity. Exact identity/ordering divergence is unresolved, not an optimization equivalence waiver.",
+      "current_record": "compiler-comptime/lld-differ.json.gz",
+      "current_record_sha256": "e85aaadfaf5fe07bdddab530ff283c06376cc761b0d56460c85924b24608df94",
+      "current_facts_equal_baseline": true
     },
     {
       "name": "compiler-comptime/gnu/symbols",
@@ -140,7 +149,10 @@
         "reference_only": 346
       },
       "specification": "ELF gABI edition 4.1 chapter 4, Symbol Table: st_info binding/type, st_other visibility, st_shndx; DWARF 5 section 7.5",
-      "decision": "Retain compiler-comptime/gnu/symbols: 573 candidate-only and 346 reference-only symbol records; bindings {'0': 571, '1': 2} versus {'0': 141, '1': 160, '2': 45}. Local/debug metadata may differ without changing execution, but this does not decide global or weak binding differences. Exact metadata equality remains unproved; no local-symbol class waiver."
+      "decision": "Retain compiler-comptime/gnu/symbols: 573 candidate-only and 346 reference-only symbol records; bindings {'0': 571, '1': 2} versus {'0': 141, '1': 160, '2': 45}. Local/debug metadata may differ without changing execution, but this does not decide global or weak binding differences. Exact metadata equality remains unproved; no local-symbol class waiver.",
+      "current_record": "compiler-comptime/gnu-differ.json.gz",
+      "current_record_sha256": "a97bc9479bef7d9c3433a6ee49c54986ffc33411d4fb031fb0134b94e4878a6d",
+      "current_facts_equal_baseline": true
     },
     {
       "name": "compiler-comptime/gnu/segments",
@@ -212,7 +224,10 @@
         ]
       },
       "specification": "ELF gABI edition 4.1 chapter 5, Program Header: PT_LOAD, p_flags, p_align; AMD64 ABI 1.0 section 5.1",
-      "decision": "Retain compiler-comptime/gnu/segments: candidate (type,flags,align) sequence [[1, 5, 4096], [1, 6, 4096], [7, 4, 8], [1685382481, 6, 16]] versus oracle [[1, 4, 4096], [1, 4, 4096], [1, 5, 4096], [1, 6, 4096], [7, 4, 8], [1685382481, 6, 16], [1685382482, 4, 1]]. Two candidate LOAD segments intentionally combine read-only and executable content; the oracle has a separate read-only LOAD and GNU_RELRO. LLD also emits PHDR. Permission and segment-count equality is not established by equal execution; no layout waiver suppresses the record."
+      "decision": "Retain compiler-comptime/gnu/segments: candidate (type,flags,align) sequence [[1, 5, 4096], [1, 6, 4096], [7, 4, 8], [1685382481, 6, 16]] versus oracle [[1, 4, 4096], [1, 4, 4096], [1, 5, 4096], [1, 6, 4096], [7, 4, 8], [1685382481, 6, 16], [1685382482, 4, 1]]. Two candidate LOAD segments intentionally combine read-only and executable content; the oracle has a separate read-only LOAD and GNU_RELRO. LLD also emits PHDR. Permission and segment-count equality is not established by equal execution; no layout waiver suppresses the record.",
+      "current_record": "compiler-comptime/gnu-differ.json.gz",
+      "current_record_sha256": "a97bc9479bef7d9c3433a6ee49c54986ffc33411d4fb031fb0134b94e4878a6d",
+      "current_facts_equal_baseline": true
     },
     {
       "name": "compiler-comptime/gnu/relocations",
@@ -228,7 +243,10 @@
         "reference_records": 380307
       },
       "specification": "ELF gABI edition 4.1 chapter 4, Relocation: r_offset, r_info, r_addend; AMD64 ABI 1.0 (2025-03-12) sections 4.4 and 11",
-      "decision": "Retain compiler-comptime/gnu/relocations: 590207 candidate records versus 380307 oracle records. Original debug and relaxed sites remain individually retained by ligature; independent equations validated each output at ld02a. Different cardinalities preclude record equality; compact encoding changes neither relocation count nor target identity. Exact identity/ordering divergence is unresolved, not an optimization equivalence waiver."
+      "decision": "Retain compiler-comptime/gnu/relocations: 590207 candidate records versus 380307 oracle records. Original debug and relaxed sites remain individually retained by ligature; independent equations validated each output at ld02a. Different cardinalities preclude record equality; compact encoding changes neither relocation count nor target identity. Exact identity/ordering divergence is unresolved, not an optimization equivalence waiver.",
+      "current_record": "compiler-comptime/gnu-differ.json.gz",
+      "current_record_sha256": "a97bc9479bef7d9c3433a6ee49c54986ffc33411d4fb031fb0134b94e4878a6d",
+      "current_facts_equal_baseline": true
     },
     {
       "name": "compiler-entry_no_return/lld/symbols",
@@ -249,7 +267,10 @@
         "reference_only": 975
       },
       "specification": "ELF gABI edition 4.1 chapter 4, Symbol Table: st_info binding/type, st_other visibility, st_shndx; DWARF 5 section 7.5",
-      "decision": "Retain compiler-entry_no_return/lld/symbols: 389 candidate-only and 975 reference-only symbol records; bindings {'0': 389} versus {'0': 975}. Local/debug metadata may differ without changing execution, but this does not decide global or weak binding differences. Exact metadata equality remains unproved; no local-symbol class waiver."
+      "decision": "Retain compiler-entry_no_return/lld/symbols: 389 candidate-only and 975 reference-only symbol records; bindings {'0': 389} versus {'0': 975}. Local/debug metadata may differ without changing execution, but this does not decide global or weak binding differences. Exact metadata equality remains unproved; no local-symbol class waiver.",
+      "current_record": "compiler-entry_no_return/lld-differ.json.gz",
+      "current_record_sha256": "4bf6cef358a2984fa0779169838aa35c5c7baaeee6a1af98394cbfeeafc61312",
+      "current_facts_equal_baseline": true
     },
     {
       "name": "compiler-entry_no_return/lld/segments",
@@ -326,7 +347,10 @@
         ]
       },
       "specification": "ELF gABI edition 4.1 chapter 5, Program Header: PT_LOAD, p_flags, p_align; AMD64 ABI 1.0 section 5.1",
-      "decision": "Retain compiler-entry_no_return/lld/segments: candidate (type,flags,align) sequence [[1, 5, 4096], [1, 6, 4096], [7, 4, 8], [1685382481, 6, 16]] versus oracle [[1, 4, 4096], [1, 5, 4096], [1, 6, 4096], [1, 6, 4096], [6, 4, 8], [7, 4, 8], [1685382481, 6, 0], [1685382482, 4, 1]]. Two candidate LOAD segments intentionally combine read-only and executable content; the oracle has a separate read-only LOAD and GNU_RELRO. LLD also emits PHDR. Permission and segment-count equality is not established by equal execution; no layout waiver suppresses the record."
+      "decision": "Retain compiler-entry_no_return/lld/segments: candidate (type,flags,align) sequence [[1, 5, 4096], [1, 6, 4096], [7, 4, 8], [1685382481, 6, 16]] versus oracle [[1, 4, 4096], [1, 5, 4096], [1, 6, 4096], [1, 6, 4096], [6, 4, 8], [7, 4, 8], [1685382481, 6, 0], [1685382482, 4, 1]]. Two candidate LOAD segments intentionally combine read-only and executable content; the oracle has a separate read-only LOAD and GNU_RELRO. LLD also emits PHDR. Permission and segment-count equality is not established by equal execution; no layout waiver suppresses the record.",
+      "current_record": "compiler-entry_no_return/lld-differ.json.gz",
+      "current_record_sha256": "4bf6cef358a2984fa0779169838aa35c5c7baaeee6a1af98394cbfeeafc61312",
+      "current_facts_equal_baseline": true
     },
     {
       "name": "compiler-entry_no_return/lld/relocations",
@@ -342,7 +366,10 @@
         "reference_records": 393247
       },
       "specification": "ELF gABI edition 4.1 chapter 4, Relocation: r_offset, r_info, r_addend; AMD64 ABI 1.0 (2025-03-12) sections 4.4 and 11",
-      "decision": "Retain compiler-entry_no_return/lld/relocations: 590356 candidate records versus 393247 oracle records. Original debug and relaxed sites remain individually retained by ligature; independent equations validated each output at ld02a. Different cardinalities preclude record equality; compact encoding changes neither relocation count nor target identity. Exact identity/ordering divergence is unresolved, not an optimization equivalence waiver."
+      "decision": "Retain compiler-entry_no_return/lld/relocations: 590356 candidate records versus 393247 oracle records. Original debug and relaxed sites remain individually retained by ligature; independent equations validated each output at ld02a. Different cardinalities preclude record equality; compact encoding changes neither relocation count nor target identity. Exact identity/ordering divergence is unresolved, not an optimization equivalence waiver.",
+      "current_record": "compiler-entry_no_return/lld-differ.json.gz",
+      "current_record_sha256": "4bf6cef358a2984fa0779169838aa35c5c7baaeee6a1af98394cbfeeafc61312",
+      "current_facts_equal_baseline": true
     },
     {
       "name": "compiler-entry_no_return/gnu/symbols",
@@ -365,7 +392,10 @@
         "reference_only": 357
       },
       "specification": "ELF gABI edition 4.1 chapter 4, Symbol Table: st_info binding/type, st_other visibility, st_shndx; DWARF 5 section 7.5",
-      "decision": "Retain compiler-entry_no_return/gnu/symbols: 584 candidate-only and 357 reference-only symbol records; bindings {'0': 584} versus {'0': 147, '1': 165, '2': 45}. Local/debug metadata may differ without changing execution, but this does not decide global or weak binding differences. Exact metadata equality remains unproved; no local-symbol class waiver."
+      "decision": "Retain compiler-entry_no_return/gnu/symbols: 584 candidate-only and 357 reference-only symbol records; bindings {'0': 584} versus {'0': 147, '1': 165, '2': 45}. Local/debug metadata may differ without changing execution, but this does not decide global or weak binding differences. Exact metadata equality remains unproved; no local-symbol class waiver.",
+      "current_record": "compiler-entry_no_return/gnu-differ.json.gz",
+      "current_record_sha256": "c212c9fb2dd5083f0d3ae7cf530f5ce7d686cb85b90e78e98be13d98fa383418",
+      "current_facts_equal_baseline": true
     },
     {
       "name": "compiler-entry_no_return/gnu/segments",
@@ -437,7 +467,10 @@
         ]
       },
       "specification": "ELF gABI edition 4.1 chapter 5, Program Header: PT_LOAD, p_flags, p_align; AMD64 ABI 1.0 section 5.1",
-      "decision": "Retain compiler-entry_no_return/gnu/segments: candidate (type,flags,align) sequence [[1, 5, 4096], [1, 6, 4096], [7, 4, 8], [1685382481, 6, 16]] versus oracle [[1, 4, 4096], [1, 4, 4096], [1, 5, 4096], [1, 6, 4096], [7, 4, 8], [1685382481, 6, 16], [1685382482, 4, 1]]. Two candidate LOAD segments intentionally combine read-only and executable content; the oracle has a separate read-only LOAD and GNU_RELRO. LLD also emits PHDR. Permission and segment-count equality is not established by equal execution; no layout waiver suppresses the record."
+      "decision": "Retain compiler-entry_no_return/gnu/segments: candidate (type,flags,align) sequence [[1, 5, 4096], [1, 6, 4096], [7, 4, 8], [1685382481, 6, 16]] versus oracle [[1, 4, 4096], [1, 4, 4096], [1, 5, 4096], [1, 6, 4096], [7, 4, 8], [1685382481, 6, 16], [1685382482, 4, 1]]. Two candidate LOAD segments intentionally combine read-only and executable content; the oracle has a separate read-only LOAD and GNU_RELRO. LLD also emits PHDR. Permission and segment-count equality is not established by equal execution; no layout waiver suppresses the record.",
+      "current_record": "compiler-entry_no_return/gnu-differ.json.gz",
+      "current_record_sha256": "c212c9fb2dd5083f0d3ae7cf530f5ce7d686cb85b90e78e98be13d98fa383418",
+      "current_facts_equal_baseline": true
     },
     {
       "name": "compiler-entry_no_return/gnu/relocations",
@@ -453,7 +486,10 @@
         "reference_records": 381188
       },
       "specification": "ELF gABI edition 4.1 chapter 4, Relocation: r_offset, r_info, r_addend; AMD64 ABI 1.0 (2025-03-12) sections 4.4 and 11",
-      "decision": "Retain compiler-entry_no_return/gnu/relocations: 590356 candidate records versus 381188 oracle records. Original debug and relaxed sites remain individually retained by ligature; independent equations validated each output at ld02a. Different cardinalities preclude record equality; compact encoding changes neither relocation count nor target identity. Exact identity/ordering divergence is unresolved, not an optimization equivalence waiver."
+      "decision": "Retain compiler-entry_no_return/gnu/relocations: 590356 candidate records versus 381188 oracle records. Original debug and relaxed sites remain individually retained by ligature; independent equations validated each output at ld02a. Different cardinalities preclude record equality; compact encoding changes neither relocation count nor target identity. Exact identity/ordering divergence is unresolved, not an optimization equivalence waiver.",
+      "current_record": "compiler-entry_no_return/gnu-differ.json.gz",
+      "current_record_sha256": "c212c9fb2dd5083f0d3ae7cf530f5ce7d686cb85b90e78e98be13d98fa383418",
+      "current_facts_equal_baseline": true
     },
     {
       "name": "compiler-overflow/lld/symbols",
@@ -474,7 +510,10 @@
         "reference_only": 975
       },
       "specification": "ELF gABI edition 4.1 chapter 4, Symbol Table: st_info binding/type, st_other visibility, st_shndx; DWARF 5 section 7.5",
-      "decision": "Retain compiler-overflow/lld/symbols: 381 candidate-only and 975 reference-only symbol records; bindings {'0': 381} versus {'0': 975}. Local/debug metadata may differ without changing execution, but this does not decide global or weak binding differences. Exact metadata equality remains unproved; no local-symbol class waiver."
+      "decision": "Retain compiler-overflow/lld/symbols: 381 candidate-only and 975 reference-only symbol records; bindings {'0': 381} versus {'0': 975}. Local/debug metadata may differ without changing execution, but this does not decide global or weak binding differences. Exact metadata equality remains unproved; no local-symbol class waiver.",
+      "current_record": "compiler-overflow/lld-differ.json.gz",
+      "current_record_sha256": "d4b68a58b37b35b585f7d837566cf4f5bf7bccae629bae0eaf2bae4f58f1d781",
+      "current_facts_equal_baseline": true
     },
     {
       "name": "compiler-overflow/lld/segments",
@@ -551,7 +590,10 @@
         ]
       },
       "specification": "ELF gABI edition 4.1 chapter 5, Program Header: PT_LOAD, p_flags, p_align; AMD64 ABI 1.0 section 5.1",
-      "decision": "Retain compiler-overflow/lld/segments: candidate (type,flags,align) sequence [[1, 5, 4096], [1, 6, 4096], [7, 4, 8], [1685382481, 6, 16]] versus oracle [[1, 4, 4096], [1, 5, 4096], [1, 6, 4096], [1, 6, 4096], [6, 4, 8], [7, 4, 8], [1685382481, 6, 0], [1685382482, 4, 1]]. Two candidate LOAD segments intentionally combine read-only and executable content; the oracle has a separate read-only LOAD and GNU_RELRO. LLD also emits PHDR. Permission and segment-count equality is not established by equal execution; no layout waiver suppresses the record."
+      "decision": "Retain compiler-overflow/lld/segments: candidate (type,flags,align) sequence [[1, 5, 4096], [1, 6, 4096], [7, 4, 8], [1685382481, 6, 16]] versus oracle [[1, 4, 4096], [1, 5, 4096], [1, 6, 4096], [1, 6, 4096], [6, 4, 8], [7, 4, 8], [1685382481, 6, 0], [1685382482, 4, 1]]. Two candidate LOAD segments intentionally combine read-only and executable content; the oracle has a separate read-only LOAD and GNU_RELRO. LLD also emits PHDR. Permission and segment-count equality is not established by equal execution; no layout waiver suppresses the record.",
+      "current_record": "compiler-overflow/lld-differ.json.gz",
+      "current_record_sha256": "d4b68a58b37b35b585f7d837566cf4f5bf7bccae629bae0eaf2bae4f58f1d781",
+      "current_facts_equal_baseline": true
     },
     {
       "name": "compiler-overflow/lld/relocations",
@@ -567,7 +609,10 @@
         "reference_records": 392394
       },
       "specification": "ELF gABI edition 4.1 chapter 4, Relocation: r_offset, r_info, r_addend; AMD64 ABI 1.0 (2025-03-12) sections 4.4 and 11",
-      "decision": "Retain compiler-overflow/lld/relocations: 590208 candidate records versus 392394 oracle records. Original debug and relaxed sites remain individually retained by ligature; independent equations validated each output at ld02a. Different cardinalities preclude record equality; compact encoding changes neither relocation count nor target identity. Exact identity/ordering divergence is unresolved, not an optimization equivalence waiver."
+      "decision": "Retain compiler-overflow/lld/relocations: 590208 candidate records versus 392394 oracle records. Original debug and relaxed sites remain individually retained by ligature; independent equations validated each output at ld02a. Different cardinalities preclude record equality; compact encoding changes neither relocation count nor target identity. Exact identity/ordering divergence is unresolved, not an optimization equivalence waiver.",
+      "current_record": "compiler-overflow/lld-differ.json.gz",
+      "current_record_sha256": "d4b68a58b37b35b585f7d837566cf4f5bf7bccae629bae0eaf2bae4f58f1d781",
+      "current_facts_equal_baseline": true
     },
     {
       "name": "compiler-overflow/gnu/symbols",
@@ -591,7 +636,10 @@
         "reference_only": 346
       },
       "specification": "ELF gABI edition 4.1 chapter 4, Symbol Table: st_info binding/type, st_other visibility, st_shndx; DWARF 5 section 7.5",
-      "decision": "Retain compiler-overflow/gnu/symbols: 573 candidate-only and 346 reference-only symbol records; bindings {'0': 571, '1': 2} versus {'0': 141, '1': 160, '2': 45}. Local/debug metadata may differ without changing execution, but this does not decide global or weak binding differences. Exact metadata equality remains unproved; no local-symbol class waiver."
+      "decision": "Retain compiler-overflow/gnu/symbols: 573 candidate-only and 346 reference-only symbol records; bindings {'0': 571, '1': 2} versus {'0': 141, '1': 160, '2': 45}. Local/debug metadata may differ without changing execution, but this does not decide global or weak binding differences. Exact metadata equality remains unproved; no local-symbol class waiver.",
+      "current_record": "compiler-overflow/gnu-differ.json.gz",
+      "current_record_sha256": "968bb1249f2a714aeac1ae36f35bc29fce3d6d521096baee2152d2b6f6f4b13c",
+      "current_facts_equal_baseline": true
     },
     {
       "name": "compiler-overflow/gnu/segments",
@@ -663,7 +711,10 @@
         ]
       },
       "specification": "ELF gABI edition 4.1 chapter 5, Program Header: PT_LOAD, p_flags, p_align; AMD64 ABI 1.0 section 5.1",
-      "decision": "Retain compiler-overflow/gnu/segments: candidate (type,flags,align) sequence [[1, 5, 4096], [1, 6, 4096], [7, 4, 8], [1685382481, 6, 16]] versus oracle [[1, 4, 4096], [1, 4, 4096], [1, 5, 4096], [1, 6, 4096], [7, 4, 8], [1685382481, 6, 16], [1685382482, 4, 1]]. Two candidate LOAD segments intentionally combine read-only and executable content; the oracle has a separate read-only LOAD and GNU_RELRO. LLD also emits PHDR. Permission and segment-count equality is not established by equal execution; no layout waiver suppresses the record."
+      "decision": "Retain compiler-overflow/gnu/segments: candidate (type,flags,align) sequence [[1, 5, 4096], [1, 6, 4096], [7, 4, 8], [1685382481, 6, 16]] versus oracle [[1, 4, 4096], [1, 4, 4096], [1, 5, 4096], [1, 6, 4096], [7, 4, 8], [1685382481, 6, 16], [1685382482, 4, 1]]. Two candidate LOAD segments intentionally combine read-only and executable content; the oracle has a separate read-only LOAD and GNU_RELRO. LLD also emits PHDR. Permission and segment-count equality is not established by equal execution; no layout waiver suppresses the record.",
+      "current_record": "compiler-overflow/gnu-differ.json.gz",
+      "current_record_sha256": "968bb1249f2a714aeac1ae36f35bc29fce3d6d521096baee2152d2b6f6f4b13c",
+      "current_facts_equal_baseline": true
     },
     {
       "name": "compiler-overflow/gnu/relocations",
@@ -679,7 +730,10 @@
         "reference_records": 380308
       },
       "specification": "ELF gABI edition 4.1 chapter 4, Relocation: r_offset, r_info, r_addend; AMD64 ABI 1.0 (2025-03-12) sections 4.4 and 11",
-      "decision": "Retain compiler-overflow/gnu/relocations: 590208 candidate records versus 380308 oracle records. Original debug and relaxed sites remain individually retained by ligature; independent equations validated each output at ld02a. Different cardinalities preclude record equality; compact encoding changes neither relocation count nor target identity. Exact identity/ordering divergence is unresolved, not an optimization equivalence waiver."
+      "decision": "Retain compiler-overflow/gnu/relocations: 590208 candidate records versus 380308 oracle records. Original debug and relaxed sites remain individually retained by ligature; independent equations validated each output at ld02a. Different cardinalities preclude record equality; compact encoding changes neither relocation count nor target identity. Exact identity/ordering divergence is unresolved, not an optimization equivalence waiver.",
+      "current_record": "compiler-overflow/gnu-differ.json.gz",
+      "current_record_sha256": "968bb1249f2a714aeac1ae36f35bc29fce3d6d521096baee2152d2b6f6f4b13c",
+      "current_facts_equal_baseline": true
     },
     {
       "name": "compiler-procs/lld/symbols",
@@ -700,7 +754,10 @@
         "reference_only": 975
       },
       "specification": "ELF gABI edition 4.1 chapter 4, Symbol Table: st_info binding/type, st_other visibility, st_shndx; DWARF 5 section 7.5",
-      "decision": "Retain compiler-procs/lld/symbols: 608 candidate-only and 975 reference-only symbol records; bindings {'0': 608} versus {'0': 975}. Local/debug metadata may differ without changing execution, but this does not decide global or weak binding differences. Exact metadata equality remains unproved; no local-symbol class waiver."
+      "decision": "Retain compiler-procs/lld/symbols: 608 candidate-only and 975 reference-only symbol records; bindings {'0': 608} versus {'0': 975}. Local/debug metadata may differ without changing execution, but this does not decide global or weak binding differences. Exact metadata equality remains unproved; no local-symbol class waiver.",
+      "current_record": "compiler-procs/lld-differ.json.gz",
+      "current_record_sha256": "e5611ddb77927b6db9ed7c5082efb755b4e247bf0848bad765fa5fee02bd3782",
+      "current_facts_equal_baseline": true
     },
     {
       "name": "compiler-procs/lld/segments",
@@ -777,7 +834,10 @@
         ]
       },
       "specification": "ELF gABI edition 4.1 chapter 5, Program Header: PT_LOAD, p_flags, p_align; AMD64 ABI 1.0 section 5.1",
-      "decision": "Retain compiler-procs/lld/segments: candidate (type,flags,align) sequence [[1, 5, 4096], [1, 6, 4096], [7, 4, 8], [1685382481, 6, 16]] versus oracle [[1, 4, 4096], [1, 5, 4096], [1, 6, 4096], [1, 6, 4096], [6, 4, 8], [7, 4, 8], [1685382481, 6, 0], [1685382482, 4, 1]]. Two candidate LOAD segments intentionally combine read-only and executable content; the oracle has a separate read-only LOAD and GNU_RELRO. LLD also emits PHDR. Permission and segment-count equality is not established by equal execution; no layout waiver suppresses the record."
+      "decision": "Retain compiler-procs/lld/segments: candidate (type,flags,align) sequence [[1, 5, 4096], [1, 6, 4096], [7, 4, 8], [1685382481, 6, 16]] versus oracle [[1, 4, 4096], [1, 5, 4096], [1, 6, 4096], [1, 6, 4096], [6, 4, 8], [7, 4, 8], [1685382481, 6, 0], [1685382482, 4, 1]]. Two candidate LOAD segments intentionally combine read-only and executable content; the oracle has a separate read-only LOAD and GNU_RELRO. LLD also emits PHDR. Permission and segment-count equality is not established by equal execution; no layout waiver suppresses the record.",
+      "current_record": "compiler-procs/lld-differ.json.gz",
+      "current_record_sha256": "e5611ddb77927b6db9ed7c5082efb755b4e247bf0848bad765fa5fee02bd3782",
+      "current_facts_equal_baseline": true
     },
     {
       "name": "compiler-procs/lld/relocations",
@@ -793,7 +853,10 @@
         "reference_records": 445768
       },
       "specification": "ELF gABI edition 4.1 chapter 4, Relocation: r_offset, r_info, r_addend; AMD64 ABI 1.0 (2025-03-12) sections 4.4 and 11",
-      "decision": "Retain compiler-procs/lld/relocations: 596265 candidate records versus 445768 oracle records. Original debug and relaxed sites remain individually retained by ligature; independent equations validated each output at ld02a. Different cardinalities preclude record equality; compact encoding changes neither relocation count nor target identity. Exact identity/ordering divergence is unresolved, not an optimization equivalence waiver."
+      "decision": "Retain compiler-procs/lld/relocations: 596265 candidate records versus 445768 oracle records. Original debug and relaxed sites remain individually retained by ligature; independent equations validated each output at ld02a. Different cardinalities preclude record equality; compact encoding changes neither relocation count nor target identity. Exact identity/ordering divergence is unresolved, not an optimization equivalence waiver.",
+      "current_record": "compiler-procs/lld-differ.json.gz",
+      "current_record_sha256": "e5611ddb77927b6db9ed7c5082efb755b4e247bf0848bad765fa5fee02bd3782",
+      "current_facts_equal_baseline": true
     },
     {
       "name": "compiler-procs/gnu/symbols",
@@ -817,7 +880,10 @@
         "reference_only": 898
       },
       "specification": "ELF gABI edition 4.1 chapter 4, Symbol Table: st_info binding/type, st_other visibility, st_shndx; DWARF 5 section 7.5",
-      "decision": "Retain compiler-procs/gnu/symbols: 1131 candidate-only and 898 reference-only symbol records; bindings {'0': 1125, '1': 6} versus {'0': 369, '1': 480, '2': 49}. Local/debug metadata may differ without changing execution, but this does not decide global or weak binding differences. Exact metadata equality remains unproved; no local-symbol class waiver."
+      "decision": "Retain compiler-procs/gnu/symbols: 1131 candidate-only and 898 reference-only symbol records; bindings {'0': 1125, '1': 6} versus {'0': 369, '1': 480, '2': 49}. Local/debug metadata may differ without changing execution, but this does not decide global or weak binding differences. Exact metadata equality remains unproved; no local-symbol class waiver.",
+      "current_record": "compiler-procs/gnu-differ.json.gz",
+      "current_record_sha256": "cdacbc32d692c043ea20e30f81f3746ebf7f380b2aa3c123eac38f59ea126979",
+      "current_facts_equal_baseline": true
     },
     {
       "name": "compiler-procs/gnu/segments",
@@ -889,7 +955,10 @@
         ]
       },
       "specification": "ELF gABI edition 4.1 chapter 5, Program Header: PT_LOAD, p_flags, p_align; AMD64 ABI 1.0 section 5.1",
-      "decision": "Retain compiler-procs/gnu/segments: candidate (type,flags,align) sequence [[1, 5, 4096], [1, 6, 4096], [7, 4, 8], [1685382481, 6, 16]] versus oracle [[1, 4, 4096], [1, 4, 4096], [1, 5, 4096], [1, 6, 4096], [7, 4, 8], [1685382481, 6, 16], [1685382482, 4, 1]]. Two candidate LOAD segments intentionally combine read-only and executable content; the oracle has a separate read-only LOAD and GNU_RELRO. LLD also emits PHDR. Permission and segment-count equality is not established by equal execution; no layout waiver suppresses the record."
+      "decision": "Retain compiler-procs/gnu/segments: candidate (type,flags,align) sequence [[1, 5, 4096], [1, 6, 4096], [7, 4, 8], [1685382481, 6, 16]] versus oracle [[1, 4, 4096], [1, 4, 4096], [1, 5, 4096], [1, 6, 4096], [7, 4, 8], [1685382481, 6, 16], [1685382482, 4, 1]]. Two candidate LOAD segments intentionally combine read-only and executable content; the oracle has a separate read-only LOAD and GNU_RELRO. LLD also emits PHDR. Permission and segment-count equality is not established by equal execution; no layout waiver suppresses the record.",
+      "current_record": "compiler-procs/gnu-differ.json.gz",
+      "current_record_sha256": "cdacbc32d692c043ea20e30f81f3746ebf7f380b2aa3c123eac38f59ea126979",
+      "current_facts_equal_baseline": true
     },
     {
       "name": "compiler-procs/gnu/tls",
@@ -909,7 +978,10 @@
         "symbol_normalized_initializers_equal": true
       },
       "specification": "ELF gABI chapter 5, PT_TLS; AMD64 ABI 1.0 (2025-03-12) sections 4.5 and 11, static TLS layout and transitions",
-      "decision": "Retain compiler-procs/gnu/tls: both TLS memory sizes are 552 bytes and symbol-normalized initializer multisets agree, with no missing variable. Raw templates differ in ordering and symbol bindings do not agree. The GNU ordering record is retained independently of the resolved LLD record; neither the initializer equality nor equal execution proves raw template or binding equality."
+      "decision": "Retain compiler-procs/gnu/tls: both TLS memory sizes are 552 bytes and symbol-normalized initializer multisets agree, with no missing variable. Raw templates differ in ordering and symbol bindings do not agree. The GNU ordering record is retained independently of the resolved LLD record; neither the initializer equality nor equal execution proves raw template or binding equality.",
+      "current_record": "compiler-procs/gnu-differ.json.gz",
+      "current_record_sha256": "cdacbc32d692c043ea20e30f81f3746ebf7f380b2aa3c123eac38f59ea126979",
+      "current_facts_equal_baseline": true
     },
     {
       "name": "compiler-procs/gnu/relocations",
@@ -925,7 +997,10 @@
         "reference_records": 435259
       },
       "specification": "ELF gABI edition 4.1 chapter 4, Relocation: r_offset, r_info, r_addend; AMD64 ABI 1.0 (2025-03-12) sections 4.4 and 11",
-      "decision": "Retain compiler-procs/gnu/relocations: 596265 candidate records versus 435259 oracle records. Original debug and relaxed sites remain individually retained by ligature; independent equations validated each output at ld02a. Different cardinalities preclude record equality; compact encoding changes neither relocation count nor target identity. Exact identity/ordering divergence is unresolved, not an optimization equivalence waiver."
+      "decision": "Retain compiler-procs/gnu/relocations: 596265 candidate records versus 435259 oracle records. Original debug and relaxed sites remain individually retained by ligature; independent equations validated each output at ld02a. Different cardinalities preclude record equality; compact encoding changes neither relocation count nor target identity. Exact identity/ordering divergence is unresolved, not an optimization equivalence waiver.",
+      "current_record": "compiler-procs/gnu-differ.json.gz",
+      "current_record_sha256": "cdacbc32d692c043ea20e30f81f3746ebf7f380b2aa3c123eac38f59ea126979",
+      "current_facts_equal_baseline": true
     },
     {
       "name": "compiler-regions/lld/symbols",
@@ -946,7 +1021,10 @@
         "reference_only": 975
       },
       "specification": "ELF gABI edition 4.1 chapter 4, Symbol Table: st_info binding/type, st_other visibility, st_shndx; DWARF 5 section 7.5",
-      "decision": "Retain compiler-regions/lld/symbols: 401 candidate-only and 975 reference-only symbol records; bindings {'0': 401} versus {'0': 975}. Local/debug metadata may differ without changing execution, but this does not decide global or weak binding differences. Exact metadata equality remains unproved; no local-symbol class waiver."
+      "decision": "Retain compiler-regions/lld/symbols: 401 candidate-only and 975 reference-only symbol records; bindings {'0': 401} versus {'0': 975}. Local/debug metadata may differ without changing execution, but this does not decide global or weak binding differences. Exact metadata equality remains unproved; no local-symbol class waiver.",
+      "current_record": "compiler-regions/lld-differ.json.gz",
+      "current_record_sha256": "b1c9ba563360b75658bb6995104acb3dc0a211e6705c9c6184a351bff6ef5bca",
+      "current_facts_equal_baseline": true
     },
     {
       "name": "compiler-regions/lld/segments",
@@ -1023,7 +1101,10 @@
         ]
       },
       "specification": "ELF gABI edition 4.1 chapter 5, Program Header: PT_LOAD, p_flags, p_align; AMD64 ABI 1.0 section 5.1",
-      "decision": "Retain compiler-regions/lld/segments: candidate (type,flags,align) sequence [[1, 5, 4096], [1, 6, 4096], [7, 4, 8], [1685382481, 6, 16]] versus oracle [[1, 4, 4096], [1, 5, 4096], [1, 6, 4096], [1, 6, 4096], [6, 4, 8], [7, 4, 8], [1685382481, 6, 0], [1685382482, 4, 1]]. Two candidate LOAD segments intentionally combine read-only and executable content; the oracle has a separate read-only LOAD and GNU_RELRO. LLD also emits PHDR. Permission and segment-count equality is not established by equal execution; no layout waiver suppresses the record."
+      "decision": "Retain compiler-regions/lld/segments: candidate (type,flags,align) sequence [[1, 5, 4096], [1, 6, 4096], [7, 4, 8], [1685382481, 6, 16]] versus oracle [[1, 4, 4096], [1, 5, 4096], [1, 6, 4096], [1, 6, 4096], [6, 4, 8], [7, 4, 8], [1685382481, 6, 0], [1685382482, 4, 1]]. Two candidate LOAD segments intentionally combine read-only and executable content; the oracle has a separate read-only LOAD and GNU_RELRO. LLD also emits PHDR. Permission and segment-count equality is not established by equal execution; no layout waiver suppresses the record.",
+      "current_record": "compiler-regions/lld-differ.json.gz",
+      "current_record_sha256": "b1c9ba563360b75658bb6995104acb3dc0a211e6705c9c6184a351bff6ef5bca",
+      "current_facts_equal_baseline": true
     },
     {
       "name": "compiler-regions/lld/relocations",
@@ -1039,7 +1120,10 @@
         "reference_records": 395426
       },
       "specification": "ELF gABI edition 4.1 chapter 4, Relocation: r_offset, r_info, r_addend; AMD64 ABI 1.0 (2025-03-12) sections 4.4 and 11",
-      "decision": "Retain compiler-regions/lld/relocations: 590615 candidate records versus 395426 oracle records. Original debug and relaxed sites remain individually retained by ligature; independent equations validated each output at ld02a. Different cardinalities preclude record equality; compact encoding changes neither relocation count nor target identity. Exact identity/ordering divergence is unresolved, not an optimization equivalence waiver."
+      "decision": "Retain compiler-regions/lld/relocations: 590615 candidate records versus 395426 oracle records. Original debug and relaxed sites remain individually retained by ligature; independent equations validated each output at ld02a. Different cardinalities preclude record equality; compact encoding changes neither relocation count nor target identity. Exact identity/ordering divergence is unresolved, not an optimization equivalence waiver.",
+      "current_record": "compiler-regions/lld-differ.json.gz",
+      "current_record_sha256": "b1c9ba563360b75658bb6995104acb3dc0a211e6705c9c6184a351bff6ef5bca",
+      "current_facts_equal_baseline": true
     },
     {
       "name": "compiler-regions/gnu/symbols",
@@ -1063,7 +1147,10 @@
         "reference_only": 416
       },
       "specification": "ELF gABI edition 4.1 chapter 4, Symbol Table: st_info binding/type, st_other visibility, st_shndx; DWARF 5 section 7.5",
-      "decision": "Retain compiler-regions/gnu/symbols: 643 candidate-only and 416 reference-only symbol records; bindings {'0': 641, '1': 2} versus {'0': 161, '1': 210, '2': 45}. Local/debug metadata may differ without changing execution, but this does not decide global or weak binding differences. Exact metadata equality remains unproved; no local-symbol class waiver."
+      "decision": "Retain compiler-regions/gnu/symbols: 643 candidate-only and 416 reference-only symbol records; bindings {'0': 641, '1': 2} versus {'0': 161, '1': 210, '2': 45}. Local/debug metadata may differ without changing execution, but this does not decide global or weak binding differences. Exact metadata equality remains unproved; no local-symbol class waiver.",
+      "current_record": "compiler-regions/gnu-differ.json.gz",
+      "current_record_sha256": "51635d7e5877359b848a5d431d952fd82ce9c3816266ee1be830a9a220442e18",
+      "current_facts_equal_baseline": true
     },
     {
       "name": "compiler-regions/gnu/segments",
@@ -1135,7 +1222,10 @@
         ]
       },
       "specification": "ELF gABI edition 4.1 chapter 5, Program Header: PT_LOAD, p_flags, p_align; AMD64 ABI 1.0 section 5.1",
-      "decision": "Retain compiler-regions/gnu/segments: candidate (type,flags,align) sequence [[1, 5, 4096], [1, 6, 4096], [7, 4, 8], [1685382481, 6, 16]] versus oracle [[1, 4, 4096], [1, 4, 4096], [1, 5, 4096], [1, 6, 4096], [7, 4, 8], [1685382481, 6, 16], [1685382482, 4, 1]]. Two candidate LOAD segments intentionally combine read-only and executable content; the oracle has a separate read-only LOAD and GNU_RELRO. LLD also emits PHDR. Permission and segment-count equality is not established by equal execution; no layout waiver suppresses the record."
+      "decision": "Retain compiler-regions/gnu/segments: candidate (type,flags,align) sequence [[1, 5, 4096], [1, 6, 4096], [7, 4, 8], [1685382481, 6, 16]] versus oracle [[1, 4, 4096], [1, 4, 4096], [1, 5, 4096], [1, 6, 4096], [7, 4, 8], [1685382481, 6, 16], [1685382482, 4, 1]]. Two candidate LOAD segments intentionally combine read-only and executable content; the oracle has a separate read-only LOAD and GNU_RELRO. LLD also emits PHDR. Permission and segment-count equality is not established by equal execution; no layout waiver suppresses the record.",
+      "current_record": "compiler-regions/gnu-differ.json.gz",
+      "current_record_sha256": "51635d7e5877359b848a5d431d952fd82ce9c3816266ee1be830a9a220442e18",
+      "current_facts_equal_baseline": true
     },
     {
       "name": "compiler-regions/gnu/relocations",
@@ -1151,7 +1241,10 @@
         "reference_records": 383409
       },
       "specification": "ELF gABI edition 4.1 chapter 4, Relocation: r_offset, r_info, r_addend; AMD64 ABI 1.0 (2025-03-12) sections 4.4 and 11",
-      "decision": "Retain compiler-regions/gnu/relocations: 590615 candidate records versus 383409 oracle records. Original debug and relaxed sites remain individually retained by ligature; independent equations validated each output at ld02a. Different cardinalities preclude record equality; compact encoding changes neither relocation count nor target identity. Exact identity/ordering divergence is unresolved, not an optimization equivalence waiver."
+      "decision": "Retain compiler-regions/gnu/relocations: 590615 candidate records versus 383409 oracle records. Original debug and relaxed sites remain individually retained by ligature; independent equations validated each output at ld02a. Different cardinalities preclude record equality; compact encoding changes neither relocation count nor target identity. Exact identity/ordering divergence is unresolved, not an optimization equivalence waiver.",
+      "current_record": "compiler-regions/gnu-differ.json.gz",
+      "current_record_sha256": "51635d7e5877359b848a5d431d952fd82ce9c3816266ee1be830a9a220442e18",
+      "current_facts_equal_baseline": true
     },
     {
       "name": "hello-hello/lld/symbols",
@@ -1172,7 +1265,10 @@
         "reference_only": 975
       },
       "specification": "ELF gABI edition 4.1 chapter 4, Symbol Table: st_info binding/type, st_other visibility, st_shndx; DWARF 5 section 7.5",
-      "decision": "Retain hello-hello/lld/symbols: 389 candidate-only and 975 reference-only symbol records; bindings {'0': 389} versus {'0': 975}. Local/debug metadata may differ without changing execution, but this does not decide global or weak binding differences. Exact metadata equality remains unproved; no local-symbol class waiver."
+      "decision": "Retain hello-hello/lld/symbols: 389 candidate-only and 975 reference-only symbol records; bindings {'0': 389} versus {'0': 975}. Local/debug metadata may differ without changing execution, but this does not decide global or weak binding differences. Exact metadata equality remains unproved; no local-symbol class waiver.",
+      "current_record": "hello-hello/lld-differ.json.gz",
+      "current_record_sha256": "868c5ae4cf18d14bb631f4e2496f2bb182d5294044a9d6ccf1bae6e2017373f8",
+      "current_facts_equal_baseline": true
     },
     {
       "name": "hello-hello/lld/segments",
@@ -1249,7 +1345,10 @@
         ]
       },
       "specification": "ELF gABI edition 4.1 chapter 5, Program Header: PT_LOAD, p_flags, p_align; AMD64 ABI 1.0 section 5.1",
-      "decision": "Retain hello-hello/lld/segments: candidate (type,flags,align) sequence [[1, 5, 4096], [1, 6, 4096], [7, 4, 8], [1685382481, 6, 16]] versus oracle [[1, 4, 4096], [1, 5, 4096], [1, 6, 4096], [1, 6, 4096], [6, 4, 8], [7, 4, 8], [1685382481, 6, 0], [1685382482, 4, 1]]. Two candidate LOAD segments intentionally combine read-only and executable content; the oracle has a separate read-only LOAD and GNU_RELRO. LLD also emits PHDR. Permission and segment-count equality is not established by equal execution; no layout waiver suppresses the record."
+      "decision": "Retain hello-hello/lld/segments: candidate (type,flags,align) sequence [[1, 5, 4096], [1, 6, 4096], [7, 4, 8], [1685382481, 6, 16]] versus oracle [[1, 4, 4096], [1, 5, 4096], [1, 6, 4096], [1, 6, 4096], [6, 4, 8], [7, 4, 8], [1685382481, 6, 0], [1685382482, 4, 1]]. Two candidate LOAD segments intentionally combine read-only and executable content; the oracle has a separate read-only LOAD and GNU_RELRO. LLD also emits PHDR. Permission and segment-count equality is not established by equal execution; no layout waiver suppresses the record.",
+      "current_record": "hello-hello/lld-differ.json.gz",
+      "current_record_sha256": "868c5ae4cf18d14bb631f4e2496f2bb182d5294044a9d6ccf1bae6e2017373f8",
+      "current_facts_equal_baseline": true
     },
     {
       "name": "hello-hello/lld/relocations",
@@ -1265,7 +1364,10 @@
         "reference_records": 393249
       },
       "specification": "ELF gABI edition 4.1 chapter 4, Relocation: r_offset, r_info, r_addend; AMD64 ABI 1.0 (2025-03-12) sections 4.4 and 11",
-      "decision": "Retain hello-hello/lld/relocations: 590358 candidate records versus 393249 oracle records. Original debug and relaxed sites remain individually retained by ligature; independent equations validated each output at ld02a. Different cardinalities preclude record equality; compact encoding changes neither relocation count nor target identity. Exact identity/ordering divergence is unresolved, not an optimization equivalence waiver."
+      "decision": "Retain hello-hello/lld/relocations: 590358 candidate records versus 393249 oracle records. Original debug and relaxed sites remain individually retained by ligature; independent equations validated each output at ld02a. Different cardinalities preclude record equality; compact encoding changes neither relocation count nor target identity. Exact identity/ordering divergence is unresolved, not an optimization equivalence waiver.",
+      "current_record": "hello-hello/lld-differ.json.gz",
+      "current_record_sha256": "868c5ae4cf18d14bb631f4e2496f2bb182d5294044a9d6ccf1bae6e2017373f8",
+      "current_facts_equal_baseline": true
     },
     {
       "name": "hello-hello/gnu/symbols",
@@ -1288,7 +1390,10 @@
         "reference_only": 357
       },
       "specification": "ELF gABI edition 4.1 chapter 4, Symbol Table: st_info binding/type, st_other visibility, st_shndx; DWARF 5 section 7.5",
-      "decision": "Retain hello-hello/gnu/symbols: 584 candidate-only and 357 reference-only symbol records; bindings {'0': 584} versus {'0': 147, '1': 165, '2': 45}. Local/debug metadata may differ without changing execution, but this does not decide global or weak binding differences. Exact metadata equality remains unproved; no local-symbol class waiver."
+      "decision": "Retain hello-hello/gnu/symbols: 584 candidate-only and 357 reference-only symbol records; bindings {'0': 584} versus {'0': 147, '1': 165, '2': 45}. Local/debug metadata may differ without changing execution, but this does not decide global or weak binding differences. Exact metadata equality remains unproved; no local-symbol class waiver.",
+      "current_record": "hello-hello/gnu-differ.json.gz",
+      "current_record_sha256": "5da99d6108b3ea985c3f21464dabf2d94abb12207778f3de9299393d3f0a8816",
+      "current_facts_equal_baseline": true
     },
     {
       "name": "hello-hello/gnu/segments",
@@ -1360,7 +1465,10 @@
         ]
       },
       "specification": "ELF gABI edition 4.1 chapter 5, Program Header: PT_LOAD, p_flags, p_align; AMD64 ABI 1.0 section 5.1",
-      "decision": "Retain hello-hello/gnu/segments: candidate (type,flags,align) sequence [[1, 5, 4096], [1, 6, 4096], [7, 4, 8], [1685382481, 6, 16]] versus oracle [[1, 4, 4096], [1, 4, 4096], [1, 5, 4096], [1, 6, 4096], [7, 4, 8], [1685382481, 6, 16], [1685382482, 4, 1]]. Two candidate LOAD segments intentionally combine read-only and executable content; the oracle has a separate read-only LOAD and GNU_RELRO. LLD also emits PHDR. Permission and segment-count equality is not established by equal execution; no layout waiver suppresses the record."
+      "decision": "Retain hello-hello/gnu/segments: candidate (type,flags,align) sequence [[1, 5, 4096], [1, 6, 4096], [7, 4, 8], [1685382481, 6, 16]] versus oracle [[1, 4, 4096], [1, 4, 4096], [1, 5, 4096], [1, 6, 4096], [7, 4, 8], [1685382481, 6, 16], [1685382482, 4, 1]]. Two candidate LOAD segments intentionally combine read-only and executable content; the oracle has a separate read-only LOAD and GNU_RELRO. LLD also emits PHDR. Permission and segment-count equality is not established by equal execution; no layout waiver suppresses the record.",
+      "current_record": "hello-hello/gnu-differ.json.gz",
+      "current_record_sha256": "5da99d6108b3ea985c3f21464dabf2d94abb12207778f3de9299393d3f0a8816",
+      "current_facts_equal_baseline": true
     },
     {
       "name": "hello-hello/gnu/relocations",
@@ -1376,7 +1484,10 @@
         "reference_records": 381190
       },
       "specification": "ELF gABI edition 4.1 chapter 4, Relocation: r_offset, r_info, r_addend; AMD64 ABI 1.0 (2025-03-12) sections 4.4 and 11",
-      "decision": "Retain hello-hello/gnu/relocations: 590358 candidate records versus 381190 oracle records. Original debug and relaxed sites remain individually retained by ligature; independent equations validated each output at ld02a. Different cardinalities preclude record equality; compact encoding changes neither relocation count nor target identity. Exact identity/ordering divergence is unresolved, not an optimization equivalence waiver."
+      "decision": "Retain hello-hello/gnu/relocations: 590358 candidate records versus 381190 oracle records. Original debug and relaxed sites remain individually retained by ligature; independent equations validated each output at ld02a. Different cardinalities preclude record equality; compact encoding changes neither relocation count nor target identity. Exact identity/ordering divergence is unresolved, not an optimization equivalence waiver.",
+      "current_record": "hello-hello/gnu-differ.json.gz",
+      "current_record_sha256": "5da99d6108b3ea985c3f21464dabf2d94abb12207778f3de9299393d3f0a8816",
+      "current_facts_equal_baseline": true
     },
     {
       "name": "pax-exec/lld/symbols",
@@ -1397,7 +1508,10 @@
         "reference_only": 975
       },
       "specification": "ELF gABI edition 4.1 chapter 4, Symbol Table: st_info binding/type, st_other visibility, st_shndx; DWARF 5 section 7.5",
-      "decision": "Retain pax-exec/lld/symbols: 421 candidate-only and 975 reference-only symbol records; bindings {'0': 421} versus {'0': 975}. Local/debug metadata may differ without changing execution, but this does not decide global or weak binding differences. Exact metadata equality remains unproved; no local-symbol class waiver."
+      "decision": "Retain pax-exec/lld/symbols: 421 candidate-only and 975 reference-only symbol records; bindings {'0': 421} versus {'0': 975}. Local/debug metadata may differ without changing execution, but this does not decide global or weak binding differences. Exact metadata equality remains unproved; no local-symbol class waiver.",
+      "current_record": "pax-exec/lld-differ.json.gz",
+      "current_record_sha256": "6393aa93f473f4002509852ae2226c789fb30b0d9a7d675db22bcae4112e1039",
+      "current_facts_equal_baseline": true
     },
     {
       "name": "pax-exec/lld/segments",
@@ -1474,7 +1588,10 @@
         ]
       },
       "specification": "ELF gABI edition 4.1 chapter 5, Program Header: PT_LOAD, p_flags, p_align; AMD64 ABI 1.0 section 5.1",
-      "decision": "Retain pax-exec/lld/segments: candidate (type,flags,align) sequence [[1, 5, 4096], [1, 6, 4096], [7, 4, 8], [1685382481, 6, 16]] versus oracle [[1, 4, 4096], [1, 5, 4096], [1, 6, 4096], [1, 6, 4096], [6, 4, 8], [7, 4, 8], [1685382481, 6, 0], [1685382482, 4, 1]]. Two candidate LOAD segments intentionally combine read-only and executable content; the oracle has a separate read-only LOAD and GNU_RELRO. LLD also emits PHDR. Permission and segment-count equality is not established by equal execution; no layout waiver suppresses the record."
+      "decision": "Retain pax-exec/lld/segments: candidate (type,flags,align) sequence [[1, 5, 4096], [1, 6, 4096], [7, 4, 8], [1685382481, 6, 16]] versus oracle [[1, 4, 4096], [1, 5, 4096], [1, 6, 4096], [1, 6, 4096], [6, 4, 8], [7, 4, 8], [1685382481, 6, 0], [1685382482, 4, 1]]. Two candidate LOAD segments intentionally combine read-only and executable content; the oracle has a separate read-only LOAD and GNU_RELRO. LLD also emits PHDR. Permission and segment-count equality is not established by equal execution; no layout waiver suppresses the record.",
+      "current_record": "pax-exec/lld-differ.json.gz",
+      "current_record_sha256": "6393aa93f473f4002509852ae2226c789fb30b0d9a7d675db22bcae4112e1039",
+      "current_facts_equal_baseline": true
     },
     {
       "name": "pax-exec/lld/relocations",
@@ -1490,7 +1607,10 @@
         "reference_records": 404577
       },
       "specification": "ELF gABI edition 4.1 chapter 4, Relocation: r_offset, r_info, r_addend; AMD64 ABI 1.0 (2025-03-12) sections 4.4 and 11",
-      "decision": "Retain pax-exec/lld/relocations: 592042 candidate records versus 404577 oracle records. Original debug and relaxed sites remain individually retained by ligature; independent equations validated each output at ld02a. Different cardinalities preclude record equality; compact encoding changes neither relocation count nor target identity. Exact identity/ordering divergence is unresolved, not an optimization equivalence waiver."
+      "decision": "Retain pax-exec/lld/relocations: 592042 candidate records versus 404577 oracle records. Original debug and relaxed sites remain individually retained by ligature; independent equations validated each output at ld02a. Different cardinalities preclude record equality; compact encoding changes neither relocation count nor target identity. Exact identity/ordering divergence is unresolved, not an optimization equivalence waiver.",
+      "current_record": "pax-exec/lld-differ.json.gz",
+      "current_record_sha256": "6393aa93f473f4002509852ae2226c789fb30b0d9a7d675db22bcae4112e1039",
+      "current_facts_equal_baseline": true
     },
     {
       "name": "pax-exec/gnu/symbols",
@@ -1513,7 +1633,10 @@
         "reference_only": 477
       },
       "specification": "ELF gABI edition 4.1 chapter 4, Symbol Table: st_info binding/type, st_other visibility, st_shndx; DWARF 5 section 7.5",
-      "decision": "Retain pax-exec/gnu/symbols: 690 candidate-only and 477 reference-only symbol records; bindings {'0': 690} versus {'0': 190, '1': 231, '2': 56}. Local/debug metadata may differ without changing execution, but this does not decide global or weak binding differences. Exact metadata equality remains unproved; no local-symbol class waiver."
+      "decision": "Retain pax-exec/gnu/symbols: 690 candidate-only and 477 reference-only symbol records; bindings {'0': 690} versus {'0': 190, '1': 231, '2': 56}. Local/debug metadata may differ without changing execution, but this does not decide global or weak binding differences. Exact metadata equality remains unproved; no local-symbol class waiver.",
+      "current_record": "pax-exec/gnu-differ.json.gz",
+      "current_record_sha256": "fc0a9dec838dbec375faad100f1f01672869b5a7d5d60a1e16a54884eac9d74b",
+      "current_facts_equal_baseline": true
     },
     {
       "name": "pax-exec/gnu/segments",
@@ -1585,7 +1708,10 @@
         ]
       },
       "specification": "ELF gABI edition 4.1 chapter 5, Program Header: PT_LOAD, p_flags, p_align; AMD64 ABI 1.0 section 5.1",
-      "decision": "Retain pax-exec/gnu/segments: candidate (type,flags,align) sequence [[1, 5, 4096], [1, 6, 4096], [7, 4, 8], [1685382481, 6, 16]] versus oracle [[1, 4, 4096], [1, 4, 4096], [1, 5, 4096], [1, 6, 4096], [7, 4, 8], [1685382481, 6, 16], [1685382482, 4, 1]]. Two candidate LOAD segments intentionally combine read-only and executable content; the oracle has a separate read-only LOAD and GNU_RELRO. LLD also emits PHDR. Permission and segment-count equality is not established by equal execution; no layout waiver suppresses the record."
+      "decision": "Retain pax-exec/gnu/segments: candidate (type,flags,align) sequence [[1, 5, 4096], [1, 6, 4096], [7, 4, 8], [1685382481, 6, 16]] versus oracle [[1, 4, 4096], [1, 4, 4096], [1, 5, 4096], [1, 6, 4096], [7, 4, 8], [1685382481, 6, 16], [1685382482, 4, 1]]. Two candidate LOAD segments intentionally combine read-only and executable content; the oracle has a separate read-only LOAD and GNU_RELRO. LLD also emits PHDR. Permission and segment-count equality is not established by equal execution; no layout waiver suppresses the record.",
+      "current_record": "pax-exec/gnu-differ.json.gz",
+      "current_record_sha256": "fc0a9dec838dbec375faad100f1f01672869b5a7d5d60a1e16a54884eac9d74b",
+      "current_facts_equal_baseline": true
     },
     {
       "name": "pax-exec/gnu/relocations",
@@ -1601,7 +1727,10 @@
         "reference_records": 395880
       },
       "specification": "ELF gABI edition 4.1 chapter 4, Relocation: r_offset, r_info, r_addend; AMD64 ABI 1.0 (2025-03-12) sections 4.4 and 11",
-      "decision": "Retain pax-exec/gnu/relocations: 592042 candidate records versus 395880 oracle records. Original debug and relaxed sites remain individually retained by ligature; independent equations validated each output at ld02a. Different cardinalities preclude record equality; compact encoding changes neither relocation count nor target identity. Exact identity/ordering divergence is unresolved, not an optimization equivalence waiver."
+      "decision": "Retain pax-exec/gnu/relocations: 592042 candidate records versus 395880 oracle records. Original debug and relaxed sites remain individually retained by ligature; independent equations validated each output at ld02a. Different cardinalities preclude record equality; compact encoding changes neither relocation count nor target identity. Exact identity/ordering divergence is unresolved, not an optimization equivalence waiver.",
+      "current_record": "pax-exec/gnu-differ.json.gz",
+      "current_record_sha256": "fc0a9dec838dbec375faad100f1f01672869b5a7d5d60a1e16a54884eac9d74b",
+      "current_facts_equal_baseline": true
     },
     {
       "name": "pax-fork/lld/symbols",
@@ -1622,7 +1751,10 @@
         "reference_only": 975
       },
       "specification": "ELF gABI edition 4.1 chapter 4, Symbol Table: st_info binding/type, st_other visibility, st_shndx; DWARF 5 section 7.5",
-      "decision": "Retain pax-fork/lld/symbols: 423 candidate-only and 975 reference-only symbol records; bindings {'0': 423} versus {'0': 975}. Local/debug metadata may differ without changing execution, but this does not decide global or weak binding differences. Exact metadata equality remains unproved; no local-symbol class waiver."
+      "decision": "Retain pax-fork/lld/symbols: 423 candidate-only and 975 reference-only symbol records; bindings {'0': 423} versus {'0': 975}. Local/debug metadata may differ without changing execution, but this does not decide global or weak binding differences. Exact metadata equality remains unproved; no local-symbol class waiver.",
+      "current_record": "pax-fork/lld-differ.json.gz",
+      "current_record_sha256": "69217caf4c082e98b9bddbade7713a024e0b96e6132ba228ffb801f40a7f0710",
+      "current_facts_equal_baseline": true
     },
     {
       "name": "pax-fork/lld/segments",
@@ -1699,7 +1831,10 @@
         ]
       },
       "specification": "ELF gABI edition 4.1 chapter 5, Program Header: PT_LOAD, p_flags, p_align; AMD64 ABI 1.0 section 5.1",
-      "decision": "Retain pax-fork/lld/segments: candidate (type,flags,align) sequence [[1, 5, 4096], [1, 6, 4096], [7, 4, 8], [1685382481, 6, 16]] versus oracle [[1, 4, 4096], [1, 5, 4096], [1, 6, 4096], [1, 6, 4096], [6, 4, 8], [7, 4, 8], [1685382481, 6, 0], [1685382482, 4, 1]]. Two candidate LOAD segments intentionally combine read-only and executable content; the oracle has a separate read-only LOAD and GNU_RELRO. LLD also emits PHDR. Permission and segment-count equality is not established by equal execution; no layout waiver suppresses the record."
+      "decision": "Retain pax-fork/lld/segments: candidate (type,flags,align) sequence [[1, 5, 4096], [1, 6, 4096], [7, 4, 8], [1685382481, 6, 16]] versus oracle [[1, 4, 4096], [1, 5, 4096], [1, 6, 4096], [1, 6, 4096], [6, 4, 8], [7, 4, 8], [1685382481, 6, 0], [1685382482, 4, 1]]. Two candidate LOAD segments intentionally combine read-only and executable content; the oracle has a separate read-only LOAD and GNU_RELRO. LLD also emits PHDR. Permission and segment-count equality is not established by equal execution; no layout waiver suppresses the record.",
+      "current_record": "pax-fork/lld-differ.json.gz",
+      "current_record_sha256": "69217caf4c082e98b9bddbade7713a024e0b96e6132ba228ffb801f40a7f0710",
+      "current_facts_equal_baseline": true
     },
     {
       "name": "pax-fork/lld/relocations",
@@ -1715,7 +1850,10 @@
         "reference_records": 400042
       },
       "specification": "ELF gABI edition 4.1 chapter 4, Relocation: r_offset, r_info, r_addend; AMD64 ABI 1.0 (2025-03-12) sections 4.4 and 11",
-      "decision": "Retain pax-fork/lld/relocations: 591524 candidate records versus 400042 oracle records. Original debug and relaxed sites remain individually retained by ligature; independent equations validated each output at ld02a. Different cardinalities preclude record equality; compact encoding changes neither relocation count nor target identity. Exact identity/ordering divergence is unresolved, not an optimization equivalence waiver."
+      "decision": "Retain pax-fork/lld/relocations: 591524 candidate records versus 400042 oracle records. Original debug and relaxed sites remain individually retained by ligature; independent equations validated each output at ld02a. Different cardinalities preclude record equality; compact encoding changes neither relocation count nor target identity. Exact identity/ordering divergence is unresolved, not an optimization equivalence waiver.",
+      "current_record": "pax-fork/lld-differ.json.gz",
+      "current_record_sha256": "69217caf4c082e98b9bddbade7713a024e0b96e6132ba228ffb801f40a7f0710",
+      "current_facts_equal_baseline": true
     },
     {
       "name": "pax-fork/gnu/symbols",
@@ -1739,7 +1877,10 @@
         "reference_only": 533
       },
       "specification": "ELF gABI edition 4.1 chapter 4, Symbol Table: st_info binding/type, st_other visibility, st_shndx; DWARF 5 section 7.5",
-      "decision": "Retain pax-fork/gnu/symbols: 757 candidate-only and 533 reference-only symbol records; bindings {'0': 754, '1': 3} versus {'0': 185, '1': 292, '2': 56}. Local/debug metadata may differ without changing execution, but this does not decide global or weak binding differences. Exact metadata equality remains unproved; no local-symbol class waiver."
+      "decision": "Retain pax-fork/gnu/symbols: 757 candidate-only and 533 reference-only symbol records; bindings {'0': 754, '1': 3} versus {'0': 185, '1': 292, '2': 56}. Local/debug metadata may differ without changing execution, but this does not decide global or weak binding differences. Exact metadata equality remains unproved; no local-symbol class waiver.",
+      "current_record": "pax-fork/gnu-differ.json.gz",
+      "current_record_sha256": "fa10b07be0de12ffa2ce9fa2fdd6eade7d94571ccfbfabee380e3d9c98f370f8",
+      "current_facts_equal_baseline": true
     },
     {
       "name": "pax-fork/gnu/segments",
@@ -1811,7 +1952,10 @@
         ]
       },
       "specification": "ELF gABI edition 4.1 chapter 5, Program Header: PT_LOAD, p_flags, p_align; AMD64 ABI 1.0 section 5.1",
-      "decision": "Retain pax-fork/gnu/segments: candidate (type,flags,align) sequence [[1, 5, 4096], [1, 6, 4096], [7, 4, 8], [1685382481, 6, 16]] versus oracle [[1, 4, 4096], [1, 4, 4096], [1, 5, 4096], [1, 6, 4096], [7, 4, 8], [1685382481, 6, 16], [1685382482, 4, 1]]. Two candidate LOAD segments intentionally combine read-only and executable content; the oracle has a separate read-only LOAD and GNU_RELRO. LLD also emits PHDR. Permission and segment-count equality is not established by equal execution; no layout waiver suppresses the record."
+      "decision": "Retain pax-fork/gnu/segments: candidate (type,flags,align) sequence [[1, 5, 4096], [1, 6, 4096], [7, 4, 8], [1685382481, 6, 16]] versus oracle [[1, 4, 4096], [1, 4, 4096], [1, 5, 4096], [1, 6, 4096], [7, 4, 8], [1685382481, 6, 16], [1685382482, 4, 1]]. Two candidate LOAD segments intentionally combine read-only and executable content; the oracle has a separate read-only LOAD and GNU_RELRO. LLD also emits PHDR. Permission and segment-count equality is not established by equal execution; no layout waiver suppresses the record.",
+      "current_record": "pax-fork/gnu-differ.json.gz",
+      "current_record_sha256": "fa10b07be0de12ffa2ce9fa2fdd6eade7d94571ccfbfabee380e3d9c98f370f8",
+      "current_facts_equal_baseline": true
     },
     {
       "name": "pax-fork/gnu/relocations",
@@ -1827,7 +1971,10 @@
         "reference_records": 389184
       },
       "specification": "ELF gABI edition 4.1 chapter 4, Relocation: r_offset, r_info, r_addend; AMD64 ABI 1.0 (2025-03-12) sections 4.4 and 11",
-      "decision": "Retain pax-fork/gnu/relocations: 591524 candidate records versus 389184 oracle records. Original debug and relaxed sites remain individually retained by ligature; independent equations validated each output at ld02a. Different cardinalities preclude record equality; compact encoding changes neither relocation count nor target identity. Exact identity/ordering divergence is unresolved, not an optimization equivalence waiver."
+      "decision": "Retain pax-fork/gnu/relocations: 591524 candidate records versus 389184 oracle records. Original debug and relaxed sites remain individually retained by ligature; independent equations validated each output at ld02a. Different cardinalities preclude record equality; compact encoding changes neither relocation count nor target identity. Exact identity/ordering divergence is unresolved, not an optimization equivalence waiver.",
+      "current_record": "pax-fork/gnu-differ.json.gz",
+      "current_record_sha256": "fa10b07be0de12ffa2ce9fa2fdd6eade7d94571ccfbfabee380e3d9c98f370f8",
+      "current_facts_equal_baseline": true
     },
     {
       "name": "pax-hello/lld/symbols",
@@ -1848,7 +1995,10 @@
         "reference_only": 975
       },
       "specification": "ELF gABI edition 4.1 chapter 4, Symbol Table: st_info binding/type, st_other visibility, st_shndx; DWARF 5 section 7.5",
-      "decision": "Retain pax-hello/lld/symbols: 389 candidate-only and 975 reference-only symbol records; bindings {'0': 389} versus {'0': 975}. Local/debug metadata may differ without changing execution, but this does not decide global or weak binding differences. Exact metadata equality remains unproved; no local-symbol class waiver."
+      "decision": "Retain pax-hello/lld/symbols: 389 candidate-only and 975 reference-only symbol records; bindings {'0': 389} versus {'0': 975}. Local/debug metadata may differ without changing execution, but this does not decide global or weak binding differences. Exact metadata equality remains unproved; no local-symbol class waiver.",
+      "current_record": "pax-hello/lld-differ.json.gz",
+      "current_record_sha256": "45f50fe96bfe1b0415474ade4cd0fbc310ecb5db83cfa317e9fbc71318f50f46",
+      "current_facts_equal_baseline": true
     },
     {
       "name": "pax-hello/lld/segments",
@@ -1925,7 +2075,10 @@
         ]
       },
       "specification": "ELF gABI edition 4.1 chapter 5, Program Header: PT_LOAD, p_flags, p_align; AMD64 ABI 1.0 section 5.1",
-      "decision": "Retain pax-hello/lld/segments: candidate (type,flags,align) sequence [[1, 5, 4096], [1, 6, 4096], [7, 4, 8], [1685382481, 6, 16]] versus oracle [[1, 4, 4096], [1, 5, 4096], [1, 6, 4096], [1, 6, 4096], [6, 4, 8], [7, 4, 8], [1685382481, 6, 0], [1685382482, 4, 1]]. Two candidate LOAD segments intentionally combine read-only and executable content; the oracle has a separate read-only LOAD and GNU_RELRO. LLD also emits PHDR. Permission and segment-count equality is not established by equal execution; no layout waiver suppresses the record."
+      "decision": "Retain pax-hello/lld/segments: candidate (type,flags,align) sequence [[1, 5, 4096], [1, 6, 4096], [7, 4, 8], [1685382481, 6, 16]] versus oracle [[1, 4, 4096], [1, 5, 4096], [1, 6, 4096], [1, 6, 4096], [6, 4, 8], [7, 4, 8], [1685382481, 6, 0], [1685382482, 4, 1]]. Two candidate LOAD segments intentionally combine read-only and executable content; the oracle has a separate read-only LOAD and GNU_RELRO. LLD also emits PHDR. Permission and segment-count equality is not established by equal execution; no layout waiver suppresses the record.",
+      "current_record": "pax-hello/lld-differ.json.gz",
+      "current_record_sha256": "45f50fe96bfe1b0415474ade4cd0fbc310ecb5db83cfa317e9fbc71318f50f46",
+      "current_facts_equal_baseline": true
     },
     {
       "name": "pax-hello/lld/relocations",
@@ -1941,7 +2094,10 @@
         "reference_records": 393249
       },
       "specification": "ELF gABI edition 4.1 chapter 4, Relocation: r_offset, r_info, r_addend; AMD64 ABI 1.0 (2025-03-12) sections 4.4 and 11",
-      "decision": "Retain pax-hello/lld/relocations: 590358 candidate records versus 393249 oracle records. Original debug and relaxed sites remain individually retained by ligature; independent equations validated each output at ld02a. Different cardinalities preclude record equality; compact encoding changes neither relocation count nor target identity. Exact identity/ordering divergence is unresolved, not an optimization equivalence waiver."
+      "decision": "Retain pax-hello/lld/relocations: 590358 candidate records versus 393249 oracle records. Original debug and relaxed sites remain individually retained by ligature; independent equations validated each output at ld02a. Different cardinalities preclude record equality; compact encoding changes neither relocation count nor target identity. Exact identity/ordering divergence is unresolved, not an optimization equivalence waiver.",
+      "current_record": "pax-hello/lld-differ.json.gz",
+      "current_record_sha256": "45f50fe96bfe1b0415474ade4cd0fbc310ecb5db83cfa317e9fbc71318f50f46",
+      "current_facts_equal_baseline": true
     },
     {
       "name": "pax-hello/gnu/symbols",
@@ -1964,7 +2120,10 @@
         "reference_only": 357
       },
       "specification": "ELF gABI edition 4.1 chapter 4, Symbol Table: st_info binding/type, st_other visibility, st_shndx; DWARF 5 section 7.5",
-      "decision": "Retain pax-hello/gnu/symbols: 584 candidate-only and 357 reference-only symbol records; bindings {'0': 584} versus {'0': 147, '1': 165, '2': 45}. Local/debug metadata may differ without changing execution, but this does not decide global or weak binding differences. Exact metadata equality remains unproved; no local-symbol class waiver."
+      "decision": "Retain pax-hello/gnu/symbols: 584 candidate-only and 357 reference-only symbol records; bindings {'0': 584} versus {'0': 147, '1': 165, '2': 45}. Local/debug metadata may differ without changing execution, but this does not decide global or weak binding differences. Exact metadata equality remains unproved; no local-symbol class waiver.",
+      "current_record": "pax-hello/gnu-differ.json.gz",
+      "current_record_sha256": "bb32246e12988edc77888c23d922b9c32010d8364828df31525531935653d676",
+      "current_facts_equal_baseline": true
     },
     {
       "name": "pax-hello/gnu/segments",
@@ -2036,7 +2195,10 @@
         ]
       },
       "specification": "ELF gABI edition 4.1 chapter 5, Program Header: PT_LOAD, p_flags, p_align; AMD64 ABI 1.0 section 5.1",
-      "decision": "Retain pax-hello/gnu/segments: candidate (type,flags,align) sequence [[1, 5, 4096], [1, 6, 4096], [7, 4, 8], [1685382481, 6, 16]] versus oracle [[1, 4, 4096], [1, 4, 4096], [1, 5, 4096], [1, 6, 4096], [7, 4, 8], [1685382481, 6, 16], [1685382482, 4, 1]]. Two candidate LOAD segments intentionally combine read-only and executable content; the oracle has a separate read-only LOAD and GNU_RELRO. LLD also emits PHDR. Permission and segment-count equality is not established by equal execution; no layout waiver suppresses the record."
+      "decision": "Retain pax-hello/gnu/segments: candidate (type,flags,align) sequence [[1, 5, 4096], [1, 6, 4096], [7, 4, 8], [1685382481, 6, 16]] versus oracle [[1, 4, 4096], [1, 4, 4096], [1, 5, 4096], [1, 6, 4096], [7, 4, 8], [1685382481, 6, 16], [1685382482, 4, 1]]. Two candidate LOAD segments intentionally combine read-only and executable content; the oracle has a separate read-only LOAD and GNU_RELRO. LLD also emits PHDR. Permission and segment-count equality is not established by equal execution; no layout waiver suppresses the record.",
+      "current_record": "pax-hello/gnu-differ.json.gz",
+      "current_record_sha256": "bb32246e12988edc77888c23d922b9c32010d8364828df31525531935653d676",
+      "current_facts_equal_baseline": true
     },
     {
       "name": "pax-hello/gnu/relocations",
@@ -2052,7 +2214,10 @@
         "reference_records": 381190
       },
       "specification": "ELF gABI edition 4.1 chapter 4, Relocation: r_offset, r_info, r_addend; AMD64 ABI 1.0 (2025-03-12) sections 4.4 and 11",
-      "decision": "Retain pax-hello/gnu/relocations: 590358 candidate records versus 381190 oracle records. Original debug and relaxed sites remain individually retained by ligature; independent equations validated each output at ld02a. Different cardinalities preclude record equality; compact encoding changes neither relocation count nor target identity. Exact identity/ordering divergence is unresolved, not an optimization equivalence waiver."
+      "decision": "Retain pax-hello/gnu/relocations: 590358 candidate records versus 381190 oracle records. Original debug and relaxed sites remain individually retained by ligature; independent equations validated each output at ld02a. Different cardinalities preclude record equality; compact encoding changes neither relocation count nor target identity. Exact identity/ordering divergence is unresolved, not an optimization equivalence waiver.",
+      "current_record": "pax-hello/gnu-differ.json.gz",
+      "current_record_sha256": "bb32246e12988edc77888c23d922b9c32010d8364828df31525531935653d676",
+      "current_facts_equal_baseline": true
     },
     {
       "name": "pax-host/lld/symbols",
@@ -2073,7 +2238,10 @@
         "reference_only": 975
       },
       "specification": "ELF gABI edition 4.1 chapter 4, Symbol Table: st_info binding/type, st_other visibility, st_shndx; DWARF 5 section 7.5",
-      "decision": "Retain pax-host/lld/symbols: 483 candidate-only and 975 reference-only symbol records; bindings {'0': 483} versus {'0': 975}. Local/debug metadata may differ without changing execution, but this does not decide global or weak binding differences. Exact metadata equality remains unproved; no local-symbol class waiver."
+      "decision": "Retain pax-host/lld/symbols: 483 candidate-only and 975 reference-only symbol records; bindings {'0': 483} versus {'0': 975}. Local/debug metadata may differ without changing execution, but this does not decide global or weak binding differences. Exact metadata equality remains unproved; no local-symbol class waiver.",
+      "current_record": "pax-host/lld-differ.json.gz",
+      "current_record_sha256": "d6248706c1bae223c7a75e3034de57fe84862f1bd32d92dc59e9c756dd57bb72",
+      "current_facts_equal_baseline": true
     },
     {
       "name": "pax-host/lld/segments",
@@ -2150,7 +2318,10 @@
         ]
       },
       "specification": "ELF gABI edition 4.1 chapter 5, Program Header: PT_LOAD, p_flags, p_align; AMD64 ABI 1.0 section 5.1",
-      "decision": "Retain pax-host/lld/segments: candidate (type,flags,align) sequence [[1, 5, 4096], [1, 6, 4096], [7, 4, 8], [1685382481, 6, 16]] versus oracle [[1, 4, 4096], [1, 5, 4096], [1, 6, 4096], [1, 6, 4096], [6, 4, 8], [7, 4, 8], [1685382481, 6, 0], [1685382482, 4, 1]]. Two candidate LOAD segments intentionally combine read-only and executable content; the oracle has a separate read-only LOAD and GNU_RELRO. LLD also emits PHDR. Permission and segment-count equality is not established by equal execution; no layout waiver suppresses the record."
+      "decision": "Retain pax-host/lld/segments: candidate (type,flags,align) sequence [[1, 5, 4096], [1, 6, 4096], [7, 4, 8], [1685382481, 6, 16]] versus oracle [[1, 4, 4096], [1, 5, 4096], [1, 6, 4096], [1, 6, 4096], [6, 4, 8], [7, 4, 8], [1685382481, 6, 0], [1685382482, 4, 1]]. Two candidate LOAD segments intentionally combine read-only and executable content; the oracle has a separate read-only LOAD and GNU_RELRO. LLD also emits PHDR. Permission and segment-count equality is not established by equal execution; no layout waiver suppresses the record.",
+      "current_record": "pax-host/lld-differ.json.gz",
+      "current_record_sha256": "d6248706c1bae223c7a75e3034de57fe84862f1bd32d92dc59e9c756dd57bb72",
+      "current_facts_equal_baseline": true
     },
     {
       "name": "pax-host/lld/relocations",
@@ -2166,7 +2337,10 @@
         "reference_records": 416889
       },
       "specification": "ELF gABI edition 4.1 chapter 4, Relocation: r_offset, r_info, r_addend; AMD64 ABI 1.0 (2025-03-12) sections 4.4 and 11",
-      "decision": "Retain pax-host/lld/relocations: 593594 candidate records versus 416889 oracle records. Original debug and relaxed sites remain individually retained by ligature; independent equations validated each output at ld02a. Different cardinalities preclude record equality; compact encoding changes neither relocation count nor target identity. Exact identity/ordering divergence is unresolved, not an optimization equivalence waiver."
+      "decision": "Retain pax-host/lld/relocations: 593594 candidate records versus 416889 oracle records. Original debug and relaxed sites remain individually retained by ligature; independent equations validated each output at ld02a. Different cardinalities preclude record equality; compact encoding changes neither relocation count nor target identity. Exact identity/ordering divergence is unresolved, not an optimization equivalence waiver.",
+      "current_record": "pax-host/lld-differ.json.gz",
+      "current_record_sha256": "d6248706c1bae223c7a75e3034de57fe84862f1bd32d92dc59e9c756dd57bb72",
+      "current_facts_equal_baseline": true
     },
     {
       "name": "pax-host/gnu/symbols",
@@ -2190,7 +2364,10 @@
         "reference_only": 640
       },
       "specification": "ELF gABI edition 4.1 chapter 4, Symbol Table: st_info binding/type, st_other visibility, st_shndx; DWARF 5 section 7.5",
-      "decision": "Retain pax-host/gnu/symbols: 846 candidate-only and 640 reference-only symbol records; bindings {'0': 841, '1': 5} versus {'0': 269, '1': 322, '2': 49}. Local/debug metadata may differ without changing execution, but this does not decide global or weak binding differences. Exact metadata equality remains unproved; no local-symbol class waiver."
+      "decision": "Retain pax-host/gnu/symbols: 846 candidate-only and 640 reference-only symbol records; bindings {'0': 841, '1': 5} versus {'0': 269, '1': 322, '2': 49}. Local/debug metadata may differ without changing execution, but this does not decide global or weak binding differences. Exact metadata equality remains unproved; no local-symbol class waiver.",
+      "current_record": "pax-host/gnu-differ.json.gz",
+      "current_record_sha256": "2c0d079267e07d298a2c42eebacf763bb0f6424fbac20b04055775791787841b",
+      "current_facts_equal_baseline": true
     },
     {
       "name": "pax-host/gnu/segments",
@@ -2262,7 +2439,10 @@
         ]
       },
       "specification": "ELF gABI edition 4.1 chapter 5, Program Header: PT_LOAD, p_flags, p_align; AMD64 ABI 1.0 section 5.1",
-      "decision": "Retain pax-host/gnu/segments: candidate (type,flags,align) sequence [[1, 5, 4096], [1, 6, 4096], [7, 4, 8], [1685382481, 6, 16]] versus oracle [[1, 4, 4096], [1, 4, 4096], [1, 5, 4096], [1, 6, 4096], [7, 4, 8], [1685382481, 6, 16], [1685382482, 4, 1]]. Two candidate LOAD segments intentionally combine read-only and executable content; the oracle has a separate read-only LOAD and GNU_RELRO. LLD also emits PHDR. Permission and segment-count equality is not established by equal execution; no layout waiver suppresses the record."
+      "decision": "Retain pax-host/gnu/segments: candidate (type,flags,align) sequence [[1, 5, 4096], [1, 6, 4096], [7, 4, 8], [1685382481, 6, 16]] versus oracle [[1, 4, 4096], [1, 4, 4096], [1, 5, 4096], [1, 6, 4096], [7, 4, 8], [1685382481, 6, 16], [1685382482, 4, 1]]. Two candidate LOAD segments intentionally combine read-only and executable content; the oracle has a separate read-only LOAD and GNU_RELRO. LLD also emits PHDR. Permission and segment-count equality is not established by equal execution; no layout waiver suppresses the record.",
+      "current_record": "pax-host/gnu-differ.json.gz",
+      "current_record_sha256": "2c0d079267e07d298a2c42eebacf763bb0f6424fbac20b04055775791787841b",
+      "current_facts_equal_baseline": true
     },
     {
       "name": "pax-host/gnu/tls",
@@ -2282,7 +2462,10 @@
         "symbol_normalized_initializers_equal": true
       },
       "specification": "ELF gABI chapter 5, PT_TLS; AMD64 ABI 1.0 (2025-03-12) sections 4.5 and 11, static TLS layout and transitions",
-      "decision": "Retain pax-host/gnu/tls: both TLS memory sizes are 520 bytes and symbol-normalized initializer multisets agree, with no missing variable. Raw templates differ in ordering and symbol bindings do not agree. The GNU ordering record is retained independently of the resolved LLD record; neither the initializer equality nor equal execution proves raw template or binding equality."
+      "decision": "Retain pax-host/gnu/tls: both TLS memory sizes are 520 bytes and symbol-normalized initializer multisets agree, with no missing variable. Raw templates differ in ordering and symbol bindings do not agree. The GNU ordering record is retained independently of the resolved LLD record; neither the initializer equality nor equal execution proves raw template or binding equality.",
+      "current_record": "pax-host/gnu-differ.json.gz",
+      "current_record_sha256": "2c0d079267e07d298a2c42eebacf763bb0f6424fbac20b04055775791787841b",
+      "current_facts_equal_baseline": true
     },
     {
       "name": "pax-host/gnu/relocations",
@@ -2298,7 +2481,10 @@
         "reference_records": 406417
       },
       "specification": "ELF gABI edition 4.1 chapter 4, Relocation: r_offset, r_info, r_addend; AMD64 ABI 1.0 (2025-03-12) sections 4.4 and 11",
-      "decision": "Retain pax-host/gnu/relocations: 593594 candidate records versus 406417 oracle records. Original debug and relaxed sites remain individually retained by ligature; independent equations validated each output at ld02a. Different cardinalities preclude record equality; compact encoding changes neither relocation count nor target identity. Exact identity/ordering divergence is unresolved, not an optimization equivalence waiver."
+      "decision": "Retain pax-host/gnu/relocations: 593594 candidate records versus 406417 oracle records. Original debug and relaxed sites remain individually retained by ligature; independent equations validated each output at ld02a. Different cardinalities preclude record equality; compact encoding changes neither relocation count nor target identity. Exact identity/ordering divergence is unresolved, not an optimization equivalence waiver.",
+      "current_record": "pax-host/gnu-differ.json.gz",
+      "current_record_sha256": "2c0d079267e07d298a2c42eebacf763bb0f6424fbac20b04055775791787841b",
+      "current_facts_equal_baseline": true
     },
     {
       "name": "pax-loop/lld/symbols",
@@ -2319,7 +2505,10 @@
         "reference_only": 975
       },
       "specification": "ELF gABI edition 4.1 chapter 4, Symbol Table: st_info binding/type, st_other visibility, st_shndx; DWARF 5 section 7.5",
-      "decision": "Retain pax-loop/lld/symbols: 390 candidate-only and 975 reference-only symbol records; bindings {'0': 390} versus {'0': 975}. Local/debug metadata may differ without changing execution, but this does not decide global or weak binding differences. Exact metadata equality remains unproved; no local-symbol class waiver."
+      "decision": "Retain pax-loop/lld/symbols: 390 candidate-only and 975 reference-only symbol records; bindings {'0': 390} versus {'0': 975}. Local/debug metadata may differ without changing execution, but this does not decide global or weak binding differences. Exact metadata equality remains unproved; no local-symbol class waiver.",
+      "current_record": "pax-loop/lld-differ.json.gz",
+      "current_record_sha256": "395b75fed1f77bce0ee7a584f474bafa9d47b1fc7852714ed55aa2a92e8685e6",
+      "current_facts_equal_baseline": true
     },
     {
       "name": "pax-loop/lld/segments",
@@ -2396,7 +2585,10 @@
         ]
       },
       "specification": "ELF gABI edition 4.1 chapter 5, Program Header: PT_LOAD, p_flags, p_align; AMD64 ABI 1.0 section 5.1",
-      "decision": "Retain pax-loop/lld/segments: candidate (type,flags,align) sequence [[1, 5, 4096], [1, 6, 4096], [7, 4, 8], [1685382481, 6, 16]] versus oracle [[1, 4, 4096], [1, 5, 4096], [1, 6, 4096], [1, 6, 4096], [6, 4, 8], [7, 4, 8], [1685382481, 6, 0], [1685382482, 4, 1]]. Two candidate LOAD segments intentionally combine read-only and executable content; the oracle has a separate read-only LOAD and GNU_RELRO. LLD also emits PHDR. Permission and segment-count equality is not established by equal execution; no layout waiver suppresses the record."
+      "decision": "Retain pax-loop/lld/segments: candidate (type,flags,align) sequence [[1, 5, 4096], [1, 6, 4096], [7, 4, 8], [1685382481, 6, 16]] versus oracle [[1, 4, 4096], [1, 5, 4096], [1, 6, 4096], [1, 6, 4096], [6, 4, 8], [7, 4, 8], [1685382481, 6, 0], [1685382482, 4, 1]]. Two candidate LOAD segments intentionally combine read-only and executable content; the oracle has a separate read-only LOAD and GNU_RELRO. LLD also emits PHDR. Permission and segment-count equality is not established by equal execution; no layout waiver suppresses the record.",
+      "current_record": "pax-loop/lld-differ.json.gz",
+      "current_record_sha256": "395b75fed1f77bce0ee7a584f474bafa9d47b1fc7852714ed55aa2a92e8685e6",
+      "current_facts_equal_baseline": true
     },
     {
       "name": "pax-loop/lld/relocations",
@@ -2412,7 +2604,10 @@
         "reference_records": 393446
       },
       "specification": "ELF gABI edition 4.1 chapter 4, Relocation: r_offset, r_info, r_addend; AMD64 ABI 1.0 (2025-03-12) sections 4.4 and 11",
-      "decision": "Retain pax-loop/lld/relocations: 590386 candidate records versus 393446 oracle records. Original debug and relaxed sites remain individually retained by ligature; independent equations validated each output at ld02a. Different cardinalities preclude record equality; compact encoding changes neither relocation count nor target identity. Exact identity/ordering divergence is unresolved, not an optimization equivalence waiver."
+      "decision": "Retain pax-loop/lld/relocations: 590386 candidate records versus 393446 oracle records. Original debug and relaxed sites remain individually retained by ligature; independent equations validated each output at ld02a. Different cardinalities preclude record equality; compact encoding changes neither relocation count nor target identity. Exact identity/ordering divergence is unresolved, not an optimization equivalence waiver.",
+      "current_record": "pax-loop/lld-differ.json.gz",
+      "current_record_sha256": "395b75fed1f77bce0ee7a584f474bafa9d47b1fc7852714ed55aa2a92e8685e6",
+      "current_facts_equal_baseline": true
     },
     {
       "name": "pax-loop/gnu/symbols",
@@ -2435,7 +2630,10 @@
         "reference_only": 358
       },
       "specification": "ELF gABI edition 4.1 chapter 4, Symbol Table: st_info binding/type, st_other visibility, st_shndx; DWARF 5 section 7.5",
-      "decision": "Retain pax-loop/gnu/symbols: 585 candidate-only and 358 reference-only symbol records; bindings {'0': 585} versus {'0': 148, '1': 165, '2': 45}. Local/debug metadata may differ without changing execution, but this does not decide global or weak binding differences. Exact metadata equality remains unproved; no local-symbol class waiver."
+      "decision": "Retain pax-loop/gnu/symbols: 585 candidate-only and 358 reference-only symbol records; bindings {'0': 585} versus {'0': 148, '1': 165, '2': 45}. Local/debug metadata may differ without changing execution, but this does not decide global or weak binding differences. Exact metadata equality remains unproved; no local-symbol class waiver.",
+      "current_record": "pax-loop/gnu-differ.json.gz",
+      "current_record_sha256": "4e94c73cc4b34a6573552cb5860cbf33b6d7ed4beef46a106849bdf8520b0608",
+      "current_facts_equal_baseline": true
     },
     {
       "name": "pax-loop/gnu/segments",
@@ -2507,7 +2705,10 @@
         ]
       },
       "specification": "ELF gABI edition 4.1 chapter 5, Program Header: PT_LOAD, p_flags, p_align; AMD64 ABI 1.0 section 5.1",
-      "decision": "Retain pax-loop/gnu/segments: candidate (type,flags,align) sequence [[1, 5, 4096], [1, 6, 4096], [7, 4, 8], [1685382481, 6, 16]] versus oracle [[1, 4, 4096], [1, 4, 4096], [1, 5, 4096], [1, 6, 4096], [7, 4, 8], [1685382481, 6, 16], [1685382482, 4, 1]]. Two candidate LOAD segments intentionally combine read-only and executable content; the oracle has a separate read-only LOAD and GNU_RELRO. LLD also emits PHDR. Permission and segment-count equality is not established by equal execution; no layout waiver suppresses the record."
+      "decision": "Retain pax-loop/gnu/segments: candidate (type,flags,align) sequence [[1, 5, 4096], [1, 6, 4096], [7, 4, 8], [1685382481, 6, 16]] versus oracle [[1, 4, 4096], [1, 4, 4096], [1, 5, 4096], [1, 6, 4096], [7, 4, 8], [1685382481, 6, 16], [1685382482, 4, 1]]. Two candidate LOAD segments intentionally combine read-only and executable content; the oracle has a separate read-only LOAD and GNU_RELRO. LLD also emits PHDR. Permission and segment-count equality is not established by equal execution; no layout waiver suppresses the record.",
+      "current_record": "pax-loop/gnu-differ.json.gz",
+      "current_record_sha256": "4e94c73cc4b34a6573552cb5860cbf33b6d7ed4beef46a106849bdf8520b0608",
+      "current_facts_equal_baseline": true
     },
     {
       "name": "pax-loop/gnu/relocations",
@@ -2523,7 +2724,10 @@
         "reference_records": 381390
       },
       "specification": "ELF gABI edition 4.1 chapter 4, Relocation: r_offset, r_info, r_addend; AMD64 ABI 1.0 (2025-03-12) sections 4.4 and 11",
-      "decision": "Retain pax-loop/gnu/relocations: 590386 candidate records versus 381390 oracle records. Original debug and relaxed sites remain individually retained by ligature; independent equations validated each output at ld02a. Different cardinalities preclude record equality; compact encoding changes neither relocation count nor target identity. Exact identity/ordering divergence is unresolved, not an optimization equivalence waiver."
+      "decision": "Retain pax-loop/gnu/relocations: 590386 candidate records versus 381390 oracle records. Original debug and relaxed sites remain individually retained by ligature; independent equations validated each output at ld02a. Different cardinalities preclude record equality; compact encoding changes neither relocation count nor target identity. Exact identity/ordering divergence is unresolved, not an optimization equivalence waiver.",
+      "current_record": "pax-loop/gnu-differ.json.gz",
+      "current_record_sha256": "4e94c73cc4b34a6573552cb5860cbf33b6d7ed4beef46a106849bdf8520b0608",
+      "current_facts_equal_baseline": true
     },
     {
       "name": "pax-signal/lld/symbols",
@@ -2544,7 +2748,10 @@
         "reference_only": 975
       },
       "specification": "ELF gABI edition 4.1 chapter 4, Symbol Table: st_info binding/type, st_other visibility, st_shndx; DWARF 5 section 7.5",
-      "decision": "Retain pax-signal/lld/symbols: 403 candidate-only and 975 reference-only symbol records; bindings {'0': 403} versus {'0': 975}. Local/debug metadata may differ without changing execution, but this does not decide global or weak binding differences. Exact metadata equality remains unproved; no local-symbol class waiver."
+      "decision": "Retain pax-signal/lld/symbols: 403 candidate-only and 975 reference-only symbol records; bindings {'0': 403} versus {'0': 975}. Local/debug metadata may differ without changing execution, but this does not decide global or weak binding differences. Exact metadata equality remains unproved; no local-symbol class waiver.",
+      "current_record": "pax-signal/lld-differ.json.gz",
+      "current_record_sha256": "47c3f74758c275418defc388555220de5077db122b924c8560e6df4f0a99a85f",
+      "current_facts_equal_baseline": true
     },
     {
       "name": "pax-signal/lld/segments",
@@ -2621,7 +2828,10 @@
         ]
       },
       "specification": "ELF gABI edition 4.1 chapter 5, Program Header: PT_LOAD, p_flags, p_align; AMD64 ABI 1.0 section 5.1",
-      "decision": "Retain pax-signal/lld/segments: candidate (type,flags,align) sequence [[1, 5, 4096], [1, 6, 4096], [7, 4, 8], [1685382481, 6, 16]] versus oracle [[1, 4, 4096], [1, 5, 4096], [1, 6, 4096], [1, 6, 4096], [6, 4, 8], [7, 4, 8], [1685382481, 6, 0], [1685382482, 4, 1]]. Two candidate LOAD segments intentionally combine read-only and executable content; the oracle has a separate read-only LOAD and GNU_RELRO. LLD also emits PHDR. Permission and segment-count equality is not established by equal execution; no layout waiver suppresses the record."
+      "decision": "Retain pax-signal/lld/segments: candidate (type,flags,align) sequence [[1, 5, 4096], [1, 6, 4096], [7, 4, 8], [1685382481, 6, 16]] versus oracle [[1, 4, 4096], [1, 5, 4096], [1, 6, 4096], [1, 6, 4096], [6, 4, 8], [7, 4, 8], [1685382481, 6, 0], [1685382482, 4, 1]]. Two candidate LOAD segments intentionally combine read-only and executable content; the oracle has a separate read-only LOAD and GNU_RELRO. LLD also emits PHDR. Permission and segment-count equality is not established by equal execution; no layout waiver suppresses the record.",
+      "current_record": "pax-signal/lld-differ.json.gz",
+      "current_record_sha256": "47c3f74758c275418defc388555220de5077db122b924c8560e6df4f0a99a85f",
+      "current_facts_equal_baseline": true
     },
     {
       "name": "pax-signal/lld/relocations",
@@ -2637,7 +2847,10 @@
         "reference_records": 395199
       },
       "specification": "ELF gABI edition 4.1 chapter 4, Relocation: r_offset, r_info, r_addend; AMD64 ABI 1.0 (2025-03-12) sections 4.4 and 11",
-      "decision": "Retain pax-signal/lld/relocations: 590693 candidate records versus 395199 oracle records. Original debug and relaxed sites remain individually retained by ligature; independent equations validated each output at ld02a. Different cardinalities preclude record equality; compact encoding changes neither relocation count nor target identity. Exact identity/ordering divergence is unresolved, not an optimization equivalence waiver."
+      "decision": "Retain pax-signal/lld/relocations: 590693 candidate records versus 395199 oracle records. Original debug and relaxed sites remain individually retained by ligature; independent equations validated each output at ld02a. Different cardinalities preclude record equality; compact encoding changes neither relocation count nor target identity. Exact identity/ordering divergence is unresolved, not an optimization equivalence waiver.",
+      "current_record": "pax-signal/lld-differ.json.gz",
+      "current_record_sha256": "47c3f74758c275418defc388555220de5077db122b924c8560e6df4f0a99a85f",
+      "current_facts_equal_baseline": true
     },
     {
       "name": "pax-signal/gnu/symbols",
@@ -2660,7 +2873,10 @@
         "reference_only": 405
       },
       "specification": "ELF gABI edition 4.1 chapter 4, Symbol Table: st_info binding/type, st_other visibility, st_shndx; DWARF 5 section 7.5",
-      "decision": "Retain pax-signal/gnu/symbols: 632 candidate-only and 405 reference-only symbol records; bindings {'0': 632} versus {'0': 157, '1': 203, '2': 45}. Local/debug metadata may differ without changing execution, but this does not decide global or weak binding differences. Exact metadata equality remains unproved; no local-symbol class waiver."
+      "decision": "Retain pax-signal/gnu/symbols: 632 candidate-only and 405 reference-only symbol records; bindings {'0': 632} versus {'0': 157, '1': 203, '2': 45}. Local/debug metadata may differ without changing execution, but this does not decide global or weak binding differences. Exact metadata equality remains unproved; no local-symbol class waiver.",
+      "current_record": "pax-signal/gnu-differ.json.gz",
+      "current_record_sha256": "925f6933b8568b8605343fd73ddf7ff9371e90f2779cc1ff222c2bbda208bd89",
+      "current_facts_equal_baseline": true
     },
     {
       "name": "pax-signal/gnu/segments",
@@ -2732,7 +2948,10 @@
         ]
       },
       "specification": "ELF gABI edition 4.1 chapter 5, Program Header: PT_LOAD, p_flags, p_align; AMD64 ABI 1.0 section 5.1",
-      "decision": "Retain pax-signal/gnu/segments: candidate (type,flags,align) sequence [[1, 5, 4096], [1, 6, 4096], [7, 4, 8], [1685382481, 6, 16]] versus oracle [[1, 4, 4096], [1, 4, 4096], [1, 5, 4096], [1, 6, 4096], [7, 4, 8], [1685382481, 6, 16], [1685382482, 4, 1]]. Two candidate LOAD segments intentionally combine read-only and executable content; the oracle has a separate read-only LOAD and GNU_RELRO. LLD also emits PHDR. Permission and segment-count equality is not established by equal execution; no layout waiver suppresses the record."
+      "decision": "Retain pax-signal/gnu/segments: candidate (type,flags,align) sequence [[1, 5, 4096], [1, 6, 4096], [7, 4, 8], [1685382481, 6, 16]] versus oracle [[1, 4, 4096], [1, 4, 4096], [1, 5, 4096], [1, 6, 4096], [7, 4, 8], [1685382481, 6, 16], [1685382482, 4, 1]]. Two candidate LOAD segments intentionally combine read-only and executable content; the oracle has a separate read-only LOAD and GNU_RELRO. LLD also emits PHDR. Permission and segment-count equality is not established by equal execution; no layout waiver suppresses the record.",
+      "current_record": "pax-signal/gnu-differ.json.gz",
+      "current_record_sha256": "925f6933b8568b8605343fd73ddf7ff9371e90f2779cc1ff222c2bbda208bd89",
+      "current_facts_equal_baseline": true
     },
     {
       "name": "pax-signal/gnu/relocations",
@@ -2748,7 +2967,10 @@
         "reference_records": 383583
       },
       "specification": "ELF gABI edition 4.1 chapter 4, Relocation: r_offset, r_info, r_addend; AMD64 ABI 1.0 (2025-03-12) sections 4.4 and 11",
-      "decision": "Retain pax-signal/gnu/relocations: 590693 candidate records versus 383583 oracle records. Original debug and relaxed sites remain individually retained by ligature; independent equations validated each output at ld02a. Different cardinalities preclude record equality; compact encoding changes neither relocation count nor target identity. Exact identity/ordering divergence is unresolved, not an optimization equivalence waiver."
+      "decision": "Retain pax-signal/gnu/relocations: 590693 candidate records versus 383583 oracle records. Original debug and relaxed sites remain individually retained by ligature; independent equations validated each output at ld02a. Different cardinalities preclude record equality; compact encoding changes neither relocation count nor target identity. Exact identity/ordering divergence is unresolved, not an optimization equivalence waiver.",
+      "current_record": "pax-signal/gnu-differ.json.gz",
+      "current_record_sha256": "925f6933b8568b8605343fd73ddf7ff9371e90f2779cc1ff222c2bbda208bd89",
+      "current_facts_equal_baseline": true
     },
     {
       "name": "pax-spawn/lld/symbols",
@@ -2769,7 +2991,10 @@
         "reference_only": 975
       },
       "specification": "ELF gABI edition 4.1 chapter 4, Symbol Table: st_info binding/type, st_other visibility, st_shndx; DWARF 5 section 7.5",
-      "decision": "Retain pax-spawn/lld/symbols: 552 candidate-only and 975 reference-only symbol records; bindings {'0': 552} versus {'0': 975}. Local/debug metadata may differ without changing execution, but this does not decide global or weak binding differences. Exact metadata equality remains unproved; no local-symbol class waiver."
+      "decision": "Retain pax-spawn/lld/symbols: 552 candidate-only and 975 reference-only symbol records; bindings {'0': 552} versus {'0': 975}. Local/debug metadata may differ without changing execution, but this does not decide global or weak binding differences. Exact metadata equality remains unproved; no local-symbol class waiver.",
+      "current_record": "pax-spawn/lld-differ.json.gz",
+      "current_record_sha256": "5abc716eef93e60c81a06b7b57e0c693dd5b0f59203b0739544efbd44f81a9dc",
+      "current_facts_equal_baseline": true
     },
     {
       "name": "pax-spawn/lld/segments",
@@ -2846,7 +3071,10 @@
         ]
       },
       "specification": "ELF gABI edition 4.1 chapter 5, Program Header: PT_LOAD, p_flags, p_align; AMD64 ABI 1.0 section 5.1",
-      "decision": "Retain pax-spawn/lld/segments: candidate (type,flags,align) sequence [[1, 5, 4096], [1, 6, 4096], [7, 4, 8], [1685382481, 6, 16]] versus oracle [[1, 4, 4096], [1, 5, 4096], [1, 6, 4096], [1, 6, 4096], [6, 4, 8], [7, 4, 8], [1685382481, 6, 0], [1685382482, 4, 1]]. Two candidate LOAD segments intentionally combine read-only and executable content; the oracle has a separate read-only LOAD and GNU_RELRO. LLD also emits PHDR. Permission and segment-count equality is not established by equal execution; no layout waiver suppresses the record."
+      "decision": "Retain pax-spawn/lld/segments: candidate (type,flags,align) sequence [[1, 5, 4096], [1, 6, 4096], [7, 4, 8], [1685382481, 6, 16]] versus oracle [[1, 4, 4096], [1, 5, 4096], [1, 6, 4096], [1, 6, 4096], [6, 4, 8], [7, 4, 8], [1685382481, 6, 0], [1685382482, 4, 1]]. Two candidate LOAD segments intentionally combine read-only and executable content; the oracle has a separate read-only LOAD and GNU_RELRO. LLD also emits PHDR. Permission and segment-count equality is not established by equal execution; no layout waiver suppresses the record.",
+      "current_record": "pax-spawn/lld-differ.json.gz",
+      "current_record_sha256": "5abc716eef93e60c81a06b7b57e0c693dd5b0f59203b0739544efbd44f81a9dc",
+      "current_facts_equal_baseline": true
     },
     {
       "name": "pax-spawn/lld/relocations",
@@ -2862,7 +3090,10 @@
         "reference_records": 421455
       },
       "specification": "ELF gABI edition 4.1 chapter 4, Relocation: r_offset, r_info, r_addend; AMD64 ABI 1.0 (2025-03-12) sections 4.4 and 11",
-      "decision": "Retain pax-spawn/lld/relocations: 593994 candidate records versus 421455 oracle records. Original debug and relaxed sites remain individually retained by ligature; independent equations validated each output at ld02a. Different cardinalities preclude record equality; compact encoding changes neither relocation count nor target identity. Exact identity/ordering divergence is unresolved, not an optimization equivalence waiver."
+      "decision": "Retain pax-spawn/lld/relocations: 593994 candidate records versus 421455 oracle records. Original debug and relaxed sites remain individually retained by ligature; independent equations validated each output at ld02a. Different cardinalities preclude record equality; compact encoding changes neither relocation count nor target identity. Exact identity/ordering divergence is unresolved, not an optimization equivalence waiver.",
+      "current_record": "pax-spawn/lld-differ.json.gz",
+      "current_record_sha256": "5abc716eef93e60c81a06b7b57e0c693dd5b0f59203b0739544efbd44f81a9dc",
+      "current_facts_equal_baseline": true
     },
     {
       "name": "pax-spawn/gnu/symbols",
@@ -2886,7 +3117,10 @@
         "reference_only": 711
       },
       "specification": "ELF gABI edition 4.1 chapter 4, Symbol Table: st_info binding/type, st_other visibility, st_shndx; DWARF 5 section 7.5",
-      "decision": "Retain pax-spawn/gnu/symbols: 958 candidate-only and 711 reference-only symbol records; bindings {'0': 952, '1': 6} versus {'0': 295, '1': 367, '2': 49}. Local/debug metadata may differ without changing execution, but this does not decide global or weak binding differences. Exact metadata equality remains unproved; no local-symbol class waiver."
+      "decision": "Retain pax-spawn/gnu/symbols: 958 candidate-only and 711 reference-only symbol records; bindings {'0': 952, '1': 6} versus {'0': 295, '1': 367, '2': 49}. Local/debug metadata may differ without changing execution, but this does not decide global or weak binding differences. Exact metadata equality remains unproved; no local-symbol class waiver.",
+      "current_record": "pax-spawn/gnu-differ.json.gz",
+      "current_record_sha256": "86c4767b49cf721f903fd0f65a2c5a4b0ccae2ca50bcbbfbfbdec7aa123acf54",
+      "current_facts_equal_baseline": true
     },
     {
       "name": "pax-spawn/gnu/segments",
@@ -2958,7 +3192,10 @@
         ]
       },
       "specification": "ELF gABI edition 4.1 chapter 5, Program Header: PT_LOAD, p_flags, p_align; AMD64 ABI 1.0 section 5.1",
-      "decision": "Retain pax-spawn/gnu/segments: candidate (type,flags,align) sequence [[1, 5, 4096], [1, 6, 4096], [7, 4, 8], [1685382481, 6, 16]] versus oracle [[1, 4, 4096], [1, 4, 4096], [1, 5, 4096], [1, 6, 4096], [7, 4, 8], [1685382481, 6, 16], [1685382482, 4, 1]]. Two candidate LOAD segments intentionally combine read-only and executable content; the oracle has a separate read-only LOAD and GNU_RELRO. LLD also emits PHDR. Permission and segment-count equality is not established by equal execution; no layout waiver suppresses the record."
+      "decision": "Retain pax-spawn/gnu/segments: candidate (type,flags,align) sequence [[1, 5, 4096], [1, 6, 4096], [7, 4, 8], [1685382481, 6, 16]] versus oracle [[1, 4, 4096], [1, 4, 4096], [1, 5, 4096], [1, 6, 4096], [7, 4, 8], [1685382481, 6, 16], [1685382482, 4, 1]]. Two candidate LOAD segments intentionally combine read-only and executable content; the oracle has a separate read-only LOAD and GNU_RELRO. LLD also emits PHDR. Permission and segment-count equality is not established by equal execution; no layout waiver suppresses the record.",
+      "current_record": "pax-spawn/gnu-differ.json.gz",
+      "current_record_sha256": "86c4767b49cf721f903fd0f65a2c5a4b0ccae2ca50bcbbfbfbdec7aa123acf54",
+      "current_facts_equal_baseline": true
     },
     {
       "name": "pax-spawn/gnu/tls",
@@ -2978,7 +3215,10 @@
         "symbol_normalized_initializers_equal": true
       },
       "specification": "ELF gABI chapter 5, PT_TLS; AMD64 ABI 1.0 (2025-03-12) sections 4.5 and 11, static TLS layout and transitions",
-      "decision": "Retain pax-spawn/gnu/tls: both TLS memory sizes are 448 bytes and symbol-normalized initializer multisets agree, with no missing variable. Raw templates differ in ordering and symbol bindings do not agree. The GNU ordering record is retained independently of the resolved LLD record; neither the initializer equality nor equal execution proves raw template or binding equality."
+      "decision": "Retain pax-spawn/gnu/tls: both TLS memory sizes are 448 bytes and symbol-normalized initializer multisets agree, with no missing variable. Raw templates differ in ordering and symbol bindings do not agree. The GNU ordering record is retained independently of the resolved LLD record; neither the initializer equality nor equal execution proves raw template or binding equality.",
+      "current_record": "pax-spawn/gnu-differ.json.gz",
+      "current_record_sha256": "86c4767b49cf721f903fd0f65a2c5a4b0ccae2ca50bcbbfbfbdec7aa123acf54",
+      "current_facts_equal_baseline": true
     },
     {
       "name": "pax-spawn/gnu/relocations",
@@ -2994,7 +3234,10 @@
         "reference_records": 410721
       },
       "specification": "ELF gABI edition 4.1 chapter 4, Relocation: r_offset, r_info, r_addend; AMD64 ABI 1.0 (2025-03-12) sections 4.4 and 11",
-      "decision": "Retain pax-spawn/gnu/relocations: 593994 candidate records versus 410721 oracle records. Original debug and relaxed sites remain individually retained by ligature; independent equations validated each output at ld02a. Different cardinalities preclude record equality; compact encoding changes neither relocation count nor target identity. Exact identity/ordering divergence is unresolved, not an optimization equivalence waiver."
+      "decision": "Retain pax-spawn/gnu/relocations: 593994 candidate records versus 410721 oracle records. Original debug and relaxed sites remain individually retained by ligature; independent equations validated each output at ld02a. Different cardinalities preclude record equality; compact encoding changes neither relocation count nor target identity. Exact identity/ordering divergence is unresolved, not an optimization equivalence waiver.",
+      "current_record": "pax-spawn/gnu-differ.json.gz",
+      "current_record_sha256": "86c4767b49cf721f903fd0f65a2c5a4b0ccae2ca50bcbbfbfbdec7aa123acf54",
+      "current_facts_equal_baseline": true
     },
     {
       "name": "pax-std/lld/symbols",
@@ -3015,7 +3258,10 @@
         "reference_only": 975
       },
       "specification": "ELF gABI edition 4.1 chapter 4, Symbol Table: st_info binding/type, st_other visibility, st_shndx; DWARF 5 section 7.5",
-      "decision": "Retain pax-std/lld/symbols: 431 candidate-only and 975 reference-only symbol records; bindings {'0': 431} versus {'0': 975}. Local/debug metadata may differ without changing execution, but this does not decide global or weak binding differences. Exact metadata equality remains unproved; no local-symbol class waiver."
+      "decision": "Retain pax-std/lld/symbols: 431 candidate-only and 975 reference-only symbol records; bindings {'0': 431} versus {'0': 975}. Local/debug metadata may differ without changing execution, but this does not decide global or weak binding differences. Exact metadata equality remains unproved; no local-symbol class waiver.",
+      "current_record": "pax-std/lld-differ.json.gz",
+      "current_record_sha256": "b72029fc97a1104ecf6ac456eff460e5c8329e84147105d46abf7d1f2e383c32",
+      "current_facts_equal_baseline": true
     },
     {
       "name": "pax-std/lld/segments",
@@ -3092,7 +3338,10 @@
         ]
       },
       "specification": "ELF gABI edition 4.1 chapter 5, Program Header: PT_LOAD, p_flags, p_align; AMD64 ABI 1.0 section 5.1",
-      "decision": "Retain pax-std/lld/segments: candidate (type,flags,align) sequence [[1, 5, 4096], [1, 6, 4096], [7, 4, 8], [1685382481, 6, 16]] versus oracle [[1, 4, 4096], [1, 5, 4096], [1, 6, 4096], [1, 6, 4096], [6, 4, 8], [7, 4, 8], [1685382481, 6, 0], [1685382482, 4, 1]]. Two candidate LOAD segments intentionally combine read-only and executable content; the oracle has a separate read-only LOAD and GNU_RELRO. LLD also emits PHDR. Permission and segment-count equality is not established by equal execution; no layout waiver suppresses the record."
+      "decision": "Retain pax-std/lld/segments: candidate (type,flags,align) sequence [[1, 5, 4096], [1, 6, 4096], [7, 4, 8], [1685382481, 6, 16]] versus oracle [[1, 4, 4096], [1, 5, 4096], [1, 6, 4096], [1, 6, 4096], [6, 4, 8], [7, 4, 8], [1685382481, 6, 0], [1685382482, 4, 1]]. Two candidate LOAD segments intentionally combine read-only and executable content; the oracle has a separate read-only LOAD and GNU_RELRO. LLD also emits PHDR. Permission and segment-count equality is not established by equal execution; no layout waiver suppresses the record.",
+      "current_record": "pax-std/lld-differ.json.gz",
+      "current_record_sha256": "b72029fc97a1104ecf6ac456eff460e5c8329e84147105d46abf7d1f2e383c32",
+      "current_facts_equal_baseline": true
     },
     {
       "name": "pax-std/lld/relocations",
@@ -3108,7 +3357,10 @@
         "reference_records": 405217
       },
       "specification": "ELF gABI edition 4.1 chapter 4, Relocation: r_offset, r_info, r_addend; AMD64 ABI 1.0 (2025-03-12) sections 4.4 and 11",
-      "decision": "Retain pax-std/lld/relocations: 591948 candidate records versus 405217 oracle records. Original debug and relaxed sites remain individually retained by ligature; independent equations validated each output at ld02a. Different cardinalities preclude record equality; compact encoding changes neither relocation count nor target identity. Exact identity/ordering divergence is unresolved, not an optimization equivalence waiver."
+      "decision": "Retain pax-std/lld/relocations: 591948 candidate records versus 405217 oracle records. Original debug and relaxed sites remain individually retained by ligature; independent equations validated each output at ld02a. Different cardinalities preclude record equality; compact encoding changes neither relocation count nor target identity. Exact identity/ordering divergence is unresolved, not an optimization equivalence waiver.",
+      "current_record": "pax-std/lld-differ.json.gz",
+      "current_record_sha256": "b72029fc97a1104ecf6ac456eff460e5c8329e84147105d46abf7d1f2e383c32",
+      "current_facts_equal_baseline": true
     },
     {
       "name": "pax-std/gnu/symbols",
@@ -3131,7 +3383,10 @@
         "reference_only": 434
       },
       "specification": "ELF gABI edition 4.1 chapter 4, Symbol Table: st_info binding/type, st_other visibility, st_shndx; DWARF 5 section 7.5",
-      "decision": "Retain pax-std/gnu/symbols: 662 candidate-only and 434 reference-only symbol records; bindings {'0': 662} versus {'0': 184, '1': 205, '2': 45}. Local/debug metadata may differ without changing execution, but this does not decide global or weak binding differences. Exact metadata equality remains unproved; no local-symbol class waiver."
+      "decision": "Retain pax-std/gnu/symbols: 662 candidate-only and 434 reference-only symbol records; bindings {'0': 662} versus {'0': 184, '1': 205, '2': 45}. Local/debug metadata may differ without changing execution, but this does not decide global or weak binding differences. Exact metadata equality remains unproved; no local-symbol class waiver.",
+      "current_record": "pax-std/gnu-differ.json.gz",
+      "current_record_sha256": "71a41bad4a4a499866a0d50e62199803b83adc2d47134ad13020dfdd5c6f60d5",
+      "current_facts_equal_baseline": true
     },
     {
       "name": "pax-std/gnu/segments",
@@ -3203,7 +3458,10 @@
         ]
       },
       "specification": "ELF gABI edition 4.1 chapter 5, Program Header: PT_LOAD, p_flags, p_align; AMD64 ABI 1.0 section 5.1",
-      "decision": "Retain pax-std/gnu/segments: candidate (type,flags,align) sequence [[1, 5, 4096], [1, 6, 4096], [7, 4, 8], [1685382481, 6, 16]] versus oracle [[1, 4, 4096], [1, 4, 4096], [1, 5, 4096], [1, 6, 4096], [7, 4, 8], [1685382481, 6, 16], [1685382482, 4, 1]]. Two candidate LOAD segments intentionally combine read-only and executable content; the oracle has a separate read-only LOAD and GNU_RELRO. LLD also emits PHDR. Permission and segment-count equality is not established by equal execution; no layout waiver suppresses the record."
+      "decision": "Retain pax-std/gnu/segments: candidate (type,flags,align) sequence [[1, 5, 4096], [1, 6, 4096], [7, 4, 8], [1685382481, 6, 16]] versus oracle [[1, 4, 4096], [1, 4, 4096], [1, 5, 4096], [1, 6, 4096], [7, 4, 8], [1685382481, 6, 16], [1685382482, 4, 1]]. Two candidate LOAD segments intentionally combine read-only and executable content; the oracle has a separate read-only LOAD and GNU_RELRO. LLD also emits PHDR. Permission and segment-count equality is not established by equal execution; no layout waiver suppresses the record.",
+      "current_record": "pax-std/gnu-differ.json.gz",
+      "current_record_sha256": "71a41bad4a4a499866a0d50e62199803b83adc2d47134ad13020dfdd5c6f60d5",
+      "current_facts_equal_baseline": true
     },
     {
       "name": "pax-std/gnu/relocations",
@@ -3219,7 +3477,10 @@
         "reference_records": 393239
       },
       "specification": "ELF gABI edition 4.1 chapter 4, Relocation: r_offset, r_info, r_addend; AMD64 ABI 1.0 (2025-03-12) sections 4.4 and 11",
-      "decision": "Retain pax-std/gnu/relocations: 591948 candidate records versus 393239 oracle records. Original debug and relaxed sites remain individually retained by ligature; independent equations validated each output at ld02a. Different cardinalities preclude record equality; compact encoding changes neither relocation count nor target identity. Exact identity/ordering divergence is unresolved, not an optimization equivalence waiver."
+      "decision": "Retain pax-std/gnu/relocations: 591948 candidate records versus 393239 oracle records. Original debug and relaxed sites remain individually retained by ligature; independent equations validated each output at ld02a. Different cardinalities preclude record equality; compact encoding changes neither relocation count nor target identity. Exact identity/ordering divergence is unresolved, not an optimization equivalence waiver.",
+      "current_record": "pax-std/gnu-differ.json.gz",
+      "current_record_sha256": "71a41bad4a4a499866a0d50e62199803b83adc2d47134ad13020dfdd5c6f60d5",
+      "current_facts_equal_baseline": true
     }
   ],
   "waivers": []

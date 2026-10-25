@@ -1,0 +1,2588 @@
+{
+  "counts": {
+    "relocations": 28,
+    "segments": 28,
+    "symbols": 28,
+    "tls": 3
+  },
+  "format": "ligature.structural-classes.v2",
+  "lld17_18_attribution": {
+    "confirmed_count": 0,
+    "reason": "No same-input lld18 run was performed. These low-address user executables do not exercise pax#172/ligature#4 high-half kernel range failure; lld-only findings are not automatically version artifacts."
+  },
+  "rows": [
+    {
+      "case": "compiler-comptime",
+      "classes": [
+        {
+          "candidate_binding_counts": {
+            "0": 381
+          },
+          "candidate_only": 381,
+          "kind": "symbols",
+          "reference_binding_counts": {
+            "0": 975
+          },
+          "reference_only": 975
+        },
+        {
+          "candidate": [
+            [
+              1,
+              5,
+              4096
+            ],
+            [
+              1,
+              6,
+              4096
+            ],
+            [
+              7,
+              4,
+              8
+            ],
+            [
+              1685382481,
+              6,
+              16
+            ]
+          ],
+          "kind": "segments",
+          "reference": [
+            [
+              1,
+              4,
+              4096
+            ],
+            [
+              1,
+              5,
+              4096
+            ],
+            [
+              1,
+              6,
+              4096
+            ],
+            [
+              1,
+              6,
+              4096
+            ],
+            [
+              6,
+              4,
+              8
+            ],
+            [
+              7,
+              4,
+              8
+            ],
+            [
+              1685382481,
+              6,
+              0
+            ],
+            [
+              1685382482,
+              4,
+              1
+            ]
+          ]
+        },
+        {
+          "candidate_records": 590207,
+          "cause": "retained per-site relocation records differ in identity, normalization or ordering; every candidate site is independently validated by the corpus gate",
+          "kind": "relocations",
+          "reference_records": 392393
+        }
+      ],
+      "oracle": "lld",
+      "record": "compiler-comptime/lld-differ.json.gz",
+      "sha256": "e85aaadfaf5fe07bdddab530ff283c06376cc761b0d56460c85924b24608df94"
+    },
+    {
+      "case": "compiler-comptime",
+      "classes": [
+        {
+          "candidate_binding_counts": {
+            "0": 571,
+            "1": 2
+          },
+          "candidate_only": 573,
+          "kind": "symbols",
+          "reference_binding_counts": {
+            "0": 141,
+            "1": 160,
+            "2": 45
+          },
+          "reference_only": 346
+        },
+        {
+          "candidate": [
+            [
+              1,
+              5,
+              4096
+            ],
+            [
+              1,
+              6,
+              4096
+            ],
+            [
+              7,
+              4,
+              8
+            ],
+            [
+              1685382481,
+              6,
+              16
+            ]
+          ],
+          "kind": "segments",
+          "reference": [
+            [
+              1,
+              4,
+              4096
+            ],
+            [
+              1,
+              4,
+              4096
+            ],
+            [
+              1,
+              5,
+              4096
+            ],
+            [
+              1,
+              6,
+              4096
+            ],
+            [
+              7,
+              4,
+              8
+            ],
+            [
+              1685382481,
+              6,
+              16
+            ],
+            [
+              1685382482,
+              4,
+              1
+            ]
+          ]
+        },
+        {
+          "candidate_records": 590207,
+          "cause": "retained per-site relocation records differ in identity, normalization or ordering; every candidate site is independently validated by the corpus gate",
+          "kind": "relocations",
+          "reference_records": 380307
+        }
+      ],
+      "oracle": "gnu",
+      "record": "compiler-comptime/gnu-differ.json.gz",
+      "sha256": "a97bc9479bef7d9c3433a6ee49c54986ffc33411d4fb031fb0134b94e4878a6d"
+    },
+    {
+      "case": "compiler-entry_no_return",
+      "classes": [
+        {
+          "candidate_binding_counts": {
+            "0": 389
+          },
+          "candidate_only": 389,
+          "kind": "symbols",
+          "reference_binding_counts": {
+            "0": 975
+          },
+          "reference_only": 975
+        },
+        {
+          "candidate": [
+            [
+              1,
+              5,
+              4096
+            ],
+            [
+              1,
+              6,
+              4096
+            ],
+            [
+              7,
+              4,
+              8
+            ],
+            [
+              1685382481,
+              6,
+              16
+            ]
+          ],
+          "kind": "segments",
+          "reference": [
+            [
+              1,
+              4,
+              4096
+            ],
+            [
+              1,
+              5,
+              4096
+            ],
+            [
+              1,
+              6,
+              4096
+            ],
+            [
+              1,
+              6,
+              4096
+            ],
+            [
+              6,
+              4,
+              8
+            ],
+            [
+              7,
+              4,
+              8
+            ],
+            [
+              1685382481,
+              6,
+              0
+            ],
+            [
+              1685382482,
+              4,
+              1
+            ]
+          ]
+        },
+        {
+          "candidate_records": 590356,
+          "cause": "retained per-site relocation records differ in identity, normalization or ordering; every candidate site is independently validated by the corpus gate",
+          "kind": "relocations",
+          "reference_records": 393247
+        }
+      ],
+      "oracle": "lld",
+      "record": "compiler-entry_no_return/lld-differ.json.gz",
+      "sha256": "4bf6cef358a2984fa0779169838aa35c5c7baaeee6a1af98394cbfeeafc61312"
+    },
+    {
+      "case": "compiler-entry_no_return",
+      "classes": [
+        {
+          "candidate_binding_counts": {
+            "0": 584
+          },
+          "candidate_only": 584,
+          "kind": "symbols",
+          "reference_binding_counts": {
+            "0": 147,
+            "1": 165,
+            "2": 45
+          },
+          "reference_only": 357
+        },
+        {
+          "candidate": [
+            [
+              1,
+              5,
+              4096
+            ],
+            [
+              1,
+              6,
+              4096
+            ],
+            [
+              7,
+              4,
+              8
+            ],
+            [
+              1685382481,
+              6,
+              16
+            ]
+          ],
+          "kind": "segments",
+          "reference": [
+            [
+              1,
+              4,
+              4096
+            ],
+            [
+              1,
+              4,
+              4096
+            ],
+            [
+              1,
+              5,
+              4096
+            ],
+            [
+              1,
+              6,
+              4096
+            ],
+            [
+              7,
+              4,
+              8
+            ],
+            [
+              1685382481,
+              6,
+              16
+            ],
+            [
+              1685382482,
+              4,
+              1
+            ]
+          ]
+        },
+        {
+          "candidate_records": 590356,
+          "cause": "retained per-site relocation records differ in identity, normalization or ordering; every candidate site is independently validated by the corpus gate",
+          "kind": "relocations",
+          "reference_records": 381188
+        }
+      ],
+      "oracle": "gnu",
+      "record": "compiler-entry_no_return/gnu-differ.json.gz",
+      "sha256": "c212c9fb2dd5083f0d3ae7cf530f5ce7d686cb85b90e78e98be13d98fa383418"
+    },
+    {
+      "case": "compiler-overflow",
+      "classes": [
+        {
+          "candidate_binding_counts": {
+            "0": 381
+          },
+          "candidate_only": 381,
+          "kind": "symbols",
+          "reference_binding_counts": {
+            "0": 975
+          },
+          "reference_only": 975
+        },
+        {
+          "candidate": [
+            [
+              1,
+              5,
+              4096
+            ],
+            [
+              1,
+              6,
+              4096
+            ],
+            [
+              7,
+              4,
+              8
+            ],
+            [
+              1685382481,
+              6,
+              16
+            ]
+          ],
+          "kind": "segments",
+          "reference": [
+            [
+              1,
+              4,
+              4096
+            ],
+            [
+              1,
+              5,
+              4096
+            ],
+            [
+              1,
+              6,
+              4096
+            ],
+            [
+              1,
+              6,
+              4096
+            ],
+            [
+              6,
+              4,
+              8
+            ],
+            [
+              7,
+              4,
+              8
+            ],
+            [
+              1685382481,
+              6,
+              0
+            ],
+            [
+              1685382482,
+              4,
+              1
+            ]
+          ]
+        },
+        {
+          "candidate_records": 590208,
+          "cause": "retained per-site relocation records differ in identity, normalization or ordering; every candidate site is independently validated by the corpus gate",
+          "kind": "relocations",
+          "reference_records": 392394
+        }
+      ],
+      "oracle": "lld",
+      "record": "compiler-overflow/lld-differ.json.gz",
+      "sha256": "d4b68a58b37b35b585f7d837566cf4f5bf7bccae629bae0eaf2bae4f58f1d781"
+    },
+    {
+      "case": "compiler-overflow",
+      "classes": [
+        {
+          "candidate_binding_counts": {
+            "0": 571,
+            "1": 2
+          },
+          "candidate_only": 573,
+          "kind": "symbols",
+          "reference_binding_counts": {
+            "0": 141,
+            "1": 160,
+            "2": 45
+          },
+          "reference_only": 346
+        },
+        {
+          "candidate": [
+            [
+              1,
+              5,
+              4096
+            ],
+            [
+              1,
+              6,
+              4096
+            ],
+            [
+              7,
+              4,
+              8
+            ],
+            [
+              1685382481,
+              6,
+              16
+            ]
+          ],
+          "kind": "segments",
+          "reference": [
+            [
+              1,
+              4,
+              4096
+            ],
+            [
+              1,
+              4,
+              4096
+            ],
+            [
+              1,
+              5,
+              4096
+            ],
+            [
+              1,
+              6,
+              4096
+            ],
+            [
+              7,
+              4,
+              8
+            ],
+            [
+              1685382481,
+              6,
+              16
+            ],
+            [
+              1685382482,
+              4,
+              1
+            ]
+          ]
+        },
+        {
+          "candidate_records": 590208,
+          "cause": "retained per-site relocation records differ in identity, normalization or ordering; every candidate site is independently validated by the corpus gate",
+          "kind": "relocations",
+          "reference_records": 380308
+        }
+      ],
+      "oracle": "gnu",
+      "record": "compiler-overflow/gnu-differ.json.gz",
+      "sha256": "968bb1249f2a714aeac1ae36f35bc29fce3d6d521096baee2152d2b6f6f4b13c"
+    },
+    {
+      "case": "compiler-procs",
+      "classes": [
+        {
+          "candidate_binding_counts": {
+            "0": 608
+          },
+          "candidate_only": 608,
+          "kind": "symbols",
+          "reference_binding_counts": {
+            "0": 975
+          },
+          "reference_only": 975
+        },
+        {
+          "candidate": [
+            [
+              1,
+              5,
+              4096
+            ],
+            [
+              1,
+              6,
+              4096
+            ],
+            [
+              7,
+              4,
+              8
+            ],
+            [
+              1685382481,
+              6,
+              16
+            ]
+          ],
+          "kind": "segments",
+          "reference": [
+            [
+              1,
+              4,
+              4096
+            ],
+            [
+              1,
+              5,
+              4096
+            ],
+            [
+              1,
+              6,
+              4096
+            ],
+            [
+              1,
+              6,
+              4096
+            ],
+            [
+              6,
+              4,
+              8
+            ],
+            [
+              7,
+              4,
+              8
+            ],
+            [
+              1685382481,
+              6,
+              0
+            ],
+            [
+              1685382482,
+              4,
+              1
+            ]
+          ]
+        },
+        {
+          "candidate_records": 596265,
+          "cause": "retained per-site relocation records differ in identity, normalization or ordering; every candidate site is independently validated by the corpus gate",
+          "kind": "relocations",
+          "reference_records": 445768
+        }
+      ],
+      "oracle": "lld",
+      "record": "compiler-procs/lld-differ.json.gz",
+      "sha256": "e5611ddb77927b6db9ed7c5082efb755b4e247bf0848bad765fa5fee02bd3782"
+    },
+    {
+      "case": "compiler-procs",
+      "classes": [
+        {
+          "candidate_binding_counts": {
+            "0": 1125,
+            "1": 6
+          },
+          "candidate_only": 1131,
+          "kind": "symbols",
+          "reference_binding_counts": {
+            "0": 369,
+            "1": 480,
+            "2": 49
+          },
+          "reference_only": 898
+        },
+        {
+          "candidate": [
+            [
+              1,
+              5,
+              4096
+            ],
+            [
+              1,
+              6,
+              4096
+            ],
+            [
+              7,
+              4,
+              8
+            ],
+            [
+              1685382481,
+              6,
+              16
+            ]
+          ],
+          "kind": "segments",
+          "reference": [
+            [
+              1,
+              4,
+              4096
+            ],
+            [
+              1,
+              4,
+              4096
+            ],
+            [
+              1,
+              5,
+              4096
+            ],
+            [
+              1,
+              6,
+              4096
+            ],
+            [
+              7,
+              4,
+              8
+            ],
+            [
+              1685382481,
+              6,
+              16
+            ],
+            [
+              1685382482,
+              4,
+              1
+            ]
+          ]
+        },
+        {
+          "candidate_memsz": 552,
+          "candidate_only_variables": [],
+          "classification": "different TLS variable ordering; raw template mismatch remains recorded",
+          "kind": "tls",
+          "reference_memsz": 552,
+          "reference_only_variables": [],
+          "symbol_bindings_equal": false,
+          "symbol_normalized_initializers_equal": true
+        },
+        {
+          "candidate_records": 596265,
+          "cause": "retained per-site relocation records differ in identity, normalization or ordering; every candidate site is independently validated by the corpus gate",
+          "kind": "relocations",
+          "reference_records": 435259
+        }
+      ],
+      "oracle": "gnu",
+      "record": "compiler-procs/gnu-differ.json.gz",
+      "sha256": "cdacbc32d692c043ea20e30f81f3746ebf7f380b2aa3c123eac38f59ea126979"
+    },
+    {
+      "case": "compiler-regions",
+      "classes": [
+        {
+          "candidate_binding_counts": {
+            "0": 401
+          },
+          "candidate_only": 401,
+          "kind": "symbols",
+          "reference_binding_counts": {
+            "0": 975
+          },
+          "reference_only": 975
+        },
+        {
+          "candidate": [
+            [
+              1,
+              5,
+              4096
+            ],
+            [
+              1,
+              6,
+              4096
+            ],
+            [
+              7,
+              4,
+              8
+            ],
+            [
+              1685382481,
+              6,
+              16
+            ]
+          ],
+          "kind": "segments",
+          "reference": [
+            [
+              1,
+              4,
+              4096
+            ],
+            [
+              1,
+              5,
+              4096
+            ],
+            [
+              1,
+              6,
+              4096
+            ],
+            [
+              1,
+              6,
+              4096
+            ],
+            [
+              6,
+              4,
+              8
+            ],
+            [
+              7,
+              4,
+              8
+            ],
+            [
+              1685382481,
+              6,
+              0
+            ],
+            [
+              1685382482,
+              4,
+              1
+            ]
+          ]
+        },
+        {
+          "candidate_records": 590615,
+          "cause": "retained per-site relocation records differ in identity, normalization or ordering; every candidate site is independently validated by the corpus gate",
+          "kind": "relocations",
+          "reference_records": 395426
+        }
+      ],
+      "oracle": "lld",
+      "record": "compiler-regions/lld-differ.json.gz",
+      "sha256": "b1c9ba563360b75658bb6995104acb3dc0a211e6705c9c6184a351bff6ef5bca"
+    },
+    {
+      "case": "compiler-regions",
+      "classes": [
+        {
+          "candidate_binding_counts": {
+            "0": 641,
+            "1": 2
+          },
+          "candidate_only": 643,
+          "kind": "symbols",
+          "reference_binding_counts": {
+            "0": 161,
+            "1": 210,
+            "2": 45
+          },
+          "reference_only": 416
+        },
+        {
+          "candidate": [
+            [
+              1,
+              5,
+              4096
+            ],
+            [
+              1,
+              6,
+              4096
+            ],
+            [
+              7,
+              4,
+              8
+            ],
+            [
+              1685382481,
+              6,
+              16
+            ]
+          ],
+          "kind": "segments",
+          "reference": [
+            [
+              1,
+              4,
+              4096
+            ],
+            [
+              1,
+              4,
+              4096
+            ],
+            [
+              1,
+              5,
+              4096
+            ],
+            [
+              1,
+              6,
+              4096
+            ],
+            [
+              7,
+              4,
+              8
+            ],
+            [
+              1685382481,
+              6,
+              16
+            ],
+            [
+              1685382482,
+              4,
+              1
+            ]
+          ]
+        },
+        {
+          "candidate_records": 590615,
+          "cause": "retained per-site relocation records differ in identity, normalization or ordering; every candidate site is independently validated by the corpus gate",
+          "kind": "relocations",
+          "reference_records": 383409
+        }
+      ],
+      "oracle": "gnu",
+      "record": "compiler-regions/gnu-differ.json.gz",
+      "sha256": "51635d7e5877359b848a5d431d952fd82ce9c3816266ee1be830a9a220442e18"
+    },
+    {
+      "case": "hello-hello",
+      "classes": [
+        {
+          "candidate_binding_counts": {
+            "0": 389
+          },
+          "candidate_only": 389,
+          "kind": "symbols",
+          "reference_binding_counts": {
+            "0": 975
+          },
+          "reference_only": 975
+        },
+        {
+          "candidate": [
+            [
+              1,
+              5,
+              4096
+            ],
+            [
+              1,
+              6,
+              4096
+            ],
+            [
+              7,
+              4,
+              8
+            ],
+            [
+              1685382481,
+              6,
+              16
+            ]
+          ],
+          "kind": "segments",
+          "reference": [
+            [
+              1,
+              4,
+              4096
+            ],
+            [
+              1,
+              5,
+              4096
+            ],
+            [
+              1,
+              6,
+              4096
+            ],
+            [
+              1,
+              6,
+              4096
+            ],
+            [
+              6,
+              4,
+              8
+            ],
+            [
+              7,
+              4,
+              8
+            ],
+            [
+              1685382481,
+              6,
+              0
+            ],
+            [
+              1685382482,
+              4,
+              1
+            ]
+          ]
+        },
+        {
+          "candidate_records": 590358,
+          "cause": "retained per-site relocation records differ in identity, normalization or ordering; every candidate site is independently validated by the corpus gate",
+          "kind": "relocations",
+          "reference_records": 393249
+        }
+      ],
+      "oracle": "lld",
+      "record": "hello-hello/lld-differ.json.gz",
+      "sha256": "868c5ae4cf18d14bb631f4e2496f2bb182d5294044a9d6ccf1bae6e2017373f8"
+    },
+    {
+      "case": "hello-hello",
+      "classes": [
+        {
+          "candidate_binding_counts": {
+            "0": 584
+          },
+          "candidate_only": 584,
+          "kind": "symbols",
+          "reference_binding_counts": {
+            "0": 147,
+            "1": 165,
+            "2": 45
+          },
+          "reference_only": 357
+        },
+        {
+          "candidate": [
+            [
+              1,
+              5,
+              4096
+            ],
+            [
+              1,
+              6,
+              4096
+            ],
+            [
+              7,
+              4,
+              8
+            ],
+            [
+              1685382481,
+              6,
+              16
+            ]
+          ],
+          "kind": "segments",
+          "reference": [
+            [
+              1,
+              4,
+              4096
+            ],
+            [
+              1,
+              4,
+              4096
+            ],
+            [
+              1,
+              5,
+              4096
+            ],
+            [
+              1,
+              6,
+              4096
+            ],
+            [
+              7,
+              4,
+              8
+            ],
+            [
+              1685382481,
+              6,
+              16
+            ],
+            [
+              1685382482,
+              4,
+              1
+            ]
+          ]
+        },
+        {
+          "candidate_records": 590358,
+          "cause": "retained per-site relocation records differ in identity, normalization or ordering; every candidate site is independently validated by the corpus gate",
+          "kind": "relocations",
+          "reference_records": 381190
+        }
+      ],
+      "oracle": "gnu",
+      "record": "hello-hello/gnu-differ.json.gz",
+      "sha256": "5da99d6108b3ea985c3f21464dabf2d94abb12207778f3de9299393d3f0a8816"
+    },
+    {
+      "case": "pax-exec",
+      "classes": [
+        {
+          "candidate_binding_counts": {
+            "0": 421
+          },
+          "candidate_only": 421,
+          "kind": "symbols",
+          "reference_binding_counts": {
+            "0": 975
+          },
+          "reference_only": 975
+        },
+        {
+          "candidate": [
+            [
+              1,
+              5,
+              4096
+            ],
+            [
+              1,
+              6,
+              4096
+            ],
+            [
+              7,
+              4,
+              8
+            ],
+            [
+              1685382481,
+              6,
+              16
+            ]
+          ],
+          "kind": "segments",
+          "reference": [
+            [
+              1,
+              4,
+              4096
+            ],
+            [
+              1,
+              5,
+              4096
+            ],
+            [
+              1,
+              6,
+              4096
+            ],
+            [
+              1,
+              6,
+              4096
+            ],
+            [
+              6,
+              4,
+              8
+            ],
+            [
+              7,
+              4,
+              8
+            ],
+            [
+              1685382481,
+              6,
+              0
+            ],
+            [
+              1685382482,
+              4,
+              1
+            ]
+          ]
+        },
+        {
+          "candidate_records": 592042,
+          "cause": "retained per-site relocation records differ in identity, normalization or ordering; every candidate site is independently validated by the corpus gate",
+          "kind": "relocations",
+          "reference_records": 404577
+        }
+      ],
+      "oracle": "lld",
+      "record": "pax-exec/lld-differ.json.gz",
+      "sha256": "6393aa93f473f4002509852ae2226c789fb30b0d9a7d675db22bcae4112e1039"
+    },
+    {
+      "case": "pax-exec",
+      "classes": [
+        {
+          "candidate_binding_counts": {
+            "0": 690
+          },
+          "candidate_only": 690,
+          "kind": "symbols",
+          "reference_binding_counts": {
+            "0": 190,
+            "1": 231,
+            "2": 56
+          },
+          "reference_only": 477
+        },
+        {
+          "candidate": [
+            [
+              1,
+              5,
+              4096
+            ],
+            [
+              1,
+              6,
+              4096
+            ],
+            [
+              7,
+              4,
+              8
+            ],
+            [
+              1685382481,
+              6,
+              16
+            ]
+          ],
+          "kind": "segments",
+          "reference": [
+            [
+              1,
+              4,
+              4096
+            ],
+            [
+              1,
+              4,
+              4096
+            ],
+            [
+              1,
+              5,
+              4096
+            ],
+            [
+              1,
+              6,
+              4096
+            ],
+            [
+              7,
+              4,
+              8
+            ],
+            [
+              1685382481,
+              6,
+              16
+            ],
+            [
+              1685382482,
+              4,
+              1
+            ]
+          ]
+        },
+        {
+          "candidate_records": 592042,
+          "cause": "retained per-site relocation records differ in identity, normalization or ordering; every candidate site is independently validated by the corpus gate",
+          "kind": "relocations",
+          "reference_records": 395880
+        }
+      ],
+      "oracle": "gnu",
+      "record": "pax-exec/gnu-differ.json.gz",
+      "sha256": "fc0a9dec838dbec375faad100f1f01672869b5a7d5d60a1e16a54884eac9d74b"
+    },
+    {
+      "case": "pax-fork",
+      "classes": [
+        {
+          "candidate_binding_counts": {
+            "0": 423
+          },
+          "candidate_only": 423,
+          "kind": "symbols",
+          "reference_binding_counts": {
+            "0": 975
+          },
+          "reference_only": 975
+        },
+        {
+          "candidate": [
+            [
+              1,
+              5,
+              4096
+            ],
+            [
+              1,
+              6,
+              4096
+            ],
+            [
+              7,
+              4,
+              8
+            ],
+            [
+              1685382481,
+              6,
+              16
+            ]
+          ],
+          "kind": "segments",
+          "reference": [
+            [
+              1,
+              4,
+              4096
+            ],
+            [
+              1,
+              5,
+              4096
+            ],
+            [
+              1,
+              6,
+              4096
+            ],
+            [
+              1,
+              6,
+              4096
+            ],
+            [
+              6,
+              4,
+              8
+            ],
+            [
+              7,
+              4,
+              8
+            ],
+            [
+              1685382481,
+              6,
+              0
+            ],
+            [
+              1685382482,
+              4,
+              1
+            ]
+          ]
+        },
+        {
+          "candidate_records": 591524,
+          "cause": "retained per-site relocation records differ in identity, normalization or ordering; every candidate site is independently validated by the corpus gate",
+          "kind": "relocations",
+          "reference_records": 400042
+        }
+      ],
+      "oracle": "lld",
+      "record": "pax-fork/lld-differ.json.gz",
+      "sha256": "69217caf4c082e98b9bddbade7713a024e0b96e6132ba228ffb801f40a7f0710"
+    },
+    {
+      "case": "pax-fork",
+      "classes": [
+        {
+          "candidate_binding_counts": {
+            "0": 754,
+            "1": 3
+          },
+          "candidate_only": 757,
+          "kind": "symbols",
+          "reference_binding_counts": {
+            "0": 185,
+            "1": 292,
+            "2": 56
+          },
+          "reference_only": 533
+        },
+        {
+          "candidate": [
+            [
+              1,
+              5,
+              4096
+            ],
+            [
+              1,
+              6,
+              4096
+            ],
+            [
+              7,
+              4,
+              8
+            ],
+            [
+              1685382481,
+              6,
+              16
+            ]
+          ],
+          "kind": "segments",
+          "reference": [
+            [
+              1,
+              4,
+              4096
+            ],
+            [
+              1,
+              4,
+              4096
+            ],
+            [
+              1,
+              5,
+              4096
+            ],
+            [
+              1,
+              6,
+              4096
+            ],
+            [
+              7,
+              4,
+              8
+            ],
+            [
+              1685382481,
+              6,
+              16
+            ],
+            [
+              1685382482,
+              4,
+              1
+            ]
+          ]
+        },
+        {
+          "candidate_records": 591524,
+          "cause": "retained per-site relocation records differ in identity, normalization or ordering; every candidate site is independently validated by the corpus gate",
+          "kind": "relocations",
+          "reference_records": 389184
+        }
+      ],
+      "oracle": "gnu",
+      "record": "pax-fork/gnu-differ.json.gz",
+      "sha256": "fa10b07be0de12ffa2ce9fa2fdd6eade7d94571ccfbfabee380e3d9c98f370f8"
+    },
+    {
+      "case": "pax-hello",
+      "classes": [
+        {
+          "candidate_binding_counts": {
+            "0": 389
+          },
+          "candidate_only": 389,
+          "kind": "symbols",
+          "reference_binding_counts": {
+            "0": 975
+          },
+          "reference_only": 975
+        },
+        {
+          "candidate": [
+            [
+              1,
+              5,
+              4096
+            ],
+            [
+              1,
+              6,
+              4096
+            ],
+            [
+              7,
+              4,
+              8
+            ],
+            [
+              1685382481,
+              6,
+              16
+            ]
+          ],
+          "kind": "segments",
+          "reference": [
+            [
+              1,
+              4,
+              4096
+            ],
+            [
+              1,
+              5,
+              4096
+            ],
+            [
+              1,
+              6,
+              4096
+            ],
+            [
+              1,
+              6,
+              4096
+            ],
+            [
+              6,
+              4,
+              8
+            ],
+            [
+              7,
+              4,
+              8
+            ],
+            [
+              1685382481,
+              6,
+              0
+            ],
+            [
+              1685382482,
+              4,
+              1
+            ]
+          ]
+        },
+        {
+          "candidate_records": 590358,
+          "cause": "retained per-site relocation records differ in identity, normalization or ordering; every candidate site is independently validated by the corpus gate",
+          "kind": "relocations",
+          "reference_records": 393249
+        }
+      ],
+      "oracle": "lld",
+      "record": "pax-hello/lld-differ.json.gz",
+      "sha256": "45f50fe96bfe1b0415474ade4cd0fbc310ecb5db83cfa317e9fbc71318f50f46"
+    },
+    {
+      "case": "pax-hello",
+      "classes": [
+        {
+          "candidate_binding_counts": {
+            "0": 584
+          },
+          "candidate_only": 584,
+          "kind": "symbols",
+          "reference_binding_counts": {
+            "0": 147,
+            "1": 165,
+            "2": 45
+          },
+          "reference_only": 357
+        },
+        {
+          "candidate": [
+            [
+              1,
+              5,
+              4096
+            ],
+            [
+              1,
+              6,
+              4096
+            ],
+            [
+              7,
+              4,
+              8
+            ],
+            [
+              1685382481,
+              6,
+              16
+            ]
+          ],
+          "kind": "segments",
+          "reference": [
+            [
+              1,
+              4,
+              4096
+            ],
+            [
+              1,
+              4,
+              4096
+            ],
+            [
+              1,
+              5,
+              4096
+            ],
+            [
+              1,
+              6,
+              4096
+            ],
+            [
+              7,
+              4,
+              8
+            ],
+            [
+              1685382481,
+              6,
+              16
+            ],
+            [
+              1685382482,
+              4,
+              1
+            ]
+          ]
+        },
+        {
+          "candidate_records": 590358,
+          "cause": "retained per-site relocation records differ in identity, normalization or ordering; every candidate site is independently validated by the corpus gate",
+          "kind": "relocations",
+          "reference_records": 381190
+        }
+      ],
+      "oracle": "gnu",
+      "record": "pax-hello/gnu-differ.json.gz",
+      "sha256": "bb32246e12988edc77888c23d922b9c32010d8364828df31525531935653d676"
+    },
+    {
+      "case": "pax-host",
+      "classes": [
+        {
+          "candidate_binding_counts": {
+            "0": 483
+          },
+          "candidate_only": 483,
+          "kind": "symbols",
+          "reference_binding_counts": {
+            "0": 975
+          },
+          "reference_only": 975
+        },
+        {
+          "candidate": [
+            [
+              1,
+              5,
+              4096
+            ],
+            [
+              1,
+              6,
+              4096
+            ],
+            [
+              7,
+              4,
+              8
+            ],
+            [
+              1685382481,
+              6,
+              16
+            ]
+          ],
+          "kind": "segments",
+          "reference": [
+            [
+              1,
+              4,
+              4096
+            ],
+            [
+              1,
+              5,
+              4096
+            ],
+            [
+              1,
+              6,
+              4096
+            ],
+            [
+              1,
+              6,
+              4096
+            ],
+            [
+              6,
+              4,
+              8
+            ],
+            [
+              7,
+              4,
+              8
+            ],
+            [
+              1685382481,
+              6,
+              0
+            ],
+            [
+              1685382482,
+              4,
+              1
+            ]
+          ]
+        },
+        {
+          "candidate_records": 593594,
+          "cause": "retained per-site relocation records differ in identity, normalization or ordering; every candidate site is independently validated by the corpus gate",
+          "kind": "relocations",
+          "reference_records": 416889
+        }
+      ],
+      "oracle": "lld",
+      "record": "pax-host/lld-differ.json.gz",
+      "sha256": "d6248706c1bae223c7a75e3034de57fe84862f1bd32d92dc59e9c756dd57bb72"
+    },
+    {
+      "case": "pax-host",
+      "classes": [
+        {
+          "candidate_binding_counts": {
+            "0": 841,
+            "1": 5
+          },
+          "candidate_only": 846,
+          "kind": "symbols",
+          "reference_binding_counts": {
+            "0": 269,
+            "1": 322,
+            "2": 49
+          },
+          "reference_only": 640
+        },
+        {
+          "candidate": [
+            [
+              1,
+              5,
+              4096
+            ],
+            [
+              1,
+              6,
+              4096
+            ],
+            [
+              7,
+              4,
+              8
+            ],
+            [
+              1685382481,
+              6,
+              16
+            ]
+          ],
+          "kind": "segments",
+          "reference": [
+            [
+              1,
+              4,
+              4096
+            ],
+            [
+              1,
+              4,
+              4096
+            ],
+            [
+              1,
+              5,
+              4096
+            ],
+            [
+              1,
+              6,
+              4096
+            ],
+            [
+              7,
+              4,
+              8
+            ],
+            [
+              1685382481,
+              6,
+              16
+            ],
+            [
+              1685382482,
+              4,
+              1
+            ]
+          ]
+        },
+        {
+          "candidate_memsz": 520,
+          "candidate_only_variables": [],
+          "classification": "different TLS variable ordering; raw template mismatch remains recorded",
+          "kind": "tls",
+          "reference_memsz": 520,
+          "reference_only_variables": [],
+          "symbol_bindings_equal": false,
+          "symbol_normalized_initializers_equal": true
+        },
+        {
+          "candidate_records": 593594,
+          "cause": "retained per-site relocation records differ in identity, normalization or ordering; every candidate site is independently validated by the corpus gate",
+          "kind": "relocations",
+          "reference_records": 406417
+        }
+      ],
+      "oracle": "gnu",
+      "record": "pax-host/gnu-differ.json.gz",
+      "sha256": "2c0d079267e07d298a2c42eebacf763bb0f6424fbac20b04055775791787841b"
+    },
+    {
+      "case": "pax-loop",
+      "classes": [
+        {
+          "candidate_binding_counts": {
+            "0": 390
+          },
+          "candidate_only": 390,
+          "kind": "symbols",
+          "reference_binding_counts": {
+            "0": 975
+          },
+          "reference_only": 975
+        },
+        {
+          "candidate": [
+            [
+              1,
+              5,
+              4096
+            ],
+            [
+              1,
+              6,
+              4096
+            ],
+            [
+              7,
+              4,
+              8
+            ],
+            [
+              1685382481,
+              6,
+              16
+            ]
+          ],
+          "kind": "segments",
+          "reference": [
+            [
+              1,
+              4,
+              4096
+            ],
+            [
+              1,
+              5,
+              4096
+            ],
+            [
+              1,
+              6,
+              4096
+            ],
+            [
+              1,
+              6,
+              4096
+            ],
+            [
+              6,
+              4,
+              8
+            ],
+            [
+              7,
+              4,
+              8
+            ],
+            [
+              1685382481,
+              6,
+              0
+            ],
+            [
+              1685382482,
+              4,
+              1
+            ]
+          ]
+        },
+        {
+          "candidate_records": 590386,
+          "cause": "retained per-site relocation records differ in identity, normalization or ordering; every candidate site is independently validated by the corpus gate",
+          "kind": "relocations",
+          "reference_records": 393446
+        }
+      ],
+      "oracle": "lld",
+      "record": "pax-loop/lld-differ.json.gz",
+      "sha256": "395b75fed1f77bce0ee7a584f474bafa9d47b1fc7852714ed55aa2a92e8685e6"
+    },
+    {
+      "case": "pax-loop",
+      "classes": [
+        {
+          "candidate_binding_counts": {
+            "0": 585
+          },
+          "candidate_only": 585,
+          "kind": "symbols",
+          "reference_binding_counts": {
+            "0": 148,
+            "1": 165,
+            "2": 45
+          },
+          "reference_only": 358
+        },
+        {
+          "candidate": [
+            [
+              1,
+              5,
+              4096
+            ],
+            [
+              1,
+              6,
+              4096
+            ],
+            [
+              7,
+              4,
+              8
+            ],
+            [
+              1685382481,
+              6,
+              16
+            ]
+          ],
+          "kind": "segments",
+          "reference": [
+            [
+              1,
+              4,
+              4096
+            ],
+            [
+              1,
+              4,
+              4096
+            ],
+            [
+              1,
+              5,
+              4096
+            ],
+            [
+              1,
+              6,
+              4096
+            ],
+            [
+              7,
+              4,
+              8
+            ],
+            [
+              1685382481,
+              6,
+              16
+            ],
+            [
+              1685382482,
+              4,
+              1
+            ]
+          ]
+        },
+        {
+          "candidate_records": 590386,
+          "cause": "retained per-site relocation records differ in identity, normalization or ordering; every candidate site is independently validated by the corpus gate",
+          "kind": "relocations",
+          "reference_records": 381390
+        }
+      ],
+      "oracle": "gnu",
+      "record": "pax-loop/gnu-differ.json.gz",
+      "sha256": "4e94c73cc4b34a6573552cb5860cbf33b6d7ed4beef46a106849bdf8520b0608"
+    },
+    {
+      "case": "pax-signal",
+      "classes": [
+        {
+          "candidate_binding_counts": {
+            "0": 403
+          },
+          "candidate_only": 403,
+          "kind": "symbols",
+          "reference_binding_counts": {
+            "0": 975
+          },
+          "reference_only": 975
+        },
+        {
+          "candidate": [
+            [
+              1,
+              5,
+              4096
+            ],
+            [
+              1,
+              6,
+              4096
+            ],
+            [
+              7,
+              4,
+              8
+            ],
+            [
+              1685382481,
+              6,
+              16
+            ]
+          ],
+          "kind": "segments",
+          "reference": [
+            [
+              1,
+              4,
+              4096
+            ],
+            [
+              1,
+              5,
+              4096
+            ],
+            [
+              1,
+              6,
+              4096
+            ],
+            [
+              1,
+              6,
+              4096
+            ],
+            [
+              6,
+              4,
+              8
+            ],
+            [
+              7,
+              4,
+              8
+            ],
+            [
+              1685382481,
+              6,
+              0
+            ],
+            [
+              1685382482,
+              4,
+              1
+            ]
+          ]
+        },
+        {
+          "candidate_records": 590693,
+          "cause": "retained per-site relocation records differ in identity, normalization or ordering; every candidate site is independently validated by the corpus gate",
+          "kind": "relocations",
+          "reference_records": 395199
+        }
+      ],
+      "oracle": "lld",
+      "record": "pax-signal/lld-differ.json.gz",
+      "sha256": "47c3f74758c275418defc388555220de5077db122b924c8560e6df4f0a99a85f"
+    },
+    {
+      "case": "pax-signal",
+      "classes": [
+        {
+          "candidate_binding_counts": {
+            "0": 632
+          },
+          "candidate_only": 632,
+          "kind": "symbols",
+          "reference_binding_counts": {
+            "0": 157,
+            "1": 203,
+            "2": 45
+          },
+          "reference_only": 405
+        },
+        {
+          "candidate": [
+            [
+              1,
+              5,
+              4096
+            ],
+            [
+              1,
+              6,
+              4096
+            ],
+            [
+              7,
+              4,
+              8
+            ],
+            [
+              1685382481,
+              6,
+              16
+            ]
+          ],
+          "kind": "segments",
+          "reference": [
+            [
+              1,
+              4,
+              4096
+            ],
+            [
+              1,
+              4,
+              4096
+            ],
+            [
+              1,
+              5,
+              4096
+            ],
+            [
+              1,
+              6,
+              4096
+            ],
+            [
+              7,
+              4,
+              8
+            ],
+            [
+              1685382481,
+              6,
+              16
+            ],
+            [
+              1685382482,
+              4,
+              1
+            ]
+          ]
+        },
+        {
+          "candidate_records": 590693,
+          "cause": "retained per-site relocation records differ in identity, normalization or ordering; every candidate site is independently validated by the corpus gate",
+          "kind": "relocations",
+          "reference_records": 383583
+        }
+      ],
+      "oracle": "gnu",
+      "record": "pax-signal/gnu-differ.json.gz",
+      "sha256": "925f6933b8568b8605343fd73ddf7ff9371e90f2779cc1ff222c2bbda208bd89"
+    },
+    {
+      "case": "pax-spawn",
+      "classes": [
+        {
+          "candidate_binding_counts": {
+            "0": 552
+          },
+          "candidate_only": 552,
+          "kind": "symbols",
+          "reference_binding_counts": {
+            "0": 975
+          },
+          "reference_only": 975
+        },
+        {
+          "candidate": [
+            [
+              1,
+              5,
+              4096
+            ],
+            [
+              1,
+              6,
+              4096
+            ],
+            [
+              7,
+              4,
+              8
+            ],
+            [
+              1685382481,
+              6,
+              16
+            ]
+          ],
+          "kind": "segments",
+          "reference": [
+            [
+              1,
+              4,
+              4096
+            ],
+            [
+              1,
+              5,
+              4096
+            ],
+            [
+              1,
+              6,
+              4096
+            ],
+            [
+              1,
+              6,
+              4096
+            ],
+            [
+              6,
+              4,
+              8
+            ],
+            [
+              7,
+              4,
+              8
+            ],
+            [
+              1685382481,
+              6,
+              0
+            ],
+            [
+              1685382482,
+              4,
+              1
+            ]
+          ]
+        },
+        {
+          "candidate_records": 593994,
+          "cause": "retained per-site relocation records differ in identity, normalization or ordering; every candidate site is independently validated by the corpus gate",
+          "kind": "relocations",
+          "reference_records": 421455
+        }
+      ],
+      "oracle": "lld",
+      "record": "pax-spawn/lld-differ.json.gz",
+      "sha256": "5abc716eef93e60c81a06b7b57e0c693dd5b0f59203b0739544efbd44f81a9dc"
+    },
+    {
+      "case": "pax-spawn",
+      "classes": [
+        {
+          "candidate_binding_counts": {
+            "0": 952,
+            "1": 6
+          },
+          "candidate_only": 958,
+          "kind": "symbols",
+          "reference_binding_counts": {
+            "0": 295,
+            "1": 367,
+            "2": 49
+          },
+          "reference_only": 711
+        },
+        {
+          "candidate": [
+            [
+              1,
+              5,
+              4096
+            ],
+            [
+              1,
+              6,
+              4096
+            ],
+            [
+              7,
+              4,
+              8
+            ],
+            [
+              1685382481,
+              6,
+              16
+            ]
+          ],
+          "kind": "segments",
+          "reference": [
+            [
+              1,
+              4,
+              4096
+            ],
+            [
+              1,
+              4,
+              4096
+            ],
+            [
+              1,
+              5,
+              4096
+            ],
+            [
+              1,
+              6,
+              4096
+            ],
+            [
+              7,
+              4,
+              8
+            ],
+            [
+              1685382481,
+              6,
+              16
+            ],
+            [
+              1685382482,
+              4,
+              1
+            ]
+          ]
+        },
+        {
+          "candidate_memsz": 448,
+          "candidate_only_variables": [],
+          "classification": "different TLS variable ordering; raw template mismatch remains recorded",
+          "kind": "tls",
+          "reference_memsz": 448,
+          "reference_only_variables": [],
+          "symbol_bindings_equal": false,
+          "symbol_normalized_initializers_equal": true
+        },
+        {
+          "candidate_records": 593994,
+          "cause": "retained per-site relocation records differ in identity, normalization or ordering; every candidate site is independently validated by the corpus gate",
+          "kind": "relocations",
+          "reference_records": 410721
+        }
+      ],
+      "oracle": "gnu",
+      "record": "pax-spawn/gnu-differ.json.gz",
+      "sha256": "86c4767b49cf721f903fd0f65a2c5a4b0ccae2ca50bcbbfbfbdec7aa123acf54"
+    },
+    {
+      "case": "pax-std",
+      "classes": [
+        {
+          "candidate_binding_counts": {
+            "0": 431
+          },
+          "candidate_only": 431,
+          "kind": "symbols",
+          "reference_binding_counts": {
+            "0": 975
+          },
+          "reference_only": 975
+        },
+        {
+          "candidate": [
+            [
+              1,
+              5,
+              4096
+            ],
+            [
+              1,
+              6,
+              4096
+            ],
+            [
+              7,
+              4,
+              8
+            ],
+            [
+              1685382481,
+              6,
+              16
+            ]
+          ],
+          "kind": "segments",
+          "reference": [
+            [
+              1,
+              4,
+              4096
+            ],
+            [
+              1,
+              5,
+              4096
+            ],
+            [
+              1,
+              6,
+              4096
+            ],
+            [
+              1,
+              6,
+              4096
+            ],
+            [
+              6,
+              4,
+              8
+            ],
+            [
+              7,
+              4,
+              8
+            ],
+            [
+              1685382481,
+              6,
+              0
+            ],
+            [
+              1685382482,
+              4,
+              1
+            ]
+          ]
+        },
+        {
+          "candidate_records": 591948,
+          "cause": "retained per-site relocation records differ in identity, normalization or ordering; every candidate site is independently validated by the corpus gate",
+          "kind": "relocations",
+          "reference_records": 405217
+        }
+      ],
+      "oracle": "lld",
+      "record": "pax-std/lld-differ.json.gz",
+      "sha256": "b72029fc97a1104ecf6ac456eff460e5c8329e84147105d46abf7d1f2e383c32"
+    },
+    {
+      "case": "pax-std",
+      "classes": [
+        {
+          "candidate_binding_counts": {
+            "0": 662
+          },
+          "candidate_only": 662,
+          "kind": "symbols",
+          "reference_binding_counts": {
+            "0": 184,
+            "1": 205,
+            "2": 45
+          },
+          "reference_only": 434
+        },
+        {
+          "candidate": [
+            [
+              1,
+              5,
+              4096
+            ],
+            [
+              1,
+              6,
+              4096
+            ],
+            [
+              7,
+              4,
+              8
+            ],
+            [
+              1685382481,
+              6,
+              16
+            ]
+          ],
+          "kind": "segments",
+          "reference": [
+            [
+              1,
+              4,
+              4096
+            ],
+            [
+              1,
+              4,
+              4096
+            ],
+            [
+              1,
+              5,
+              4096
+            ],
+            [
+              1,
+              6,
+              4096
+            ],
+            [
+              7,
+              4,
+              8
+            ],
+            [
+              1685382481,
+              6,
+              16
+            ],
+            [
+              1685382482,
+              4,
+              1
+            ]
+          ]
+        },
+        {
+          "candidate_records": 591948,
+          "cause": "retained per-site relocation records differ in identity, normalization or ordering; every candidate site is independently validated by the corpus gate",
+          "kind": "relocations",
+          "reference_records": 393239
+        }
+      ],
+      "oracle": "gnu",
+      "record": "pax-std/gnu-differ.json.gz",
+      "sha256": "71a41bad4a4a499866a0d50e62199803b83adc2d47134ad13020dfdd5c6f60d5"
+    }
+  ],
+  "total": 87,
+  "waivers": []
+}
