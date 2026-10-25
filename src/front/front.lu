@@ -4,6 +4,7 @@ use binary
 
 /// The accepted cc-argument subset, without opening inputs or executing a linker.
 pub struct Plan {
+    argv: List[str],
     output: str,
     inputs: List[str],
     libraries: List[str],
@@ -41,6 +42,7 @@ fn link_option(mut p: Plan, arg: str) -> () ! {Bad(str)} {
 /// Build a link plan; Bad names an unsupported argument or missing operand.
 pub fn parse(args: List[str]) -> Plan ! {Bad(str)} {
     var p = Plan {
+        argv: copy args,
         output: "a.out",
         inputs: List[str](),
         libraries: List[str](),
@@ -115,6 +117,8 @@ pub fn emit(p: Plan) {
         "{{\"format\":\"ligature.plan.v1\",\"output\":{binary.quote(p.output.bytes())},\"inputs\":",
     )
     strings(p.inputs)
+    print_raw(",\"argv\":")
+    strings(p.argv)
     print_raw(",\"libraries\":")
     strings(p.libraries)
     print_raw(",\"search_paths\":")

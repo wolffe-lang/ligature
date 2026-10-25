@@ -1,29 +1,7 @@
 //! member: false
 
-use binary
-use elf
-use ar
-use verify
 use front
-
-fn inspect(path: str, command: str) -> () ! {Bad(str)} {
-    let fd = fs_open(path) else |_| { return Bad("cannot open {path}") }
-    defer fs_close(fd) else |_| {}
-    let size = fs_size(path) else |_| { return Bad("cannot stat {path}") }
-    let f = binary.Input { fd: fd, base: 0, size: size }
-    let magic = binary.read(f, 0, 8)?
-    let emit = command == "inspect"
-    if magic[0] == 33 as byte {
-        if command == "verify" { return Bad("verify requires ELF executable, not ar") }
-        let archive = ar.parse(f)?
-        ar.walk(f, archive, emit)?
-    } else {
-        let image = elf.parse(f)?
-        elf.walk(f, image, emit)?
-        if command == "verify" { verify.check(image)? }
-    }
-    if !emit { print("{command}: PASS {path}") }
-}
+use census
 
 fn execute(args: List[str]) -> () ! {Bad(str)} {
     if args.len == 1 && args[0] == "--version" {
@@ -31,11 +9,15 @@ fn execute(args: List[str]) -> () ! {Bad(str)} {
         return
     }
     if args.len == 2 && (args[0] == "inspect" || args[0] == "verify" || args[0] == "roundtrip") {
-        inspect(args[1], args[0])?
+        census.inspect(args[1], args[0])?
         return
     }
     let plan = front.parse(args)?
     if plan.print_plan { front.emit(plan); return }
+    for path in plan.inputs {
+        let _size = fs_size(path) else |_| { continue }
+        census.inspect(path, "link")?
+    }
     Bad("linking not implemented; use --print-plan")
 }
 

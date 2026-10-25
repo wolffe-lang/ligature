@@ -82,4 +82,27 @@ pub fn check(image: elf.Image) -> () ! {Bad(str)} {
         }
     }
     if tls_count != 0 && !tls_seen { return Bad("PT_TLS without TLS sections") }
+    for p in image.programs {
+        if p.kind != 7 { continue }
+        var first: u64 = 18446744073709551615
+        var file_end: u64 = 0
+        var memory_end: u64 = 0
+        var alignment: u64 = 1
+        for s in image.sections {
+            if s.flags & 1024 == 0 || s.size == 0 { continue }
+            if s.addr < first { first = s.addr }
+            if s.addr + s.size as u64 > memory_end { memory_end = s.addr + s.size as u64 }
+            if s.kind != 8 && s.addr + s.size as u64 > file_end {
+                file_end = s.addr + s.size as u64
+            }
+            if s.align > alignment { alignment = s.align }
+        }
+        if first != p.addr || memory_end - first != p.memsz || p.align < alignment {
+            return Bad("PT_TLS memory template differs from TLS sections")
+        }
+        let expected_file = if file_end == 0 then 0 else file_end - first
+        if expected_file != p.filesz as u64 {
+            return Bad("PT_TLS file template differs from TLS sections")
+        }
+    }
 }

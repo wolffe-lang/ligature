@@ -1,0 +1,31 @@
+//! member: true
+
+use binary
+use elf
+use ar
+use verify
+
+/// Inspect, roundtrip or verify a file/member stream; Bad names IO, format or invariant failures.
+// This seam is shared by CLI inspection and the external census aggregator.
+#[allow(w0314)]
+pub fn inspect(path: str, command: str) -> () ! {Bad(str)} {
+    let fd = fs_open(path) else |_| { return Bad("cannot open {path}") }
+    defer fs_close(fd) else |_| {}
+    let size = fs_size(path) else |_| { return Bad("cannot stat {path}") }
+    let f = binary.Input { fd: fd, base: 0, size: size }
+    let magic = binary.read(f, 0, 8)?
+    let emit = command == "inspect"
+    if magic[0] == 33 as byte {
+        if command == "verify" { return Bad("verify requires ELF executable, not ar") }
+        let archive = ar.parse(f)?
+        ar.walk(f, archive, emit)?
+    } else {
+        let image = elf.parse(f)?
+        if command == "link" && image.machine == 183 {
+            return Bad("EM_AARCH64 linking refused (AAELF64 2025Q1)")
+        }
+        elf.walk(f, image, emit)?
+        if command == "verify" { verify.check(image)? }
+    }
+    if !emit && command != "link" { print("{command}: PASS {path}") }
+}

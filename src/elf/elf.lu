@@ -1,6 +1,7 @@
 //! member: true
 
 use binary
+use oracle
 
 /// An ELF64 section header with checked file offsets.
 pub struct Section {
@@ -79,6 +80,10 @@ pub fn parse(f: binary.Input) -> Image ! {Bad(str)} {
         // NOBITS is bounded in memory, not by file bytes.
         let size = binary.bounded(s[5], 9223372036854775807)?
         let st = s[1] as int
+        oracle.section(st, s[2])?
+        if st == 1879002115 && (size != 0 || s[2] & 2147483648 == 0) {
+            return Bad("nonempty/nonexcluded SHT_LLVM_ADDRSIG refused (LLVM 17 Extensions)")
+        }
         if st != 8 { binary.range(f, off, size)? }
         if st == 9 { return Bad("SHT_REL refused; SHT_RELA required (gABI ch.4 Relocation)") }
         if !binary.pow2(s[8]) { return Bad("sh_addralign is not a power of two") }
@@ -224,6 +229,7 @@ pub fn walk(f: binary.Input, image: Image, emit: bool) -> () ! {Bad(str)} {
                         let v = binary.table(f, s.off + j * 24, [8, 8, 8])?
                         let sym = v[1] >> 32
                         let rt = v[1] & 4294967295
+                        let relocation_name = oracle.relocation(image.machine, rt)?
                         if sym >= (syms.size / 24) as u64 {
                             return Bad("RELA symbol index outside symbol table")
                         }
@@ -233,7 +239,7 @@ pub fn walk(f: binary.Input, image: Image, emit: bool) -> () ! {Bad(str)} {
                         }
                         if emit {
                             print(
-                                "{{\"row\":\"rela\",\"table\":{i},\"index\":{j},\"target\":{s.info},\"offset\":{v[0]},\"symbol\":{sym},\"type\":{rt},\"addend_bits\":{v[2]}}}",
+                                "{{\"row\":\"rela\",\"table\":{i},\"index\":{j},\"target\":{s.info},\"offset\":{v[0]},\"symbol\":{sym},\"type\":{rt},\"name\":\"{relocation_name}\",\"addend_bits\":{v[2]}}}",
                             )
                         }
                     }
@@ -268,7 +274,9 @@ pub fn walk(f: binary.Input, image: Image, emit: bool) -> () ! {Bad(str)} {
                     }
                 }
             } else if s.kind == 14 || s.kind == 15 || s.kind == 16 {
-                if s.entsize != 8 { return Bad("array entry is not ELF64 address") }
+                if s.entsize != 0 && s.entsize != 8 || s.size % 8 != 0 {
+                    return Bad("array entry is not ELF64 address")
+                }
                 for j in 0..s.size / 8 {
                     let v = binary.table(f, s.off + j * 8, [8])?
                     if emit {

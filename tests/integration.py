@@ -19,7 +19,7 @@ with tempfile.TemporaryDirectory(dir=OUT,prefix='fixture-') as tmp:
     def bad(name,data,reason):
         p=d/name;p.write_bytes(data);run([BIN,'inspect',p],1,reason)
     empty=d/'empty.o';empty.write_bytes(header());run([BIN,'roundtrip',empty])
-    aarch=d/'aarch.o';aarch.write_bytes(header(183));run([BIN,'roundtrip',aarch])
+    aarch=d/'aarch.o';aarch.write_bytes(header(183));run([BIN,'roundtrip',aarch]);run([BIN,aarch],1,'EM_AARCH64 linking refused')
     for n in (0,1,7,8,15,16,63):bad('short'+str(n),header()[:n],'truncated range')
     b=header();b[4]=1;bad('elf32',b,'ELFCLASS32')
     b=header();b[5]=2;bad('big-endian',b,'ELFDATA2MSB')
@@ -53,6 +53,7 @@ with tempfile.TemporaryDirectory(dir=OUT,prefix='fixture-') as tmp:
     if 4 in types:
         b=bytearray(original);struct.pack_into('<I',b,shoff+types[4]*64+4,9);bad('rel.o',b,'SHT_REL')
         b=bytearray(original);off=struct.unpack_from('<Q',b,shoff+types[4]*64+24)[0];struct.pack_into('<Q',b,off+8,0xffffffff00000002);bad('rel-symbol.o',b,'symbol index')
+    b=bytearray(original);struct.pack_into('<I',b,shoff+64+4,123456);bad('unknown-section.o',b,'unknown section type')
     sym=types[2];symoff=struct.unpack_from('<Q',original,shoff+sym*64+24)[0]
     b=bytearray(original);struct.pack_into('<H',b,symoff+24+6,40000);bad('symbol-section.o',b,'section index')
     b=bytearray(original);struct.pack_into('<I',b,symoff+24,0xffffffff);bad('symbol-name.o',b,'string index')
