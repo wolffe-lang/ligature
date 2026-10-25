@@ -26,6 +26,7 @@ fn execute(args: List[str]) -> () ! {Bad(str)} {
     var state = resolve.empty()
     defer resolve.finish(state)
     resolve.run(mut state, plan)?
+    resolve.visibility(mut state)
     writer.link(state, plan)?
 }
 

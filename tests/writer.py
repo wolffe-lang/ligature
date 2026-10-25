@@ -32,6 +32,9 @@ weak=asm('weak','.data\n.weak choice\nchoice: .long 22')
 common=asm('common','.comm choice,16,16')
 for name,objs,status in [('strong-weak',[strong,weak],11),('weak-strong',[weak,strong],11),('strong-common',[strong,common],11),('common',[common],0)]:
     run_case(name,[start,*objs],(b'',b'',status))
+hidden=asm('hidden-ref','.text\n.global _start\n.hidden choice\n_start: mov choice(%rip),%edi\n mov $60,%eax\n syscall')
+exe=run_case('hidden-reference',[hidden,strong],(b'',b'',11))
+assert b' choice' not in call(['nm','-g',exe]).stdout
 # Forced roots, aliases, forward GOT and collected unreachable section.
 gc=asm('gc','.section .text.start,"ax"\n.global _start\n_start: mov alias(%rip),%edi\n mov $60,%eax\n syscall\n.section .text.dead,"ax"\n.global unreachable\nunreachable: .quad missing\n.data\n.global choice\nchoice: .long 19')
 exe=run_case('alias-gc',[gc],(b'',b'',19),['--defsym=alias=choice'])

@@ -342,6 +342,31 @@ pub fn run(mut s: State, p: front.Plan) -> () ! {Bad(str)} {
     }
 }
 
+// gABI Symbol Visibility: every declaration constrains the winning definition.
+fn visibility_rank(v: int) -> int {
+    if v == 1 { return 3 }
+    if v == 2 { return 2 }
+    if v == 3 { return 1 }
+    0
+}
+
+/// Propagate the most constraining visibility from declarations and definitions.
+pub fn visibility(mut s: State) {
+    var seen = Map[str, int]()
+    for sym in s.symbols {
+        if sym.binding == 0 { continue }
+        let old = seen[sym.name] else 0
+        let v = sym.other & 3
+        if visibility_rank(v) > visibility_rank(old) { seen[sym.name] = v }
+    }
+    for i in 0..s.symbols.len {
+        let name = s.symbols[i].name
+        if (s.globals[name] else -1) != i { continue }
+        let v = seen[name] else 0
+        s.symbols[i].other = s.symbols[i].other & 252 | v
+    }
+}
+
 /// Emit the selected inputs and pre-GC symbol winners as a diagnostic JSON stream.
 pub fn emit(s: State) {
     for obj in s.objects {
