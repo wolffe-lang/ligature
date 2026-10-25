@@ -1,0 +1,131 @@
+//! member: true
+
+use binary
+use elf
+
+/// A SysV member view; duplicate names remain distinct by header offset.
+pub struct Member { name: str, header: int, off: int, size: int }
+
+/// Ordered members and the optional SysV symbol-index range.
+pub struct Archive { members: List[Member], index_off: int, index_size: int }
+
+fn text(b: List[byte]) -> str ! {Bad(str)} {
+    str_from_utf8(b) else |_| { return Bad("non-ASCII ar header") }
+}
+
+fn decimal(s: str) -> int ! {Bad(str)} {
+    if s.len == 0 { return Bad("empty ar decimal field") }
+    var n: int = 0
+    for b in s.bytes() {
+        if b < 48 as byte || b > 57 as byte { return Bad("invalid ar decimal field") }
+        let d = b as int - 48
+        if n > (9223372036854775807 - d) / 10 { return Bad("ar decimal overflow") }
+        n = n * 10 + d
+    }
+    n
+}
+
+/// Read GNU/SysV archive headers; Bad names malformed, BSD or thin input.
+pub fn parse(f: binary.Input) -> Archive ! {Bad(str)} {
+    let magic = text(binary.read(f, 0, 8)?)?
+    if magic == "!<thin>\n" { return Bad("thin archives refused (GNU ar manual)") }
+    if magic != "!<arch>\n" { return Bad("not a SysV ar archive") }
+    var members = List[Member]()
+    var names = List[byte]()
+    var index_off: int = 0
+    var index_size: int = 0
+    var at: int = 8
+    while at < f.size {
+        let h = binary.read(f, at, 60)?
+        if h[58] != 96 as byte || h[59] != 10 as byte { return Bad("invalid ar member trailer") }
+        let raw = text(h[0..16])?.trim_end()
+        let size = decimal(text(h[48..58])?.trim())?
+        binary.range(f, at + 60, size)?
+        if raw.starts_with("#1/") || raw.starts_with("__.SYMDEF") {
+            return Bad("BSD archives refused (ar format)")
+        }
+        if raw == "/SYM64/" { return Bad("64-bit ar symbol index refused (GNU ar manual)") }
+        if raw == "//" {
+            if names.len != 0 { return Bad("duplicate ar long-name table") }
+            names = binary.read(f, at + 60, size)?
+        } else if raw == "/" {
+            if index_off != 0 { return Bad("duplicate ar symbol index") }
+            index_off = at + 60
+            index_size = size
+        } else {
+            var name = raw
+            if raw.starts_with("/") {
+                let offset = decimal(raw[1..])?
+                if offset >= names.len { return Bad("ar long-name offset outside // table") }
+                var end = offset
+                while end + 1 < names.len &&
+                    !(names[end] == 47 as byte && names[end + 1] == 10 as byte) { end += 1 }
+                if end + 1 >= names.len { return Bad("unterminated ar long name") }
+                name = text(names[offset..end])?
+            } else {
+                if !raw.ends_with("/") {
+                    return Bad("BSD/plain ar names refused; SysV slash required")
+                }
+                name = raw[..raw.len - 1]
+            }
+            if name.len == 0 { return Bad("empty ar member name") }
+            (mut members).push(Member { name: name, header: at, off: at + 60, size: size })
+        }
+        at += 60 + size
+        if size % 2 != 0 {
+            let pad = binary.read(f, at, 1)?
+            if pad[0] != 10 as byte { return Bad("invalid ar alignment padding") }
+            at += 1
+        }
+    }
+    Archive { members: members, index_off: index_off, index_size: index_size }
+}
+
+/// Validate every symbol-index target and member ELF; Bad names malformed metadata.
+pub fn walk(f: binary.Input, archive: Archive, emit: bool) -> () ! {Bad(str)} {
+    if archive.index_off != 0 {
+        let idx = binary.Input {
+            fd: f.fd,
+            base: f.base + archive.index_off,
+            size: archive.index_size,
+        }
+        let n = binary.read(idx, 0, 4)?
+        let count = n[0] as int << 24 | n[1] as int << 16 | n[2] as int << 8 | n[3] as int
+        binary.range(idx, 4, count * 4)?
+        var at: int = 4 + count * 4
+        for j in 0..count {
+            region symbol {
+                let b = binary.read(idx, 4 + j * 4, 4)?
+                let offset = b[0] as int << 24 | b[1] as int << 16 | b[2] as int << 8 | b[3] as int
+                var found = false
+                for m in archive.members { if m.header == offset { found = true } }
+                if !found { return Bad("ar symbol index does not name a member header") }
+                let name = binary.cstring(idx, 0, idx.size, at)?
+                at += name.len + 1
+                if emit {
+                    print(
+                        "{{\"row\":\"archive_symbol\",\"name\":{binary.quote(name)},\"member_header\":{offset}}}",
+                    )
+                }
+            }
+        }
+        if at != idx.size {
+            // GNU ar may include one NUL pad in the symbol-index member size.
+            if at % 2 != 1 || idx.size != at + 1 { return Bad("trailing bytes in ar symbol index") }
+            let pad = binary.read(idx, at, 1)?
+            if pad[0] != 0 as byte { return Bad("nonzero ar symbol-index pad") }
+        }
+    }
+    for m in archive.members {
+        region member {
+            if emit {
+                print(
+                    "{{\"row\":\"member\",\"name\":{binary.quote(m.name.bytes())},\"offset\":{m.off},\"size\":{m.size}}}",
+                )
+            }
+            let input = binary.Input { fd: f.fd, base: f.base + m.off, size: m.size }
+            let image = elf.parse(input)?
+            elf.walk(input, image, emit)?
+        }
+    }
+}
