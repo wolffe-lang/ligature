@@ -1,0 +1,29 @@
+xorriso 1.5.6 : RockRidge filesystem manipulator, libburnia project.
+
+Copying of file objects from ISO image to disk filesystem is: Enabled
+xorriso : NOTE : Loading ISO image tree from LBA 0
+xorriso : UPDATE :      12 nodes read in 1 seconds
+xorriso : NOTE : Detected El-Torito boot information which currently is set to be discarded
+Drive current: -indev '/work/pax-dev.iso'
+Media current: stdio file, overwriteable
+Media status : is written , is appendable
+Boot record  : El Torito , MBR cyl-align-off
+Media summary: 1 session, 128977 data blocks,  252m data, 64.4g free
+Volume id    : 'ISOIMAGE'
+xorriso : UPDATE :       1 files restored ( 245.2m) in 1 seconds = 185.6xD
+Extracted from ISO image: file '/boot/initramfs.cpio'='/work/iso-extract/initramfs.cpio'
+ld.lld 1217ca75f9df70439294844b2aba14895adc557e2514c6cdc76c4c6676a3757b 66247008
+ld.lld 1217ca75f9df70439294844b2aba14895adc557e2514c6cdc76c4c6676a3757b 66247008
+cc 3161aea27abb8beeb669cc6499fa9dc162014b69eecc6fb0d169eed5def25b11 499760
+cc 3161aea27abb8beeb669cc6499fa9dc162014b69eecc6fb0d169eed5def25b11 499760
+sysroot/crt1.o 51dba24287eb9b1e74f3c7cb8ea5464491d3a4ba54c016722f149179d08f90f6 5560
+sysroot/crt1.o 51dba24287eb9b1e74f3c7cb8ea5464491d3a4ba54c016722f149179d08f90f6 5560
+sysroot/crti.o 5cbc84c78a23cdddda0db8cdcd5ec3b5a15b6b555510bd97e4c5a0334aca7b49 2816
+sysroot/crti.o 5cbc84c78a23cdddda0db8cdcd5ec3b5a15b6b555510bd97e4c5a0334aca7b49 2816
+sysroot/crtn.o d884ee5f9120490b98bb43496f88983ee379a0d2ebf027574fcca7eae9aaa1e7 2760
+sysroot/crtn.o d884ee5f9120490b98bb43496f88983ee379a0d2ebf027574fcca7eae9aaa1e7 2760
+sysroot/libc.a 8e69a73c464a86fd8b278f3aa08ab2640b720157e92b45a2d34441c22248ddd4 10961970
+sysroot/libc.a 8e69a73c464a86fd8b278f3aa08ab2640b720157e92b45a2d34441c22248ddd4 10961970
+sysroot/libunwind.a 264296d61db52859cc7a8cd6a7a09fc62bde189aa3ea8867fb62ef5129b694bc 201794
+sysroot/libunwind.a 264296d61db52859cc7a8cd6a7a09fc62bde189aa3ea8867fb62ef5129b694bc 201794
+runtime 9d859b9e6b5319f5a6f609e73ba0d71981d2dfa489882648ac9f454cd9db739c

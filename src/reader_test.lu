@@ -1,0 +1,37 @@
+//! member: false
+
+use binary
+use front
+
+fn main() -> int {
+    let fields: List[u64] = [0, 65535, 18446744073709551615]
+    let widths: List[int] = [1, 2, 8]
+    let bytes = binary.encode(fields, widths) else |_| { return 1 }
+    assert((binary.decode(bytes, 3, 8) else 0) == 18446744073709551615)
+    assert((binary.decode(bytes, 1, 2) else 0) == 65535)
+    assert(binary.pow2(4096))
+    assert(!binary.pow2(3))
+    let plan = front.parse(
+        [
+            "--print-plan",
+            "-o",
+            "x",
+            "x.o",
+            "libwolf_rt.a",
+            "-lpthread",
+            "-ldl",
+            "-lm",
+            "-Wl,--gc-sections",
+            "-Wl,--undefined=__wolf_rt_trap_at",
+            "-Wl,--defsym=wolf_trap=__wolf_rt_trap_at",
+            "-fuse-ld=lld",
+        ],
+    ) else |_| { return 1 }
+    assert(plan.output == "x" && plan.gc && plan.inputs.len == 2 && plan.libraries.len == 3)
+    assert(plan.undefined.len == 1 && plan.definitions.len == 1)
+    var rejected = false
+    front.parse(["--surprise", "x.o"]) else |_| { rejected = true; plan }
+    assert(rejected)
+    print("reader/front: 8 assertions, 0 SKIP")
+    0
+}

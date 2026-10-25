@@ -1,0 +1,127 @@
+//! member: true
+
+use binary
+
+/// The accepted cc-argument subset, without opening inputs or executing a linker.
+pub struct Plan {
+    output: str,
+    inputs: List[str],
+    libraries: List[str],
+    paths: List[str],
+    undefined: List[str],
+    definitions: List[str],
+    static_link: bool,
+    nostdlib: bool,
+    gc: bool,
+    print_plan: bool,
+}
+
+fn value(s: str, option: str) -> str ! {Bad(str)} {
+    if s.len == 0 { return Bad("missing value for {option}") }
+    s
+}
+
+fn link_option(mut p: Plan, arg: str) -> () ! {Bad(str)} {
+    if arg == "--gc-sections" {
+        p.gc = true
+    } else if arg.starts_with("--undefined=") {
+        (mut p.undefined).push(value(arg[12..], "--undefined")?)
+    } else if arg.starts_with("--defsym=") {
+        let def = value(arg[9..], "--defsym")?
+        let parts = def.split("=")
+        if parts.len != 2 || parts[0].len == 0 || parts[1].len == 0 {
+            return Bad("--defsym requires NAME=SYMBOL")
+        }
+        (mut p.definitions).push(def)
+    } else {
+        return Bad("unsupported linker option {arg} (ld.lld 17 options)")
+    }
+}
+
+/// Build a link plan; Bad names an unsupported argument or missing operand.
+pub fn parse(args: List[str]) -> Plan ! {Bad(str)} {
+    var p = Plan {
+        output: "a.out",
+        inputs: List[str](),
+        libraries: List[str](),
+        paths: List[str](),
+        undefined: List[str](),
+        definitions: List[str](),
+        static_link: false,
+        nostdlib: false,
+        gc: false,
+        print_plan: false,
+    }
+    var i: int = 0
+    var operands = false
+    while i < args.len {
+        let a = args[i]
+        if operands {
+            (mut p.inputs).push(a)
+        } else if a == "--" {
+            operands = true
+        } else if a == "--print-plan" {
+            p.print_plan = true
+        } else if a == "-static" {
+            p.static_link = true
+        } else if a == "-nostdlib" {
+            p.nostdlib = true
+        } else if a == "-fuse-ld=lld" {} else if a == "-o" || a == "-L" || a == "-l" || a == "-u" {
+            i += 1
+            if i >= args.len { return Bad("missing value for {a}") }
+            let v = value(args[i], a)?
+            if a == "-o" {
+                p.output = v
+            } else if a == "-L" {
+                (mut p.paths).push(v)
+            } else if a == "-l" {
+                (mut p.libraries).push(v)
+            } else {
+                (mut p.undefined).push(v)
+            }
+        } else if a.starts_with("-L") {
+            (mut p.paths).push(value(a[2..], "-L")?)
+        } else if a.starts_with("-l") {
+            (mut p.libraries).push(value(a[2..], "-l")?)
+        } else if a.starts_with("-Wl,") {
+            for opt in a[4..].split(",") { link_option(mut p, opt)? }
+        } else if a.starts_with("--undefined=") ||
+            a.starts_with("--defsym=") ||
+            a == "--gc-sections" {
+            link_option(mut p, a)?
+        } else if a.starts_with("-") {
+            return Bad("unsupported cc option {a} (wolf link_staged subset)")
+        } else {
+            (mut p.inputs).push(a)
+        }
+        i += 1
+    }
+    if p.inputs.len == 0 { return Bad("link plan has no input objects or archives") }
+    p
+}
+
+fn strings(xs: List[str]) {
+    print_raw("[")
+    for i in 0..xs.len {
+        if i != 0 { print_raw(",") }
+        print_raw(binary.quote(xs[i].bytes()))
+    }
+    print_raw("]")
+}
+
+/// Write a versioned JSON plan to stdout.
+pub fn emit(p: Plan) {
+    print_raw(
+        "{{\"format\":\"ligature.plan.v1\",\"output\":{binary.quote(p.output.bytes())},\"inputs\":",
+    )
+    strings(p.inputs)
+    print_raw(",\"libraries\":")
+    strings(p.libraries)
+    print_raw(",\"search_paths\":")
+    strings(p.paths)
+    print_raw(",\"undefined\":")
+    strings(p.undefined)
+    print_raw(",\"definitions\":")
+    strings(p.definitions)
+    print(",\"static\":{p.static_link},\"nostdlib\":{p.nostdlib},\"gc_sections\":{p.gc}}}")
+}

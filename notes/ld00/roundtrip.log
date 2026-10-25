@@ -1,0 +1,36 @@
+ROUNDTRIP /lane/link-inputs/sysroot/crt1.o
+roundtrip: PASS /lane/link-inputs/sysroot/crt1.o
+ROUNDTRIP /lane/link-inputs/sysroot/crti.o
+
+real	0m0.001s
+user	0m0.000s
+sys	0m0.001s
+roundtrip: PASS /lane/link-inputs/sysroot/crti.o
+ROUNDTRIP /lane/link-inputs/sysroot/crtn.o
+
+real	0m0.001s
+user	0m0.000s
+sys	0m0.001s
+roundtrip: PASS /lane/link-inputs/sysroot/crtn.o
+
+real	0m0.001s
+user	0m0.000s
+sys	0m0.000s
+ROUNDTRIP /lane/link-inputs/sysroot/libc.a
+roundtrip: PASS /lane/link-inputs/sysroot/libc.a
+
+real	0m0.131s
+user	0m0.087s
+sys	0m0.044s
+ROUNDTRIP /lane/link-inputs/sysroot/libunwind.a
+roundtrip: PASS /lane/link-inputs/sysroot/libunwind.a
+ROUNDTRIP /lane/link-inputs/libwolf_rt.a
+
+real	0m0.003s
+user	0m0.002s
+sys	0m0.002s
+roundtrip: PASS /lane/link-inputs/libwolf_rt.a
+
+real	0m0.331s
+user	0m0.245s
+sys	0m0.086s
