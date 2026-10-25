@@ -12,6 +12,7 @@ python3 -I tests/oracle.py
 python3 -I tests/resolution.py
 python3 -I tests/resolve.py
 python3 -I tests/writer.py
+python3 -I tests/relocation-witness.py
 python3 -I tests/cc.py
 python3 -I tests/provenance.py
 python3 -I tests/pax-validator.py

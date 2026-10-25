@@ -53,13 +53,41 @@ fn section_of(l: layout.Layout, s: resolve.State, id: int) -> int {
     l.atoms[a].output
 }
 
-fn symbols(mut l: layout.Layout, s: resolve.State) -> () ! {Bad(str)} {
+fn symbols(mut l: layout.Layout, s: resolve.State) -> Map[int, int] ! {Bad(str)} {
+    var indices = Map[int, int]()
+    var needed = Map[int, bool]()
+    for r in l.relocs {
+        if l.atoms[r.atom].live { needed[layout.target(s, r.symbol)?] = true }
+    }
     var table = binary.encode([0, 0, 0, 0, 0, 0], [4, 1, 1, 2, 8, 8])?
     var strings: List[byte] = [0 as byte]
     var count: int = 1
     var first_global: int = 0
     for pass in 0..2 {
-        if pass == 1 { first_global = count }
+        if pass == 1 {
+            // Preserve undefined, synthetic and discarded targets too. They are local
+            // witnesses, not new public definitions; dead targets carry a zero value.
+            for id in 0..s.symbols.len {
+                if !(needed[id] else false) { continue }
+                let sym = copy s.symbols[id]
+                if sym.index != 0 && sym.section != 0 && section_of(l, s, id) != 0 { continue }
+                let value = layout.value(l, s, id, true)?
+                symbol(
+                    mut table,
+                    mut strings,
+                    sym.name,
+                    0,
+                    sym.kind,
+                    sym.other,
+                    if value == 0 then 0 else 65521,
+                    layout.bits(value),
+                    sym.size,
+                )?
+                indices[id] = count
+                count += 1
+            }
+            first_global = count
+        }
         for id in 0..s.symbols.len {
             let sym = copy s.symbols[id]
             if sym.index == 0 || sym.section == 0 { continue }
@@ -80,6 +108,7 @@ fn symbols(mut l: layout.Layout, s: resolve.State) -> () ! {Bad(str)} {
                 layout.bits(value),
                 sym.size,
             )?
+            indices[id] = count
             count += 1
         }
     }
@@ -112,6 +141,41 @@ fn symbols(mut l: layout.Layout, s: resolve.State) -> () ! {Bad(str)} {
     strs.data = strings
     strs.size = strs.data.len
     (mut l.outputs).push(strs)
+    indices
+}
+
+// Keep original RELA types/addends even when their instruction has been relaxed.
+// This is the gABI --emit-relocs convention used by both black-box oracles.
+fn retained(mut l: layout.Layout, s: resolve.State, indices: Map[int, int], symtab: int) -> () ! {
+    Bad(str),
+} {
+    var tables = Map[int, int]()
+    for r in l.relocs {
+        let atom = copy l.atoms[r.atom]
+        if !atom.live { continue }
+        let target = atom.output
+        let table = tables[target] else {
+            let index = l.outputs.len
+            var out = layout.output(".rela{l.outputs[target].name}", 4, 0, 8)
+            out.link = symtab
+            out.info = target
+            out.entsize = 24
+            (mut l.outputs).push(out)
+            tables[target] = index
+            index
+        }
+        let id = layout.target(s, r.symbol)?
+        let index = indices[id] else { return Bad("missing retained relocation symbol") }
+        let offset = atom.offset + r.offset + l.outputs[target].address
+        append(
+            mut l.outputs[table].data,
+            binary.encode(
+                [offset as u64, index as u64 << 32 | r.kind as u64, layout.bits(r.addend)],
+                [8, 8, 8],
+            )?,
+        )
+        l.outputs[table].size = l.outputs[table].data.len
+    }
 }
 
 fn ph(
@@ -151,7 +215,9 @@ pub fn link(s: resolve.State, p: front.Plan) -> () ! {Bad(str)} {
     layout.collect(mut l, s, p)?
     layout.place(mut l, s)?
     relocate.apply(mut l, s)?
-    symbols(mut l, s)?
+    let symtab = l.outputs.len
+    let indices = symbols(mut l, s)?
+    retained(mut l, s, indices, symtab)?
     let note_index = l.outputs.len
     var note = layout.output(".note.wolf.link", 7, 0, 4)
     note.size = 116

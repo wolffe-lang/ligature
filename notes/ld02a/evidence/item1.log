@@ -1,0 +1,18 @@
+{"event":"suite","file":"src/kernel_relocation_test.lu","schema":"wolf-test/0","tests":1}
+{"detail":"exit(0)","event":"test","file":"src/kernel_relocation_test.lu","name":"main","schema":"wolf-test/0","status":"pass"}
+{"event":"suite","file":"src/reader_test.lu","schema":"wolf-test/0","tests":1}
+{"detail":"exit(0)","event":"test","file":"src/reader_test.lu","name":"main","schema":"wolf-test/0","status":"pass"}
+{"event":"summary","failed":0,"filtered_out":0,"native":0,"passed":2,"rejected":0,"schema":"wolf-test/0","stopped_early":false,"unsupported":0}
+integration: 43 process rows, 0 SKIP
+oracle: 2 musl links, 2 deterministic relinks, 2 differ plants, 4 verify plants, 0 SKIP
+resolution: 16 oracle rows, 0 SKIP
+resolve: strong/weak/common, indexed archives, groups, duplicate names, COMDAT; 0 SKIP
+writer: 10 three-linker behavior rows, determinism, named refusals and TLS-negative rows; 0 SKIP
+relocation-witness: three linkers, retained sites, unused data/debug corruption red, local/entry normalization; 0 SKIP
+relocation-witness: all writer cases independently decoded, including four TLS models; 0 SKIP
+cc frontend: exact compiler-style option subset links and runs; 0 SKIP
+provenance: canonical manifest, independent SHA256 checks, four negative rows; 0 SKIP
+PAX transcript validator: one genuine capture, four rejected mutations; replay only, 0 SKIP
+static-pax runner: report preserved, nonzero differ status preserved, 0 SKIP
+kernel edge: lld17 refuses -2147483652; GNU default refuses, GNU --no-relax keeps GOT load; newer-lld comparison remains outstanding
+roundtrip: PASS /baseline/toolchain/wolf/wolf-0.2.35-x86_64-unknown-linux-gnu/libwolf_rt.a
