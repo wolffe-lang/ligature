@@ -2,8 +2,9 @@
 # Lane-only long job; the orchestrator resumes ld02a after its durable exit marker.
 set -euo pipefail
 base=$HOME/lanes/ld02a
-printf '%s\n' "$$" > "$base/long.pid"
-trap 'rc=$?; printf "%s\n" "$rc" > "$base/long.exit"; printf "LD02A LONG EXIT %s %s\n" "$rc" "$(date -Iseconds)"' EXIT
+attempt=${LD02A_ATTEMPT:-long}
+printf '%s\n' "$$" > "$base/$attempt.pid"
+trap 'rc=$?; printf "%s\n" "$rc" > "$base/$attempt.exit"; printf "LD02A LONG EXIT %s %s\n" "$rc" "$(date -Iseconds)"' EXIT
 ulimit -c 0
 printf 'LD02A LONG START %s pid=%s head=%s\n' "$(date -Iseconds)" "$$" "$(git -C "$base/ligature" rev-parse HEAD)"
 exec 9>"$HOME/lanes/kasumi-cores-12-15.lock"
