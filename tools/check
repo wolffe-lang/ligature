@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+set -euo pipefail
+cd "$(dirname "$0")/.."
+export WOLF_STD=${WOLF_STD:-$PWD/.wolf-bin/std}
+wolf=${WOLF:-$PWD/.wolf-bin/wolf}
+"$wolf" fmt --check src
+"$wolf" test --deny-warnings --json src
+# Native IO and malformed-file rows cannot be replaced by checked unit tests.
+tools/build
+python3 -I tests/integration.py

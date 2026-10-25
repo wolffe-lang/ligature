@@ -1,0 +1,28 @@
+#!/usr/bin/env python3
+"""Fetch complete release archives, verifying each digest twice before extraction."""
+import hashlib, pathlib, subprocess, tarfile, tempfile, tomllib, urllib.request
+root = pathlib.Path(__file__).resolve().parent.parent
+pin = tomllib.loads((root / 'wolf-toolchain.toml').read_text())
+stage = root / '.wolf-bin'
+stage.mkdir(exist_ok=True)
+for name in ('wolf', 'lupin'):
+    p = pin[name]
+    base = f'{name}-{p["version"]}-x86_64-unknown-linux-gnu'
+    with tempfile.TemporaryDirectory(prefix='ligature-', dir=stage) as temp:
+        arc = pathlib.Path(temp) / 'release.tar.gz'
+        urllib.request.urlretrieve(f'https://github.com/{p["repo"]}/releases/download/v{p["version"]}/{base}.tar.gz', arc)
+        for _ in range(2):
+            actual = hashlib.file_digest(arc.open('rb'), 'sha256').hexdigest()
+            if actual != p['x86_64-unknown-linux-gnu']:
+                raise SystemExit(f'REFUSED {base}: {actual}')
+            print(base, actual, flush=True)
+        with tarfile.open(arc) as tf:
+            tf.extractall(path=stage, filter='data')
+    for binary in ([name, 'libwolf_rt.a'] if name == 'wolf' else [name]):
+        dest = stage / binary
+        if dest.is_symlink(): dest.unlink()
+        dest.symlink_to(f'{base}/{binary}')
+    if name == 'wolf':
+        dest = stage / 'std'
+        if dest.is_symlink(): dest.unlink()
+        dest.symlink_to(f'{base}/std')

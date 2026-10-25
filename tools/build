@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+set -euo pipefail
+cd "$(dirname "$0")/.."
+export WOLF_STD=${WOLF_STD:-$PWD/.wolf-bin/std}
+mkdir -p target
+"${WOLF:-$PWD/.wolf-bin/wolf}" build --deny-warnings src/ligature.lu -o target/ligature
