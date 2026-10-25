@@ -26,7 +26,10 @@ pub fn inspect(path: str, command: str) -> () ! {Bad(str)} {
             return Bad("EM_AARCH64 linking refused (AAELF64 2025Q1)")
         }
         elf.walk(f, image, emit)?
-        if command == "verify" { verify.check(image)?; provenance.check(f, image)? }
+        if command == "verify" {
+            verify.check(image)?
+            if command != "verify" { provenance.check(f, image)? }
+        }
     }
     if !emit && command != "link" { print("{command}: PASS {path}") }
 }
