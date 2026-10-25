@@ -1,0 +1,9 @@
+{
+  "format":"ligature.ld03.plants.v1",
+  "read_policy":"Each gh run list was read once immediately after PR creation; all returned []. No polling or red verdict is claimed.",
+  "plants":[
+    {"pr":19,"branch":"ld03-plant-drop-provenance","head":"d7fbfae","expected":"provenance retained patch count mismatch","run_id":null,"status":"awaiting orchestrator observation"},
+    {"pr":20,"branch":"ld03-plant-reclassify-finding","head":"2e5d005","expected":"retained finding silently reclassified","run_id":null,"status":"awaiting orchestrator observation"},
+    {"pr":21,"branch":"ld03-plant-nondeterministic-relink","head":"b790963","expected":"nondeterministic relink","run_id":null,"status":"awaiting orchestrator observation"}
+  ]
+}
