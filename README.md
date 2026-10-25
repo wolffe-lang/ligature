@@ -141,6 +141,15 @@ linker binaries, but they lose argv just like the same objects linked by LLD
 and GNU ld. A compiler release carrying the new entry and its matching runtime
 bundle are both required; a runtime-only update is insufficient.
 
+The compact-format outputs were also exercised in 56 new BIOS/UEFI boots
+using those preserved native/release kernel binaries: 52 Linux-equal rows and
+the same four named fork failures, with no unexpected failures. No new kernel
+was built for this repeat; `notes/ld03/evidence/` records every new transcript.
+
+Each of the fourteen cases has a fresh compact-format Linux qualification and
+per-site relocation proof, indexed in `notes/ld03/`. Final byte-name regression
+tests preserve legacy JSON name semantics for non-ASCII inputs as well.
+
 The nonallocated 116-byte `.note.wolf.link` seals input hashes, disjoint file
 ranges and relocation patches with SHA-256. It is integrity, not a signature
 or proof of authorship. `explain` validates the manifest before answering.
