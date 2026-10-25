@@ -68,8 +68,9 @@ links the object set twice, executes that linker and demands a byte-identical
 bootstrap relink and an executed hello. Its runtime preflight currently reports
 **BLOCKED on [wolf-lang#962](https://github.com/wolffe-lang/wolf-lang/issues/962)**:
 the pinned musl runtime loses command-line arguments under both reference
-linkers too. The full gate exits 2; this is neither a passing self-link nor a
-SKIP. `tools/check-core` runs the independent linker/provenance gates. A new
+linkers too. CI records this as BLOCKED, neither a passing self-link nor a SKIP, only
+for runtime SHA-256 `9d859b9e6b5319f5a6f609e73ba0d71981d2dfa489882648ac9f454cd9db739c`.
+Any other runtime digest must pass the hard self-link assertions. `tools/check-core` runs the independent linker/provenance gates. A new
 runtime bundle is required before actual self-link execution can qualify.
 No linker, binutils or libc source is fetched or built.
 
