@@ -12,7 +12,8 @@ ELF offsets and lengths are unsigned 64-bit integers; arithmetic is checked.
 `inputs`, `libraries`, `search_paths`, `undefined` and `definitions` are
 convenience projections, not permission to reorder archive/library searches.
 `output` names the output; `static`, `nostdlib` and `gc_sections` are booleans.
-A plan is declarative: printing it neither opens input files nor links them.
+The optional `script` projection names an explicit `-T` input. A plan is
+declarative: printing it neither opens input files nor links them.
 Unrecognized options and missing values are errors on stderr with status 1.
 No implicit sysroot is selected by this format. A future executor must record
 its resolved CRT order and library paths in the provenance manifest.
@@ -73,6 +74,17 @@ patch bytes and extraction edges. A valid digest is not authentication or a
 proof that a claimed target is correct: `tools/differ` independently evaluates
 retained relocation equations. Mutation tests forge matching patch claims and
 re-seal both digests, then require that independent check to fail.
+
+Virtual addresses above INT64_MAX are exact unsigned decimal **strings**, never
+floating-point JSON numbers. Lower addresses retain their integer encoding.
+Kernel manifests advertise `address_encoding: "u64-decimal-text-if-high"`;
+section and symbol addresses and memory endpoints use this representation.
+`verify` compares section addresses/endpoints to the ELF's full-width fields,
+and `explain --address` accepts the whole u64 decimal/hex range. File offsets,
+lengths and patch indexes remain bounded integers. Script-defined symbols are
+absolute definitions with `origin: "script-symbol"`, member `-1`, and no file
+bytes. The exact validated script descriptor is also an original hashed input.
+`script-DISCARD` is distinct from GC, COMDAT and SHF_EXCLUDE causes.
 
 Older `coverage: "sections"` files remain verifiable but `explain` refuses them.
 No sidecar, signature scheme or general linker-script format is implemented.
@@ -163,3 +175,26 @@ without causes refuse that query explicitly. `explain --dependencies SYMBOL`
 returns the original relocation patches in the definition's input section,
 including target identities and transition reasons. This is section dependency
 information, not a claim to recover source-language call graphs.
+
+## Closed kernel profile and AArch64
+
+`script-plan FILE` validates the exact token profile of the permitted PAX script
+without linking. `-nostdlib -T FILE` executes that profile; syntax extensions,
+changed ordering/patterns, allocated orphans and conflicting bound symbols are
+refused. Sections have bounded 512 MiB reservations and at most page alignment;
+virtual addresses and file positions are separate. A general expression or
+linker-script interpreter is not implied.
+
+AArch64 retained RELA types keep their AAELF64 numbers. ABS64 writes low 64 bits
+without overflow checks; PREL32 checks -2^31 <= X < 2^32, as specified (not only
+the signed half). Both data relocations allow byte-aligned places. Branches,
+ADRP and low12 instruction sites require four-byte alignment and checked
+instruction masks. Low12 pairs must be adjacent and have matching resolved
+symbol/addend/register identities. LDST64 targets and GOT slots require eight-byte
+alignment. GOT relocations require zero addends in the measured subset; TLS and
+unknown variants remain named refusals. The independent AArch64 equation checker
+is `tests/aarch64-sites.py`; it never uses provenance claims as expected bytes.
+
+LLVM ADDRSIG sections are consumed only with SHF_EXCLUDE. Nonempty ULEB128 entries
+must name a valid symbol-table index. No identical-code folding is performed,
+so address-significance metadata cannot weaken address uniqueness.

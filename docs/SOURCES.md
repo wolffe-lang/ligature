@@ -121,3 +121,25 @@ interpretation follows gABI chapter 4 `SHF_MERGE`/`SHF_STRINGS` and the LSB
 Core AMD64 5.0 `.eh_frame`/`.eh_frame_hdr` section definitions. Script syntax
 is scoped from the GNU ld 2.42 manual, Linker Scripts (SECTIONS, PHDRS, symbol
 assignments, wildcard input sections and ALIGN), not implementation source.
+
+## ld04 kernel and AArch64
+
+* Arm, ELF for the Arm 64-bit Architecture, 2025Q1, sections 5–7 and the
+  static data, PC-relative, call/jump and GOT relocation tables:
+  <https://github.com/ARM-software/abi-aa/blob/2025Q1/aaelf64/aaelf64.rst>.
+  This is the published specification, not implementation source.
+* LLVM's published `SHT_LLVM_ADDRSIG` section description:
+  <https://llvm.org/docs/Extensions.html>. Only the metadata description was read;
+  no LLVM/linker implementation was read.
+* PAX `4831abe70e08811be4a7adbd6cfb3b0cbad21699` build/ISO/boot tools and
+  `tests/mpx2-paging`: unchanged native/release inputs, BIOS/UEFI monitor-backed
+  paging and halt proofs. Only the permitted linker script and tooling were
+  read, not kernel implementation source. No PAX files were modified.
+* clang/LLD 18.1.3 and the pinned LLD17/GNU ld 2.42 binary oracles. AArch64
+  execution uses explicit qemu-user-static 11.1.2, not native hardware. The
+  compiler blocker probe uses the provisioned AArch64 glibc 2.44 sysroot;
+  the cross GCC/binutils were not used as expected-answer oracles.
+* The actual Wolf 0.2.35 AArch64 release archive was verified twice against
+  SHA256 `30ccded432264b7ddd4ebf738d4f895d12091ca604e2da4c2f831da807886f3e`.
+  Its compiler's host refusals and runtime's complete binary census are retained
+  separately from the successfully executed assembly hello.
