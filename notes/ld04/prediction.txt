@@ -1,0 +1,31 @@
+Prediction
+Committed before implementation. The exact PAX script can be recognized independently
+of whitespace/comments while every unsupported directive, wildcard or arithmetic form
+is refused by name. I predict at least 20 positive/refusal witnesses. GNU/SysV archive
+writing will be deterministic with zero timestamps, a valid big-endian symbol index,
+and duplicate-name member identities preserved; thin/BSD remain named refusals.
+Kernel linking is not implied by parsing: full-width virtual addresses, three explicit
+permission segments, script symbols, ordered collection and independent patch equations
+must qualify before any kernel boot claim. AArch64 remains a separate measured census
+and implementation, never an x86 header witness. No M4 completion predicted without
+both an actual qualified kernel boot and an actual AArch64 hello.
+
+Forbidden
+No other linker source; binary oracles and published specifications only. No changes
+to PAX, compiler, toolchain/bundle pins, self-link digest predicate or inherited findings.
+No Mac builds. No labels, merges, tags, issues filed/closed, attribution trailers.
+
+Inputs verified
+Starting ligature trunk db2bf27; adopted notes/ld03/ld04-draft.json, ld03 note,
+ld02a note, PAX as02b note, campaign and RULES sections 1 through 10 read.
+Kasumi /home has 36 GiB free (97% used); observed localhost/ligature-oracle and
+localhost/as02b-rust. Jobs use CPUs 8-11 under kasumi-cores-8-11.lock.
+
+Evidence index
+To be recorded in structured notes/ld04 files and the PR body. This wrapper does
+not write Markdown lane reports; the PR body carries the five named sections.
+
+Done-when
+Exact script/refusal gates; archives; kernel layout/link/boot gates; separate AArch64
+census and relocation gates as far as reached, explicitly naming outstanding rows.
+Plants, local checks, final pushed head, one CI read per push, lane audit and ld05 draft.
