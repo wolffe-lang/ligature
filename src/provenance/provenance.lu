@@ -90,7 +90,12 @@ pub fn manifest(
     total: int,
 ) -> List[byte] ! {Bad(str)} {
     var out = List[byte]()
-    emit(mut out, "{{\"coverage\":\"bytes-and-patches\",\"discarded\":[")
+    if l.kernel {
+        emit(mut out, "{{\"address_encoding\":\"u64-decimal-text-if-high\",")
+    } else {
+        emit(mut out, "{{")
+    }
+    emit(mut out, "\"coverage\":\"bytes-and-patches\",\"discarded\":[")
     for b in discards(l, s) { (mut out).push(b) }
     emit(mut out, "],\"format\":\"wolf.link.provenance.v1\",\"input_ranges\":[")
     var count: int = 0

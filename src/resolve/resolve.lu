@@ -4,6 +4,7 @@ use ar
 use binary
 use elf
 use front
+use script
 
 /// A symbol preserves its input identity, including local names.
 pub struct Symbol {
@@ -334,6 +335,10 @@ fn locate(p: front.Plan, token: str) -> str ! {Bad(str)} {
 
 /// Resolve the ordered plan. Undefineds are retained for section GC and synthetic boundaries.
 pub fn run(mut s: State, p: front.Plan) -> () ! {Bad(str)} {
+    if p.script.len != 0 {
+        let file = opened(mut s, p.script)?
+        script.validate_input(file)?
+    }
     for name in p.undefined { demand(mut s, name, -1)? }
     for def in p.definitions {
         let parts = def.split("=")

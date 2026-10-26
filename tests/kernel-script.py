@@ -66,6 +66,9 @@ for label,ld in [('candidate',B),('lld17','ld.lld-17'),('gnu','ld.bfd')]:
  assert syms['__pax_data_start']<=loads[2][3] and loads[2][3]+loads[2][6]<=syms['__pax_image_end']
  if label=='candidate':
   call([B,'verify',out]);v=snapshot(out);assert not v['refused'],v['refused']
+  m=secs['.wolf.link.manifest'];doc=codec['decode'](b[m[4]:m[4]+m[5]])
+  assert doc['address_encoding']=='u64-decimal-text-if-high'
+  assert any(row['sha256']==hashlib.sha256(SCRIPT.read_bytes()).hexdigest() and row['path']==SCRIPT.name for row in doc['inputs'])
   for name in names:
    origin=json.loads(call([B,'explain',out,'--symbol',name]).stdout)[0]
    assert int(origin['address'])==syms[name] and origin['origin']=='script-symbol'

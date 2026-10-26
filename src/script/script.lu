@@ -91,10 +91,15 @@ pub fn check(source: str) -> () ! {Bad(str)} {
 /// Validate a bounded script without opening object inputs or writing an executable.
 pub fn validate_file(path: str) -> () ! {Bad(str)} {
     let size = fs_size(path) else |_| { return Bad("cannot stat {path}") }
-    if size > 65536 { return Bad("script: exceeds 65536-byte profile limit") }
     let fd = fs_open(path) else |_| { return Bad("cannot open {path}") }
     defer fs_close(fd) else |_| {}
-    let raw = binary.read(binary.Input { fd: fd, base: 0, size: size }, 0, size)?
+    validate_input(binary.Input { fd: fd, base: 0, size: size })?
+}
+
+/// Validate the exact descriptor retained and hashed as an original link input.
+pub fn validate_input(input: binary.Input) -> () ! {Bad(str)} {
+    if input.size > 65536 { return Bad("script: exceeds 65536-byte profile limit") }
+    let raw = binary.read(input, 0, input.size)?
     let source = str_from_utf8(raw) else |_| { return Bad("script: invalid UTF-8") }
     check(source)?
 }
