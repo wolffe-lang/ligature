@@ -3,7 +3,7 @@
 import hashlib,json,pathlib,runpy,struct,subprocess
 R=pathlib.Path(__file__).resolve().parent.parent; O=R/'target/evidence/kernel-script';O.mkdir(parents=True,exist_ok=True)
 B=R/'target/ligature'; SCRIPT=R/'tests/fixtures/pax-kernel.ld'
-codec=runpy.run_path(str(R/'tests/manifest-codec.py'));snapshot=runpy.run_path(str(R/'tools/differ'))['snapshot'];rows=[]
+codec=runpy.run_path(str(R/'tests/manifest-codec.py'));snapshot=runpy.run_path(str(R/'tests/kernel-snapshot.py'))['snapshot'];rows=[]
 def call(args,status=0,reason=None):
  p=subprocess.run(list(map(str,args)),capture_output=True,timeout=120)
  assert p.returncode==status,(args,p.returncode,p.stderr)
@@ -65,7 +65,10 @@ for label,ld in [('candidate',B),('lld17','ld.lld-17'),('gnu','ld.bfd')]:
  assert syms['__pax_rodata_start']<=loads[1][3] and loads[1][3]+loads[1][6]<=syms['__pax_rodata_end']
  assert syms['__pax_data_start']<=loads[2][3] and loads[2][3]+loads[2][6]<=syms['__pax_image_end']
  if label=='candidate':
-  call([B,'verify',out]);v=snapshot(out);assert not v['refused'],v['refused']
+  call([B,'verify',out]);v=snapshot(out,execute=False);assert not v['refused'],v['refused']
+  try: snapshot(out,execute=True)
+  except AssertionError as error: assert str(error)=='high-half ELF execution forbidden'
+  else: raise AssertionError('kernel execution guard did not refuse')
   m=secs['.wolf.link.manifest'];doc=codec['decode'](b[m[4]:m[4]+m[5]])
   assert doc['address_encoding']=='u64-decimal-text-if-high'
   assert any(row['sha256']==hashlib.sha256(SCRIPT.read_bytes()).hexdigest() and row['path']==SCRIPT.name for row in doc['inputs'])

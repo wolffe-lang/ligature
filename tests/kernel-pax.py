@@ -6,7 +6,7 @@ with the lane root mounted; caller holds the shared CPU lock for this gauntlet.
 import argparse,hashlib,json,os,pathlib,runpy,shutil,subprocess,time
 p=argparse.ArgumentParser();p.add_argument('--pax',type=pathlib.Path,required=True);p.add_argument('--out',type=pathlib.Path,required=True);p.add_argument('--wolf',required=True);p.add_argument('--tier',choices=('native','release','both'),default='both');a=p.parse_args()
 R=pathlib.Path(__file__).resolve().parent.parent;B=R/'target/ligature';a.pax=a.pax.resolve();a.out=a.out.resolve();a.out.mkdir(parents=True,exist_ok=True);commands=[]
-snapshot=runpy.run_path(str(R/'tools/differ'))['snapshot']
+snapshot=runpy.run_path(str(R/'tests/kernel-snapshot.py'))['snapshot']
 def call(name,args,cwd=R,env=None,permit=None):
  print(name,'START',flush=True);begin=time.monotonic();r=subprocess.run(list(map(str,args)),cwd=cwd,env=env,capture_output=True,timeout=1100)
  (a.out/(name+'.stdout')).write_bytes(r.stdout);(a.out/(name+'.stderr')).write_bytes(r.stderr)
@@ -43,7 +43,7 @@ for tier in selected:
   symbols[name]=call(tier+'-'+name+'-symbols',['nm','-n',out]).decode()
   call(tier+'-'+name+'-headers',['readelf','-lSW',out])
   if name=='candidate':
-   call(tier+'-verify',[B,'verify',out]);view=snapshot(out);assert not view['refused'],view['refused'][:10];proofs[name]=len(view['relocations'])
+   call(tier+'-verify',[B,'verify',out]);view=snapshot(out,execute=False);assert not view['refused'],view['refused'][:10];proofs[name]=len(view['relocations'])
    repeat=d/'repeat.elf';call(tier+'-determinism',[B,'-nostdlib','-static','-T',R/'tests/fixtures/pax-kernel.ld','-o',repeat,*inputs]);assert sha(repeat)==links[name]
    repeat.unlink()
  images=a.out/'images'/tier;images.mkdir(parents=True,exist_ok=True);shutil.copyfile(d/'candidate.elf',images/'kmain_paging.elf')
