@@ -46,6 +46,7 @@ for k,low in [(277,0x91000000),(286,0xf9400000),(312,0xf9400000)]:
  case(f'pair-{k}-register',word(0x90000001)+word(low),[(0,high,0),(4,k,0)],reason='register')
  case(f'pair-{k}-missing',word(low),[(0,k,0)],reason='preceding ADRP')
  case(f'pair-{k}-addend',word(0x90000000)+word(low),[(0,high,0),(4,k,8)],reason='GOT addend' if k==312 else 'addend mismatch')
+case('pair-sp-xzr',word(0x9000001f)+word(0x910003e0),[(0,275,0),(4,277,0)],reason='register')
 case('ldst-align',word(0x90000000)+word(0xf9400000),[(0,275,0),(4,286,0)],P+1,reason='target alignment')
 case('add-mask',word(0x90000000)+word(0x91400000),[(0,275,0),(4,277,0)],reason='instruction mask')
 case('load-mask',word(0x90000000)+word(0xb9400000),[(0,275,0),(4,286,0)],reason='instruction mask')

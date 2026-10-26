@@ -29,7 +29,7 @@ fn pair(
         return Bad("AArch64 ADRP/low12 target or addend mismatch")
     }
     let adrp = binary.decode(l.atoms[r.atom].data, before.offset, 4)?
-    if adrp & 2667577344 != 2415919104 || adrp & 31 != word >> 5 & 31 {
+    if adrp & 2667577344 != 2415919104 || adrp & 31 == 31 || adrp & 31 != word >> 5 & 31 {
         return Bad("AArch64 ADRP/low12 register or instruction mismatch")
     }
 }
