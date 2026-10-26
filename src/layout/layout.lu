@@ -575,6 +575,11 @@ pub fn address(l: Layout, s: resolve.State, id: int, tombstone: bool) -> u64 ! {
         vadd(l.outputs[l.atoms[atom].output].address, l.atoms[atom].offset)?,
         binary.bounded(sym.value, 9223372036854775807)?,
     )?
-    if sym.kind == 6 { return v - l.tls_address }
+    if sym.kind == 6 {
+        if l.atoms[atom].flags & 1024 == 0 || v < l.tls_address {
+            return Bad("STT_TLS symbol outside a TLS section: {sym.name}")
+        }
+        return v - l.tls_address
+    }
     v
 }

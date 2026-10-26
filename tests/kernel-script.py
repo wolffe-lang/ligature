@@ -100,5 +100,19 @@ for row in doc['sections']:
  if row['index']==index:row['address']=str(2**64-1);row['memory_end']='7'
 raw=codec['encode'](doc,m[5]);b[m[4]:m[4]+m[5]]=raw;b[no+44:no+108]=bytes(64);whole=hashlib.sha256(b).digest();b[no+44:no+76]=hashlib.sha256(raw).digest();b[no+76:no+108]=whole
 bad=O/'nonallocated-overflow';bad.write_bytes(b);call([B,'verify',bad],1,'section virtual range overflows')
+# A signed metadata size must be refused before conversion to the u64 query domain.
+b,secs,_=elf(outputs['candidate']);b=bytearray(b);m=secs['.wolf.link.manifest'];no=secs['.note.wolf.link'][4]
+doc=codec['decode'](b[m[4]:m[4]+m[5]])
+next(row for row in doc['symbols'] if row['name']=='_start')['size']=-1
+raw=codec['encode'](doc,m[5]);b[m[4]:m[4]+m[5]]=raw;b[no+44:no+108]=bytes(64);whole=hashlib.sha256(b).digest();b[no+44:no+76]=hashlib.sha256(raw).digest();b[no+76:no+108]=whole
+bad=O/'negative-symbol-size';bad.write_bytes(b);call([B,'explain',bad,'--address','0xffffffff80000000'],1,'negative symbol size')
+# An STT_TLS symbol in ordinary rodata must not underflow the unsigned TLS base.
+b=bytearray(first.read_bytes());shoff=struct.unpack_from('<Q',b,40)[0];count=struct.unpack_from('<H',b,60)[0]
+headers=[struct.unpack_from('<IIQQQQIIQQ',b,shoff+64*i) for i in range(count)];symtab=next(s for s in headers if s[1]==2);strings=headers[symtab[6]];pool=b[strings[4]:strings[4]+strings[5]]
+for at in range(symtab[4],symtab[4]+symtab[5],24):
+ name=struct.unpack_from('<I',b,at)[0]
+ if pool[name:].split(b'\0',1)[0]==b'target':b[at+4]=(b[at+4]&0xf0)|6
+bad=O/'bad-tls-symbol.o';bad.write_bytes(b);tls=obj('normal-tls','.section .tdata,"awT",@progbits\n.quad 0')
+sentinel=O/'bad-tls-output';sentinel.write_bytes(b'unchanged');call([B,'-nostdlib','-o',sentinel,bad,tls],1,'STT_TLS symbol outside a TLS section');assert sentinel.read_bytes()==b'unchanged'
 (O/'results.json').write_text(json.dumps({'bounds':bounds,'processes':rows,'executed':False},indent=2)+'\n')
 print('kernel-script: three executable links, u64 provenance, bounds, permissions, ordering, discards, independent sites, deterministic bytes and refusals; 0 SKIP')
