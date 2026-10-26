@@ -1,0 +1,139 @@
+//! member: true
+
+use binary
+use elf
+use ar
+
+// A bounded create-only writer, not an ar command-line compatibility layer.
+struct Object { name: str, data: List[byte], symbols: List[List[byte]], machine: int }
+
+fn append(mut out: List[byte], data: List[byte]) {
+    for b in data { (mut out).push(b) }
+}
+
+fn field(mut out: List[byte], value: str, width: int) -> () ! {Bad(str)} {
+    if value.len > width { return Bad("archive: header field overflow") }
+    append(mut out, value.bytes())
+    for _ in value.len..width { (mut out).push(32 as byte) }
+}
+
+fn header(mut out: List[byte], name: str, size: int) -> () ! {Bad(str)} {
+    field(mut out, name, 16)?
+    field(mut out, "0", 12)? // deterministic timestamp, uid, gid, mode
+    field(mut out, "0", 6)?
+    field(mut out, "0", 6)?
+    field(mut out, "644", 8)?
+    field(mut out, "{size}", 10)?
+    append(mut out, "`\n".bytes())
+}
+
+fn padding(mut out: List[byte]) { if out.len % 2 != 0 { (mut out).push(10 as byte) } }
+
+fn even(n: int) -> int { n + n % 2 }
+
+fn big32(mut out: List[byte], value: int) -> () ! {Bad(str)} {
+    if value < 0 || value > 4294967295 { return Bad("archive: SysV 32-bit index overflow") }
+    for shift in [24, 16, 8, 0] { (mut out).push((value >> shift & 255) as byte) }
+}
+
+fn object(path: str) -> Object ! {Bad(str)} {
+    let parts = path.split("/")
+    let name = parts[parts.len - 1]
+    if name.len == 0 { return Bad("archive: empty member name") }
+    for b in name.bytes() {
+        if b < 32 as byte || b > 126 as byte || b == 47 as byte {
+            return Bad("archive: member name must be printable ASCII without slash")
+        }
+    }
+    let size = fs_size(path) else |_| { return Bad("cannot stat {path}") }
+    if size > 67108864 { return Bad("archive: member exceeds 64 MiB bound") }
+    let fd = fs_open(path) else |_| { return Bad("cannot open {path}") }
+    defer fs_close(fd) else |_| {}
+    // Parse the same in-memory snapshot that is written; positional reads remain
+    // bounded, and a second read below must match before accepting the member.
+    let f = binary.Input { fd: fd, base: 0, size: size }
+    let data = binary.read(f, 0, size)?
+    let image = elf.parse(f)?
+    if image.kind != 1 { return Bad("archive: ET_REL object required for {path}") }
+    elf.walk(f, image, false)?
+    var symbols = List[List[byte]]()
+    for sec in image.sections {
+        if sec.kind != 2 { continue }
+        let strings = copy image.sections[sec.link]
+        let raw = binary.read(f, sec.off, sec.size)?
+        for i in 0..sec.size / 24 {
+            let binding = raw[i * 24 + 4] as int >> 4
+            let defined = binary.decode(raw, i * 24 + 6, 2)? != 0
+            if binding != 0 && binding != 1 && binding != 2 {
+                return Bad("archive: unsupported symbol binding {binding} (gABI Symbol Table)")
+            }
+            if !defined || binding == 0 { continue }
+            let offset = binary.decode(raw, i * 24, 4)? as int
+            let name = binary.cstring(f, strings.off, strings.size, offset)?
+            if name.len == 0 { continue }
+            (mut symbols).push(name)
+        }
+    }
+    let again = binary.read(f, 0, size)?
+    for i in 0..data.len {
+        if data[i] != again[i] { return Bad("archive: input changed while reading {path}") }
+    }
+    Object { name: name, data: data, symbols: symbols, machine: image.machine }
+}
+
+/// Create a deterministic GNU/SysV archive with an explicit symbol index.
+/// All inputs are validated before the output is opened; thin/BSD are not written.
+pub fn create(output: str, paths: List[str]) -> () ! {Bad(str)} {
+    if paths.len == 0 { return Bad("archive: at least one object required") }
+    var objects = List[Object]()
+    var total: int = 0
+    var count: int = 0
+    var symbol_bytes: int = 0
+    var longnames = List[byte]()
+    var names = List[str]()
+    var machine: int = 0
+    for path in paths {
+        if path == output { return Bad("archive: output names an input") }
+        let obj = object(path)?
+        if machine != 0 && machine != obj.machine {
+            return Bad("archive: mixed ELF machines refused")
+        }
+        machine = obj.machine
+        total += obj.data.len
+        if total > 67108864 { return Bad("archive: total object bytes exceed 64 MiB bound") }
+        for sym in obj.symbols { count += 1; symbol_bytes += sym.len + 1 }
+        // Always use a long-name table: it also preserves spaces and duplicate names.
+        (mut names).push("/{longnames.len}")
+        append(mut longnames, obj.name.bytes())
+        append(mut longnames, "/\n".bytes())
+        (mut objects).push(obj)
+    }
+    let index_size = 4 + count * 4 + symbol_bytes
+    var cursor = 8 + 60 + even(index_size) + 60 + even(longnames.len)
+    var offsets = List[int]()
+    for obj in objects { (mut offsets).push(cursor); cursor += 60 + even(obj.data.len) }
+    if cursor > 134217728 { return Bad("archive: encoded archive exceeds 128 MiB bound") }
+    var out = "!<arch>\n".bytes()
+    header(mut out, "/", index_size)?
+    big32(mut out, count)?
+    for i in 0..objects.len { for _ in objects[i].symbols { big32(mut out, offsets[i])? } }
+    for obj in objects {
+        for sym in obj.symbols { append(mut out, sym); (mut out).push(0 as byte) }
+    }
+    padding(mut out)
+    header(mut out, "//", longnames.len)?
+    append(mut out, longnames)
+    padding(mut out)
+    for i in 0..objects.len {
+        if out.len != offsets[i] { return Bad("archive: member offset invariant") }
+        header(mut out, names[i], objects[i].data.len)?
+        append(mut out, objects[i].data)
+        padding(mut out)
+    }
+    if out.len != cursor { return Bad("archive: output size invariant") }
+    fs_write_bytes(output, out) else |_| { return Bad("cannot write {output}") }
+    let fd = fs_open(output) else |_| { return Bad("cannot reopen archive {output}") }
+    defer fs_close(fd) else |_| {}
+    let f = binary.Input { fd: fd, base: 0, size: cursor }
+    ar.walk(f, ar.parse(f)?, false)?
+}
