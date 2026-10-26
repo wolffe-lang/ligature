@@ -85,7 +85,7 @@ the Linux gate. The `full-matrix` label selects the full-tier verdict. The
 Linux gate checks formatting, Wolf unit tests, malformed-file/native integration,
 real musl links with LLD 17 and GNU ld, script-profile refusals, independently
 parsed archive indexes and three-linker archive execution, executable kernel
-profile checks, 50 AArch64 relocation witnesses, ADDRSIG validation, deterministic relinks, deliberate byte
+profile checks, 51 AArch64 relocation witnesses, ADDRSIG validation, deterministic relinks, deliberate byte
 and metadata corruptions, symbol resolution, ten three-linker writer cases, the cc frontend, independent
 provenance hashes and resealed corruption witnesses, full byte coverage,
 explanation queries, the high-half GOT range fixture and the public runtime
@@ -201,7 +201,7 @@ ADD/LDST64 low12, and GOT-page/GOT-low12 (257/261/275/277/282/283/286/311/312).
 Instruction masks, alignment, ABI range endpoints and adjacent matching
 ADRP/low12 pairs are checked; unsupported sequences, TLS families and other
 relocations are refused by number and specification. No veneers or relaxation
-are generated. Fifty independent fixture rows and 24 binary endpoint controls
+are generated. Fifty-one independent fixture rows and 24 binary endpoint controls
 per LLD17/LLD18 cover the subset. `tests/aarch64-live.py` links and executes an
 assembled hello under explicit qemu AArch64 user-mode emulation, not native
 AArch64, and independently proves all nine relocation kinds for both candidate
