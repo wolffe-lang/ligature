@@ -89,5 +89,16 @@ b,secs,_=elf(outputs['candidate']);b=bytearray(b);m=secs['.wolf.link.manifest'];
 doc=codec['decode'](b[m[4]:m[4]+m[5]]);doc['sections'][0]['address']=str(0xffffffff80000001)
 raw=codec['encode'](doc,m[5]);b[m[4]:m[4]+m[5]]=raw;b[no+44:no+108]=bytes(64);whole=hashlib.sha256(b).digest();b[no+44:no+76]=hashlib.sha256(raw).digest();b[no+76:no+108]=whole
 bad=O/'rounded-metadata';bad.write_bytes(b);call([B,'verify',bad],1,'address differs')
+# Nonallocated section addresses are not covered by LOAD checks; they must
+# still refuse u64 range overflow rather than trap during provenance validation.
+b,secs,_=elf(outputs['candidate']);b=bytearray(b);m=secs['.wolf.link.manifest'];no=secs['.note.wolf.link'][4]
+shoff=struct.unpack_from('<Q',b,40)[0];count=struct.unpack_from('<H',b,60)[0]
+index=next(i for i in range(1,count) if struct.unpack_from('<IIQQQQIIQQ',b,shoff+64*i)==secs['.debug_probe'])
+struct.pack_into('<Q',b,shoff+64*index+16,2**64-1)
+doc=codec['decode'](b[m[4]:m[4]+m[5]])
+for row in doc['sections']:
+ if row['index']==index:row['address']=str(2**64-1);row['memory_end']='7'
+raw=codec['encode'](doc,m[5]);b[m[4]:m[4]+m[5]]=raw;b[no+44:no+108]=bytes(64);whole=hashlib.sha256(b).digest();b[no+44:no+76]=hashlib.sha256(raw).digest();b[no+76:no+108]=whole
+bad=O/'nonallocated-overflow';bad.write_bytes(b);call([B,'verify',bad],1,'section virtual range overflows')
 (O/'results.json').write_text(json.dumps({'bounds':bounds,'processes':rows,'executed':False},indent=2)+'\n')
 print('kernel-script: three executable links, u64 provenance, bounds, permissions, ordering, discards, independent sites, deterministic bytes and refusals; 0 SKIP')

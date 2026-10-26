@@ -53,6 +53,9 @@ pub fn validate(f: binary.Input, image: elf.Image) -> () ! {Bad(str)} {
         let index = integer(section, "index")?
         if index <= 0 || index >= image.sections.len { return Bad("provenance section index") }
         let sec = copy image.sections[index]
+        if sec.addr > 18446744073709551615 - sec.size as u64 {
+            return Bad("provenance section virtual range overflows")
+        }
         if address_field(section, "address")? != sec.addr ||
             address_field(section, "memory_end")? != sec.addr + sec.size as u64 {
             return Bad("provenance section address differs from ELF")
