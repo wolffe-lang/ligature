@@ -17,7 +17,11 @@ fn execute(args: List[str]) -> () ! {Bad(str)} {
         census.inspect(args[1], args[0])?
         return
     }
-    if args.len == 2 && args[0] == "script-plan" { script.inspect(args[1])?; return }
+    if args.len > 0 && args[0] == "script-plan" {
+        if args.len != 2 { return Bad("script-plan: usage: ligature script-plan FILE") }
+        script.inspect(args[1])?
+        return
+    }
     if args.len > 0 && args[0] == "archive" {
         if args.len < 3 { return Bad("archive: usage: ligature archive OUTPUT OBJECT...") }
         arwrite.create(args[1], args[2..])?

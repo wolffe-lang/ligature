@@ -49,8 +49,8 @@ fn object(path: str) -> Object ! {Bad(str)} {
     if size > 67108864 { return Bad("archive: member exceeds 64 MiB bound") }
     let fd = fs_open(path) else |_| { return Bad("cannot open {path}") }
     defer fs_close(fd) else |_| {}
-    // Parse the same in-memory snapshot that is written; positional reads remain
-    // bounded, and a second read below must match before accepting the member.
+    // Retain payload bytes while metadata is read with bounded positional IO.
+    // Reject a changed second read before writing any output.
     let f = binary.Input { fd: fd, base: 0, size: size }
     let data = binary.read(f, 0, size)?
     let image = elf.parse(f)?

@@ -20,4 +20,4 @@ assert rows[0]['status']!=0 and '-2147483652' in rows[0]['stderr'],rows[0]
 assert rows[1]['status']!=0 and 'failed to convert GOTPCREL' in rows[1]['stderr'],rows[1]
 assert rows[2]['status']==0,rows[2]
 assert '488b05' in rows[2]['view'] and '03000000 ffffffff' in rows[2]['view'],rows[1]
-print('kernel edge: lld17 refuses -2147483652; GNU default refuses, GNU --no-relax keeps GOT load; newer-lld comparison remains outstanding')
+print('kernel edge: lld17 refuses -2147483652; GNU default refuses, GNU --no-relax keeps GOT load; LLD18 control is separate in tests/ld04-controls.py')
