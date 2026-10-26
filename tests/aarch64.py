@@ -49,6 +49,7 @@ for k,low in [(277,0x91000000),(286,0xf9400000),(312,0xf9400000)]:
 case('ldst-align',word(0x90000000)+word(0xf9400000),[(0,275,0),(4,286,0)],P+1,reason='target alignment')
 case('add-mask',word(0x90000000)+word(0x91400000),[(0,275,0),(4,277,0)],reason='instruction mask')
 case('load-mask',word(0x90000000)+word(0xb9400000),[(0,275,0),(4,286,0)],reason='instruction mask')
+case('duplicate',word(0x14000000),[(0,282,0),(0,282,0)],reason='duplicate AArch64 relocation site')
 case('unknown',word(0),[(0,313,0)],reason='unsupported AArch64 relocation 313')
 case('tls',word(0),[(0,541,0)],reason='unsupported AArch64 relocation 541')
 (O/'results.json').write_text(json.dumps(rows,indent=2)+'\n')

@@ -10,28 +10,40 @@ fn prel32(value: int, site: str) -> u64 ! {Bad(str)} {
 }
 
 /// Prove the measured adjacent ADRP + low12 register/target pair before patching.
-fn pair(l: layout.Layout, s: resolve.State, r: layout.Reloc, word: u64, got: bool) -> () ! {
-    Bad(str),
-} {
+fn pair(
+    l: layout.Layout,
+    s: resolve.State,
+    r: layout.Reloc,
+    word: u64,
+    got: bool,
+    sites: Map[str, int],
+) -> () ! {Bad(str)} {
     if r.offset < 4 { return Bad("AArch64 low12 relocation has no preceding ADRP") }
-    for before in l.relocs {
-        if before.atom != r.atom || before.offset != r.offset - 4 { continue }
-        if before.kind != (if got then 311 else 275) ||
-            before.addend != r.addend ||
-            layout.target(s, before.symbol)? != layout.target(s, r.symbol)? {
-            return Bad("AArch64 ADRP/low12 target or addend mismatch")
-        }
-        let adrp = binary.decode(l.atoms[r.atom].data, before.offset, 4)?
-        if adrp & 2667577344 != 2415919104 || adrp & 31 != word >> 5 & 31 {
-            return Bad("AArch64 ADRP/low12 register or instruction mismatch")
-        }
-        return
+    let index = sites["{r.atom}:{r.offset - 4}"] else {
+        return Bad("AArch64 low12 relocation requires adjacent matching ADRP (measured subset)")
     }
-    Bad("AArch64 low12 relocation requires adjacent matching ADRP (measured subset)")
+    let before = copy l.relocs[index]
+    if before.kind != (if got then 311 else 275) ||
+        before.addend != r.addend ||
+        layout.target(s, before.symbol)? != layout.target(s, r.symbol)? {
+        return Bad("AArch64 ADRP/low12 target or addend mismatch")
+    }
+    let adrp = binary.decode(l.atoms[r.atom].data, before.offset, 4)?
+    if adrp & 2667577344 != 2415919104 || adrp & 31 != word >> 5 & 31 {
+        return Bad("AArch64 ADRP/low12 register or instruction mismatch")
+    }
 }
 
 /// Apply the independently censused AAELF64 static subset, without relaxation.
 fn apply_aarch64(mut l: layout.Layout, s: resolve.State) -> () ! {Bad(str)} {
+    var sites = Map[str, int]()
+    for i in 0..l.relocs.len {
+        let r = copy l.relocs[i]
+        if !l.atoms[r.atom].live { continue }
+        let key = "{r.atom}:{r.offset}"
+        let _old = sites[key] else { sites[key] = i; continue }
+        return Bad("duplicate AArch64 relocation site")
+    }
     for r in l.relocs {
         if !l.atoms[r.atom].live { continue }
         let out = l.atoms[r.atom].output
@@ -99,14 +111,14 @@ fn apply_aarch64(mut l: layout.Layout, s: resolve.State) -> () ! {Bad(str)} {
                 if word & 2143289344 != 285212672 {
                     return Bad("AArch64 ADD low12 instruction mask at {site}")
                 }
-                pair(l, s, r, word, false)?
+                pair(l, s, r, word, false, sites)?
                 patched = word & 4290774015 | (destination & 4095) << 10
             } else if r.kind == 286 || r.kind == 312 {
                 let opcode = word & 4290772992
                 if opcode != 4181721088 && (got || opcode != 4177526784) {
                     return Bad("AArch64 LDST64 low12 instruction mask at {site}")
                 }
-                pair(l, s, r, word, got)?
+                pair(l, s, r, word, got, sites)?
                 if destination & 7 != 0 { return Bad("AArch64 LDST64 target alignment at {site}") }
                 patched = word & 4290774015 | (destination & 4095) >> 3 << 10
             } else {
