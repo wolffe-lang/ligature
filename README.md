@@ -1,8 +1,10 @@
 # ligature
 
 A linker written in [wolf](https://github.com/wolffe-lang/wolf-lang), targeting
-static x86-64 ELF for Linux and [PAX](https://github.com/wolffe-lang/pax).
-**It links a static x86-64 hello that runs on Linux and PAX.** It reads GNU
+static x86-64 ELF for Linux and [PAX](https://github.com/wolffe-lang/pax), with
+a measured AArch64 static-link subset.
+**It links a static x86-64 hello that runs on Linux and PAX, and PAX paging
+kernels that boot under BIOS and UEFI.** It reads GNU
 archives, resolves symbols, collects sections, applies the measured relocation
 set and writes an executable with retained relocations and a verifiable
 byte-and-patch provenance manifest.
@@ -36,8 +38,7 @@ entry placement, the TLS template, provenance digests, complete file coverage
 and patch-byte claims when present. `explain` queries symbols, virtual addresses
 and extraction paths; `--dependencies SYMBOL` shows section relocation causes and
 `--discarded SECTION` shows selected-input discard reasons. Ambiguous locals require `--input MEMBER_ORDINAL`. Unknown options and unsupported formats
-fail by name on stderr. AArch64 ELF headers can be read; AArch64 linking,
-ELF32, big-endian ELF, REL relocations, BSD archives, thin archives and extended
+fail by name on stderr. ELF32, big-endian ELF, REL relocations, BSD archives, thin archives and extended
 ELF numbering are not supported. The reader uses bounded positional reads,
 not memory mapping. `src/` is one Wolf package; Python and shell are test and
 oracle automation, not the linker implementation.
@@ -53,9 +54,14 @@ an `ar rcs` compatibility interface; thin and BSD formats remain refused.
 `script-plan FILE` validates the exact token profile of `tests/fixtures/pax-kernel.ld`
 (up to 64 KiB), allowing whitespace and comments. It rejects changes to directives,
 entry, PHDR types/flags, patterns, order or expressions. Its JSON explicitly says
-`"linking": false`: it does not enable `-T`, interpret a general script or link a
-kernel. The high-half address model, script layout/provenance and kernel boot
-qualification are unfinished.
+`"linking": false`: that command performs preflight only. To link the profile,
+use `ligature -nostdlib -T tests/fixtures/pax-kernel.ld -o kernel.elf OBJECT...`.
+The writer emits three page-separated LOADs (RX, R, RW), absolute script bounds,
+ordered wildcard/COMMON layout and separate script-discard attribution. The
+script itself is a hashed input. Virtual addresses remain unsigned 64-bit;
+file positions are independently bounded. Unknown allocated orphans and every
+script outside this exact profile are refused. General linker scripts are not
+implemented.
 
 The `cc` subset uses `/usr/lib/wolf-musl` unless `LIGATURE_SYSROOT` names another
 directory. It supplies `crt1.o`, `crti.o`, `libc.a`, optional `libunwind.a`, and
@@ -78,7 +84,8 @@ The PR tier and full tier currently run the same two jobs: planner checks and
 the Linux gate. The `full-matrix` label selects the full-tier verdict. The
 Linux gate checks formatting, Wolf unit tests, malformed-file/native integration,
 real musl links with LLD 17 and GNU ld, script-profile refusals, independently
-parsed archive indexes and three-linker archive execution, deterministic relinks, deliberate byte
+parsed archive indexes and three-linker archive execution, executable kernel
+profile checks, 50 AArch64 relocation witnesses, ADDRSIG validation, deterministic relinks, deliberate byte
 and metadata corruptions, symbol resolution, ten three-linker writer cases, the cc frontend, independent
 provenance hashes and resealed corruption witnesses, full byte coverage,
 explanation queries, the high-half GOT range fixture and the public runtime
@@ -175,11 +182,34 @@ Hello retains all 590,358 relocation records. Its interned binary patch table
 reduces the embedded manifest from 147,136,512 to 12,414,976 bytes (11.85×),
 including 17,765 newly explicit discard/consumed-metadata records. Legacy JSON
 manifests remain readable by `verify` and `explain`; no debug sites are omitted. Unwind data has no generated unwind header, strings are not merged,
-and AArch64 linking, linker scripts and Mach-O remain future work. The high-half
-relocation fixture does not claim support for a kernel linker script. The
-supplementary `tests/ld04-controls.py` requires clang/LLD 18: LLD 18.1.3 retains
-the GOT load at the edge where LLD 17 refuses. It also measures actual AArch64
-assembly-object relocations and an LLD-linked ELF, without executing it or
-claiming a compiler/runtime census. Candidate AArch64 linking remains refused.
+and general linker scripts and Mach-O remain future work.
+
+The exact PAX profile is qualified against real native and release paging-kernel
+inputs: 66,882 and 60,768 retained relocation sites independently validated,
+matching script bounds against LLD17, LLD18 and GNU controls, deterministic
+relinks, and four monitor-backed BIOS/UEFI boots. LLD17's default release link
+hits the recorded GOT range failure; its `--no-relax` control succeeds, as does
+LLD18 by default. GNU's kernel control uses `--no-relax`. The kernel builder's
+default linker is unchanged; `tests/kernel-pax.py` coordinates explicit inputs
+and PAX's existing boot suite, without modifying PAX.
+
+AArch64 `-nostdlib` links implement ABS64, PREL32, CALL26/JUMP26, ADRP plus
+ADD/LDST64 low12, and GOT-page/GOT-low12 (257/261/275/277/282/283/286/311/312).
+Instruction masks, alignment, ABI range endpoints and adjacent matching
+ADRP/low12 pairs are checked; unsupported sequences, TLS families and other
+relocations are refused by number and specification. No veneers or relaxation
+are generated. Fifty independent fixture rows and 24 binary endpoint controls
+per LLD17/LLD18 cover the subset. `tests/aarch64-live.py` links and executes an
+assembled hello under explicit qemu AArch64 user-mode emulation, not native
+AArch64, and independently proves all nine relocation kinds for both candidate
+and reference outputs. The hosted core gate does not run that emulator.
+
+The released AArch64 compiler ELF and all 440 runtime members have a separate
+census (14,033 dynamic compiler relocations and 668,066 runtime relocations).
+That runtime contains families beyond this linker subset. A **Wolf-generated
+AArch64 object/hello remains blocked by [wolf-lang#614](https://github.com/wolffe-lang/wolf-lang/issues/614)**:
+the verified 0.2.35 AArch64 compiler runs under emulation, but explicitly refuses
+both native object emission and release IR emission on Linux AArch64. The
+assembled hello is not represented as a Wolf compiler/runtime qualification.
 
 Licence: GPL-3.0-only with the wolf Training Data Permission (`LICENSE`, `LICENSE-TRAINING-DATA`), as pax, boreutils and den.
