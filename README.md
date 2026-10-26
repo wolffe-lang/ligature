@@ -191,7 +191,10 @@ relinks, and four monitor-backed BIOS/UEFI boots. LLD17's default release link
 hits the recorded GOT range failure; its `--no-relax` control succeeds, as does
 LLD18 by default. GNU's kernel control uses `--no-relax`. The kernel builder's
 default linker is unchanged; `tests/kernel-pax.py` coordinates explicit inputs
-and PAX's existing boot suite, without modifying PAX.
+and PAX's existing boot suite, without modifying PAX. Kernel comparisons retain
+24 separate named structural observations/refusals, including the oracles'
+writable `.rodata` flag inside their R-only LOAD; whole-ELF equivalence is not
+claimed and the strict verifier's refusals are not waived.
 
 AArch64 `-nostdlib` links implement ABS64, PREL32, CALL26/JUMP26, ADRP plus
 ADD/LDST64 low12, and GOT-page/GOT-low12 (257/261/275/277/282/283/286/311/312).
