@@ -3,6 +3,7 @@
 use binary
 use layout
 use resolve
+use script
 use std.x.crypto.sha2
 
 fn span(
@@ -26,7 +27,7 @@ fn span(
 pub fn ranges(l: layout.Layout, s: resolve.State, total: int) -> List[byte] ! {Bad(str)} {
     var bytes = List[byte]()
     span(mut bytes, 0, 64, "elf-header", -1, 0, 0)
-    let phend = 64 + (if l.tls_address == 0 then 3 else 4) * 56
+    let phend = 64 + (if l.kernel || l.tls_address != 0 then 4 else 3) * 56
     span(mut bytes, 64, phend, "program-headers", -1, 0, 0)
     var cursor = phend
     var seen = Map[int, bool]()
@@ -42,8 +43,28 @@ pub fn ranges(l: layout.Layout, s: resolve.State, total: int) -> List[byte] ! {B
         if o.fileoff < cursor { return Bad("provenance output sections overlap") }
         span(mut bytes, cursor, o.fileoff, "padding", -1, 0, 0)
         cursor = o.fileoff
-        for a in l.atoms {
-            if !a.live || a.output != next || a.kind == 8 || a.size == 0 { continue }
+        var order = List[int]()
+        for ai in 1..l.atoms.len {
+            if l.atoms[ai].live &&
+                l.atoms[ai].output == next &&
+                l.atoms[ai].kind != 8 &&
+                l.atoms[ai].size != 0 {
+                (mut order).push(ai)
+            }
+        }
+        if l.kernel {
+            for i in 1..order.len {
+                var j = i
+                while j > 0 && l.atoms[order[j]].offset < l.atoms[order[j - 1]].offset {
+                    let old = order[j - 1]
+                    order[j - 1] = order[j]
+                    order[j] = old
+                    j -= 1
+                }
+            }
+        }
+        for ai in order {
+            let a = copy l.atoms[ai]
             let begin = o.fileoff + a.offset
             if begin < cursor { return Bad("provenance input sections overlap") }
             span(mut bytes, cursor, begin, "padding", -1, 0, 0)
@@ -151,12 +172,12 @@ fn origin(mut bytes: List[byte], l: layout.Layout, s: resolve.State, id: int, na
         start = l.outputs[l.atoms[ai].output].fileoff + l.atoms[ai].offset + sym.value as int
         end = start + sym.size as int
     }
-    let address = layout.value(l, s, id, false)?
+    let address = layout.address(l, s, id, false)?
     let alias = if name != sym.name then binary.quote(sym.name.bytes()) else "null"
     if bytes.len != 0 { emit(mut bytes, ",") }
     emit(
         mut bytes,
-        "{{\"address\":{address},\"alias_of\":{alias},\"binding\":{sym.binding},\"file_end\":{end},\"file_start\":{start},\"member\":{sym.object},\"name\":{binary.quote(name.bytes())},\"nobits\":{nobits},\"section_index\":{sym.section},\"size\":{sym.size},\"symbol_index\":{sym.index},\"tls\":{sym.kind == 6}}}",
+        "{{\"address\":{address_json(address)},\"alias_of\":{alias},\"binding\":{sym.binding},\"file_end\":{end},\"file_start\":{start},\"member\":{sym.object},\"name\":{binary.quote(name.bytes())},\"nobits\":{nobits},\"section_index\":{sym.section},\"size\":{sym.size},\"symbol_index\":{sym.index},\"tls\":{sym.kind == 6}}}",
     )
 }
 
@@ -168,6 +189,16 @@ pub fn origins(l: layout.Layout, s: resolve.State) -> List[byte] ! {Bad(str)} {
         if sym.index == 0 || sym.section == 0 || sym.name.len == 0 { continue }
         if sym.binding != 0 && (s.globals[sym.name] else -1) != id { continue }
         origin(mut bytes, l, s, id, sym.name)?
+    }
+    if l.kernel {
+        for name in layout.kernel_symbols() {
+            if bytes.len != 0 { emit(mut bytes, ",") }
+            let address = l.synthetics[name] else 0
+            emit(
+                mut bytes,
+                "{{\"address\":{address_json(address)},\"alias_of\":null,\"binding\":1,\"file_end\":-1,\"file_start\":-1,\"member\":-1,\"name\":{binary.quote(name.bytes())},\"nobits\":false,\"section_index\":65521,\"size\":0,\"symbol_index\":0,\"tls\":false,\"origin\":\"script-symbol\"}}",
+            )
+        }
     }
     for name in s.alias_names {
         let target = s.aliases[name] else { return Bad("missing provenance alias") }
@@ -186,7 +217,7 @@ pub fn memory_ranges(l: layout.Layout) -> List[byte] {
         if bytes.len != 0 { emit(mut bytes, ",") }
         emit(
             mut bytes,
-            "{{\"end\":{o.address + o.size},\"section_index\":{i},\"start\":{o.address},\"tls\":{o.flags & 1024 != 0}}}",
+            "{{\"end\":{address_json(o.address + o.size as u64)},\"section_index\":{i},\"start\":{address_json(o.address)},\"tls\":{o.flags & 1024 != 0}}}",
         )
     }
     bytes
@@ -201,7 +232,9 @@ pub fn discards(l: layout.Layout, s: resolve.State) -> List[byte] {
             let name = s.objects[oi].names[si]
             let ai = l.locations["{oi}:{si}"] else 0
             var reason = ""
-            if sec.flags & 2147483648 != 0 {
+            if l.kernel && script.discards(name) {
+                reason = "script-DISCARD"
+            } else if sec.flags & 2147483648 != 0 {
                 reason = "SHF_EXCLUDE"
             } else if s.objects[oi].discarded[si] {
                 reason = "duplicate-COMDAT"

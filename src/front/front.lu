@@ -4,6 +4,7 @@ use binary
 
 /// The accepted cc-argument subset, without opening inputs or executing a linker.
 pub struct Plan {
+    script: str,
     argv: List[str],
     output: str,
     inputs: List[str],
@@ -46,6 +47,7 @@ fn link_option(mut p: Plan, arg: str) -> () ! {Bad(str)} {
 /// Build a link plan; Bad names an unsupported argument or missing operand.
 pub fn parse(args: List[str]) -> Plan ! {Bad(str)} {
     var p = Plan {
+        script: "",
         argv: copy args,
         output: "a.out",
         inputs: List[str](),
@@ -73,6 +75,11 @@ pub fn parse(args: List[str]) -> Plan ! {Bad(str)} {
             p.resolve_only = true
         } else if a == "--print-plan" {
             p.print_plan = true
+        } else if a == "-T" {
+            if p.script.len != 0 { return Bad("duplicate -T script") }
+            i += 1
+            if i >= args.len { return Bad("missing value for -T") }
+            p.script = value(args[i], "-T")?
         } else if a == "-static" {
             p.static_link = true
         } else if a == "-nostdlib" {

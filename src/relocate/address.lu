@@ -1,0 +1,45 @@
+//! member: true
+
+/// S+A for an absolute 64-bit field, including representable signed negatives.
+pub fn absolute64(symbol: u64, addend: int) -> u64 ! {Bad(str)} {
+    if addend >= 0 {
+        if symbol > 18446744073709551615 - addend as u64 {
+            return Bad("absolute relocation arithmetic overflow")
+        }
+        return symbol + addend as u64
+    }
+    let magnitude = -(addend + 1) as u64 + 1
+    if symbol >= magnitude { return symbol - magnitude }
+    18446744073709551615 - (magnitude - symbol - 1)
+}
+
+/// Evaluate S+A-P with sign/magnitude intermediates; never narrow an address.
+pub fn relative64(symbol: u64, addend: int, place: u64) -> int ! {Bad(str)} {
+    var negative = symbol < place
+    var magnitude = if negative then place - symbol else symbol - place
+    let aneg = addend < 0
+    let am = if aneg then -(addend + 1) as u64 + 1 else addend as u64
+    if negative == aneg {
+        if magnitude > 18446744073709551615 - am {
+            return Bad("relative relocation arithmetic overflow")
+        }
+        magnitude += am
+    } else if magnitude >= am {
+        magnitude -= am
+    } else {
+        magnitude = am - magnitude
+        negative = aneg
+    }
+    if negative {
+        if magnitude > 9223372036854775808 { return Bad("relative relocation arithmetic overflow") }
+        if magnitude == 9223372036854775808 { return -9223372036854775807 - 1 }
+        return -(magnitude as int)
+    }
+    if magnitude > 9223372036854775807 { return Bad("relative relocation arithmetic overflow") }
+    magnitude as int
+}
+
+fn reachable32(symbol: u64, addend: int, place: u64) -> bool {
+    let value = relative64(symbol, addend, place) else |_| { return false }
+    value >= -2147483648 && value <= 2147483647
+}

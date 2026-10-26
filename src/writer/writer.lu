@@ -71,7 +71,7 @@ fn symbols(mut l: layout.Layout, s: resolve.State) -> Map[int, int] ! {Bad(str)}
                 if !(needed[id] else false) { continue }
                 let sym = copy s.symbols[id]
                 if sym.index != 0 && sym.section != 0 && section_of(l, s, id) != 0 { continue }
-                let value = layout.value(l, s, id, true)?
+                let value = layout.address(l, s, id, true)?
                 symbol(
                     mut table,
                     mut strings,
@@ -80,7 +80,7 @@ fn symbols(mut l: layout.Layout, s: resolve.State) -> Map[int, int] ! {Bad(str)}
                     sym.kind,
                     sym.other,
                     if value == 0 then 0 else 65521,
-                    layout.bits(value),
+                    value,
                     sym.size,
                 )?
                 indices[id] = count
@@ -96,7 +96,7 @@ fn symbols(mut l: layout.Layout, s: resolve.State) -> Map[int, int] ! {Bad(str)}
             if section == 0 { continue }
             let local = sym.binding == 0 || sym.other & 3 == 2 || sym.other & 3 == 1
             if local != (pass == 0) { continue }
-            let value = layout.value(l, s, id, false)?
+            let value = layout.address(l, s, id, false)?
             symbol(
                 mut table,
                 mut strings,
@@ -105,7 +105,7 @@ fn symbols(mut l: layout.Layout, s: resolve.State) -> Map[int, int] ! {Bad(str)}
                 sym.kind,
                 sym.other,
                 section,
-                layout.bits(value),
+                value,
                 sym.size,
             )?
             indices[id] = count
@@ -115,19 +115,14 @@ fn symbols(mut l: layout.Layout, s: resolve.State) -> Map[int, int] ! {Bad(str)}
     for name in s.alias_names {
         let target_name = s.aliases[name] else { return Bad("missing alias") }
         let id = s.globals[target_name] else { return Bad("undefined alias target {target_name}") }
-        let v = layout.value(l, s, id, false)?
-        symbol(
-            mut table,
-            mut strings,
-            name,
-            1,
-            s.symbols[id].kind,
-            0,
-            section_of(l, s, id),
-            layout.bits(v),
-            0,
-        )?
+        let v = layout.address(l, s, id, false)?
+        symbol(mut table, mut strings, name, 1, s.symbols[id].kind, 0, section_of(l, s, id), v, 0)?
         count += 1
+    }
+    if l.kernel {
+        for name in layout.kernel_symbols() {
+            symbol(mut table, mut strings, name, 1, 0, 0, 65521, l.synthetics[name] else 0, 0)?
+        }
     }
     let symidx = l.outputs.len
     var syms = layout.output(".symtab", 2, 0, 8)
@@ -165,7 +160,7 @@ fn retained(mut l: layout.Layout, s: resolve.State, indices: Map[int, int], symt
         }
         let id = layout.target(s, r.symbol)?
         let index = indices[id] else { return Bad("missing retained relocation symbol") }
-        let offset = l.atoms[r.atom].offset + r.offset + l.outputs[target].address
+        let offset = layout.vadd(l.outputs[target].address, l.atoms[r.atom].offset + r.offset)?
         append(
             mut l.outputs[table].data,
             binary.encode(
@@ -181,7 +176,7 @@ fn ph(
     kind: int,
     flags: int,
     off: int,
-    address: int,
+    address: u64,
     filesz: int,
     memsz: int,
     align: int,
@@ -210,9 +205,9 @@ fn insert(mut file: List[byte], off: int, data: List[byte]) -> () ! {Bad(str)} {
 
 /// Build a static ET_EXEC, re-read and verify it before reporting success.
 pub fn link(s: resolve.State, p: front.Plan) -> () ! {Bad(str)} {
-    var l = layout.read(s)?
+    var l = layout.read_for(s, p.script.len != 0)?
     layout.collect(mut l, s, p)?
-    layout.place(mut l, s)?
+    if l.kernel { layout.kernel_place(mut l, s)? } else { layout.place(mut l, s)? }
     relocate.apply(mut l, s)?
     let symtab = l.outputs.len
     let indices = symbols(mut l, s)?
@@ -257,28 +252,56 @@ pub fn link(s: resolve.State, p: front.Plan) -> () ! {Bad(str)} {
     var file = List[byte]()
     for _ in 0..shoff + l.outputs.len * 64 { (mut file).push(0 as byte) }
     var phdrs = List[byte]()
-    append(mut phdrs, ph(1, 5, 0, 2097152, l.text_end, l.text_end, 4096)?)
-    append(
-        mut phdrs,
-        ph(
-            1,
-            6,
-            l.data_start,
-            2097152 + l.data_start,
-            l.data_file_end - l.data_start,
-            l.data_mem_end - l.data_start,
-            4096,
-        )?,
-    )
-    if l.tls_address != 0 {
+    if l.kernel {
+        for group in 1..4 {
+            let o = copy l.outputs[group]
+            let end = if group == 3 then l.data_mem_end else layout.align(o.fileoff + o.size, 4096)
+            let fileend = if group == 3 then l.data_file_end else o.fileoff + o.size
+            append(
+                mut phdrs,
+                ph(
+                    1,
+                    if group == 1 then 5 else if group == 2 then 4 else 6,
+                    o.fileoff,
+                    o.address,
+                    fileend - o.fileoff,
+                    end - o.fileoff,
+                    4096,
+                )?,
+            )
+        }
+    } else {
+        append(mut phdrs, ph(1, 5, 0, 2097152, l.text_end, l.text_end, 4096)?)
         append(
             mut phdrs,
-            ph(7, 4, l.tls_address - 2097152, l.tls_address, l.tls_file, l.tls_size, l.tls_align)?,
+            ph(
+                1,
+                6,
+                l.data_start,
+                (2097152 + l.data_start) as u64,
+                l.data_file_end - l.data_start,
+                l.data_mem_end - l.data_start,
+                4096,
+            )?,
         )
+        if l.tls_address != 0 {
+            append(
+                mut phdrs,
+                ph(
+                    7,
+                    4,
+                    l.tls_address as int - 2097152,
+                    l.tls_address,
+                    l.tls_file,
+                    l.tls_size,
+                    l.tls_align,
+                )?,
+            )
+        }
     }
     append(mut phdrs, ph(1685382481, 6, 0, 0, 0, 0, 16)?)
     let entryid = s.globals["_start"] else { return Bad("undefined entry _start") }
-    let entry = layout.value(l, s, entryid, false)?
+    let entry = layout.address(l, s, entryid, false)?
     let ident: List[byte] = [
         127 as byte,
         69 as byte,

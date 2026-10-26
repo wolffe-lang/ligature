@@ -3,6 +3,7 @@
 use binary
 use front
 use resolve
+use script
 
 /// An input section and its final output placement.
 pub struct Atom {
@@ -30,7 +31,7 @@ pub struct Output {
     flags: u64,
     align: int,
     size: int,
-    address: int,
+    address: u64,
     fileoff: int,
     data: List[byte],
     link: int,
@@ -48,8 +49,11 @@ pub struct Layout {
     got_symbols: List[int],
     got_tls: List[bool],
     common: Map[int, int],
-    synthetics: Map[str, int],
-    tls_address: int,
+    synthetics: Map[str, u64],
+    kernel: bool,
+    got_output: int,
+    got_offset: int,
+    tls_address: u64,
     tls_file: int,
     tls_size: int,
     tls_align: int,
@@ -126,7 +130,10 @@ fn supported(k: int) -> bool {
 }
 
 /// Read selected input sections and relocation tables, refusing unsupported forms.
-pub fn read(s: resolve.State) -> Layout ! {Bad(str)} {
+pub fn read(s: resolve.State) -> Layout ! {Bad(str)} { read_for(s, false)? }
+
+/// Read the selected profile, applying explicit discard before decoding its payload.
+pub fn read_for(s: resolve.State, kernel: bool) -> Layout ! {Bad(str)} {
     var l = Layout {
         atoms: List[Atom](),
         locations: Map[str, int](),
@@ -136,7 +143,10 @@ pub fn read(s: resolve.State) -> Layout ! {Bad(str)} {
         got_symbols: List[int](),
         got_tls: List[bool](),
         common: Map[int, int](),
-        synthetics: Map[str, int](),
+        synthetics: Map[str, u64](),
+        kernel: kernel,
+        got_output: 0,
+        got_offset: 0,
         tls_address: 0,
         tls_file: 0,
         tls_size: 0,
@@ -165,7 +175,8 @@ pub fn read(s: resolve.State) -> Layout ! {Bad(str)} {
         for si in 1..s.objects[oi].image.sections.len {
             let sec = copy s.objects[oi].image.sections[si]
             let name = s.objects[oi].names[si]
-            if s.objects[oi].discarded[si] ||
+            if kernel && script.discards(name) ||
+                s.objects[oi].discarded[si] ||
                 sec.kind == 2 ||
                 sec.kind == 3 ||
                 sec.kind == 4 ||
@@ -443,14 +454,17 @@ pub fn place(mut l: Layout, s: resolve.State) -> () ! {Bad(str)} {
         }
     }
     for j in 1..l.outputs.len {
-        if l.outputs[j].name == ".got" { l.outputs[j].size = l.got_symbols.len * 8 }
+        if l.outputs[j].name == ".got" {
+            l.outputs[j].size = l.got_symbols.len * 8
+            l.got_output = j
+        }
     }
     var cursor: int = 4096
     for j in 1..l.outputs.len {
         if rank(l.outputs[j]) >= 6 { continue }
         cursor = align(cursor, l.outputs[j].align)
         l.outputs[j].fileoff = cursor
-        l.outputs[j].address = 2097152 + cursor
+        l.outputs[j].address = (2097152 + cursor) as u64
         cursor += l.outputs[j].size
     }
     l.text_end = cursor
@@ -460,11 +474,11 @@ pub fn place(mut l: Layout, s: resolve.State) -> () ! {Bad(str)} {
         if rank(l.outputs[j]) < 6 || rank(l.outputs[j]) >= 100 { continue }
         cursor = align(cursor, l.outputs[j].align)
         l.outputs[j].fileoff = cursor
-        l.outputs[j].address = 2097152 + cursor
+        l.outputs[j].address = (2097152 + cursor) as u64
         if l.outputs[j].flags & 1024 != 0 {
-            if l.tls_address == 0 { l.tls_address = 2097152 + cursor }
+            if l.tls_address == 0 { l.tls_address = (2097152 + cursor) as u64 }
             if l.outputs[j].align > l.tls_align { l.tls_align = l.outputs[j].align }
-            l.tls_size = 2097152 + cursor + l.outputs[j].size - l.tls_address
+            l.tls_size = 2097152 + cursor + l.outputs[j].size - l.tls_address as int
             if l.outputs[j].kind != 8 { l.tls_file = l.tls_size }
         }
         cursor += l.outputs[j].size
@@ -481,17 +495,17 @@ pub fn place(mut l: Layout, s: resolve.State) -> () ! {Bad(str)} {
     }
     // musl startup consumes these even with no constructor entries.
     l.synthetics["__ehdr_start"] = 2097152
-    l.synthetics["_end"] = 2097152 + l.data_mem_end
-    l.synthetics["end"] = 2097152 + l.data_mem_end
-    l.synthetics["_edata"] = 2097152 + l.data_file_end
-    l.synthetics["edata"] = 2097152 + l.data_file_end
-    l.synthetics["_etext"] = 2097152 + l.text_end
-    l.synthetics["etext"] = 2097152 + l.text_end
+    l.synthetics["_end"] = (2097152 + l.data_mem_end) as u64
+    l.synthetics["end"] = (2097152 + l.data_mem_end) as u64
+    l.synthetics["_edata"] = (2097152 + l.data_file_end) as u64
+    l.synthetics["edata"] = (2097152 + l.data_file_end) as u64
+    l.synthetics["_etext"] = (2097152 + l.text_end) as u64
+    l.synthetics["etext"] = (2097152 + l.text_end) as u64
     for pair in ["preinit", "init", "fini"] {
-        var start = 2097152 + l.data_start
+        var start = (2097152 + l.data_start) as u64
         var end = start
         for o in l.outputs {
-            if o.name == ".{pair}_array" { start = o.address; end = start + o.size }
+            if o.name == ".{pair}_array" { start = o.address; end = start + o.size as u64 }
         }
         l.synthetics["__{pair}_array_start"] = start
         l.synthetics["__{pair}_array_end"] = end
@@ -509,6 +523,11 @@ pub fn place(mut l: Layout, s: resolve.State) -> () ! {Bad(str)} {
 
 /// Get a final symbol value. Dead debug/FDE references use a zero tombstone.
 pub fn value(l: Layout, s: resolve.State, id: int, tombstone: bool) -> int ! {Bad(str)} {
+    signed(address(l, s, id, tombstone)?)
+}
+
+/// Resolve full-width virtual addresses without narrowing file positions.
+pub fn address(l: Layout, s: resolve.State, id: int, tombstone: bool) -> u64 ! {Bad(str)} {
     let winner = target(s, id)?
     let sym = copy s.symbols[winner]
     if sym.section == 0 {
@@ -520,10 +539,10 @@ pub fn value(l: Layout, s: resolve.State, id: int, tombstone: bool) -> int ! {Ba
         }
         return v
     }
-    if sym.section == 65521 { return signed(sym.value) }
+    if sym.section == 65521 { return sym.value }
     if sym.section == 65522 {
         let off = l.common[winner] else { return Bad("unallocated COMMON {sym.name}") }
-        for o in l.outputs { if o.name == ".bss" && o.kind == 8 { return o.address + off } }
+        for o in l.outputs { if o.name == ".bss" && o.kind == 8 { return vadd(o.address, off)? } }
         return Bad("missing COMMON output")
     }
     let atom = atom_for(l, s, winner)
@@ -531,9 +550,10 @@ pub fn value(l: Layout, s: resolve.State, id: int, tombstone: bool) -> int ! {Ba
         if tombstone { return 0 }
         return Bad("reference to discarded symbol {sym.name}")
     }
-    let v = l.outputs[l.atoms[atom].output].address +
-        l.atoms[atom].offset +
-        binary.bounded(sym.value, 9223372036854775807)?
+    let v = vadd(
+        vadd(l.outputs[l.atoms[atom].output].address, l.atoms[atom].offset)?,
+        binary.bounded(sym.value, 9223372036854775807)?,
+    )?
     if sym.kind == 6 { return v - l.tls_address }
     v
 }

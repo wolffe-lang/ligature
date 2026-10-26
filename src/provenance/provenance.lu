@@ -124,7 +124,7 @@ pub fn manifest(
         if i != 1 { emit(mut out, ",") }
         emit(
             mut out,
-            "{{\"address\":{o.address},\"align\":{o.align},\"file_end\":{o.fileoff + (if o.kind == 8 then 0 else o.size)},\"file_start\":{o.fileoff},\"flags\":{o.flags},\"index\":{i},\"kind\":{o.kind},\"memory_end\":{o.address + o.size},\"name\":{binary.quote(o.name.bytes())}}}",
+            "{{\"address\":{address_json(o.address)},\"align\":{o.align},\"file_end\":{o.fileoff + (if o.kind == 8 then 0 else o.size)},\"file_start\":{o.fileoff},\"flags\":{o.flags},\"index\":{i},\"kind\":{o.kind},\"memory_end\":{address_json(o.address + o.size as u64)},\"name\":{binary.quote(o.name.bytes())}}}",
         )
     }
     emit(mut out, "],\"symbols\":[")

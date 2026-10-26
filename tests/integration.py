@@ -69,5 +69,5 @@ with tempfile.TemporaryDirectory(dir=OUT,prefix='fixture-') as tmp:
 print(f'integration: {len(rows)} process rows, 0 SKIP')
 
 # New commands run in the existing native integration gate, never as optional rows.
-for suite in ("script-profile.py", "archive-write.py"):
+for suite in ("script-profile.py", "archive-write.py", "kernel-script.py"):
     subprocess.run(["python3", "-I", ROOT / "tests" / suite], check=True)

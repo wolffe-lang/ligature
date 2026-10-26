@@ -49,6 +49,15 @@ pub fn validate(f: binary.Input, image: elf.Image) -> () ! {Bad(str)} {
     if coverage == "sections" { return }
     if coverage != "bytes-and-patches" { return Bad("unknown provenance coverage") }
     if integer(field(doc, "output")?, "bytes")? != f.size { return Bad("provenance output length") }
+    for section in array(doc, "sections")? {
+        let index = integer(section, "index")?
+        if index <= 0 || index >= image.sections.len { return Bad("provenance section index") }
+        let sec = copy image.sections[index]
+        if address_field(section, "address")? != sec.addr ||
+            address_field(section, "memory_end")? != sec.addr + sec.size as u64 {
+            return Bad("provenance section address differs from ELF")
+        }
+    }
     let members = array(doc, "members")?
     let spans = array(doc, "ranges")?
     var cursor: int = 0
@@ -111,4 +120,39 @@ pub fn validate(f: binary.Input, image: elf.Image) -> () ! {Bad(str)} {
             let _lo = hex_digit(before.bytes()[2 * i + 1])?
         }
     }
+}
+
+/// Decimal u64 text avoids JSON's lossy floating number tier above INT64_MAX.
+pub fn address_json(value: u64) -> str {
+    if value <= 9223372036854775807 { return "{value}" }
+    "\"{value}\""
+}
+
+/// Parse a full-width address, retaining legacy nonnegative integer fields.
+pub fn address_field(v: json.Value, key: str) -> u64 ! {Bad(str)} {
+    let value = field(v, key)?
+    let n = json.as_int(value) else |_| {
+        let text = json.as_str(value) else |_| { return Bad("provenance address field {key}") }
+        return address_number(text)
+    }
+    if n < 0 { return Bad("negative provenance address") }
+    n as u64
+}
+
+/// Parse unsigned decimal or hexadecimal addresses with checked accumulation.
+pub fn address_number(text: str) -> u64 ! {Bad(str)} {
+    let hex = text.starts_with("0x")
+    let begin = if hex then 2 else 0
+    let base: u64 = if hex then 16 else 10
+    if begin == text.len { return Bad("empty address") }
+    var value: u64 = 0
+    for i in begin..text.len {
+        let b = text.bytes()[i] as int
+        let d = if b >= 48 && b <= 57 then b - 48 else if b >= 97 && b <= 102 then b - 87 else 99
+        if d as u64 >= base || value > (18446744073709551615 - d as u64) / base {
+            return Bad("invalid or overflowing address {text}")
+        }
+        value = value * base + d as u64
+    }
+    value
 }

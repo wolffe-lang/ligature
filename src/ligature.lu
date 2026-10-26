@@ -28,6 +28,10 @@ fn execute(args: List[str]) -> () ! {Bad(str)} {
         return
     }
     var plan = front.parse(args)?
+    if plan.script.len != 0 {
+        if !plan.nostdlib { return Bad("kernel script requires -nostdlib") }
+        script.validate_file(plan.script)?
+    }
     if plan.print_plan { front.emit(plan); return }
     if !plan.nostdlib {
         let root = env_get("LIGATURE_SYSROOT") else |e| match e {

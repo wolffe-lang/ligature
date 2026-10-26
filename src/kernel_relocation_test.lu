@@ -86,22 +86,23 @@ fn witness() -> () ! {Bad(str)} {
     })
     placed.locations["0:2"] = 2
     var text = layout.output(".text", 1, 6, 1)
-    text.address = base
+    text.address = layout.bits(base)
     text.size = 7
     text.data = copy instruction
     (mut placed.outputs).push(text)
     var got = layout.output(".got", 1, 3, 8)
-    got.address = base + 4096
+    got.address = layout.bits(base + 4096)
     got.size = 8
     got.data = binary.encode([0], [8])?
     (mut placed.outputs).push(got)
     var distant = layout.output(".far", 1, 2, 1)
-    distant.address = far
+    distant.address = layout.bits(far)
     (mut placed.outputs).push(distant)
     placed.got["0:false"] = 0
     (mut placed.got_symbols).push(0)
     (mut placed.got_tls).push(false)
-    placed.synthetics["_GLOBAL_OFFSET_TABLE_"] = base + 4096
+    placed.synthetics["_GLOBAL_OFFSET_TABLE_"] = layout.bits(base + 4096)
+    placed.got_output = 2
     (mut placed.relocs).push(layout.Reloc { atom: 1, offset: 3, symbol: 0, kind: 42, addend: -4 })
     assert(far - 4 - (base + 3) == -2147483652)
     relocate.apply(mut placed, state)?

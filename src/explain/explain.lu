@@ -59,7 +59,7 @@ fn answer(doc: json.Value, mode: str, query: str, input: int) -> List[json.Value
     let symbols = provenance.array(doc, "symbols")?
     var selected = List[json.Value]()
     var members = Map[int, bool]()
-    let address = if mode == "--address" then number(query)? else -1
+    let address = if mode == "--address" then provenance.address_number(query)? else 0 as u64
     for s in symbols {
         let member = provenance.integer(s, "member")?
         if input >= 0 && input != member { continue }
@@ -68,9 +68,9 @@ fn answer(doc: json.Value, mode: str, query: str, input: int) -> List[json.Value
             let tls = json.as_bool(provenance.field(s, "tls")?) else {
                 return Bad("invalid TLS origin")
             }
-            let start = provenance.integer(s, "address")?
+            let start = provenance.address_field(s, "address")?
             let size = provenance.integer(s, "size")?
-            found = !tls && address >= start && (address == start || address - start < size)
+            found = !tls && address >= start && (address == start || address - start < size as u64)
         }
         if found { (mut selected).push(copy s); members[member] = true }
     }
@@ -114,8 +114,8 @@ fn answer(doc: json.Value, mode: str, query: str, input: int) -> List[json.Value
     if mode == "--symbol" { return selected }
     // Address queries also report containing LOAD/TLS/NOBITS section metadata.
     for section in provenance.array(doc, "sections")? {
-        let start = provenance.integer(section, "address")?
-        let end = provenance.integer(section, "memory_end")?
+        let start = provenance.address_field(section, "address")?
+        let end = provenance.address_field(section, "memory_end")?
         let flags = provenance.integer(section, "flags")?
         if flags & 2 != 0 && address >= start && address < end { (mut result).push(copy section) }
     }

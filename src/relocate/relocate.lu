@@ -45,13 +45,6 @@ fn matches(data: List[byte], at: int, values: List[int]) -> bool {
     true
 }
 
-fn add(a: int, b: int, site: str) -> int ! {Bad(str)} {
-    if b > 0 && a > 9223372036854775807 - b || b < 0 && a < -9223372036854775807 - 1 - b {
-        return Bad("relocation arithmetic overflow at {site}")
-    }
-    a + b
-}
-
 /// Check final S+A-P without overflowing the host signed address representation.
 /// Canonical high-half addresses are represented by their two's-complement value.
 pub fn pc32_reachable(sa: int, place: int) -> bool {
@@ -72,12 +65,13 @@ pub fn apply(mut l: layout.Layout, s: resolve.State) -> () ! {Bad(str)} {
         if !l.atoms[r.atom].live || (skipped["{r.atom}:{r.offset}"] else false) { continue }
         let out = l.atoms[r.atom].output
         let at = l.atoms[r.atom].offset + r.offset
-        let place = l.outputs[out].address + at
+        let place = layout.vadd(l.outputs[out].address, at)?
         let site = "{s.objects[l.atoms[r.atom].object].label}:{l.atoms[r.atom].name}+{r.offset} type {r.kind}"
         let tombstone = l.atoms[r.atom].flags & 2 == 0 || l.atoms[r.atom].name == ".eh_frame"
         let symbol = layout.target(s, r.symbol)?
-        let value = layout.value(l, s, symbol, tombstone)?
-        let sa = add(value, r.addend, site)?
+        let fullvalue = layout.address(l, s, symbol, tombstone)?
+        let value = layout.signed(fullvalue)
+        let sa = layout.signed(absolute64(fullvalue, r.addend)?)
         if r.kind == 19 || r.kind == 20 {
             if r.addend != -4 { return Bad("unsupported TLS addend at {site} (psABI 4.5)") }
             let gd = r.kind == 19
@@ -130,7 +124,7 @@ pub fn apply(mut l: layout.Layout, s: resolve.State) -> () ! {Bad(str)} {
         } else if r.kind == 1 || r.kind == 17 {
             number(mut l, out, at, 8, sa, false, site)?
         } else if r.kind == 2 || r.kind == 4 {
-            number(mut l, out, at, 4, add(sa, -place, site)?, true, site)?
+            number(mut l, out, at, 4, relative64(fullvalue, r.addend, place)?, true, site)?
         } else if r.kind == 10 || r.kind == 11 {
             number(mut l, out, at, 4, sa, r.kind == 11, site)?
         } else if r.kind == 21 || r.kind == 23 {
@@ -145,9 +139,9 @@ pub fn apply(mut l: layout.Layout, s: resolve.State) -> () ! {Bad(str)} {
                 opcode == 139 &&
                 modrm & 199 == 5 &&
                 r.addend == -4 &&
-                pc32_reachable(sa, place) {
+                reachable32(fullvalue, r.addend, place) {
                 l.outputs[out].data[at - 2] = 141 as byte
-                number(mut l, out, at, 4, sa - place, true, site)?
+                number(mut l, out, at, 4, relative64(fullvalue, r.addend, place)?, true, site)?
             } else if r.kind == 22 &&
                 (rex == 72 || rex == 76) &&
                 opcode == 139 &&
@@ -165,16 +159,24 @@ pub fn apply(mut l: layout.Layout, s: resolve.State) -> () ! {Bad(str)} {
                 let base = l.synthetics["_GLOBAL_OFFSET_TABLE_"] else {
                     return Bad("missing GOT base")
                 }
-                number(mut l, out, at, 4, base + off + r.addend - place, true, site)?
+                number(
+                    mut l,
+                    out,
+                    at,
+                    4,
+                    relative64(layout.vadd(base, off)?, r.addend, place)?,
+                    true,
+                    site,
+                )?
             }
         }
     }
-    for j in 1..l.outputs.len {
-        if l.outputs[j].name != ".got" { continue }
+    if l.got_output != 0 {
+        let j = l.got_output
         for i in 0..l.got_symbols.len {
             let v = layout.value(l, s, l.got_symbols[i], true)? -
                 (if l.got_tls[i] then tls_end else 0)
-            number(mut l, j, i * 8, 8, v, false, "generated GOT")?
+            number(mut l, j, l.got_offset + i * 8, 8, v, false, "generated GOT")?
         }
     }
 }

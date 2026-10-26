@@ -89,7 +89,7 @@ pub fn check(source: str) -> () ! {Bad(str)} {
 }
 
 /// Validate a bounded script without opening object inputs or writing an executable.
-pub fn inspect(path: str) -> () ! {Bad(str)} {
+pub fn validate_file(path: str) -> () ! {Bad(str)} {
     let size = fs_size(path) else |_| { return Bad("cannot stat {path}") }
     if size > 65536 { return Bad("script: exceeds 65536-byte profile limit") }
     let fd = fs_open(path) else |_| { return Bad("cannot open {path}") }
@@ -97,7 +97,17 @@ pub fn inspect(path: str) -> () ! {Bad(str)} {
     let raw = binary.read(binary.Input { fd: fd, base: 0, size: size }, 0, size)?
     let source = str_from_utf8(raw) else |_| { return Bad("script: invalid UTF-8") }
     check(source)?
+}
+
+/// Print the preflight result without linking.
+pub fn inspect(path: str) -> () ! {Bad(str)} {
+    validate_file(path)?
     print(
         "{{\"format\":\"ligature.script-profile.v1\",\"profile\":\"pax-kernel\",\"linking\":false,\"base\":18446744071562067968,\"entry\":\"_start\",\"load_flags\":[5,4,6],\"alignment\":4096}}",
     )
+}
+
+/// The exact profile's explicit discard patterns.
+pub fn discards(name: str) -> bool {
+    name == ".note" || name.starts_with(".note.") || name == ".comment" || name == ".eh_frame"
 }

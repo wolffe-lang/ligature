@@ -1,0 +1,32 @@
+//! member: false
+
+use layout
+use relocate
+use provenance
+
+fn witness() -> () ! {Bad(str)} {
+    assert(layout.vadd(0xffffffff80000000, 4096)? == 0xffffffff80001000)
+    assert(relocate.relative64(0xffffffffffffffff, -1, 0xfffffffffffffffe)? == 0)
+    assert(relocate.relative64(0, -1, 0)? == -1)
+    assert(relocate.relative64(9223372036854775808, -9223372036854775807 - 1, 0)? == 0)
+    assert(relocate.absolute64(9223372036854775807, 1)? == 9223372036854775808)
+    assert(relocate.absolute64(0, -1)? == 18446744073709551615)
+    assert(provenance.address_number("18446744073709551615")? == 18446744073709551615)
+    var refused = false
+    layout.vadd(18446744073709551615, 1) else |_| { refused = true; 0 as u64 }
+    assert(refused)
+    refused = false
+    relocate.absolute64(18446744073709551615, 1) else |_| { refused = true; 0 as u64 }
+    assert(refused)
+    refused = false
+    provenance.address_number("18446744073709551616") else |_| { refused = true; 0 as u64 }
+    assert(refused)
+    print("address: full-width addition, subtraction, negative addends and overflow; 0 SKIP")
+}
+
+fn main() -> int {
+    witness() else |e| match e {
+        Bad(message) => { eprint(message); return 1 },
+    }
+    0
+}
