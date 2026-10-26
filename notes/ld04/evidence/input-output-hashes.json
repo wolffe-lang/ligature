@@ -17,10 +17,10 @@
   },
   {
     "path": "src/ligature.lu",
-    "bytes": 1786,
+    "bytes": 1893,
     "sha256_read_twice": [
-      "e20ba4e258ab8301157427c31cbcc4747d2659bacc916d6dfa44c758b4258c9f",
-      "e20ba4e258ab8301157427c31cbcc4747d2659bacc916d6dfa44c758b4258c9f"
+      "557f51b9ef0b90b1ff16d811e3b580b125f8a8cc8aa018b36bcb6d154f4a0230",
+      "557f51b9ef0b90b1ff16d811e3b580b125f8a8cc8aa018b36bcb6d154f4a0230"
     ]
   },
   {
@@ -169,10 +169,10 @@
   },
   {
     "path": "src/arwrite/arwrite.lu",
-    "bytes": 5984,
+    "bytes": 5964,
     "sha256_read_twice": [
-      "351de5194d5949330025ed45901ab35ce843138fa5b12a3a40a619c6bef0e2ff",
-      "351de5194d5949330025ed45901ab35ce843138fa5b12a3a40a619c6bef0e2ff"
+      "0f1d75c60ff73761871bad8987f0cca123b14d1acb735ac359d9d2b08dfcb9a4",
+      "0f1d75c60ff73761871bad8987f0cca123b14d1acb735ac359d9d2b08dfcb9a4"
     ]
   },
   {
@@ -185,10 +185,10 @@
   },
   {
     "path": "tests/script-profile.py",
-    "bytes": 2687,
+    "bytes": 3023,
     "sha256_read_twice": [
-      "8ba15554a1144a9f385d762232d02b666c1152abf0507da6778649c41f325a4b",
-      "8ba15554a1144a9f385d762232d02b666c1152abf0507da6778649c41f325a4b"
+      "560dfd54512b70ec2bd69d9fb5d7df348faf829ffa0b0e4a8a9d3c463e3f6d7a",
+      "560dfd54512b70ec2bd69d9fb5d7df348faf829ffa0b0e4a8a9d3c463e3f6d7a"
     ]
   },
   {
@@ -294,5 +294,13 @@
       "cae8d79c2ae24568be71a7f2091a168380b5225fd533d0eefc6aab041f11e8ae",
       "cae8d79c2ae24568be71a7f2091a168380b5225fd533d0eefc6aab041f11e8ae"
     ]
+  },
+  {
+    "path": "tests/kernel-edge.py",
+    "sha256_read_twice": [
+      "374ff72b134f0e0e520843509fb824dd4d07ccf25737e83e905d4cdf7d015292",
+      "374ff72b134f0e0e520843509fb824dd4d07ccf25737e83e905d4cdf7d015292"
+    ],
+    "bytes": 1855
   }
 ]

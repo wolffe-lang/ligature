@@ -5,7 +5,7 @@
   "prediction_commit": "17995f7",
   "prediction_score": {
     "script_witnesses_predicted_minimum": 20,
-    "script_witnesses_observed": 28,
+    "script_witnesses_observed": 30,
     "archive_process_rows": 35,
     "archive_byte_identity": true,
     "kernel_boot": false,
@@ -139,7 +139,8 @@
     "plants": [
       "evidence/plants.log: accepted PT_TLS incorrectly -> phdr-type red; wrong second-member index -> independent index red; restored green",
       "evidence/controls-plant.log: changed high-half GOT target by one -> exact bytes red; restored green"
-    ]
+    ],
+    "final_complete_gate": "evidence/final-check.log: tools/check exit 0, source hashes equal final code, 30 script rows, 35 archive rows, exact-digest self-link BLOCKED unchanged"
   },
   "issues_to_file": [],
   "follow_on_work": "notes/ld04/ld05-draft.json",

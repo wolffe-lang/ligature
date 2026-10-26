@@ -33,10 +33,10 @@
   },
   {
     "path": "evidence/controls.log",
-    "bytes": 456,
+    "bytes": 189,
     "sha256_read_twice": [
-      "8673ba3999a38b7b928d6247323f13e82e8b65c67a7a03b8c8d308cad845441b",
-      "8673ba3999a38b7b928d6247323f13e82e8b65c67a7a03b8c8d308cad845441b"
+      "07256877bdb0ef7e4287a8036d1aab3e0888d89ad80fb6707168d57c2147ddd8",
+      "07256877bdb0ef7e4287a8036d1aab3e0888d89ad80fb6707168d57c2147ddd8"
     ]
   },
   {
@@ -48,11 +48,19 @@
     ]
   },
   {
-    "path": "evidence/input-output-hashes.json",
-    "bytes": 9268,
+    "path": "evidence/final-check.log",
+    "bytes": 3998,
     "sha256_read_twice": [
-      "f2fb370c48e8a65e123656019b925fac1fc54b2dcc0f5824db28147cdb373fe5",
-      "f2fb370c48e8a65e123656019b925fac1fc54b2dcc0f5824db28147cdb373fe5"
+      "cb9d75068f573f100755c3f7eab7e0b0130eb24aef40811e57ec7c7edcd8219f",
+      "cb9d75068f573f100755c3f7eab7e0b0130eb24aef40811e57ec7c7edcd8219f"
+    ]
+  },
+  {
+    "path": "evidence/input-output-hashes.json",
+    "bytes": 9512,
+    "sha256_read_twice": [
+      "a1abb5cd3667e449176e5a40938f8c57c197eb36373a47117c99d3eea6773290",
+      "a1abb5cd3667e449176e5a40938f8c57c197eb36373a47117c99d3eea6773290"
     ]
   },
   {
@@ -65,10 +73,10 @@
   },
   {
     "path": "evidence/script-profile.json",
-    "bytes": 3881,
+    "bytes": 4127,
     "sha256_read_twice": [
-      "f3d491369a09633a5a6aef4984c078fae36b6cb68317e9a3c9e93718a8dc85b1",
-      "f3d491369a09633a5a6aef4984c078fae36b6cb68317e9a3c9e93718a8dc85b1"
+      "a3e2ee5c6749e261f086b3531a61f842045aa129979ea2efc34d6d45bde228b0",
+      "a3e2ee5c6749e261f086b3531a61f842045aa129979ea2efc34d6d45bde228b0"
     ]
   },
   {

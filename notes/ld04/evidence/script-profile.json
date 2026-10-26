@@ -138,5 +138,15 @@
     "name": "too-large",
     "status": 1,
     "stderr": "ligature: script: exceeds 65536-byte profile limit\n"
+  },
+  {
+    "name": "arity-0",
+    "status": 1,
+    "stderr": "ligature: script-plan: usage: ligature script-plan FILE\n"
+  },
+  {
+    "name": "arity-2",
+    "status": 1,
+    "stderr": "ligature: script-plan: usage: ligature script-plan FILE\n"
   }
 ]
