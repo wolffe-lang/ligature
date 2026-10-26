@@ -5,6 +5,8 @@ use census
 use resolve
 use writer
 use explain
+use script
+use arwrite
 
 fn execute(args: List[str]) -> () ! {Bad(str)} {
     if args.len == 1 && args[0] == "--version" {
@@ -13,6 +15,12 @@ fn execute(args: List[str]) -> () ! {Bad(str)} {
     }
     if args.len == 2 && (args[0] == "inspect" || args[0] == "verify" || args[0] == "roundtrip") {
         census.inspect(args[1], args[0])?
+        return
+    }
+    if args.len == 2 && args[0] == "script-plan" { script.inspect(args[1])?; return }
+    if args.len > 0 && args[0] == "archive" {
+        if args.len < 3 { return Bad("archive: usage: ligature archive OUTPUT OBJECT...") }
+        arwrite.create(args[1], args[2..])?
         return
     }
     var plan = front.parse(args)?

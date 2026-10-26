@@ -67,3 +67,7 @@ with tempfile.TemporaryDirectory(dir=OUT,prefix='fixture-') as tmp:
     for args,reason in [(['-o'],'missing value'),(['--unknown','x.o'],'unsupported cc'),(['-Wl,--surprise','x.o'],'unsupported linker'),(['-Wl,--defsym=a','x.o'],'NAME=SYMBOL'),(['-nostdlib','x.o'],'cannot stat x.o')]:run([BIN,*args],1,reason)
 (OUT/'integration.json').write_text(json.dumps(rows,indent=2)+'\n')
 print(f'integration: {len(rows)} process rows, 0 SKIP')
+
+# New commands run in the existing native integration gate, never as optional rows.
+for suite in ("script-profile.py", "archive-write.py"):
+    subprocess.run(["python3", "-I", ROOT / "tests" / suite], check=True)
