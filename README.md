@@ -21,6 +21,8 @@ CC="$PWD/target/ligature" LIGATURE_SYSROOT=/path/to/wolf-musl \
   WOLF_RT_LIB=/path/to/musl/libwolf_rt.a wolf build hello.lu -o hello
 target/ligature inspect hello.o
 target/ligature roundtrip libwolf_rt.a
+target/ligature archive libexample.a first.o second.o
+target/ligature script-plan tests/fixtures/pax-kernel.ld
 target/ligature verify hello
 target/ligature explain hello --symbol main
 target/ligature explain hello --why main
@@ -39,6 +41,21 @@ ELF32, big-endian ELF, REL relocations, BSD archives, thin archives and extended
 ELF numbering are not supported. The reader uses bounded positional reads,
 not memory mapping. `src/` is one Wolf package; Python and shell are test and
 oracle automation, not the linker implementation.
+
+`archive OUTPUT OBJECT...` creates a deterministic GNU/SysV archive, including
+its big-endian symbol index. It preserves input order, duplicate basenames and
+long names; defined global, weak and COMMON symbols are indexed, local and
+undefined symbols are not. Inputs must be validated ELF64 relocatable objects
+of one machine, with printable ASCII basenames. Object payloads are bounded to
+64 MiB in total, and the encoded archive to 128 MiB. It is a create command, not
+an `ar rcs` compatibility interface; thin and BSD formats remain refused.
+
+`script-plan FILE` validates the exact token profile of `tests/fixtures/pax-kernel.ld`
+(up to 64 KiB), allowing whitespace and comments. It rejects changes to directives,
+entry, PHDR types/flags, patterns, order or expressions. Its JSON explicitly says
+`"linking": false`: it does not enable `-T`, interpret a general script or link a
+kernel. The high-half address model, script layout/provenance and kernel boot
+qualification are unfinished.
 
 The `cc` subset uses `/usr/lib/wolf-musl` unless `LIGATURE_SYSROOT` names another
 directory. It supplies `crt1.o`, `crti.o`, `libc.a`, optional `libunwind.a`, and
@@ -60,7 +77,8 @@ docker run --rm -v "$PWD:/work" ligature-oracle bash -c 'tools/fetch-toolchain &
 The PR tier and full tier currently run the same two jobs: planner checks and
 the Linux gate. The `full-matrix` label selects the full-tier verdict. The
 Linux gate checks formatting, Wolf unit tests, malformed-file/native integration,
-real musl links with LLD 17 and GNU ld, deterministic relinks, deliberate byte
+real musl links with LLD 17 and GNU ld, script-profile refusals, independently
+parsed archive indexes and three-linker archive execution, deterministic relinks, deliberate byte
 and metadata corruptions, symbol resolution, ten three-linker writer cases, the cc frontend, independent
 provenance hashes and resealed corruption witnesses, full byte coverage,
 explanation queries, the high-half GOT range fixture and the public runtime
@@ -158,6 +176,10 @@ reduces the embedded manifest from 147,136,512 to 12,414,976 bytes (11.85×),
 including 17,765 newly explicit discard/consumed-metadata records. Legacy JSON
 manifests remain readable by `verify` and `explain`; no debug sites are omitted. Unwind data has no generated unwind header, strings are not merged,
 and AArch64 linking, linker scripts and Mach-O remain future work. The high-half
-relocation fixture does not claim support for a kernel linker script.
+relocation fixture does not claim support for a kernel linker script. The
+supplementary `tests/ld04-controls.py` requires clang/LLD 18: LLD 18.1.3 retains
+the GOT load at the edge where LLD 17 refuses. It also measures actual AArch64
+assembly-object relocations and an LLD-linked ELF, without executing it or
+claiming a compiler/runtime census. Candidate AArch64 linking remains refused.
 
 Licence: GPL-3.0-only with the wolf Training Data Permission (`LICENSE`, `LICENSE-TRAINING-DATA`), as pax, boreutils and den.
