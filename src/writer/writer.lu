@@ -206,6 +206,7 @@ fn insert(mut file: List[byte], off: int, data: List[byte]) -> () ! {Bad(str)} {
 /// Build a static ET_EXEC, re-read and verify it before reporting success.
 pub fn link(s: resolve.State, p: front.Plan) -> () ! {Bad(str)} {
     var l = layout.read_for(s, p.script.len != 0)?
+    if l.kernel && l.machine != 62 { return Bad("PAX kernel profile requires EM_X86_64") }
     layout.collect(mut l, s, p)?
     if l.kernel { layout.kernel_place(mut l, s)? } else { layout.place(mut l, s)? }
     relocate.apply(mut l, s)?
@@ -327,7 +328,7 @@ pub fn link(s: resolve.State, p: front.Plan) -> () ! {Bad(str)} {
         binary.encode(
             [
                 2,
-                62,
+                l.machine as u64,
                 1,
                 entry as u64,
                 64,

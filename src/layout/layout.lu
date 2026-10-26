@@ -51,6 +51,7 @@ pub struct Layout {
     common: Map[int, int],
     synthetics: Map[str, u64],
     kernel: bool,
+    machine: int,
     got_output: int,
     got_offset: int,
     tls_address: u64,
@@ -113,7 +114,18 @@ pub fn atom_for(l: Layout, s: resolve.State, id: int) -> int {
     l.locations["{sym.object}:{sym.section}"] else 0
 }
 
-fn supported(k: int) -> bool {
+fn supported(machine: int, k: int) -> bool {
+    if machine == 183 {
+        return k == 257 ||
+            k == 261 ||
+            k == 275 ||
+            k == 277 ||
+            k == 282 ||
+            k == 283 ||
+            k == 286 ||
+            k == 311 ||
+            k == 312
+    }
     k == 1 ||
         k == 2 ||
         k == 4 ||
@@ -145,6 +157,7 @@ pub fn read_for(s: resolve.State, kernel: bool) -> Layout ! {Bad(str)} {
         common: Map[int, int](),
         synthetics: Map[str, u64](),
         kernel: kernel,
+        machine: if s.objects.len == 0 then 62 else s.objects[0].image.machine,
         got_output: 0,
         got_offset: 0,
         tls_address: 0,
@@ -236,13 +249,18 @@ pub fn read_for(s: resolve.State, kernel: bool) -> Layout ! {Bad(str)} {
             for i in 0..sec.size / 24 {
                 let info = binary.decode(raw, i * 24 + 8, 8)?
                 let kind = (info & 4294967295) as int
-                if !supported(kind) {
+                if !supported(l.machine, kind) {
+                    if l.machine == 183 {
+                        return Bad(
+                            "unsupported AArch64 relocation {kind} (AAELF64 2025Q1 section 6)",
+                        )
+                    }
                     return Bad("unsupported R_X86_64 relocation {kind} (AMD64 psABI table 4.9)")
                 }
                 let symbol = s.objects[oi].symbols["{sec.link}:{info >> 32}"] else {
                     return Bad("relocation symbol index outside table")
                 }
-                let width = if kind == 1 || kind == 17 then 8 else 4
+                let width = if kind == 1 || kind == 17 || kind == 257 then 8 else 4
                 let offset = binary.bounded(binary.decode(raw, i * 24, 8)?, l.atoms[atom].size)?
                 if width > l.atoms[atom].size - offset {
                     return Bad("relocation extends past section")
@@ -442,7 +460,10 @@ pub fn place(mut l: Layout, s: resolve.State) -> () ! {Bad(str)} {
     }
     for ri in 0..l.relocs.len {
         let r = copy l.relocs[ri]
-        if !l.atoms[r.atom].live || r.kind != 9 && r.kind != 42 && r.kind != 22 { continue }
+        if !l.atoms[r.atom].live ||
+            r.kind != 9 && r.kind != 42 && r.kind != 22 && r.kind != 311 && r.kind != 312 {
+            continue
+        }
         let id = target(s, r.symbol)?
         let tls = r.kind == 22
         let key = "{id}:{tls}"

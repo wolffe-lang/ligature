@@ -43,3 +43,15 @@ fn reachable32(symbol: u64, addend: int, place: u64) -> bool {
     let value = relative64(symbol, addend, place) else |_| { return false }
     value >= -2147483648 && value <= 2147483647
 }
+
+/// Low 64 bits for non-checking AAELF64 data/low-part relocations.
+fn low64(symbol: u64, addend: int) -> u64 {
+    if addend >= 0 {
+        let n = addend as u64
+        if symbol > 18446744073709551615 - n { return symbol - (18446744073709551615 - n) - 1 }
+        return symbol + n
+    }
+    let n = -(addend + 1) as u64 + 1
+    if symbol >= n { return symbol - n }
+    18446744073709551615 - (n - symbol - 1)
+}

@@ -56,6 +56,7 @@ pub fn pc32_reachable(sa: int, place: int) -> bool {
 
 /// Apply the census relocation set and recognized psABI TLS instruction transitions.
 pub fn apply(mut l: layout.Layout, s: resolve.State) -> () ! {Bad(str)} {
+    if l.machine == 183 { apply_aarch64(mut l, s)?; return }
     var skipped = Map[str, bool]()
     var relocation_at = Map[str, int]()
     for i in 0..l.relocs.len { relocation_at["{l.relocs[i].atom}:{l.relocs[i].offset}"] = i }

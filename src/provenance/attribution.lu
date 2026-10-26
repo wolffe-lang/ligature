@@ -103,7 +103,7 @@ pub fn patches(l: layout.Layout, s: resolve.State) -> PatchTable ! {Bad(str)} {
         let oi = l.atoms[ai].output
         let owner = consumed["{r.atom}:{r.offset}"] else -1
         var begin = r.offset
-        var width = if r.kind == 1 || r.kind == 17 then 8 else 4
+        var width = if r.kind == 1 || r.kind == 17 || r.kind == 257 then 8 else 4
         var rule = "field"
         if owner >= 0 {
             rule = "TLS-call-consumed"

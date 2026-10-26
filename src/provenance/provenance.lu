@@ -109,9 +109,10 @@ pub fn manifest(
     for b in input_json { (mut out).push(b) }
     emit(mut out, ",\"memory_ranges\":[")
     for b in memory_ranges(l) { (mut out).push(b) }
+    let target_name = if l.machine == 183 then "aarch64" else "x86_64"
     emit(
         mut out,
-        "],\"output\":{{\"bytes\":{total},\"entry\":\"_start\",\"sha256\":null,\"target\":\"x86_64\",\"type\":\"ET_EXEC\"}},\"patches\":[",
+        "],\"output\":{{\"bytes\":{total},\"entry\":\"_start\",\"sha256\":null,\"target\":\"{target_name}\",\"type\":\"ET_EXEC\"}},\"patches\":[",
     )
     let table = patches(l, s)?
     emit(mut out, "],\"pulls\":[")

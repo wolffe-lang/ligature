@@ -1,0 +1,124 @@
+//! member: true
+
+use binary
+use layout
+use resolve
+
+fn prel32(value: int, site: str) -> u64 ! {Bad(str)} {
+    if value < -2147483648 || value > 4294967295 { return Bad("AArch64 PREL32 overflow at {site}") }
+    layout.bits(value) & 4294967295
+}
+
+/// Prove the measured adjacent ADRP + low12 register/target pair before patching.
+fn pair(l: layout.Layout, s: resolve.State, r: layout.Reloc, word: u64, got: bool) -> () ! {
+    Bad(str),
+} {
+    if r.offset < 4 { return Bad("AArch64 low12 relocation has no preceding ADRP") }
+    for before in l.relocs {
+        if before.atom != r.atom || before.offset != r.offset - 4 { continue }
+        if before.kind != (if got then 311 else 275) ||
+            before.addend != r.addend ||
+            layout.target(s, before.symbol)? != layout.target(s, r.symbol)? {
+            return Bad("AArch64 ADRP/low12 target or addend mismatch")
+        }
+        let adrp = binary.decode(l.atoms[r.atom].data, before.offset, 4)?
+        if adrp & 2667577344 != 2415919104 || adrp & 31 != word >> 5 & 31 {
+            return Bad("AArch64 ADRP/low12 register or instruction mismatch")
+        }
+        return
+    }
+    Bad("AArch64 low12 relocation requires adjacent matching ADRP (measured subset)")
+}
+
+/// Apply the independently censused AAELF64 static subset, without relaxation.
+fn apply_aarch64(mut l: layout.Layout, s: resolve.State) -> () ! {Bad(str)} {
+    for r in l.relocs {
+        if !l.atoms[r.atom].live { continue }
+        let out = l.atoms[r.atom].output
+        let at = l.atoms[r.atom].offset + r.offset
+        let place = layout.vadd(l.outputs[out].address, at)?
+        let id = layout.target(s, r.symbol)?
+        let symbol = layout.address(l, s, id, l.atoms[r.atom].flags & 2 == 0)?
+        let site = "{s.objects[l.atoms[r.atom].object].label}:{l.atoms[r.atom].name}+{r.offset} type {r.kind}"
+        if r.kind == 257 {
+            put(mut l.outputs[out].data, at, 8, low64(symbol, r.addend))?
+            continue
+        }
+        if r.kind == 261 {
+            put(
+                mut l.outputs[out].data,
+                at,
+                4,
+                prel32(relative64(symbol, r.addend, place)?, site)?,
+            )?
+            continue
+        }
+        if r.offset % 4 != 0 || place & 3 != 0 {
+            return Bad("AArch64 instruction relocation alignment at {site}")
+        }
+        let word = binary.decode(l.atoms[r.atom].data, r.offset, 4)?
+        var patched: u64 = 0
+        if r.kind == 282 || r.kind == 283 {
+            let opcode: u64 = if r.kind == 283 then 2483027968 else 335544320
+            if word & 4227858432 != opcode {
+                return Bad("AArch64 branch instruction mask at {site}")
+            }
+            let d = relative64(symbol, r.addend, place)?
+            if d % 4 != 0 { return Bad("AArch64 branch target alignment at {site}") }
+            if d < -134217728 || d > 134217724 {
+                return Bad("AArch64 branch range overflow at {site}")
+            }
+            patched = opcode | layout.bits(d / 4) & 67108863
+        } else {
+            let got = r.kind == 311 || r.kind == 312
+            var destination = low64(symbol, r.addend)
+            if got {
+                if r.addend != 0 { return Bad("AArch64 GOT addend must be zero (measured subset)") }
+                let offset = l.got["{id}:false"] else { return Bad("missing AArch64 GOT slot") }
+                let base = l.synthetics["_GLOBAL_OFFSET_TABLE_"] else {
+                    return Bad("missing AArch64 GOT base")
+                }
+                destination = layout.vadd(base, offset)?
+            }
+            if r.kind == 275 || r.kind == 311 {
+                if word & 2667577344 != 2415919104 {
+                    return Bad("AArch64 ADRP instruction mask at {site}")
+                }
+                let distance = relative64(
+                    if got then destination else symbol,
+                    if got then 0 else r.addend,
+                    place & 18446744073709547520,
+                )?
+                let d = if distance >= 0 then distance / 4096 else -1 - -(distance + 1) / 4096
+                if d < -1048576 || d > 1048575 {
+                    return Bad("AArch64 ADRP range overflow at {site}")
+                }
+                let immediate = layout.bits(d) & 2097151
+                patched = word & 2667577375 | (immediate & 3) << 29 | immediate >> 2 << 5
+            } else if r.kind == 277 {
+                if word & 2143289344 != 285212672 {
+                    return Bad("AArch64 ADD low12 instruction mask at {site}")
+                }
+                pair(l, s, r, word, false)?
+                patched = word & 4290774015 | (destination & 4095) << 10
+            } else if r.kind == 286 || r.kind == 312 {
+                let opcode = word & 4290772992
+                if opcode != 4181721088 && (got || opcode != 4177526784) {
+                    return Bad("AArch64 LDST64 low12 instruction mask at {site}")
+                }
+                pair(l, s, r, word, got)?
+                if destination & 7 != 0 { return Bad("AArch64 LDST64 target alignment at {site}") }
+                patched = word & 4290774015 | (destination & 4095) >> 3 << 10
+            } else {
+                return Bad("unsupported AArch64 relocation {r.kind} (AAELF64 2025Q1 section 6)")
+            }
+        }
+        put(mut l.outputs[out].data, at, 4, patched)?
+    }
+    if l.got_output != 0 {
+        for i in 0..l.got_symbols.len {
+            let value = layout.address(l, s, l.got_symbols[i], true)?
+            put(mut l.outputs[l.got_output].data, l.got_offset + i * 8, 8, value)?
+        }
+    }
+}
