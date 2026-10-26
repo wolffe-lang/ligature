@@ -1,0 +1,50 @@
+{
+  "format": "ligature.ld05.draft.v1",
+  "status": "Draft for continuation, not authorization to call ld04 complete",
+  "priority": "Finish the kernel link before extending AArch64 linking",
+  "prerequisites": [
+    "Self-link remains BLOCKED under the unchanged exact-digest predicate: the self-link goes live when ld03b (or the pin lane) bumps both compiler and bundle",
+    "Read every ld03 named finding and current corpus record; retained is not equivalent",
+    "Preserve all provenance rows, deterministic bytes and independent retained-site equations",
+    "No PAX or compiler changes in the linker lane; coordinate separate lanes"
+  ],
+  "kernel": [
+    "Migrate virtual addresses through layout, symbols, relocation arithmetic, provenance encoder/decoder and explain to u64, separate from bounded signed file offsets; never reuse signed reinterpretation as the public address model.",
+    "Make the validated profile drive ordered section collection; preserve .data.limine priority, COMMON alignment and NOBITS separation; refuse allocated orphans/unknown patterns.",
+    "Emit three explicit page-separated PT_LOAD segments with flags 5/4/6; compare file/VMA congruence, symbols and entry against LLD17, LLD18 and GNU binaries.",
+    "Retain script-specific discard causes separately from GC/COMDAT/EXCLUDE, with complete output byte attribution and all per-site equations.",
+    "Expose -T only after the writer supports the whole profile; add negative arithmetic/range/permission/unknown construct gates. script-plan remains a preflight, not a general interpreter.",
+    "Coordinate a PAX lane for an explicit linker seam; rebuild unchanged kernel inputs there, qualify structural views, then actual BIOS/UEFI boots. No kernel source or PAX edits in the linker lane."
+  ],
+  "archive_follow_ons": [
+    "Compiler --emit=lib integration (separate compiler lane)",
+    "Qualify actual large runtime archive writing within the documented bound, measure cost and memory",
+    "Thin and BSD formats remain named refusals until separately scoped"
+  ],
+  "aarch64": {
+    "scope": "Separate implementation from existing header reading",
+    "reference": "ELF for the Arm 64-bit Architecture 2025Q1 sections 5-7",
+    "rows": [
+      "Census actual relocations in binary inputs before adding an allowlist",
+      "ABS64 and PREL32 range/alignment witnesses",
+      "CALL26/JUMP26 signed branch range, instruction mask and aligned target witnesses",
+      "ADRP page plus ADD/LDST low-12 paired relocation proofs",
+      "GOT/TLS separately specified; unknown variants named refusals",
+      "AArch64 binary oracles and native or emulated behavior, never x86 header-only evidence"
+    ]
+  },
+  "aarch64_evidence": "ld04 own assembly fixtures observe 257/261/275/277/282/283/286/311/312; LLD18 output verifies but was not executed. Do not treat this as compiler/runtime census or candidate linking.",
+  "preserve": [
+    "Resolve local/debug/global-binding records by identity, not a category waiver",
+    "Decide merge-string/suffix deduplication with provenance split/alias attribution before implementation",
+    "Decide unwind record deduplication and .eh_frame_hdr generation separately",
+    "Archive thin/BSD formats remain named refusals until separately scoped",
+    "Authentication stays a separate signed envelope, not a stronger claim for SHA256"
+  ],
+  "done_when": [
+    "Qualified kernel linked by ligature boots",
+    "Actual AArch64 hello linked by ligature executes natively or emulated",
+    "Fresh independent retained-site/provenance/structural gates retain all named findings",
+    "Compiler and bundle self-link predicate remains unchanged unless its separate pin lane qualifies both"
+  ]
+}

@@ -1,0 +1,407 @@
+{
+  "archive_sha256": "1ba658137f295ffcaf339a72b3298c0e6dc51079ccdc8b8f1a43947aa4abcc59",
+  "index": [
+    [
+      "choice",
+      250
+    ],
+    [
+      "weak_export",
+      250
+    ],
+    [
+      "common_export",
+      250
+    ],
+    [
+      "unused",
+      1126
+    ],
+    [
+      "choice",
+      1126
+    ]
+  ],
+  "rows": [
+    {
+      "argv": [
+        "as",
+        "--64",
+        "/work/target/evidence/archive-write/one/same long member name.o.s",
+        "-o",
+        "/work/target/evidence/archive-write/one/same long member name.o"
+      ],
+      "status": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "as",
+        "--64",
+        "/work/target/evidence/archive-write/two/same long member name.o.s",
+        "-o",
+        "/work/target/evidence/archive-write/two/same long member name.o"
+      ],
+      "status": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "as",
+        "--64",
+        "/work/target/evidence/archive-write/entry.o.s",
+        "-o",
+        "/work/target/evidence/archive-write/entry.o"
+      ],
+      "status": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "/work/target/ligature",
+        "archive",
+        "/work/target/evidence/archive-write/libcreated.a",
+        "/work/target/evidence/archive-write/one/same long member name.o",
+        "/work/target/evidence/archive-write/two/same long member name.o"
+      ],
+      "status": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "/work/target/ligature",
+        "archive",
+        "/work/target/evidence/archive-write/repeat.a",
+        "/work/target/evidence/archive-write/one/same long member name.o",
+        "/work/target/evidence/archive-write/two/same long member name.o"
+      ],
+      "status": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "ar",
+        "t",
+        "/work/target/evidence/archive-write/libcreated.a"
+      ],
+      "status": 0,
+      "stdout": "same long member name.o\nsame long member name.o\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "nm",
+        "--print-armap",
+        "/work/target/evidence/archive-write/libcreated.a"
+      ],
+      "status": 0,
+      "stdout": "\nArchive index:\nchoice in same long member name.o\nweak_export in same long member name.o\ncommon_export in same long member name.o\nunused in same long member name.o\nchoice in same long member name.o\n\nsame long member name.o:\n0000000000000000 T choice\n0000000000000010 C common_export\n0000000000000007 t local_export\n0000000000000006 W weak_export\n\nsame long member name.o:\n0000000000000006 T choice\n0000000000000000 T unused\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "/work/target/ligature",
+        "roundtrip",
+        "/work/target/evidence/archive-write/libcreated.a"
+      ],
+      "status": 0,
+      "stdout": "roundtrip: PASS /work/target/evidence/archive-write/libcreated.a\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "/work/target/ligature",
+        "-nostdlib",
+        "-static",
+        "-o",
+        "/work/target/evidence/archive-write/ligature",
+        "/work/target/evidence/archive-write/entry.o",
+        "/work/target/evidence/archive-write/libcreated.a"
+      ],
+      "status": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "/work/target/evidence/archive-write/ligature"
+      ],
+      "status": 7,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "/work/target/ligature",
+        "verify",
+        "/work/target/evidence/archive-write/ligature"
+      ],
+      "status": 0,
+      "stdout": "verify: PASS /work/target/evidence/archive-write/ligature\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "ld.lld-17",
+        "-static",
+        "-o",
+        "/work/target/evidence/archive-write/lld",
+        "/work/target/evidence/archive-write/entry.o",
+        "/work/target/evidence/archive-write/libcreated.a"
+      ],
+      "status": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "/work/target/evidence/archive-write/lld"
+      ],
+      "status": 7,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "ld.bfd",
+        "-static",
+        "-o",
+        "/work/target/evidence/archive-write/gnu",
+        "/work/target/evidence/archive-write/entry.o",
+        "/work/target/evidence/archive-write/libcreated.a"
+      ],
+      "status": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "/work/target/evidence/archive-write/gnu"
+      ],
+      "status": 7,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "ar",
+        "rcsD",
+        "/work/target/evidence/archive-write/gnu.a",
+        "/work/target/evidence/archive-write/one/same long member name.o",
+        "/work/target/evidence/archive-write/two/same long member name.o"
+      ],
+      "status": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "/work/target/ligature",
+        "-nostdlib",
+        "-o",
+        "/work/target/evidence/archive-write/control",
+        "/work/target/evidence/archive-write/entry.o",
+        "/work/target/evidence/archive-write/gnu.a"
+      ],
+      "status": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "/work/target/evidence/archive-write/control"
+      ],
+      "status": 7,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "as",
+        "--64",
+        "/work/target/evidence/archive-write/local.o.s",
+        "-o",
+        "/work/target/evidence/archive-write/local.o"
+      ],
+      "status": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "/work/target/ligature",
+        "archive",
+        "/work/target/evidence/archive-write/no-global.a",
+        "/work/target/evidence/archive-write/local.o"
+      ],
+      "status": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "/work/target/ligature",
+        "roundtrip",
+        "/work/target/evidence/archive-write/no-global.a"
+      ],
+      "status": 0,
+      "stdout": "roundtrip: PASS /work/target/evidence/archive-write/no-global.a\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "ar",
+        "t",
+        "/work/target/evidence/archive-write/no-global.a"
+      ],
+      "status": 0,
+      "stdout": "local.o\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "/work/target/ligature",
+        "archive",
+        "/work/target/evidence/archive-write/sentinel.a",
+        "/work/target/evidence/archive-write/one/same long member name.o",
+        "/work/target/evidence/archive-write/invalid.o"
+      ],
+      "status": 1,
+      "stdout": "",
+      "stderr": "ligature: truncated range (gABI ch.4)\n"
+    },
+    {
+      "argv": [
+        "/work/target/ligature",
+        "archive",
+        "/work/target/evidence/archive-write/sentinel.a",
+        "/work/target/evidence/archive-write/libcreated.a"
+      ],
+      "status": 1,
+      "stdout": "",
+      "stderr": "ligature: not ELF (gABI ch.4 ELF Header)\n"
+    },
+    {
+      "argv": [
+        "/work/target/ligature",
+        "archive",
+        "/work/target/evidence/archive-write/sentinel.a",
+        "/work/target/evidence/archive-write/gnu"
+      ],
+      "status": 1,
+      "stdout": "",
+      "stderr": "ligature: archive: ET_REL object required for /work/target/evidence/archive-write/gnu\n"
+    },
+    {
+      "argv": [
+        "/work/target/ligature",
+        "archive",
+        "/work/target/evidence/archive-write/one/same long member name.o",
+        "/work/target/evidence/archive-write/one/same long member name.o"
+      ],
+      "status": 1,
+      "stdout": "",
+      "stderr": "ligature: archive: output names an input\n"
+    },
+    {
+      "argv": [
+        "/work/target/ligature",
+        "archive"
+      ],
+      "status": 1,
+      "stdout": "",
+      "stderr": "ligature: archive: usage: ligature archive OUTPUT OBJECT...\n"
+    },
+    {
+      "argv": [
+        "/work/target/ligature",
+        "archive",
+        "/work/target/evidence/archive-write/sentinel.a",
+        "/work/target/evidence/archive-write/too-large.o"
+      ],
+      "status": 1,
+      "stdout": "",
+      "stderr": "ligature: archive: member exceeds 64 MiB bound\n"
+    },
+    {
+      "argv": [
+        "/work/target/ligature",
+        "archive",
+        "/work/target/evidence/archive-write/odd.a",
+        "/work/target/evidence/archive-write/odd.o"
+      ],
+      "status": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "/work/target/ligature",
+        "roundtrip",
+        "/work/target/evidence/archive-write/odd.a"
+      ],
+      "status": 0,
+      "stdout": "roundtrip: PASS /work/target/evidence/archive-write/odd.a\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "ar",
+        "p",
+        "/work/target/evidence/archive-write/odd.a",
+        "odd.o"
+      ],
+      "status": 0,
+      "stdout": "\u007fELF\u0002\u0001\u0001\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0001\u0000>\u0000\u0001\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\ufffd\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000@\u0000\u0000\u0000\u0000\u0000@\u0000\b\u0000\u0007\u0000\ufffd\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0001\u0000\u0000\u0000\u0000\u0000\u0001\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000local\u0000\u0000.symtab\u0000.strtab\u0000.shstrtab\u0000.text\u0000.data\u0000.bss\u0000.note.GNU-stack\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u001b\u0000\u0000\u0000\u0001\u0000\u0000\u0000\u0006\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000@\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0001\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0001\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000!\u0000\u0000\u0000\u0001\u0000\u0000\u0000\u0003\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000A\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0001\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000'\u0000\u0000\u0000\b\u0000\u0000\u0000\u0003\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000A\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0001\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000,\u0000\u0000\u0000\u0001\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000A\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0001\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0001\u0000\u0000\u0000\u0002\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000H\u0000\u0000\u0000\u0000\u0000\u0000\u00000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0006\u0000\u0000\u0000\u0002\u0000\u0000\u0000\b\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0018\u0000\u0000\u0000\u0000\u0000\u0000\u0000\t\u0000\u0000\u0000\u0003\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000x\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0007\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0001\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0011\u0000\u0000\u0000\u0003\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u007f\u0000\u0000\u0000\u0000\u0000\u0000\u0000<\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0001\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000x",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "ar",
+        "p",
+        "/work/target/evidence/archive-write/odd.a",
+        "odd.o"
+      ],
+      "status": 0,
+      "stdout": "\u007fELF\u0002\u0001\u0001\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0001\u0000>\u0000\u0001\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\ufffd\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000@\u0000\u0000\u0000\u0000\u0000@\u0000\b\u0000\u0007\u0000\ufffd\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0001\u0000\u0000\u0000\u0000\u0000\u0001\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000local\u0000\u0000.symtab\u0000.strtab\u0000.shstrtab\u0000.text\u0000.data\u0000.bss\u0000.note.GNU-stack\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u001b\u0000\u0000\u0000\u0001\u0000\u0000\u0000\u0006\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000@\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0001\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0001\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000!\u0000\u0000\u0000\u0001\u0000\u0000\u0000\u0003\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000A\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0001\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000'\u0000\u0000\u0000\b\u0000\u0000\u0000\u0003\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000A\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0001\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000,\u0000\u0000\u0000\u0001\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000A\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0001\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0001\u0000\u0000\u0000\u0002\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000H\u0000\u0000\u0000\u0000\u0000\u0000\u00000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0006\u0000\u0000\u0000\u0002\u0000\u0000\u0000\b\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0018\u0000\u0000\u0000\u0000\u0000\u0000\u0000\t\u0000\u0000\u0000\u0003\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000x\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0007\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0001\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0011\u0000\u0000\u0000\u0003\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u007f\u0000\u0000\u0000\u0000\u0000\u0000\u0000<\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0001\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000x",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "/work/target/ligature",
+        "archive",
+        "/work/target/evidence/archive-write/sentinel.a",
+        "/work/target/evidence/archive-write/one/same long member name.o",
+        "/work/target/evidence/archive-write/foreign.o"
+      ],
+      "status": 1,
+      "stdout": "",
+      "stderr": "ligature: archive: mixed ELF machines refused\n"
+    },
+    {
+      "argv": [
+        "/work/target/ligature",
+        "roundtrip",
+        "/work/target/evidence/archive-write/thin.a"
+      ],
+      "status": 1,
+      "stdout": "",
+      "stderr": "ligature: thin archives refused (GNU ar manual)\n"
+    },
+    {
+      "argv": [
+        "/work/target/ligature",
+        "roundtrip",
+        "/work/target/evidence/archive-write/bsd.a"
+      ],
+      "status": 1,
+      "stdout": "",
+      "stderr": "ligature: BSD archives refused (ar format)\n"
+    }
+  ]
+}

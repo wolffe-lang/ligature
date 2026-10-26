@@ -1,0 +1,142 @@
+[
+  {
+    "name": "original",
+    "status": 0,
+    "stderr": ""
+  },
+  {
+    "name": "no-comments",
+    "status": 0,
+    "stderr": ""
+  },
+  {
+    "name": "whitespace",
+    "status": 0,
+    "stderr": ""
+  },
+  {
+    "name": "comment-boundary",
+    "status": 0,
+    "stderr": ""
+  },
+  {
+    "name": "format",
+    "status": 1,
+    "stderr": "ligature: script: unsupported token elf64-littleaarch64 at 2; expected elf64-x86-64 (closed PAX profile)\n"
+  },
+  {
+    "name": "entry",
+    "status": 1,
+    "stderr": "ligature: script: unsupported token other at 6; expected _start (closed PAX profile)\n"
+  },
+  {
+    "name": "missing-entry",
+    "status": 1,
+    "stderr": "ligature: script: unsupported token PHDRS at 4; expected ENTRY (closed PAX profile)\n"
+  },
+  {
+    "name": "duplicate-entry",
+    "status": 1,
+    "stderr": "ligature: script: unsupported token ENTRY at 8; expected PHDRS (closed PAX profile)\n"
+  },
+  {
+    "name": "phdr-type",
+    "status": 1,
+    "stderr": "ligature: script: unsupported token PT_TLS at 11; expected PT_LOAD (closed PAX profile)\n"
+  },
+  {
+    "name": "phdr-flags",
+    "status": 1,
+    "stderr": "ligature: script: unsupported token 7 at 14; expected 5 (closed PAX profile)\n"
+  },
+  {
+    "name": "phdr-reference",
+    "status": 1,
+    "stderr": "ligature: script: unsupported token text at 87; expected rodata (closed PAX profile)\n"
+  },
+  {
+    "name": "base",
+    "status": 1,
+    "stderr": "ligature: script: unsupported token 0x10000000000000000 at 36; expected 0xffffffff80000000 (closed PAX profile)\n"
+  },
+  {
+    "name": "arithmetic",
+    "status": 1,
+    "stderr": "ligature: script: unsupported token + at 37; expected ; (closed PAX profile)\n"
+  },
+  {
+    "name": "alignment",
+    "status": 1,
+    "stderr": "ligature: script: unsupported token 3 at 61; expected 0x1000 (closed PAX profile)\n"
+  },
+  {
+    "name": "symbol",
+    "status": 1,
+    "stderr": "ligature: script: unsupported token __other at 64; expected __pax_text_end (closed PAX profile)\n"
+  },
+  {
+    "name": "wildcard",
+    "status": 1,
+    "stderr": "ligature: script: unsupported token .text? at 52; expected .text.* (closed PAX profile)\n"
+  },
+  {
+    "name": "common",
+    "status": 1,
+    "stderr": "ligature: script: unsupported token } at 131; expected * (closed PAX profile)\n"
+  },
+  {
+    "name": "order",
+    "status": 1,
+    "stderr": "ligature: script: unsupported token .data at 108; expected .data.limine (closed PAX profile)\n"
+  },
+  {
+    "name": "discard",
+    "status": 1,
+    "stderr": "ligature: script: unsupported token .debug_info at 163; expected .eh_frame (closed PAX profile)\n"
+  },
+  {
+    "name": "memory",
+    "status": 1,
+    "stderr": "ligature: script: unsupported token MEMORY at 8; expected PHDRS (closed PAX profile)\n"
+  },
+  {
+    "name": "overlay",
+    "status": 1,
+    "stderr": "ligature: script: unsupported token OVERLAY at 32; expected SECTIONS (closed PAX profile)\n"
+  },
+  {
+    "name": "include",
+    "status": 1,
+    "stderr": "ligature: script: unsupported token INCLUDE at 0; expected OUTPUT_FORMAT (closed PAX profile)\n"
+  },
+  {
+    "name": "literal-split",
+    "status": 1,
+    "stderr": "ligature: script: unsupported token ENT at 4; expected ENTRY (closed PAX profile)\n"
+  },
+  {
+    "name": "unicode",
+    "status": 1,
+    "stderr": "ligature: script: non-ASCII/control byte at 39\n"
+  },
+  {
+    "name": "trailing",
+    "status": 1,
+    "stderr": "ligature: script: trailing token ENTRY (closed PAX profile)\n"
+  },
+  {
+    "name": "unclosed-comment",
+    "status": 1,
+    "stderr": "ligature: script: unterminated comment at 859\n"
+  },
+  {
+    "name": "nul",
+    "status": 1,
+    "stderr": "ligature: script: non-ASCII/control byte at 858 (closed PAX profile)\n"
+  },
+  {
+    "name": "too-large",
+    "status": 1,
+    "stderr": "ligature: script: exceeds 65536-byte profile limit\n"
+  }
+]

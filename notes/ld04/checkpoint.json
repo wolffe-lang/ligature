@@ -1,0 +1,154 @@
+{
+  "format": "ligature.ld04.checkpoint.v1",
+  "scope": "Partial implementation checkpoint. NOT M4 and NOT completion of the adopted ld04 contract. Kernel linking and boot remain unfinished.",
+  "base": "db2bf27",
+  "prediction_commit": "17995f7",
+  "prediction_score": {
+    "script_witnesses_predicted_minimum": 20,
+    "script_witnesses_observed": 28,
+    "archive_process_rows": 35,
+    "archive_byte_identity": true,
+    "kernel_boot": false,
+    "aarch64_hello": false
+  },
+  "implemented": [
+    "script-plan validates the exact permitted PAX token profile (whitespace/comments accepted), with linking:false",
+    "archive OUTPUT OBJECT... writes bounded deterministic indexed GNU/SysV ELF64 archives, preserves duplicate names/order and passes three executed x86-64 linker controls"
+  ],
+  "kernel_rows": [
+    {
+      "row": 1,
+      "construct": "OUTPUT_FORMAT(elf64-x86-64), ENTRY(_start)",
+      "work": "Parse exact forms; reject other formats, duplicate directives and missing entry",
+      "gate": "both oracle entry addresses match 0xffffffff80000000",
+      "status": "profile validation only; executable layout unimplemented",
+      "done": false
+    },
+    {
+      "row": 2,
+      "construct": "PHDRS, PT_LOAD, FLAGS(5/4/6), :phdr",
+      "work": "Explicit segment assignment, independent R/X, R and R/W page boundaries; never silently infer an unsupported PHDR type",
+      "gate": "three LOAD flags 5,4,6 with congruent file/virtual offsets and no shared permission page",
+      "status": "profile validation only; executable layout unimplemented",
+      "done": false
+    },
+    {
+      "row": 3,
+      "construct": "SECTIONS, location counter and high-half constants",
+      "work": "Represent virtual addresses as u64 separately from bounded file positions; checked expression arithmetic and conversion",
+      "gate": "high-half range, signed relocation limits and overflow/refusal witnesses",
+      "status": "profile validation only; executable layout unimplemented",
+      "done": false
+    },
+    {
+      "row": 4,
+      "construct": "symbol = . and ALIGN(0x1000)",
+      "work": "Define __pax_image/text/rodata/data bounds at the script positions; page-rounded end symbols",
+      "gate": "bounds against oracle nm and segment coverage; no accidental section-relative symbol",
+      "status": "profile validation only; executable layout unimplemented",
+      "done": false
+    },
+    {
+      "row": 5,
+      "construct": "*(.text .text.*), rodata, data.rel.ro, data.limine, data, GOT, BSS and COMMON",
+      "work": "Ordered wildcard input collection; preserve data.limine before general data; COMMON alignment and NOBITS file/memory separation",
+      "gate": "positive section order/COMMON tests and orphan/unknown-pattern refusal",
+      "status": "profile validation only; executable layout unimplemented",
+      "done": false
+    },
+    {
+      "row": 6,
+      "construct": "/DISCARD/ notes, comments and eh_frame",
+      "work": "Script-specific discard causes in provenance, distinguished from GC/COMDAT/SHF_EXCLUDE",
+      "gate": "absent output sections and exact per-input discard records",
+      "status": "profile validation only; executable layout unimplemented",
+      "done": false
+    },
+    {
+      "row": 7,
+      "construct": "GOT range and relaxation",
+      "work": "Use full-width address arithmetic; retain GOT load when direct signed immediate is not representable",
+      "gate": "existing kernel-edge: LLD17 and default GNU named range failures, GNU --no-relax succeeds; add newer LLD control before calling a version difference",
+      "status": "existing candidate relocation unit witness preserved; new LLD 18.1.3 oracle control succeeds with GOT load retained; kernel writer unimplemented",
+      "done": false
+    }
+  ],
+  "aarch64": {
+    "scope": "Own assembly binary fixtures, NOT the actual compiler/runtime archive census",
+    "observed_relocations": [
+      257,
+      261,
+      275,
+      277,
+      282,
+      283,
+      286,
+      311,
+      312
+    ],
+    "new_allowlist": false,
+    "candidate_linking": false,
+    "archive_write_and_roundtrip": true,
+    "lld18_output_verified": true,
+    "native_or_emulated_execution": false,
+    "got_refusal": "unsupported AArch64 relocation 311",
+    "remaining": [
+      "Census actual relocations in binary inputs before adding an allowlist",
+      "ABS64 and PREL32 range/alignment witnesses",
+      "CALL26/JUMP26 signed branch range, instruction mask and aligned target witnesses",
+      "ADRP page plus ADD/LDST low-12 paired relocation proofs",
+      "GOT/TLS separately specified; unknown variants named refusals",
+      "AArch64 binary oracles and native or emulated behavior, never x86 header-only evidence"
+    ]
+  },
+  "self_link": {
+    "status": "BLOCKED unchanged, reproduced with both pinned musl linkers",
+    "runtime_sha256": "9d859b9e6b5319f5a6f609e73ba0d71981d2dfa489882648ac9f454cd9db739c",
+    "predicate_changed": false
+  },
+  "inherited_findings": {
+    "retained": 87,
+    "waived": 0,
+    "resolved": 0,
+    "fresh_full_corpus": false,
+    "note": "Read every named finding and all fourteen qualification rows; inherited records unchanged, no new corpus equivalence claim",
+    "findings_sha256": "b1877bc46a7ca9a70b33092d1a22873dd4d038e3f89b68b33e42b1f89aa9aa15"
+  },
+  "rulings_recommended_not_decided": [
+    {
+      "id": "R-ld04-1",
+      "recommendation": "Expose the exact profile validator separately; retain -T refusal until address/layout/provenance and boot gates qualify",
+      "implemented": true
+    },
+    {
+      "id": "R-ld04-2",
+      "recommendation": "Create-only bounded deterministic GNU/SysV archives now; thin/BSD and ar CLI compatibility remain explicit follow-ons",
+      "implemented": true
+    },
+    {
+      "id": "R-ld04-3",
+      "recommendation": "Keep AArch64 fixture census separate from actual compiler/runtime census, relocation implementation and executed hello",
+      "implemented": true
+    }
+  ],
+  "tests": {
+    "host": "kasumi CPUs 8-11 under shared flock",
+    "core": "evidence/core.log (exit 0; 3 checked suites, full native/core gate, 0 SKIP)",
+    "self_link": "evidence/self-link.log (exit 0 with exact-digest BLOCKED, not a self-link success)",
+    "supplementary": "evidence/controls.json and controls.log (LLD 18.1.3 and actual AArch64 objects; execution not run)",
+    "plants": [
+      "evidence/plants.log: accepted PT_TLS incorrectly -> phdr-type red; wrong second-member index -> independent index red; restored green",
+      "evidence/controls-plant.log: changed high-half GOT target by one -> exact bytes red; restored green"
+    ]
+  },
+  "issues_to_file": [],
+  "follow_on_work": "notes/ld04/ld05-draft.json",
+  "prune_after_review": [
+    "/home/mfwolffe/lanes/ld04/ligature/target (59 MiB)",
+    "/home/mfwolffe/lanes/ld04/ligature/.wolf-bin (363 MiB)",
+    "/home/mfwolffe/lanes/ld04/ligature/.link-inputs (118 MiB)"
+  ],
+  "pruned": [],
+  "readme": "Read and refreshed in README-only commit 9538998",
+  "report_location": "PR body: this wrapper does not write Markdown lane reports"
+}

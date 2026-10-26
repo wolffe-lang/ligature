@@ -1,0 +1,298 @@
+[
+  {
+    "path": "src/kernel_relocation_test.lu",
+    "bytes": 3502,
+    "sha256_read_twice": [
+      "10f9323986f99c25f92abc6ecd5e6c6fd32386c3f8a10d9e59d63a91469664a8",
+      "10f9323986f99c25f92abc6ecd5e6c6fd32386c3f8a10d9e59d63a91469664a8"
+    ]
+  },
+  {
+    "path": "src/reader_test.lu",
+    "bytes": 1165,
+    "sha256_read_twice": [
+      "695953d725f5c9552679f73d2181e7da2ff3fd71cf658401d299e84522481137",
+      "695953d725f5c9552679f73d2181e7da2ff3fd71cf658401d299e84522481137"
+    ]
+  },
+  {
+    "path": "src/ligature.lu",
+    "bytes": 1786,
+    "sha256_read_twice": [
+      "e20ba4e258ab8301157427c31cbcc4747d2659bacc916d6dfa44c758b4258c9f",
+      "e20ba4e258ab8301157427c31cbcc4747d2659bacc916d6dfa44c758b4258c9f"
+    ]
+  },
+  {
+    "path": "src/script_profile_test.lu",
+    "bytes": 934,
+    "sha256_read_twice": [
+      "93a585c6169bb94901999f2bd49f85693407f15029f5d684af00ccbbe1c1a6fc",
+      "93a585c6169bb94901999f2bd49f85693407f15029f5d684af00ccbbe1c1a6fc"
+    ]
+  },
+  {
+    "path": "src/ar/ar.lu",
+    "bytes": 5448,
+    "sha256_read_twice": [
+      "3907bb6fcfd176e6cb993bfc252a39985d1584f2f2d2fd2c36a99138758a2fb8",
+      "3907bb6fcfd176e6cb993bfc252a39985d1584f2f2d2fd2c36a99138758a2fb8"
+    ]
+  },
+  {
+    "path": "src/binary/binary.lu",
+    "bytes": 4573,
+    "sha256_read_twice": [
+      "1076c6d678d53a1f5287a2d6590dd90f4c6924f160de46bc89f9ae303d843a07",
+      "1076c6d678d53a1f5287a2d6590dd90f4c6924f160de46bc89f9ae303d843a07"
+    ]
+  },
+  {
+    "path": "src/census/census.lu",
+    "bytes": 1207,
+    "sha256_read_twice": [
+      "dfab890b533b01291ad657bfd3949f44f3ab74fce4d63096880071203e587120",
+      "dfab890b533b01291ad657bfd3949f44f3ab74fce4d63096880071203e587120"
+    ]
+  },
+  {
+    "path": "src/elf/elf.lu",
+    "bytes": 13776,
+    "sha256_read_twice": [
+      "f29d18465d96ac0ab3bc3b97e18679a33156b9dea06581dfc965ddea252501ec",
+      "f29d18465d96ac0ab3bc3b97e18679a33156b9dea06581dfc965ddea252501ec"
+    ]
+  },
+  {
+    "path": "src/explain/explain.lu",
+    "bytes": 6721,
+    "sha256_read_twice": [
+      "6f8726780ad2c05aad8fe88798943f3ee5f6ff3696d7112e2c8ecb003dd071dc",
+      "6f8726780ad2c05aad8fe88798943f3ee5f6ff3696d7112e2c8ecb003dd071dc"
+    ]
+  },
+  {
+    "path": "src/front/front.lu",
+    "bytes": 5562,
+    "sha256_read_twice": [
+      "90fce7179b555b76d076e5493071c766c62b032b842935097039295f16bb6e51",
+      "90fce7179b555b76d076e5493071c766c62b032b842935097039295f16bb6e51"
+    ]
+  },
+  {
+    "path": "src/layout/layout.lu",
+    "bytes": 19331,
+    "sha256_read_twice": [
+      "5f1c52419eccc2e7b536c4c6e2dcf701bce9228b50b767fbe991c6a05f01582a",
+      "5f1c52419eccc2e7b536c4c6e2dcf701bce9228b50b767fbe991c6a05f01582a"
+    ]
+  },
+  {
+    "path": "src/oracle/oracle.lu",
+    "bytes": 3740,
+    "sha256_read_twice": [
+      "c989bc90690027d5d3e88b5e5ce9782ceea1eda6099b27e1f613f0772a330d06",
+      "c989bc90690027d5d3e88b5e5ce9782ceea1eda6099b27e1f613f0772a330d06"
+    ]
+  },
+  {
+    "path": "src/provenance/attribution.lu",
+    "bytes": 8894,
+    "sha256_read_twice": [
+      "def79e327236d0a5d0d7933372d2faf2cf239f6cb4339ce9ceff7fb0132ff3e6",
+      "def79e327236d0a5d0d7933372d2faf2cf239f6cb4339ce9ceff7fb0132ff3e6"
+    ]
+  },
+  {
+    "path": "src/provenance/compact.lu",
+    "bytes": 7790,
+    "sha256_read_twice": [
+      "aacf7290669671674b3c81c7df858025d24f558e27f970b598c327579bdab38f",
+      "aacf7290669671674b3c81c7df858025d24f558e27f970b598c327579bdab38f"
+    ]
+  },
+  {
+    "path": "src/provenance/provenance.lu",
+    "bytes": 8778,
+    "sha256_read_twice": [
+      "e08f92efee168c9f727a0d490c5d513679e35884b4a313cd36ce3e538da28ff0",
+      "e08f92efee168c9f727a0d490c5d513679e35884b4a313cd36ce3e538da28ff0"
+    ]
+  },
+  {
+    "path": "src/provenance/validate.lu",
+    "bytes": 4836,
+    "sha256_read_twice": [
+      "1c4dedc5d9c81424c465ecd5d42f787a3656617e4b441c2ad58081f70a9b1cdd",
+      "1c4dedc5d9c81424c465ecd5d42f787a3656617e4b441c2ad58081f70a9b1cdd"
+    ]
+  },
+  {
+    "path": "src/relocate/relocate.lu",
+    "bytes": 8170,
+    "sha256_read_twice": [
+      "ea8c4417728bd5d112965c652446b2a52949c72a24afce8706793b21a9105057",
+      "ea8c4417728bd5d112965c652446b2a52949c72a24afce8706793b21a9105057"
+    ]
+  },
+  {
+    "path": "src/resolve/resolve.lu",
+    "bytes": 14794,
+    "sha256_read_twice": [
+      "9bd89c7f0d201cd0d77e092687a743757214191abfbc51a7eb8d9aae9f84d6ec",
+      "9bd89c7f0d201cd0d77e092687a743757214191abfbc51a7eb8d9aae9f84d6ec"
+    ]
+  },
+  {
+    "path": "src/verify/verify.lu",
+    "bytes": 4467,
+    "sha256_read_twice": [
+      "c0129ab7c7be1f5afcd67070c9db1f7955f2ab2e0ec2a0bb28bbe79adb8f850c",
+      "c0129ab7c7be1f5afcd67070c9db1f7955f2ab2e0ec2a0bb28bbe79adb8f850c"
+    ]
+  },
+  {
+    "path": "src/writer/writer.lu",
+    "bytes": 11479,
+    "sha256_read_twice": [
+      "b83e56356adad5ab398164fe21dca6c62f7218b420b2cf324792214fc335abd0",
+      "b83e56356adad5ab398164fe21dca6c62f7218b420b2cf324792214fc335abd0"
+    ]
+  },
+  {
+    "path": "src/script/script.lu",
+    "bytes": 4329,
+    "sha256_read_twice": [
+      "5f21eaa6b86593c9a3f4a4aea11d185ccc5d2509caf1556e2a39fc4f02bde097",
+      "5f21eaa6b86593c9a3f4a4aea11d185ccc5d2509caf1556e2a39fc4f02bde097"
+    ]
+  },
+  {
+    "path": "src/arwrite/arwrite.lu",
+    "bytes": 5984,
+    "sha256_read_twice": [
+      "351de5194d5949330025ed45901ab35ce843138fa5b12a3a40a619c6bef0e2ff",
+      "351de5194d5949330025ed45901ab35ce843138fa5b12a3a40a619c6bef0e2ff"
+    ]
+  },
+  {
+    "path": "tests/integration.py",
+    "bytes": 5491,
+    "sha256_read_twice": [
+      "cbf5fe190f5ee1035caef17afc2c564b5b7296dc7ff2b8c4e3f4f34779473e93",
+      "cbf5fe190f5ee1035caef17afc2c564b5b7296dc7ff2b8c4e3f4f34779473e93"
+    ]
+  },
+  {
+    "path": "tests/script-profile.py",
+    "bytes": 2687,
+    "sha256_read_twice": [
+      "8ba15554a1144a9f385d762232d02b666c1152abf0507da6778649c41f325a4b",
+      "8ba15554a1144a9f385d762232d02b666c1152abf0507da6778649c41f325a4b"
+    ]
+  },
+  {
+    "path": "tests/archive-write.py",
+    "bytes": 5706,
+    "sha256_read_twice": [
+      "70b8f004f2605be9d35821bbbb77906784b6be7fe61e0d614fada0a0a80aec4d",
+      "70b8f004f2605be9d35821bbbb77906784b6be7fe61e0d614fada0a0a80aec4d"
+    ]
+  },
+  {
+    "path": "tests/ld04-controls.py",
+    "bytes": 4893,
+    "sha256_read_twice": [
+      "4a22d2ddad64872fb6606a27f8432fbfd6e7afe3912e1916131c32bc205f0213",
+      "4a22d2ddad64872fb6606a27f8432fbfd6e7afe3912e1916131c32bc205f0213"
+    ]
+  },
+  {
+    "path": "target/evidence/archive-write/libcreated.a",
+    "bytes": 1930,
+    "sha256_read_twice": [
+      "1ba658137f295ffcaf339a72b3298c0e6dc51079ccdc8b8f1a43947aa4abcc59",
+      "1ba658137f295ffcaf339a72b3298c0e6dc51079ccdc8b8f1a43947aa4abcc59"
+    ]
+  },
+  {
+    "path": "target/evidence/archive-write/repeat.a",
+    "bytes": 1930,
+    "sha256_read_twice": [
+      "1ba658137f295ffcaf339a72b3298c0e6dc51079ccdc8b8f1a43947aa4abcc59",
+      "1ba658137f295ffcaf339a72b3298c0e6dc51079ccdc8b8f1a43947aa4abcc59"
+    ]
+  },
+  {
+    "path": "target/evidence/archive-write/ligature",
+    "bytes": 17528,
+    "sha256_read_twice": [
+      "2335345fe96c0beb52aa98afe4ac01284633c7f9f63e717b266bf40c21c5795b",
+      "2335345fe96c0beb52aa98afe4ac01284633c7f9f63e717b266bf40c21c5795b"
+    ]
+  },
+  {
+    "path": "target/evidence/archive-write/lld",
+    "bytes": 1160,
+    "sha256_read_twice": [
+      "b42cfb317e5f0c56aebca6d664e2a4d29507ab5f4014799c6bb87104ed2eeac0",
+      "b42cfb317e5f0c56aebca6d664e2a4d29507ab5f4014799c6bb87104ed2eeac0"
+    ]
+  },
+  {
+    "path": "target/evidence/archive-write/gnu",
+    "bytes": 4880,
+    "sha256_read_twice": [
+      "1e6415fba9f0a6ed539f712505867f954e393e2a83192e8f4b9f6b92d033a6f6",
+      "1e6415fba9f0a6ed539f712505867f954e393e2a83192e8f4b9f6b92d033a6f6"
+    ]
+  },
+  {
+    "path": "target/evidence/ld04-controls/core.o",
+    "bytes": 960,
+    "sha256_read_twice": [
+      "8af037d8c3e0909275d8c57287d1c0b92c197c448ddc6c01d6f08551b5545c75",
+      "8af037d8c3e0909275d8c57287d1c0b92c197c448ddc6c01d6f08551b5545c75"
+    ]
+  },
+  {
+    "path": "target/evidence/ld04-controls/definitions.o",
+    "bytes": 584,
+    "sha256_read_twice": [
+      "1e43b507ceb349c436c0cf2fde9fdb54195e1ce156e01fa57347c768f8a0a61b",
+      "1e43b507ceb349c436c0cf2fde9fdb54195e1ce156e01fa57347c768f8a0a61b"
+    ]
+  },
+  {
+    "path": "target/evidence/ld04-controls/got.o",
+    "bytes": 600,
+    "sha256_read_twice": [
+      "e0d4fd196851883102edc8dc1a6840ab0708a995b59d467f0954d4a190e70dec",
+      "e0d4fd196851883102edc8dc1a6840ab0708a995b59d467f0954d4a190e70dec"
+    ]
+  },
+  {
+    "path": "target/evidence/ld04-controls/core.a",
+    "bytes": 1852,
+    "sha256_read_twice": [
+      "546177e6e795249c65799e561425cb99717265210d4032f9f084e8024aa7e600",
+      "546177e6e795249c65799e561425cb99717265210d4032f9f084e8024aa7e600"
+    ]
+  },
+  {
+    "path": "target/evidence/ld04-controls/aarch64-oracle",
+    "bytes": 1584,
+    "sha256_read_twice": [
+      "504473f938cb689133269c00e415ccc725eb6143dc8dad46d25bbfcf3e77c923",
+      "504473f938cb689133269c00e415ccc725eb6143dc8dad46d25bbfcf3e77c923"
+    ]
+  },
+  {
+    "path": "target/evidence/ld04-controls/edge-lld18",
+    "bytes": 13264,
+    "sha256_read_twice": [
+      "cae8d79c2ae24568be71a7f2091a168380b5225fd533d0eefc6aab041f11e8ae",
+      "cae8d79c2ae24568be71a7f2091a168380b5225fd533d0eefc6aab041f11e8ae"
+    ]
+  }
+]

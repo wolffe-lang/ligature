@@ -1,0 +1,82 @@
+[
+  {
+    "path": "evidence/archive-write.json",
+    "bytes": 17824,
+    "sha256_read_twice": [
+      "8a89ed9fc490571e6f45261bd9db0f20b920ed400aca8b20d1d1c5e2784a88f4",
+      "8a89ed9fc490571e6f45261bd9db0f20b920ed400aca8b20d1d1c5e2784a88f4"
+    ]
+  },
+  {
+    "path": "evidence/bootstrap.log",
+    "bytes": 639,
+    "sha256_read_twice": [
+      "67e6cd853adf1c998caeb19096029231eee13d8fd051a0933f4ac978ca7fb312",
+      "67e6cd853adf1c998caeb19096029231eee13d8fd051a0933f4ac978ca7fb312"
+    ]
+  },
+  {
+    "path": "evidence/controls-plant.log",
+    "bytes": 1820,
+    "sha256_read_twice": [
+      "2f9d0027d32b7e5d88e5ad41391598065c92c6b582ccfd52723eea8acfb13172",
+      "2f9d0027d32b7e5d88e5ad41391598065c92c6b582ccfd52723eea8acfb13172"
+    ]
+  },
+  {
+    "path": "evidence/controls.json",
+    "bytes": 14518,
+    "sha256_read_twice": [
+      "f72ad6ba4a662df71e216fecc8f756b3f050a969bca229210cc64dee982ea901",
+      "f72ad6ba4a662df71e216fecc8f756b3f050a969bca229210cc64dee982ea901"
+    ]
+  },
+  {
+    "path": "evidence/controls.log",
+    "bytes": 456,
+    "sha256_read_twice": [
+      "8673ba3999a38b7b928d6247323f13e82e8b65c67a7a03b8c8d308cad845441b",
+      "8673ba3999a38b7b928d6247323f13e82e8b65c67a7a03b8c8d308cad845441b"
+    ]
+  },
+  {
+    "path": "evidence/core.log",
+    "bytes": 3326,
+    "sha256_read_twice": [
+      "b94c5a93e338e201cf25c7c112f2ea7585f7f9d824706a9cd3cb28aea5775a9e",
+      "b94c5a93e338e201cf25c7c112f2ea7585f7f9d824706a9cd3cb28aea5775a9e"
+    ]
+  },
+  {
+    "path": "evidence/input-output-hashes.json",
+    "bytes": 9268,
+    "sha256_read_twice": [
+      "f2fb370c48e8a65e123656019b925fac1fc54b2dcc0f5824db28147cdb373fe5",
+      "f2fb370c48e8a65e123656019b925fac1fc54b2dcc0f5824db28147cdb373fe5"
+    ]
+  },
+  {
+    "path": "evidence/plants.log",
+    "bytes": 1097,
+    "sha256_read_twice": [
+      "1df3357b01276e789873aefb7435ca453c467f9e722b2e07a34d0fd5d18ec4dd",
+      "1df3357b01276e789873aefb7435ca453c467f9e722b2e07a34d0fd5d18ec4dd"
+    ]
+  },
+  {
+    "path": "evidence/script-profile.json",
+    "bytes": 3881,
+    "sha256_read_twice": [
+      "f3d491369a09633a5a6aef4984c078fae36b6cb68317e9a3c9e93718a8dc85b1",
+      "f3d491369a09633a5a6aef4984c078fae36b6cb68317e9a3c9e93718a8dc85b1"
+    ]
+  },
+  {
+    "path": "evidence/self-link.log",
+    "bytes": 661,
+    "sha256_read_twice": [
+      "b3592ee89cb988c3c0314638ba702de9632f7aae0699f50b95cff12adbd7703a",
+      "b3592ee89cb988c3c0314638ba702de9632f7aae0699f50b95cff12adbd7703a"
+    ]
+  }
+]

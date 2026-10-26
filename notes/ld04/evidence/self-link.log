@@ -1,0 +1,7 @@
+musl-argv glibc 0 b'argc=3\n[--version]\n[space word]\n[]\n' b''
+musl-argv lld 0 b'argc=0\n' b''
+musl-argv gnu 0 b'argc=0\n' b''
+musl-argv c-musl 0 b'argc=3\n[--version]\n[space word]\n[]\n' b''
+BLOCKED self-link: wolf-lang#962; both pinned musl links lose argv while cc/glibc and the pinned C/musl control preserve it
+BLOCKED self-link and executing ligature on PAX: wolf-lang#962; runtime SHA256 9d859b9e6b5319f5a6f609e73ba0d71981d2dfa489882648ac9f454cd9db739c; R-ld02-5 A
+BLOCKED evidence: target/evidence/musl-argv/results.json; notes/ld02a/evidence/argv-probe/; kasumi /home/mfwolffe/lanes/ld02a/ligature/target/evidence/self-link/diagnose-03/results.json

@@ -1,0 +1,16 @@
+Traceback (most recent call last):
+  File "/work/tests/script-profile.py", line 39, in <module>
+    check(name, plain.replace(old,new,1))
+  File "/work/tests/script-profile.py", line 15, in check
+    assert run.returncode == (0 if accepted else 1), (name, run.returncode, run.stderr)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: ('phdr-type', 0, b'')
+PLANT script unexpected PHDR accepted: RED status=1
+Traceback (most recent call last):
+  File "/work/tests/archive-write.py", line 40, in <module>
+    assert list(zip(names,offsets))==expected,(names,offsets,expected)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: ([b'choice', b'weak_export', b'common_export', b'unused', b'choice'], (250, 250, 250, 250, 250), [(b'choice', 250), (b'weak_export', 250), (b'common_export', 250), (b'unused', 1126), (b'choice', 1126)])
+PLANT archive second member indexed as first: RED status=1
+script-profile: 28 rows, 0 SKIP; validation only, kernel linking not enabled
+archive-write: 30 process rows, deterministic bytes and independent index; three executed links, 0 SKIP
