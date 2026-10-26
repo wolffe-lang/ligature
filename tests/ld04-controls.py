@@ -75,14 +75,13 @@ core_types={r['type'] for r in objects[0]['relocations']}
 assert core_types=={257,261,275,277,282,283,286},core_types
 assert {r['type'] for r in objects[2]['relocations']}=={311,312}
 run([BIN,'roundtrip',OUT/'core.o']);run([BIN,'roundtrip',OUT/'definitions.o'])
-got=run([BIN,'roundtrip',OUT/'got.o'],1);assert b'unsupported AArch64 relocation 311' in got.stderr
+run([BIN,'roundtrip',OUT/'got.o'])
 run([BIN,'archive',OUT/'core.a',OUT/'core.o',OUT/'definitions.o']);run([BIN,'roundtrip',OUT/'core.a'])
 run(['ld.lld-18','-static','--no-relax','--emit-relocs','-o',OUT/'aarch64-oracle',OUT/'core.a'])
 assert struct.unpack_from('<H',(OUT/'aarch64-oracle').read_bytes(),18)[0]==183
 run([BIN,'verify',OUT/'aarch64-oracle'])
-refusal=run([BIN,'-nostdlib','-u','_start','-o',OUT/'must-not-exist',OUT/'core.a'],1)
-assert b'EM_AARCH64 linking refused' in refusal.stderr
-assert not (OUT/'must-not-exist').exists()
-result={'scope':'own assembly fixtures only; not the compiler/runtime AArch64 input census','versions':versions,'kernel_edge_lld18':edge_result,'aarch64':objects,'aarch64_oracle_executed':False,'candidate_aarch64_linking':False,'commands':commands}
+run([BIN,'-nostdlib','-u','_start','-o',OUT/'candidate-aarch64',OUT/'core.a'])
+run([BIN,'verify',OUT/'candidate-aarch64'])
+result={'scope':'own assembly fixtures only; not the compiler/runtime AArch64 input census','versions':versions,'kernel_edge_lld18':edge_result,'aarch64':objects,'aarch64_oracle_executed':False,'candidate_aarch64_linking':True,'commands':commands}
 (OUT/'results.json').write_text(json.dumps(result,indent=2)+'\n')
 print('ld04 supplementary controls: LLD18 kernel edge status',edge_result['status'],'; actual AArch64 relocation types',sorted(core_types|{311,312}),'; archive and oracle ELF verified; execution NOT RUN')

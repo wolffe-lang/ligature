@@ -23,7 +23,7 @@ with tempfile.TemporaryDirectory(dir=OUT,prefix='fixture-') as tmp:
     raw=header();struct.pack_into('<Q',raw,40,64);struct.pack_into('<H',raw,60,2)
     raw.extend(bytes(64));raw.extend(struct.pack('<IIQQQQIIQQ',0,8,3,0,65536,16,0,0,16,0))
     nobits=d/'nobits.o';nobits.write_bytes(raw);run([BIN,'roundtrip',nobits])
-    aarch=d/'aarch.o';aarch.write_bytes(header(183));run([BIN,'roundtrip',aarch]);run([BIN,'-nostdlib',aarch],1,'EM_AARCH64 linking refused')
+    aarch=d/'aarch.o';aarch.write_bytes(header(183));run([BIN,'roundtrip',aarch]);run([BIN,'-nostdlib',aarch],1,'undefined entry _start')
     for n in (0,1,7,8,15,16,63):bad('short'+str(n),header()[:n],'truncated range')
     b=header();b[4]=1;bad('elf32',b,'ELFCLASS32')
     b=header();b[5]=2;bad('big-endian',b,'ELFDATA2MSB')
@@ -69,5 +69,5 @@ with tempfile.TemporaryDirectory(dir=OUT,prefix='fixture-') as tmp:
 print(f'integration: {len(rows)} process rows, 0 SKIP')
 
 # New commands run in the existing native integration gate, never as optional rows.
-for suite in ("script-profile.py", "archive-write.py", "kernel-script.py"):
+for suite in ("script-profile.py", "archive-write.py", "kernel-script.py", "aarch64.py", "addrsig.py"):
     subprocess.run(["python3", "-I", ROOT / "tests" / suite], check=True)

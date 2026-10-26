@@ -46,4 +46,4 @@ for operands in ([], ['one', 'two']):
     assert run.returncode == 1 and b'script-plan: usage:' in run.stderr, (operands, run.stderr)
     rows.append({'name':'arity-' + str(len(operands)), 'status':run.returncode, 'stderr':run.stderr.decode()})
 (OUT / 'results.json').write_text(json.dumps(rows,indent=2)+'\n')
-print(f'script-profile: {len(rows)} rows, 0 SKIP; validation only, kernel linking not enabled')
+print(f'script-profile: {len(rows)} rows, 0 SKIP; preflight only; executable kernel links require explicit -T')
