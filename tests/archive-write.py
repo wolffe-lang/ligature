@@ -63,6 +63,16 @@ for args,reason in [([sentinel,first,invalid],'truncated'),([sentinel,archive],'
     run([BIN,'archive',*args],1,reason)
     assert sentinel.read_bytes()==b'unchanged'
 run([BIN,'archive'],1,'usage')
+# A sparse oversized input is refused before allocating/reading its payload.
+large=OUT/'too-large.o'
+with large.open('wb') as f: f.truncate(67108865)
+run([BIN,'archive',sentinel,large],1,'64 MiB bound')
+assert sentinel.read_bytes()==b'unchanged'
+large.unlink()
+# An odd-sized ELF checks exact member padding rather than index padding alone.
+odd=OUT/'odd.o';odd.write_bytes(local.read_bytes()+b'x')
+run([BIN,'archive',OUT/'odd.a',odd]);run([BIN,'roundtrip',OUT/'odd.a']);run(['ar','p',OUT/'odd.a',odd.name])
+assert run(['ar','p',OUT/'odd.a',odd.name])==odd.read_bytes()
 # Header-only AArch64 is enough to witness mixed-machine refusal, never linking.
 foreign=OUT/'foreign.o';raw=bytearray(local.read_bytes());struct.pack_into('<H',raw,18,183);foreign.write_bytes(raw)
 run([BIN,'archive',sentinel,first,foreign],1,'mixed ELF machines');assert sentinel.read_bytes()==b'unchanged'
