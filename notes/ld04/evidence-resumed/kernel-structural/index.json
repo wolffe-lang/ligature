@@ -1,0 +1,1258 @@
+{
+  "format": "ligature.kernel.structural.v1",
+  "records": [
+    {
+      "tier": "native",
+      "linker": "candidate",
+      "record": "native-candidate.jsonl.gz",
+      "sha256_read_twice": [
+        "ff28d6ca7c31ec14dc126ee1b22b7a87de5b9eeeae164ee1c425e6aadc37d53b",
+        "ff28d6ca7c31ec14dc126ee1b22b7a87de5b9eeeae164ee1c425e6aadc37d53b"
+      ],
+      "verify_status": 0,
+      "verify_stderr": "",
+      "executed": false
+    },
+    {
+      "tier": "native",
+      "linker": "lld17",
+      "record": "native-lld17.jsonl.gz",
+      "sha256_read_twice": [
+        "d04b770032b44d2767d74bbffb3e5bdc749c7aa5aed2415b3b9a68f054f19db7",
+        "d04b770032b44d2767d74bbffb3e5bdc749c7aa5aed2415b3b9a68f054f19db7"
+      ],
+      "verify_status": 1,
+      "verify_stderr": "ligature: writable section in nonwritable PT_LOAD\n",
+      "executed": false
+    },
+    {
+      "tier": "native",
+      "linker": "lld18",
+      "record": "native-lld18.jsonl.gz",
+      "sha256_read_twice": [
+        "d04b770032b44d2767d74bbffb3e5bdc749c7aa5aed2415b3b9a68f054f19db7",
+        "d04b770032b44d2767d74bbffb3e5bdc749c7aa5aed2415b3b9a68f054f19db7"
+      ],
+      "verify_status": 1,
+      "verify_stderr": "ligature: writable section in nonwritable PT_LOAD\n",
+      "executed": false
+    },
+    {
+      "tier": "native",
+      "linker": "gnu",
+      "record": "native-gnu.jsonl.gz",
+      "sha256_read_twice": [
+        "27d7e5649c87b31425f8273c50ef2c3b64663311890b92b8ef07144b36dabd28",
+        "27d7e5649c87b31425f8273c50ef2c3b64663311890b92b8ef07144b36dabd28"
+      ],
+      "verify_status": 1,
+      "verify_stderr": "ligature: writable section in nonwritable PT_LOAD\n",
+      "executed": false
+    },
+    {
+      "tier": "release",
+      "linker": "candidate",
+      "record": "release-candidate.jsonl.gz",
+      "sha256_read_twice": [
+        "4aae763c5f3ab17ccc1700c512d083021a03d76d0c50d434c6847512383bf227",
+        "4aae763c5f3ab17ccc1700c512d083021a03d76d0c50d434c6847512383bf227"
+      ],
+      "verify_status": 0,
+      "verify_stderr": "",
+      "executed": false
+    },
+    {
+      "tier": "release",
+      "linker": "lld17",
+      "record": "release-lld17.jsonl.gz",
+      "sha256_read_twice": [
+        "952009ccb4b7e1cd76d72801ac61cd82ca745c620a72067e710adfe60476bbbd",
+        "952009ccb4b7e1cd76d72801ac61cd82ca745c620a72067e710adfe60476bbbd"
+      ],
+      "verify_status": 1,
+      "verify_stderr": "ligature: writable section in nonwritable PT_LOAD\n",
+      "executed": false
+    },
+    {
+      "tier": "release",
+      "linker": "lld18",
+      "record": "release-lld18.jsonl.gz",
+      "sha256_read_twice": [
+        "2eb54214c876a1b6a2d39492606dae2f1dfb2c67511519accf48e24500aa2183",
+        "2eb54214c876a1b6a2d39492606dae2f1dfb2c67511519accf48e24500aa2183"
+      ],
+      "verify_status": 1,
+      "verify_stderr": "ligature: writable section in nonwritable PT_LOAD\n",
+      "executed": false
+    },
+    {
+      "tier": "release",
+      "linker": "gnu",
+      "record": "release-gnu.jsonl.gz",
+      "sha256_read_twice": [
+        "8d1fabeaa212489dd8399f8fba4178fdb99c6535562b4d100270e2f409b7892b",
+        "8d1fabeaa212489dd8399f8fba4178fdb99c6535562b4d100270e2f409b7892b"
+      ],
+      "verify_status": 1,
+      "verify_stderr": "ligature: writable section in nonwritable PT_LOAD\n",
+      "executed": false
+    }
+  ],
+  "findings": [
+    {
+      "name": "kernel/native/lld17/strict-verifier",
+      "status": "retained",
+      "reason": "ligature: writable section in nonwritable PT_LOAD",
+      "equivalent": false
+    },
+    {
+      "name": "kernel/native/lld18/strict-verifier",
+      "status": "retained",
+      "reason": "ligature: writable section in nonwritable PT_LOAD",
+      "equivalent": false
+    },
+    {
+      "name": "kernel/native/gnu/strict-verifier",
+      "status": "retained",
+      "reason": "ligature: writable section in nonwritable PT_LOAD",
+      "equivalent": false
+    },
+    {
+      "name": "kernel/native/lld17/program_headers",
+      "status": "retained",
+      "candidate": [
+        {
+          "row": "program",
+          "index": 0,
+          "kind": 1,
+          "flags": 5,
+          "offset": 4096,
+          "address": 18446744071562067968,
+          "filesz": 1297643,
+          "memsz": 1298432,
+          "align": 4096
+        },
+        {
+          "row": "program",
+          "index": 1,
+          "kind": 1,
+          "flags": 4,
+          "offset": 1302528,
+          "address": 18446744071563366400,
+          "filesz": 69784,
+          "memsz": 73728,
+          "align": 4096
+        },
+        {
+          "row": "program",
+          "index": 2,
+          "kind": 1,
+          "flags": 6,
+          "offset": 1376256,
+          "address": 18446744071563440128,
+          "filesz": 20992,
+          "memsz": 5083136,
+          "align": 4096
+        },
+        {
+          "row": "program",
+          "index": 3,
+          "kind": 1685382481,
+          "flags": 6,
+          "offset": 0,
+          "address": 0,
+          "filesz": 0,
+          "memsz": 0,
+          "align": 16
+        }
+      ],
+      "reference": [
+        {
+          "row": "program",
+          "index": 0,
+          "kind": 1,
+          "flags": 5,
+          "offset": 4096,
+          "address": 18446744071562067968,
+          "filesz": 1297643,
+          "memsz": 1297643,
+          "align": 4096
+        },
+        {
+          "row": "program",
+          "index": 1,
+          "kind": 1,
+          "flags": 4,
+          "offset": 1302528,
+          "address": 18446744071563366400,
+          "filesz": 69752,
+          "memsz": 69752,
+          "align": 4096
+        },
+        {
+          "row": "program",
+          "index": 2,
+          "kind": 1,
+          "flags": 6,
+          "offset": 1376256,
+          "address": 18446744071563440128,
+          "filesz": 20976,
+          "memsz": 5079240,
+          "align": 4096
+        }
+      ],
+      "equivalent": false
+    },
+    {
+      "name": "kernel/native/lld17/rodata_flags",
+      "status": "retained",
+      "candidate": 2,
+      "reference": 51,
+      "equivalent": false
+    },
+    {
+      "name": "kernel/native/lld17/script_symbols",
+      "status": "retained",
+      "candidate": {
+        "__pax_image_start": {
+          "binding": 1,
+          "type": 0,
+          "value": 18446744071562067968,
+          "section": 65521
+        },
+        "__pax_text_start": {
+          "binding": 1,
+          "type": 0,
+          "value": 18446744071562067968,
+          "section": 65521
+        },
+        "__pax_text_end": {
+          "binding": 1,
+          "type": 0,
+          "value": 18446744071563366400,
+          "section": 65521
+        },
+        "__pax_rodata_start": {
+          "binding": 1,
+          "type": 0,
+          "value": 18446744071563366400,
+          "section": 65521
+        },
+        "__pax_rodata_end": {
+          "binding": 1,
+          "type": 0,
+          "value": 18446744071563440128,
+          "section": 65521
+        },
+        "__pax_data_start": {
+          "binding": 1,
+          "type": 0,
+          "value": 18446744071563440128,
+          "section": 65521
+        },
+        "__pax_image_end": {
+          "binding": 1,
+          "type": 0,
+          "value": 18446744071568523264,
+          "section": 65521
+        }
+      },
+      "reference": {
+        "__pax_image_end": {
+          "binding": 1,
+          "type": 0,
+          "value": 18446744071568523264,
+          "section": ".bss"
+        },
+        "__pax_image_start": {
+          "binding": 1,
+          "type": 0,
+          "value": 18446744071562067968,
+          "section": ".text"
+        },
+        "__pax_text_start": {
+          "binding": 1,
+          "type": 0,
+          "value": 18446744071562067968,
+          "section": ".text"
+        },
+        "__pax_text_end": {
+          "binding": 1,
+          "type": 0,
+          "value": 18446744071563366400,
+          "section": ".text"
+        },
+        "__pax_rodata_start": {
+          "binding": 1,
+          "type": 0,
+          "value": 18446744071563366400,
+          "section": ".text"
+        },
+        "__pax_rodata_end": {
+          "binding": 1,
+          "type": 0,
+          "value": 18446744071563440128,
+          "section": ".rodata"
+        },
+        "__pax_data_start": {
+          "binding": 1,
+          "type": 0,
+          "value": 18446744071563440128,
+          "section": ".rodata"
+        }
+      },
+      "equivalent": false
+    },
+    {
+      "name": "kernel/native/lld18/program_headers",
+      "status": "retained",
+      "candidate": [
+        {
+          "row": "program",
+          "index": 0,
+          "kind": 1,
+          "flags": 5,
+          "offset": 4096,
+          "address": 18446744071562067968,
+          "filesz": 1297643,
+          "memsz": 1298432,
+          "align": 4096
+        },
+        {
+          "row": "program",
+          "index": 1,
+          "kind": 1,
+          "flags": 4,
+          "offset": 1302528,
+          "address": 18446744071563366400,
+          "filesz": 69784,
+          "memsz": 73728,
+          "align": 4096
+        },
+        {
+          "row": "program",
+          "index": 2,
+          "kind": 1,
+          "flags": 6,
+          "offset": 1376256,
+          "address": 18446744071563440128,
+          "filesz": 20992,
+          "memsz": 5083136,
+          "align": 4096
+        },
+        {
+          "row": "program",
+          "index": 3,
+          "kind": 1685382481,
+          "flags": 6,
+          "offset": 0,
+          "address": 0,
+          "filesz": 0,
+          "memsz": 0,
+          "align": 16
+        }
+      ],
+      "reference": [
+        {
+          "row": "program",
+          "index": 0,
+          "kind": 1,
+          "flags": 5,
+          "offset": 4096,
+          "address": 18446744071562067968,
+          "filesz": 1297643,
+          "memsz": 1297643,
+          "align": 4096
+        },
+        {
+          "row": "program",
+          "index": 1,
+          "kind": 1,
+          "flags": 4,
+          "offset": 1302528,
+          "address": 18446744071563366400,
+          "filesz": 69752,
+          "memsz": 69752,
+          "align": 4096
+        },
+        {
+          "row": "program",
+          "index": 2,
+          "kind": 1,
+          "flags": 6,
+          "offset": 1376256,
+          "address": 18446744071563440128,
+          "filesz": 20976,
+          "memsz": 5079240,
+          "align": 4096
+        }
+      ],
+      "equivalent": false
+    },
+    {
+      "name": "kernel/native/lld18/rodata_flags",
+      "status": "retained",
+      "candidate": 2,
+      "reference": 51,
+      "equivalent": false
+    },
+    {
+      "name": "kernel/native/lld18/script_symbols",
+      "status": "retained",
+      "candidate": {
+        "__pax_image_start": {
+          "binding": 1,
+          "type": 0,
+          "value": 18446744071562067968,
+          "section": 65521
+        },
+        "__pax_text_start": {
+          "binding": 1,
+          "type": 0,
+          "value": 18446744071562067968,
+          "section": 65521
+        },
+        "__pax_text_end": {
+          "binding": 1,
+          "type": 0,
+          "value": 18446744071563366400,
+          "section": 65521
+        },
+        "__pax_rodata_start": {
+          "binding": 1,
+          "type": 0,
+          "value": 18446744071563366400,
+          "section": 65521
+        },
+        "__pax_rodata_end": {
+          "binding": 1,
+          "type": 0,
+          "value": 18446744071563440128,
+          "section": 65521
+        },
+        "__pax_data_start": {
+          "binding": 1,
+          "type": 0,
+          "value": 18446744071563440128,
+          "section": 65521
+        },
+        "__pax_image_end": {
+          "binding": 1,
+          "type": 0,
+          "value": 18446744071568523264,
+          "section": 65521
+        }
+      },
+      "reference": {
+        "__pax_image_end": {
+          "binding": 1,
+          "type": 0,
+          "value": 18446744071568523264,
+          "section": ".bss"
+        },
+        "__pax_image_start": {
+          "binding": 1,
+          "type": 0,
+          "value": 18446744071562067968,
+          "section": ".text"
+        },
+        "__pax_text_start": {
+          "binding": 1,
+          "type": 0,
+          "value": 18446744071562067968,
+          "section": ".text"
+        },
+        "__pax_text_end": {
+          "binding": 1,
+          "type": 0,
+          "value": 18446744071563366400,
+          "section": ".text"
+        },
+        "__pax_rodata_start": {
+          "binding": 1,
+          "type": 0,
+          "value": 18446744071563366400,
+          "section": ".text"
+        },
+        "__pax_rodata_end": {
+          "binding": 1,
+          "type": 0,
+          "value": 18446744071563440128,
+          "section": ".rodata"
+        },
+        "__pax_data_start": {
+          "binding": 1,
+          "type": 0,
+          "value": 18446744071563440128,
+          "section": ".rodata"
+        }
+      },
+      "equivalent": false
+    },
+    {
+      "name": "kernel/native/gnu/program_headers",
+      "status": "retained",
+      "candidate": [
+        {
+          "row": "program",
+          "index": 0,
+          "kind": 1,
+          "flags": 5,
+          "offset": 4096,
+          "address": 18446744071562067968,
+          "filesz": 1297643,
+          "memsz": 1298432,
+          "align": 4096
+        },
+        {
+          "row": "program",
+          "index": 1,
+          "kind": 1,
+          "flags": 4,
+          "offset": 1302528,
+          "address": 18446744071563366400,
+          "filesz": 69784,
+          "memsz": 73728,
+          "align": 4096
+        },
+        {
+          "row": "program",
+          "index": 2,
+          "kind": 1,
+          "flags": 6,
+          "offset": 1376256,
+          "address": 18446744071563440128,
+          "filesz": 20992,
+          "memsz": 5083136,
+          "align": 4096
+        },
+        {
+          "row": "program",
+          "index": 3,
+          "kind": 1685382481,
+          "flags": 6,
+          "offset": 0,
+          "address": 0,
+          "filesz": 0,
+          "memsz": 0,
+          "align": 16
+        }
+      ],
+      "reference": [
+        {
+          "row": "program",
+          "index": 0,
+          "kind": 1,
+          "flags": 5,
+          "offset": 4096,
+          "address": 18446744071562067968,
+          "filesz": 1297636,
+          "memsz": 1297636,
+          "align": 4096
+        },
+        {
+          "row": "program",
+          "index": 1,
+          "kind": 1,
+          "flags": 4,
+          "offset": 1302528,
+          "address": 18446744071563366400,
+          "filesz": 69776,
+          "memsz": 69776,
+          "align": 4096
+        },
+        {
+          "row": "program",
+          "index": 2,
+          "kind": 1,
+          "flags": 6,
+          "offset": 1376256,
+          "address": 18446744071563440128,
+          "filesz": 21000,
+          "memsz": 5079240,
+          "align": 4096
+        }
+      ],
+      "equivalent": false
+    },
+    {
+      "name": "kernel/native/gnu/rodata_flags",
+      "status": "retained",
+      "candidate": 2,
+      "reference": 3,
+      "equivalent": false
+    },
+    {
+      "name": "kernel/native/gnu/script_symbols",
+      "status": "retained",
+      "candidate": {
+        "__pax_image_start": {
+          "binding": 1,
+          "type": 0,
+          "value": 18446744071562067968,
+          "section": 65521
+        },
+        "__pax_text_start": {
+          "binding": 1,
+          "type": 0,
+          "value": 18446744071562067968,
+          "section": 65521
+        },
+        "__pax_text_end": {
+          "binding": 1,
+          "type": 0,
+          "value": 18446744071563366400,
+          "section": 65521
+        },
+        "__pax_rodata_start": {
+          "binding": 1,
+          "type": 0,
+          "value": 18446744071563366400,
+          "section": 65521
+        },
+        "__pax_rodata_end": {
+          "binding": 1,
+          "type": 0,
+          "value": 18446744071563440128,
+          "section": 65521
+        },
+        "__pax_data_start": {
+          "binding": 1,
+          "type": 0,
+          "value": 18446744071563440128,
+          "section": 65521
+        },
+        "__pax_image_end": {
+          "binding": 1,
+          "type": 0,
+          "value": 18446744071568523264,
+          "section": 65521
+        }
+      },
+      "reference": {
+        "__pax_data_start": {
+          "binding": 1,
+          "type": 0,
+          "value": 18446744071563440128,
+          "section": ".data"
+        },
+        "__pax_text_start": {
+          "binding": 1,
+          "type": 0,
+          "value": 18446744071562067968,
+          "section": ".text"
+        },
+        "__pax_text_end": {
+          "binding": 1,
+          "type": 0,
+          "value": 18446744071563366400,
+          "section": ".rodata"
+        },
+        "__pax_rodata_start": {
+          "binding": 1,
+          "type": 0,
+          "value": 18446744071563366400,
+          "section": ".rodata"
+        },
+        "__pax_rodata_end": {
+          "binding": 1,
+          "type": 0,
+          "value": 18446744071563440128,
+          "section": ".data"
+        },
+        "__pax_image_end": {
+          "binding": 1,
+          "type": 0,
+          "value": 18446744071568523264,
+          "section": ".bss"
+        },
+        "__pax_image_start": {
+          "binding": 1,
+          "type": 0,
+          "value": 18446744071562067968,
+          "section": ".text"
+        }
+      },
+      "equivalent": false
+    },
+    {
+      "name": "kernel/release/lld17/strict-verifier",
+      "status": "retained",
+      "reason": "ligature: writable section in nonwritable PT_LOAD",
+      "equivalent": false
+    },
+    {
+      "name": "kernel/release/lld18/strict-verifier",
+      "status": "retained",
+      "reason": "ligature: writable section in nonwritable PT_LOAD",
+      "equivalent": false
+    },
+    {
+      "name": "kernel/release/gnu/strict-verifier",
+      "status": "retained",
+      "reason": "ligature: writable section in nonwritable PT_LOAD",
+      "equivalent": false
+    },
+    {
+      "name": "kernel/release/lld17/program_headers",
+      "status": "retained",
+      "candidate": [
+        {
+          "row": "program",
+          "index": 0,
+          "kind": 1,
+          "flags": 5,
+          "offset": 4096,
+          "address": 18446744071562067968,
+          "filesz": 1055195,
+          "memsz": 1056768,
+          "align": 4096
+        },
+        {
+          "row": "program",
+          "index": 1,
+          "kind": 1,
+          "flags": 4,
+          "offset": 1060864,
+          "address": 18446744071563124736,
+          "filesz": 72840,
+          "memsz": 73728,
+          "align": 4096
+        },
+        {
+          "row": "program",
+          "index": 2,
+          "kind": 1,
+          "flags": 6,
+          "offset": 1134592,
+          "address": 18446744071563198464,
+          "filesz": 2064,
+          "memsz": 5062656,
+          "align": 4096
+        },
+        {
+          "row": "program",
+          "index": 3,
+          "kind": 1685382481,
+          "flags": 6,
+          "offset": 0,
+          "address": 0,
+          "filesz": 0,
+          "memsz": 0,
+          "align": 16
+        }
+      ],
+      "reference": [
+        {
+          "row": "program",
+          "index": 0,
+          "kind": 1,
+          "flags": 5,
+          "offset": 4096,
+          "address": 18446744071562067968,
+          "filesz": 1055195,
+          "memsz": 1055195,
+          "align": 4096
+        },
+        {
+          "row": "program",
+          "index": 1,
+          "kind": 1,
+          "flags": 4,
+          "offset": 1060864,
+          "address": 18446744071563124736,
+          "filesz": 72176,
+          "memsz": 72176,
+          "align": 4096
+        },
+        {
+          "row": "program",
+          "index": 2,
+          "kind": 1,
+          "flags": 6,
+          "offset": 1134592,
+          "address": 18446744071563198464,
+          "filesz": 2016,
+          "memsz": 5058760,
+          "align": 4096
+        }
+      ],
+      "equivalent": false
+    },
+    {
+      "name": "kernel/release/lld17/rodata_flags",
+      "status": "retained",
+      "candidate": 2,
+      "reference": 51,
+      "equivalent": false
+    },
+    {
+      "name": "kernel/release/lld17/script_symbols",
+      "status": "retained",
+      "candidate": {
+        "__pax_image_start": {
+          "binding": 1,
+          "type": 0,
+          "value": 18446744071562067968,
+          "section": 65521
+        },
+        "__pax_text_start": {
+          "binding": 1,
+          "type": 0,
+          "value": 18446744071562067968,
+          "section": 65521
+        },
+        "__pax_text_end": {
+          "binding": 1,
+          "type": 0,
+          "value": 18446744071563124736,
+          "section": 65521
+        },
+        "__pax_rodata_start": {
+          "binding": 1,
+          "type": 0,
+          "value": 18446744071563124736,
+          "section": 65521
+        },
+        "__pax_rodata_end": {
+          "binding": 1,
+          "type": 0,
+          "value": 18446744071563198464,
+          "section": 65521
+        },
+        "__pax_data_start": {
+          "binding": 1,
+          "type": 0,
+          "value": 18446744071563198464,
+          "section": 65521
+        },
+        "__pax_image_end": {
+          "binding": 1,
+          "type": 0,
+          "value": 18446744071568261120,
+          "section": 65521
+        }
+      },
+      "reference": {
+        "__pax_image_start": {
+          "binding": 1,
+          "type": 0,
+          "value": 18446744071562067968,
+          "section": ".text"
+        },
+        "__pax_text_start": {
+          "binding": 1,
+          "type": 0,
+          "value": 18446744071562067968,
+          "section": ".text"
+        },
+        "__pax_text_end": {
+          "binding": 1,
+          "type": 0,
+          "value": 18446744071563124736,
+          "section": ".text"
+        },
+        "__pax_rodata_start": {
+          "binding": 1,
+          "type": 0,
+          "value": 18446744071563124736,
+          "section": ".text"
+        },
+        "__pax_rodata_end": {
+          "binding": 1,
+          "type": 0,
+          "value": 18446744071563198464,
+          "section": ".rodata"
+        },
+        "__pax_data_start": {
+          "binding": 1,
+          "type": 0,
+          "value": 18446744071563198464,
+          "section": ".rodata"
+        },
+        "__pax_image_end": {
+          "binding": 1,
+          "type": 0,
+          "value": 18446744071568261120,
+          "section": ".bss"
+        }
+      },
+      "equivalent": false
+    },
+    {
+      "name": "kernel/release/lld18/program_headers",
+      "status": "retained",
+      "candidate": [
+        {
+          "row": "program",
+          "index": 0,
+          "kind": 1,
+          "flags": 5,
+          "offset": 4096,
+          "address": 18446744071562067968,
+          "filesz": 1055195,
+          "memsz": 1056768,
+          "align": 4096
+        },
+        {
+          "row": "program",
+          "index": 1,
+          "kind": 1,
+          "flags": 4,
+          "offset": 1060864,
+          "address": 18446744071563124736,
+          "filesz": 72840,
+          "memsz": 73728,
+          "align": 4096
+        },
+        {
+          "row": "program",
+          "index": 2,
+          "kind": 1,
+          "flags": 6,
+          "offset": 1134592,
+          "address": 18446744071563198464,
+          "filesz": 2064,
+          "memsz": 5062656,
+          "align": 4096
+        },
+        {
+          "row": "program",
+          "index": 3,
+          "kind": 1685382481,
+          "flags": 6,
+          "offset": 0,
+          "address": 0,
+          "filesz": 0,
+          "memsz": 0,
+          "align": 16
+        }
+      ],
+      "reference": [
+        {
+          "row": "program",
+          "index": 0,
+          "kind": 1,
+          "flags": 5,
+          "offset": 4096,
+          "address": 18446744071562067968,
+          "filesz": 1055195,
+          "memsz": 1055195,
+          "align": 4096
+        },
+        {
+          "row": "program",
+          "index": 1,
+          "kind": 1,
+          "flags": 4,
+          "offset": 1060864,
+          "address": 18446744071563124736,
+          "filesz": 72176,
+          "memsz": 72176,
+          "align": 4096
+        },
+        {
+          "row": "program",
+          "index": 2,
+          "kind": 1,
+          "flags": 6,
+          "offset": 1134592,
+          "address": 18446744071563198464,
+          "filesz": 1368,
+          "memsz": 5058760,
+          "align": 4096
+        }
+      ],
+      "equivalent": false
+    },
+    {
+      "name": "kernel/release/lld18/rodata_flags",
+      "status": "retained",
+      "candidate": 2,
+      "reference": 51,
+      "equivalent": false
+    },
+    {
+      "name": "kernel/release/lld18/script_symbols",
+      "status": "retained",
+      "candidate": {
+        "__pax_image_start": {
+          "binding": 1,
+          "type": 0,
+          "value": 18446744071562067968,
+          "section": 65521
+        },
+        "__pax_text_start": {
+          "binding": 1,
+          "type": 0,
+          "value": 18446744071562067968,
+          "section": 65521
+        },
+        "__pax_text_end": {
+          "binding": 1,
+          "type": 0,
+          "value": 18446744071563124736,
+          "section": 65521
+        },
+        "__pax_rodata_start": {
+          "binding": 1,
+          "type": 0,
+          "value": 18446744071563124736,
+          "section": 65521
+        },
+        "__pax_rodata_end": {
+          "binding": 1,
+          "type": 0,
+          "value": 18446744071563198464,
+          "section": 65521
+        },
+        "__pax_data_start": {
+          "binding": 1,
+          "type": 0,
+          "value": 18446744071563198464,
+          "section": 65521
+        },
+        "__pax_image_end": {
+          "binding": 1,
+          "type": 0,
+          "value": 18446744071568261120,
+          "section": 65521
+        }
+      },
+      "reference": {
+        "__pax_image_start": {
+          "binding": 1,
+          "type": 0,
+          "value": 18446744071562067968,
+          "section": ".text"
+        },
+        "__pax_text_start": {
+          "binding": 1,
+          "type": 0,
+          "value": 18446744071562067968,
+          "section": ".text"
+        },
+        "__pax_text_end": {
+          "binding": 1,
+          "type": 0,
+          "value": 18446744071563124736,
+          "section": ".text"
+        },
+        "__pax_rodata_start": {
+          "binding": 1,
+          "type": 0,
+          "value": 18446744071563124736,
+          "section": ".text"
+        },
+        "__pax_rodata_end": {
+          "binding": 1,
+          "type": 0,
+          "value": 18446744071563198464,
+          "section": ".rodata"
+        },
+        "__pax_data_start": {
+          "binding": 1,
+          "type": 0,
+          "value": 18446744071563198464,
+          "section": ".rodata"
+        },
+        "__pax_image_end": {
+          "binding": 1,
+          "type": 0,
+          "value": 18446744071568261120,
+          "section": ".bss"
+        }
+      },
+      "equivalent": false
+    },
+    {
+      "name": "kernel/release/gnu/program_headers",
+      "status": "retained",
+      "candidate": [
+        {
+          "row": "program",
+          "index": 0,
+          "kind": 1,
+          "flags": 5,
+          "offset": 4096,
+          "address": 18446744071562067968,
+          "filesz": 1055195,
+          "memsz": 1056768,
+          "align": 4096
+        },
+        {
+          "row": "program",
+          "index": 1,
+          "kind": 1,
+          "flags": 4,
+          "offset": 1060864,
+          "address": 18446744071563124736,
+          "filesz": 72840,
+          "memsz": 73728,
+          "align": 4096
+        },
+        {
+          "row": "program",
+          "index": 2,
+          "kind": 1,
+          "flags": 6,
+          "offset": 1134592,
+          "address": 18446744071563198464,
+          "filesz": 2064,
+          "memsz": 5062656,
+          "align": 4096
+        },
+        {
+          "row": "program",
+          "index": 3,
+          "kind": 1685382481,
+          "flags": 6,
+          "offset": 0,
+          "address": 0,
+          "filesz": 0,
+          "memsz": 0,
+          "align": 16
+        }
+      ],
+      "reference": [
+        {
+          "row": "program",
+          "index": 0,
+          "kind": 1,
+          "flags": 5,
+          "offset": 4096,
+          "address": 18446744071562067968,
+          "filesz": 1055188,
+          "memsz": 1055188,
+          "align": 4096
+        },
+        {
+          "row": "program",
+          "index": 1,
+          "kind": 1,
+          "flags": 4,
+          "offset": 1060864,
+          "address": 18446744071563124736,
+          "filesz": 72208,
+          "memsz": 72208,
+          "align": 4096
+        },
+        {
+          "row": "program",
+          "index": 2,
+          "kind": 1,
+          "flags": 6,
+          "offset": 1134592,
+          "address": 18446744071563198464,
+          "filesz": 2040,
+          "memsz": 5058760,
+          "align": 4096
+        }
+      ],
+      "equivalent": false
+    },
+    {
+      "name": "kernel/release/gnu/rodata_flags",
+      "status": "retained",
+      "candidate": 2,
+      "reference": 3,
+      "equivalent": false
+    },
+    {
+      "name": "kernel/release/gnu/script_symbols",
+      "status": "retained",
+      "candidate": {
+        "__pax_image_start": {
+          "binding": 1,
+          "type": 0,
+          "value": 18446744071562067968,
+          "section": 65521
+        },
+        "__pax_text_start": {
+          "binding": 1,
+          "type": 0,
+          "value": 18446744071562067968,
+          "section": 65521
+        },
+        "__pax_text_end": {
+          "binding": 1,
+          "type": 0,
+          "value": 18446744071563124736,
+          "section": 65521
+        },
+        "__pax_rodata_start": {
+          "binding": 1,
+          "type": 0,
+          "value": 18446744071563124736,
+          "section": 65521
+        },
+        "__pax_rodata_end": {
+          "binding": 1,
+          "type": 0,
+          "value": 18446744071563198464,
+          "section": 65521
+        },
+        "__pax_data_start": {
+          "binding": 1,
+          "type": 0,
+          "value": 18446744071563198464,
+          "section": 65521
+        },
+        "__pax_image_end": {
+          "binding": 1,
+          "type": 0,
+          "value": 18446744071568261120,
+          "section": 65521
+        }
+      },
+      "reference": {
+        "__pax_data_start": {
+          "binding": 1,
+          "type": 0,
+          "value": 18446744071563198464,
+          "section": ".data"
+        },
+        "__pax_text_start": {
+          "binding": 1,
+          "type": 0,
+          "value": 18446744071562067968,
+          "section": ".text"
+        },
+        "__pax_text_end": {
+          "binding": 1,
+          "type": 0,
+          "value": 18446744071563124736,
+          "section": ".rodata"
+        },
+        "__pax_rodata_start": {
+          "binding": 1,
+          "type": 0,
+          "value": 18446744071563124736,
+          "section": ".rodata"
+        },
+        "__pax_rodata_end": {
+          "binding": 1,
+          "type": 0,
+          "value": 18446744071563198464,
+          "section": ".data"
+        },
+        "__pax_image_end": {
+          "binding": 1,
+          "type": 0,
+          "value": 18446744071568261120,
+          "section": ".bss"
+        },
+        "__pax_image_start": {
+          "binding": 1,
+          "type": 0,
+          "value": 18446744071562067968,
+          "section": ".text"
+        }
+      },
+      "equivalent": false
+    }
+  ],
+  "waivers": [],
+  "equivalent": false,
+  "scope": "separate from the inherited 87 user-program findings; strict oracle verifier refusals retained, not waived; no ELF execution"
+}

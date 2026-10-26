@@ -1,0 +1,456 @@
+{
+  "bounds": {
+    "candidate": {
+      "__pax_image_start": 18446744071562067968,
+      "__pax_text_start": 18446744071562067968,
+      "__pax_text_end": 18446744071562072064,
+      "__pax_rodata_start": 18446744071562072064,
+      "__pax_rodata_end": 18446744071562076160,
+      "__pax_data_start": 18446744071562076160,
+      "__pax_image_end": 18446744071562080256
+    },
+    "lld17": {
+      "__pax_image_start": 18446744071562067968,
+      "__pax_text_start": 18446744071562067968,
+      "__pax_text_end": 18446744071562072064,
+      "__pax_rodata_start": 18446744071562072064,
+      "__pax_rodata_end": 18446744071562076160,
+      "__pax_data_start": 18446744071562076160,
+      "__pax_image_end": 18446744071562080256
+    },
+    "gnu": {
+      "__pax_image_start": 18446744071562067968,
+      "__pax_text_start": 18446744071562067968,
+      "__pax_text_end": 18446744071562072064,
+      "__pax_rodata_start": 18446744071562072064,
+      "__pax_rodata_end": 18446744071562076160,
+      "__pax_data_start": 18446744071562076160,
+      "__pax_image_end": 18446744071562080256
+    }
+  },
+  "processes": [
+    {
+      "argv": [
+        "as",
+        "--64",
+        "/lane/ligature/target/evidence/kernel-script/first.s",
+        "-o",
+        "/lane/ligature/target/evidence/kernel-script/first.o"
+      ],
+      "status": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "as",
+        "--64",
+        "/lane/ligature/target/evidence/kernel-script/second.s",
+        "-o",
+        "/lane/ligature/target/evidence/kernel-script/second.o"
+      ],
+      "status": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "/lane/ligature/target/ligature",
+        "-nostdlib",
+        "-static",
+        "-T",
+        "/lane/ligature/tests/fixtures/pax-kernel.ld",
+        "-o",
+        "/lane/ligature/target/evidence/kernel-script/candidate",
+        "/lane/ligature/target/evidence/kernel-script/first.o",
+        "/lane/ligature/target/evidence/kernel-script/second.o"
+      ],
+      "status": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "nm",
+        "-n",
+        "/lane/ligature/target/evidence/kernel-script/candidate"
+      ],
+      "status": 0,
+      "stdout": "ffffffff80000000 A __pax_image_start\nffffffff80000000 A __pax_text_start\nffffffff80000000 T _start\nffffffff80001000 A __pax_rodata_start\nffffffff80001000 A __pax_text_end\nffffffff80001000 R target\nffffffff80002000 A __pax_data_start\nffffffff80002000 A __pax_rodata_end\nffffffff80002000 D limine_first\nffffffff80002008 D ordinary\nffffffff80002040 B common\nffffffff80003000 A __pax_image_end\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "/lane/ligature/target/ligature",
+        "verify",
+        "/lane/ligature/target/evidence/kernel-script/candidate"
+      ],
+      "status": 0,
+      "stdout": "verify: PASS /lane/ligature/target/evidence/kernel-script/candidate\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "/lane/ligature/target/ligature",
+        "explain",
+        "/lane/ligature/target/evidence/kernel-script/candidate",
+        "--symbol",
+        "__pax_image_start"
+      ],
+      "status": 0,
+      "stdout": "[{\"address\":\"18446744071562067968\",\"alias_of\":null,\"binding\":1,\"file_end\":-1,\"file_start\":-1,\"member\":-1,\"name\":\"__pax_image_start\",\"nobits\":false,\"section_index\":65521,\"size\":0,\"symbol_index\":0,\"tls\":false,\"origin\":\"script-symbol\"}]\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "/lane/ligature/target/ligature",
+        "explain",
+        "/lane/ligature/target/evidence/kernel-script/candidate",
+        "--symbol",
+        "__pax_text_start"
+      ],
+      "status": 0,
+      "stdout": "[{\"address\":\"18446744071562067968\",\"alias_of\":null,\"binding\":1,\"file_end\":-1,\"file_start\":-1,\"member\":-1,\"name\":\"__pax_text_start\",\"nobits\":false,\"section_index\":65521,\"size\":0,\"symbol_index\":0,\"tls\":false,\"origin\":\"script-symbol\"}]\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "/lane/ligature/target/ligature",
+        "explain",
+        "/lane/ligature/target/evidence/kernel-script/candidate",
+        "--symbol",
+        "__pax_text_end"
+      ],
+      "status": 0,
+      "stdout": "[{\"address\":\"18446744071562072064\",\"alias_of\":null,\"binding\":1,\"file_end\":-1,\"file_start\":-1,\"member\":-1,\"name\":\"__pax_text_end\",\"nobits\":false,\"section_index\":65521,\"size\":0,\"symbol_index\":0,\"tls\":false,\"origin\":\"script-symbol\"}]\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "/lane/ligature/target/ligature",
+        "explain",
+        "/lane/ligature/target/evidence/kernel-script/candidate",
+        "--symbol",
+        "__pax_rodata_start"
+      ],
+      "status": 0,
+      "stdout": "[{\"address\":\"18446744071562072064\",\"alias_of\":null,\"binding\":1,\"file_end\":-1,\"file_start\":-1,\"member\":-1,\"name\":\"__pax_rodata_start\",\"nobits\":false,\"section_index\":65521,\"size\":0,\"symbol_index\":0,\"tls\":false,\"origin\":\"script-symbol\"}]\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "/lane/ligature/target/ligature",
+        "explain",
+        "/lane/ligature/target/evidence/kernel-script/candidate",
+        "--symbol",
+        "__pax_rodata_end"
+      ],
+      "status": 0,
+      "stdout": "[{\"address\":\"18446744071562076160\",\"alias_of\":null,\"binding\":1,\"file_end\":-1,\"file_start\":-1,\"member\":-1,\"name\":\"__pax_rodata_end\",\"nobits\":false,\"section_index\":65521,\"size\":0,\"symbol_index\":0,\"tls\":false,\"origin\":\"script-symbol\"}]\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "/lane/ligature/target/ligature",
+        "explain",
+        "/lane/ligature/target/evidence/kernel-script/candidate",
+        "--symbol",
+        "__pax_data_start"
+      ],
+      "status": 0,
+      "stdout": "[{\"address\":\"18446744071562076160\",\"alias_of\":null,\"binding\":1,\"file_end\":-1,\"file_start\":-1,\"member\":-1,\"name\":\"__pax_data_start\",\"nobits\":false,\"section_index\":65521,\"size\":0,\"symbol_index\":0,\"tls\":false,\"origin\":\"script-symbol\"}]\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "/lane/ligature/target/ligature",
+        "explain",
+        "/lane/ligature/target/evidence/kernel-script/candidate",
+        "--symbol",
+        "__pax_image_end"
+      ],
+      "status": 0,
+      "stdout": "[{\"address\":\"18446744071562080256\",\"alias_of\":null,\"binding\":1,\"file_end\":-1,\"file_start\":-1,\"member\":-1,\"name\":\"__pax_image_end\",\"nobits\":false,\"section_index\":65521,\"size\":0,\"symbol_index\":0,\"tls\":false,\"origin\":\"script-symbol\"}]\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "/lane/ligature/target/ligature",
+        "explain",
+        "/lane/ligature/target/evidence/kernel-script/candidate",
+        "--address",
+        "0xffffffff80000000"
+      ],
+      "status": 0,
+      "stdout": "[{\"address\":\"18446744071562067968\",\"align\":1,\"file_end\":4104,\"file_start\":4096,\"flags\":6,\"index\":1,\"kind\":1,\"memory_end\":\"18446744071562067976\",\"name\":\".text\"},{\"address\":\"18446744071562067968\",\"alias_of\":null,\"binding\":1,\"file_end\":4096,\"file_start\":4096,\"member\":0,\"name\":\"_start\",\"nobits\":false,\"section_index\":1,\"size\":0,\"symbol_index\":1,\"tls\":false},{\"address\":\"18446744071562067968\",\"alias_of\":null,\"binding\":1,\"file_end\":-1,\"file_start\":-1,\"member\":-1,\"name\":\"__pax_image_start\",\"nobits\":false,\"section_index\":65521,\"size\":0,\"symbol_index\":0,\"tls\":false,\"origin\":\"script-symbol\"},{\"address\":\"18446744071562067968\",\"alias_of\":null,\"binding\":1,\"file_end\":-1,\"file_start\":-1,\"member\":-1,\"name\":\"__pax_text_start\",\"nobits\":false,\"section_index\":65521,\"size\":0,\"symbol_index\":0,\"tls\":false,\"origin\":\"script-symbol\"}]\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "/lane/ligature/target/ligature",
+        "explain",
+        "/lane/ligature/target/evidence/kernel-script/candidate",
+        "--discarded",
+        ".comment"
+      ],
+      "status": 0,
+      "stdout": "[{\"member\":0,\"reason\":\"script-DISCARD\",\"section_index\":9,\"section_name\":\".comment\",\"size\":17}]\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "/lane/ligature/target/ligature",
+        "explain",
+        "/lane/ligature/target/evidence/kernel-script/candidate",
+        "--discarded",
+        ".eh_frame"
+      ],
+      "status": 0,
+      "stdout": "[{\"member\":0,\"reason\":\"script-DISCARD\",\"section_index\":10,\"section_name\":\".eh_frame\",\"size\":4}]\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "/lane/ligature/target/ligature",
+        "explain",
+        "/lane/ligature/target/evidence/kernel-script/candidate",
+        "--discarded",
+        ".note.GNU-stack"
+      ],
+      "status": 0,
+      "stdout": "[{\"member\":0,\"reason\":\"script-DISCARD\",\"section_index\":11,\"section_name\":\".note.GNU-stack\",\"size\":0},{\"member\":1,\"reason\":\"script-DISCARD\",\"section_index\":7,\"section_name\":\".note.GNU-stack\",\"size\":0}]\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "ld.lld-17",
+        "--emit-relocs",
+        "-static",
+        "-T",
+        "/lane/ligature/tests/fixtures/pax-kernel.ld",
+        "-o",
+        "/lane/ligature/target/evidence/kernel-script/lld17",
+        "/lane/ligature/target/evidence/kernel-script/first.o",
+        "/lane/ligature/target/evidence/kernel-script/second.o"
+      ],
+      "status": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "nm",
+        "-n",
+        "/lane/ligature/target/evidence/kernel-script/lld17"
+      ],
+      "status": 0,
+      "stdout": "ffffffff80000000 T __pax_image_start\nffffffff80000000 T __pax_text_start\nffffffff80000000 T _start\nffffffff80001000 T __pax_rodata_start\nffffffff80001000 T __pax_text_end\nffffffff80001000 D target\nffffffff80002000 D __pax_data_start\nffffffff80002000 D __pax_rodata_end\nffffffff80002000 D limine_first\nffffffff80002008 D ordinary\nffffffff80002010 d _GLOBAL_OFFSET_TABLE_\nffffffff80002050 B common\nffffffff80003000 B __pax_image_end\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "ld.bfd",
+        "--emit-relocs",
+        "-static",
+        "-T",
+        "/lane/ligature/tests/fixtures/pax-kernel.ld",
+        "-o",
+        "/lane/ligature/target/evidence/kernel-script/gnu",
+        "/lane/ligature/target/evidence/kernel-script/first.o",
+        "/lane/ligature/target/evidence/kernel-script/second.o"
+      ],
+      "status": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "nm",
+        "-n",
+        "/lane/ligature/target/evidence/kernel-script/gnu"
+      ],
+      "status": 0,
+      "stdout": "ffffffff80000000 T __pax_image_start\nffffffff80000000 T __pax_text_start\nffffffff80000000 T _start\nffffffff80001000 D __pax_rodata_start\nffffffff80001000 D __pax_text_end\nffffffff80001000 D target\nffffffff80002000 D __pax_data_start\nffffffff80002000 D __pax_rodata_end\nffffffff80002000 D limine_first\nffffffff80002008 D ordinary\nffffffff80002030 B common\nffffffff80003000 B __pax_image_end\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "/lane/ligature/target/ligature",
+        "-nostdlib",
+        "-T",
+        "/lane/ligature/tests/fixtures/pax-kernel.ld",
+        "-o",
+        "/lane/ligature/target/evidence/kernel-script/repeat",
+        "/lane/ligature/target/evidence/kernel-script/first.o",
+        "/lane/ligature/target/evidence/kernel-script/second.o"
+      ],
+      "status": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "as",
+        "--64",
+        "/lane/ligature/target/evidence/kernel-script/orphan.s",
+        "-o",
+        "/lane/ligature/target/evidence/kernel-script/orphan.o"
+      ],
+      "status": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "/lane/ligature/target/ligature",
+        "-nostdlib",
+        "-T",
+        "/lane/ligature/tests/fixtures/pax-kernel.ld",
+        "-o",
+        "/lane/ligature/target/evidence/kernel-script/sentinel",
+        "/lane/ligature/target/evidence/kernel-script/first.o",
+        "/lane/ligature/target/evidence/kernel-script/orphan.o"
+      ],
+      "status": 1,
+      "stdout": "",
+      "stderr": "ligature: kernel allocated orphan section .orphan\n"
+    },
+    {
+      "argv": [
+        "as",
+        "--64",
+        "/lane/ligature/target/evidence/kernel-script/tls.s",
+        "-o",
+        "/lane/ligature/target/evidence/kernel-script/tls.o"
+      ],
+      "status": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "/lane/ligature/target/ligature",
+        "-nostdlib",
+        "-T",
+        "/lane/ligature/tests/fixtures/pax-kernel.ld",
+        "-o",
+        "/lane/ligature/target/evidence/kernel-script/sentinel",
+        "/lane/ligature/target/evidence/kernel-script/first.o",
+        "/lane/ligature/target/evidence/kernel-script/tls.o"
+      ],
+      "status": 1,
+      "stdout": "",
+      "stderr": "ligature: kernel allocated orphan section .tdata\n"
+    },
+    {
+      "argv": [
+        "as",
+        "--64",
+        "/lane/ligature/target/evidence/kernel-script/conflict.s",
+        "-o",
+        "/lane/ligature/target/evidence/kernel-script/conflict.o"
+      ],
+      "status": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "/lane/ligature/target/ligature",
+        "-nostdlib",
+        "-T",
+        "/lane/ligature/tests/fixtures/pax-kernel.ld",
+        "-o",
+        "/lane/ligature/target/evidence/kernel-script/sentinel",
+        "/lane/ligature/target/evidence/kernel-script/first.o",
+        "/lane/ligature/target/evidence/kernel-script/conflict.o"
+      ],
+      "status": 1,
+      "stdout": "",
+      "stderr": "ligature: kernel script symbol conflicts with input definition __pax_image_end\n"
+    },
+    {
+      "argv": [
+        "/lane/ligature/target/ligature",
+        "-T",
+        "/lane/ligature/tests/fixtures/pax-kernel.ld",
+        "/lane/ligature/target/evidence/kernel-script/first.o"
+      ],
+      "status": 1,
+      "stdout": "",
+      "stderr": "ligature: kernel script requires -nostdlib\n"
+    },
+    {
+      "argv": [
+        "/lane/ligature/target/ligature",
+        "-nostdlib",
+        "-T",
+        "/lane/ligature/tests/fixtures/pax-kernel.ld",
+        "-T",
+        "/lane/ligature/tests/fixtures/pax-kernel.ld",
+        "/lane/ligature/target/evidence/kernel-script/first.o"
+      ],
+      "status": 1,
+      "stdout": "",
+      "stderr": "ligature: duplicate -T script\n"
+    },
+    {
+      "argv": [
+        "/lane/ligature/target/ligature",
+        "verify",
+        "/lane/ligature/target/evidence/kernel-script/rounded-metadata"
+      ],
+      "status": 1,
+      "stdout": "",
+      "stderr": "ligature: provenance section address differs from ELF\n"
+    },
+    {
+      "argv": [
+        "/lane/ligature/target/ligature",
+        "verify",
+        "/lane/ligature/target/evidence/kernel-script/nonallocated-overflow"
+      ],
+      "status": 1,
+      "stdout": "",
+      "stderr": "ligature: provenance section virtual range overflows\n"
+    },
+    {
+      "argv": [
+        "/lane/ligature/target/ligature",
+        "explain",
+        "/lane/ligature/target/evidence/kernel-script/negative-symbol-size",
+        "--address",
+        "0xffffffff80000000"
+      ],
+      "status": 1,
+      "stdout": "",
+      "stderr": "ligature explain: invalid negative symbol size\n"
+    },
+    {
+      "argv": [
+        "as",
+        "--64",
+        "/lane/ligature/target/evidence/kernel-script/normal-tls.s",
+        "-o",
+        "/lane/ligature/target/evidence/kernel-script/normal-tls.o"
+      ],
+      "status": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "/lane/ligature/target/ligature",
+        "-nostdlib",
+        "-o",
+        "/lane/ligature/target/evidence/kernel-script/bad-tls-output",
+        "/lane/ligature/target/evidence/kernel-script/bad-tls-symbol.o",
+        "/lane/ligature/target/evidence/kernel-script/normal-tls.o"
+      ],
+      "status": 1,
+      "stdout": "",
+      "stderr": "ligature: STT_TLS symbol outside a TLS section: target\n"
+    }
+  ],
+  "executed": false
+}

@@ -1,0 +1,162 @@
+[
+  {
+    "name": "282-min",
+    "status": 0,
+    "stderr": "",
+    "veneer_sites": [
+      {
+        "place": 2101248,
+        "symbol": 2101248,
+        "addend": -134217728,
+        "type": 282,
+        "word": 335544321,
+        "section": ".text",
+        "oracle_veneer": "LDR x16 literal; BR x16; exact target literal"
+      }
+    ]
+  },
+  {
+    "name": "282-max",
+    "status": 0,
+    "stderr": "",
+    "veneer_sites": []
+  },
+  {
+    "name": "282-zero",
+    "status": 0,
+    "stderr": "",
+    "veneer_sites": []
+  },
+  {
+    "name": "283-min",
+    "status": 0,
+    "stderr": "",
+    "veneer_sites": [
+      {
+        "place": 2101248,
+        "symbol": 2101248,
+        "addend": -134217728,
+        "type": 283,
+        "word": 2483027969,
+        "section": ".text",
+        "oracle_veneer": "LDR x16 literal; BR x16; exact target literal"
+      }
+    ]
+  },
+  {
+    "name": "283-max",
+    "status": 0,
+    "stderr": "",
+    "veneer_sites": []
+  },
+  {
+    "name": "283-zero",
+    "status": 0,
+    "stderr": "",
+    "veneer_sites": []
+  },
+  {
+    "name": "prel-min",
+    "status": 0,
+    "stderr": "",
+    "veneer_sites": []
+  },
+  {
+    "name": "prel-max",
+    "status": 0,
+    "stderr": "",
+    "veneer_sites": []
+  },
+  {
+    "name": "prel-unsigned",
+    "status": 0,
+    "stderr": "",
+    "veneer_sites": []
+  },
+  {
+    "name": "prel-under",
+    "status": 1,
+    "stderr": "ld.lld-18: error: /lane/ligature/target/evidence/aarch64/prel-under.o:(function _start: .text+0x0): relocation R_AARCH64_PREL32 out of range: -2147483649 is not in [-2147483648, 4294967295]; references 'target'\n>>> defined in /lane/ligature/target/evidence/aarch64/prel-under.o\n"
+  },
+  {
+    "name": "prel-over",
+    "status": 1,
+    "stderr": "ld.lld-18: error: /lane/ligature/target/evidence/aarch64/prel-over.o:(function _start: .text+0x0): relocation R_AARCH64_PREL32 out of range: 4294967296 is not in [-2147483648, 4294967295]; references 'target'\n>>> defined in /lane/ligature/target/evidence/aarch64/prel-over.o\n"
+  },
+  {
+    "name": "abs-max",
+    "status": 0,
+    "stderr": "",
+    "veneer_sites": []
+  },
+  {
+    "name": "abs-wrap",
+    "status": 0,
+    "stderr": "",
+    "veneer_sites": []
+  },
+  {
+    "name": "abs-negative",
+    "status": 0,
+    "stderr": "",
+    "veneer_sites": []
+  },
+  {
+    "name": "abs-unaligned",
+    "status": 0,
+    "stderr": "",
+    "veneer_sites": []
+  },
+  {
+    "name": "prel-unaligned",
+    "status": 0,
+    "stderr": "",
+    "veneer_sites": []
+  },
+  {
+    "name": "adrp-min",
+    "status": 0,
+    "stderr": "",
+    "veneer_sites": []
+  },
+  {
+    "name": "adrp-max",
+    "status": 0,
+    "stderr": "",
+    "veneer_sites": []
+  },
+  {
+    "name": "adrp-negative-low",
+    "status": 0,
+    "stderr": "",
+    "veneer_sites": []
+  },
+  {
+    "name": "adrp-under",
+    "status": 1,
+    "stderr": "ld.lld-18: error: /lane/ligature/target/evidence/aarch64/adrp-under.o:(function _start: .text+0x0): relocation R_AARCH64_ADR_PREL_PG_HI21 out of range: -4294971392 is not in [-4294967296, 4294967295]; references 'target'\n>>> defined in /lane/ligature/target/evidence/aarch64/adrp-under.o\n"
+  },
+  {
+    "name": "adrp-over",
+    "status": 1,
+    "stderr": "ld.lld-18: error: /lane/ligature/target/evidence/aarch64/adrp-over.o:(function _start: .text+0x0): relocation R_AARCH64_ADR_PREL_PG_HI21 out of range: 4294967296 is not in [-4294967296, 4294967295]; references 'target'\n>>> defined in /lane/ligature/target/evidence/aarch64/adrp-over.o\n"
+  },
+  {
+    "name": "pair-277",
+    "status": 0,
+    "stderr": "",
+    "veneer_sites": []
+  },
+  {
+    "name": "pair-286",
+    "status": 0,
+    "stderr": "",
+    "veneer_sites": []
+  },
+  {
+    "name": "pair-312",
+    "status": 0,
+    "stderr": "",
+    "veneer_sites": []
+  }
+]

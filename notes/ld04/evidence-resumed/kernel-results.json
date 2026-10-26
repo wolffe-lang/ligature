@@ -1,0 +1,1588 @@
+{
+  "source_head": "4831abe70e08811be4a7adbd6cfb3b0cbad21699",
+  "rows": [
+    {
+      "tier": "native",
+      "input_hashes_read_twice": {
+        "start.o": [
+          "cfa2f305e5aa78585a1d42e24a3d84c056fc14c1ec78042bd139741030512b26",
+          "cfa2f305e5aa78585a1d42e24a3d84c056fc14c1ec78042bd139741030512b26"
+        ],
+        "kmain_paging.asm-console.o": [
+          "1748257d65943f37fdd5484ae0c4a94d6148f80af75b6ccf3624d4f4d6bb2cde",
+          "1748257d65943f37fdd5484ae0c4a94d6148f80af75b6ccf3624d4f4d6bb2cde"
+        ],
+        "kmain_paging.asm-cpu.o": [
+          "bdcc49696f175327563867ecf4868c7a94114322cbea693d328c6c229cadc3ce",
+          "bdcc49696f175327563867ecf4868c7a94114322cbea693d328c6c229cadc3ce"
+        ],
+        "kmain_paging.asm-event.o": [
+          "02ea7efe16017b94f9bc0da0a932371c0f1a2bc17e804b833aeb11a121dc7aac",
+          "02ea7efe16017b94f9bc0da0a932371c0f1a2bc17e804b833aeb11a121dc7aac"
+        ],
+        "kmain_paging.asm-font.o": [
+          "f31bc450710ccb23cd1f272ed153b48d952e6b33297d2df8346f80bb9de01184",
+          "f31bc450710ccb23cd1f272ed153b48d952e6b33297d2df8346f80bb9de01184"
+        ],
+        "kmain_paging.asm-fpu.o": [
+          "55909f503e6796512858072f0b40d9acb6aafb4e43b8c968d97fac38b3267f54",
+          "55909f503e6796512858072f0b40d9acb6aafb4e43b8c968d97fac38b3267f54"
+        ],
+        "kmain_paging.asm-io.o": [
+          "cb8946c1d8da44a7091ae3a5ef51c02cac05abf6c404ccde550d31e08db6a931",
+          "cb8946c1d8da44a7091ae3a5ef51c02cac05abf6c404ccde550d31e08db6a931"
+        ],
+        "kmain_paging.asm-isr.o": [
+          "c6aeb6ab4df8cb937897356bdbda2b0eb41a6bd183a26f50538e2f7a6e46abd5",
+          "c6aeb6ab4df8cb937897356bdbda2b0eb41a6bd183a26f50538e2f7a6e46abd5"
+        ],
+        "kmain_paging.asm-net.o": [
+          "40824dfc7059862935fdd5245d32ca817043690a10c53f38cd19dd7b82ecb287",
+          "40824dfc7059862935fdd5245d32ca817043690a10c53f38cd19dd7b82ecb287"
+        ],
+        "kmain_paging.asm-programs.o": [
+          "70b917b1156567c0a9e89080708d9a13d5df83cfb537f554f0c404de0c5a5437",
+          "70b917b1156567c0a9e89080708d9a13d5df83cfb537f554f0c404de0c5a5437"
+        ],
+        "kmain_paging.asm-sched.o": [
+          "52586c4e47f291a3b26756e0be5868479463cbe4763e86fe6b3a36ab02098846",
+          "52586c4e47f291a3b26756e0be5868479463cbe4763e86fe6b3a36ab02098846"
+        ],
+        "kmain_paging.asm-screen.o": [
+          "cb0b6fd035767beae9169106f961c123625c3ca67b0ddc1749f5edf492f0593e",
+          "cb0b6fd035767beae9169106f961c123625c3ca67b0ddc1749f5edf492f0593e"
+        ],
+        "kmain_paging.asm-sound.o": [
+          "7f6410495d7af5e16167ddc56cb5ca1e259cff1e3c9550fcf96775eae99036ff",
+          "7f6410495d7af5e16167ddc56cb5ca1e259cff1e3c9550fcf96775eae99036ff"
+        ],
+        "kmain_paging.asm-speaker.o": [
+          "5d61b7d635b02e1414cfecaf6349f03d3bc623b31c8b1de64942278883ae9563",
+          "5d61b7d635b02e1414cfecaf6349f03d3bc623b31c8b1de64942278883ae9563"
+        ],
+        "kmain_paging.asm-tree.o": [
+          "280afd2eadc3b64ae351aef0fe168a03c8ebaf35e3834bdb1a9571deee154cc5",
+          "280afd2eadc3b64ae351aef0fe168a03c8ebaf35e3834bdb1a9571deee154cc5"
+        ],
+        "kmain_paging.asm-unix.o": [
+          "81be50acb6d9b9ee03ad9178640dbe1340b5eed5ae3013a2779e635f7f938cd2",
+          "81be50acb6d9b9ee03ad9178640dbe1340b5eed5ae3013a2779e635f7f938cd2"
+        ],
+        "kmain_paging.asm-user.o": [
+          "2a9679b11f8242ce9364b389fc820cca8b975adf314e6f144062b98ab1c81a22",
+          "2a9679b11f8242ce9364b389fc820cca8b975adf314e6f144062b98ab1c81a22"
+        ],
+        "kmain_paging.arp.o": [
+          "b222a9d1644e079f7def2d0a5f378d626f80b9abd107f7ff2235fdc840b8c2cb",
+          "b222a9d1644e079f7def2d0a5f378d626f80b9abd107f7ff2235fdc840b8c2cb"
+        ],
+        "kmain_paging.block.o": [
+          "77784f3cb76e4f2c41ba9b4047c9a749d09b69a9ffe8a640ea459928401ac625",
+          "77784f3cb76e4f2c41ba9b4047c9a749d09b69a9ffe8a640ea459928401ac625"
+        ],
+        "kmain_paging.boot_info.o": [
+          "625aebc2767c3c7910cd53a820106c087abbbd9798748c21c11b45f18f435c10",
+          "625aebc2767c3c7910cd53a820106c087abbbd9798748c21c11b45f18f435c10"
+        ],
+        "kmain_paging.console.o": [
+          "682851c836bdb9a4550f1353ca8437bae0bf8328330105829c8192b450f0388d",
+          "682851c836bdb9a4550f1353ca8437bae0bf8328330105829c8192b450f0388d"
+        ],
+        "kmain_paging.cred.o": [
+          "a2d1c6dc8a22fc2eaaffe42131fd6fa663dbd3a319cdf042f65445008374c880",
+          "a2d1c6dc8a22fc2eaaffe42131fd6fa663dbd3a319cdf042f65445008374c880"
+        ],
+        "kmain_paging.elf.o": [
+          "d7bd6bef0846ef1ccca91084f91901aa85da036b7f71af8263e5e49d9b868f45",
+          "d7bd6bef0846ef1ccca91084f91901aa85da036b7f71af8263e5e49d9b868f45"
+        ],
+        "kmain_paging.event.o": [
+          "1d93dbab4b7aead275356ea820689a065c4e68f9e4778c425e10b86963a439fe",
+          "1d93dbab4b7aead275356ea820689a065c4e68f9e4778c425e10b86963a439fe"
+        ],
+        "kmain_paging.ext2.o": [
+          "826247c3dc657c5645f95050937e968f98785211a8386a9d583c2dd0b24b7606",
+          "826247c3dc657c5645f95050937e968f98785211a8386a9d583c2dd0b24b7606"
+        ],
+        "kmain_paging.files.o": [
+          "059adde0d22928e2ee1cde82a0d5aa58bdd3e2c58aa3f49522a0f9cab3965c5f",
+          "059adde0d22928e2ee1cde82a0d5aa58bdd3e2c58aa3f49522a0f9cab3965c5f"
+        ],
+        "kmain_paging.fpu.o": [
+          "9de6d7010d8cd9ba954460d75ac268a9452c5632fd4d1e57bc92b80c0e3f9ab3",
+          "9de6d7010d8cd9ba954460d75ac268a9452c5632fd4d1e57bc92b80c0e3f9ab3"
+        ],
+        "kmain_paging.frames.o": [
+          "fcb29b2b9da1bc4b21d32fe0f89f8c320c4b8f465b4968b9dd061d6c51cb4d10",
+          "fcb29b2b9da1bc4b21d32fe0f89f8c320c4b8f465b4968b9dd061d6c51cb4d10"
+        ],
+        "kmain_paging.futex.o": [
+          "00083e76f78404fb446bbbf0c85493f8818e8e9744e925059ebc1ccc80fc481d",
+          "00083e76f78404fb446bbbf0c85493f8818e8e9744e925059ebc1ccc80fc481d"
+        ],
+        "kmain_paging.gdt.o": [
+          "e9659836fc5a2682f22cc3acb963766eb7e07ef8a0b015a069b75a7923fa4724",
+          "e9659836fc5a2682f22cc3acb963766eb7e07ef8a0b015a069b75a7923fa4724"
+        ],
+        "kmain_paging.heap.o": [
+          "4e1fcc168d82854d422564fc0cbc15f91afbaa2831c8a505d869c76e22d1a1d7",
+          "4e1fcc168d82854d422564fc0cbc15f91afbaa2831c8a505d869c76e22d1a1d7"
+        ],
+        "kmain_paging.icmp.o": [
+          "7b688132f376590751e331a8210c768ba85d1bf19f1439aec6f5faab9e229010",
+          "7b688132f376590751e331a8210c768ba85d1bf19f1439aec6f5faab9e229010"
+        ],
+        "kmain_paging.idt.o": [
+          "749d8746b17a795a7846ca156ead4235aaa748201d4bf4784aca388871f38ff8",
+          "749d8746b17a795a7846ca156ead4235aaa748201d4bf4784aca388871f38ff8"
+        ],
+        "kmain_paging.initramfs.o": [
+          "e8da99e4e9a3cc52cfa52ed0a0a3af094773cfbbe161b6f9926cee05c9214142",
+          "e8da99e4e9a3cc52cfa52ed0a0a3af094773cfbbe161b6f9926cee05c9214142"
+        ],
+        "kmain_paging.interrupts.o": [
+          "f0e6c014f93d60d01bb5647a9a6971f7dcb0a97039180097b8d9b8ed2d336d3a",
+          "f0e6c014f93d60d01bb5647a9a6971f7dcb0a97039180097b8d9b8ed2d336d3a"
+        ],
+        "kmain_paging.ip.o": [
+          "3b6bf2548e81f62ad40c095784874d60cc2ea79147a153b535a7de4e8501c0a0",
+          "3b6bf2548e81f62ad40c095784874d60cc2ea79147a153b535a7de4e8501c0a0"
+        ],
+        "kmain_paging.journal.o": [
+          "e838dd5216ad8df93a1e404855ba715b14382b5f31bc02ee7c05080e6754379e",
+          "e838dd5216ad8df93a1e404855ba715b14382b5f31bc02ee7c05080e6754379e"
+        ],
+        "kmain_paging.log.o": [
+          "e69f8a1d7bf1f1df785497cfff3d2da34c44e4614172847b62fe41bda7e7a3a8",
+          "e69f8a1d7bf1f1df785497cfff3d2da34c44e4614172847b62fe41bda7e7a3a8"
+        ],
+        "kmain_paging.net.o": [
+          "f253f93723384784bd81a9e58779617d2e71cd259b8ad78b9daf62d2438d9c6a",
+          "f253f93723384784bd81a9e58779617d2e71cd259b8ad78b9daf62d2438d9c6a"
+        ],
+        "kmain_paging.netd.o": [
+          "b66c41eeba6fc38373c6ba64431a16baddc589d9844a38f14d086fda3363fbbf",
+          "b66c41eeba6fc38373c6ba64431a16baddc589d9844a38f14d086fda3363fbbf"
+        ],
+        "kmain_paging.paging.o": [
+          "dd9f9f34cf3a9ca67396d769e67037ab19cedccd0f651b19c0d9745048564d17",
+          "dd9f9f34cf3a9ca67396d769e67037ab19cedccd0f651b19c0d9745048564d17"
+        ],
+        "kmain_paging.panic.o": [
+          "1a3aee4ee52c5e53c2d12af02c480ef1bbd84301b5110c2a9cf44d819e71e410",
+          "1a3aee4ee52c5e53c2d12af02c480ef1bbd84301b5110c2a9cf44d819e71e410"
+        ],
+        "kmain_paging.pci.o": [
+          "bc68855b8eaa367e03be54c98c62f4f349c36d7fa5ddc8245700f212eec62211",
+          "bc68855b8eaa367e03be54c98c62f4f349c36d7fa5ddc8245700f212eec62211"
+        ],
+        "kmain_paging.process.o": [
+          "d39756efb303e409ef0c6808cb063e102d50c98a3613bb3fbbc8a7b0217921cb",
+          "d39756efb303e409ef0c6808cb063e102d50c98a3613bb3fbbc8a7b0217921cb"
+        ],
+        "kmain_paging.procfs.o": [
+          "3851fb02b2658bab8afe908aaed0f3e3d0b1471c8cbce90d02e718ff3e8d48e3",
+          "3851fb02b2658bab8afe908aaed0f3e3d0b1471c8cbce90d02e718ff3e8d48e3"
+        ],
+        "kmain_paging.ready.o": [
+          "ee05f8756a0732caad10bf5fd0986612fabd6cb389c58daa52a3957912c86941",
+          "ee05f8756a0732caad10bf5fd0986612fabd6cb389c58daa52a3957912c86941"
+        ],
+        "kmain_paging.root.o": [
+          "48e891158847720de044ddb19813b587568f1bcf652edd7164bcb79751a5a393",
+          "48e891158847720de044ddb19813b587568f1bcf652edd7164bcb79751a5a393"
+        ],
+        "kmain_paging.rtc.o": [
+          "19a9506dc9ddc398568c93580c5985553687d9562718fa5b7e8803ae7fa946eb",
+          "19a9506dc9ddc398568c93580c5985553687d9562718fa5b7e8803ae7fa946eb"
+        ],
+        "kmain_paging.sched.o": [
+          "ff30e1dc382e3c82b1ea9ef3cce9dd77569d385c2586f546a8faed7eda5ed97d",
+          "ff30e1dc382e3c82b1ea9ef3cce9dd77569d385c2586f546a8faed7eda5ed97d"
+        ],
+        "kmain_paging.screen.o": [
+          "a581270f5cef259c78ff2c5446dc37f485dd07ad4e82f172294cb15004c025ff",
+          "a581270f5cef259c78ff2c5446dc37f485dd07ad4e82f172294cb15004c025ff"
+        ],
+        "kmain_paging.serial.o": [
+          "73dfde530fb28741458aa83025bf9076e3818939438629fb642a1ce7c78a0857",
+          "73dfde530fb28741458aa83025bf9076e3818939438629fb642a1ce7c78a0857"
+        ],
+        "kmain_paging.signal.o": [
+          "fdc8ef427dd1e24ecb6cfbd6efbba6461386a5271564b207c39948fcdafcaa5d",
+          "fdc8ef427dd1e24ecb6cfbd6efbba6461386a5271564b207c39948fcdafcaa5d"
+        ],
+        "kmain_paging.socket.o": [
+          "bce5eb4b875484481e11b223fdbe3de3d41f6daeeebc5e0f1a6bfa70fda562bf",
+          "bce5eb4b875484481e11b223fdbe3de3d41f6daeeebc5e0f1a6bfa70fda562bf"
+        ],
+        "kmain_paging.sound.o": [
+          "35da8293d522cb694f2a0773b8ab55d7a97a3f40c29a4eca6f71f3fdce02b597",
+          "35da8293d522cb694f2a0773b8ab55d7a97a3f40c29a4eca6f71f3fdce02b597"
+        ],
+        "kmain_paging.speaker.o": [
+          "0e579a5cd518868479d6aabd6ee80f122a32ee2cf4219d3b2034242cbac8f6d8",
+          "0e579a5cd518868479d6aabd6ee80f122a32ee2cf4219d3b2034242cbac8f6d8"
+        ],
+        "kmain_paging.sync.o": [
+          "097676ca67e484d66509bbb728c22518ab9efe6aad904f61aed82c9d0f018b91",
+          "097676ca67e484d66509bbb728c22518ab9efe6aad904f61aed82c9d0f018b91"
+        ],
+        "kmain_paging.tcp.o": [
+          "71dc1aa0f597cb0c0a88f173f8a5da3b64053c0251b6949b3e19fad0b8351207",
+          "71dc1aa0f597cb0c0a88f173f8a5da3b64053c0251b6949b3e19fad0b8351207"
+        ],
+        "kmain_paging.timer.o": [
+          "2c1fe1cc4c17f96d943186076a151127c3add012ea1e40e15e87ec49cda3d733",
+          "2c1fe1cc4c17f96d943186076a151127c3add012ea1e40e15e87ec49cda3d733"
+        ],
+        "kmain_paging.tree.o": [
+          "f86407138d98b0280b5af214bb5ab4f364f1324995654443711b5a19705a9e8b",
+          "f86407138d98b0280b5af214bb5ab4f364f1324995654443711b5a19705a9e8b"
+        ],
+        "kmain_paging.uaccess.o": [
+          "b9be13d3ec13142eb34e82c057c4ae6f5996b67a67de78c07b9d0d512a94df08",
+          "b9be13d3ec13142eb34e82c057c4ae6f5996b67a67de78c07b9d0d512a94df08"
+        ],
+        "kmain_paging.udp.o": [
+          "ef2b7273f205c6d0c9f137e6f35b956071bf5dff7aa112311ebb8f8f0c8a8688",
+          "ef2b7273f205c6d0c9f137e6f35b956071bf5dff7aa112311ebb8f8f0c8a8688"
+        ],
+        "kmain_paging.unix.o": [
+          "8241ff807a29db5916fd769386470401d3aaf5a99c4a4be5dc01b390f3dcd386",
+          "8241ff807a29db5916fd769386470401d3aaf5a99c4a4be5dc01b390f3dcd386"
+        ],
+        "kmain_paging.user.o": [
+          "bc46d20c2f2442b0c6cb53a3f60cba59dbda4d4a349ef013ebf7ca0d6944eae5",
+          "bc46d20c2f2442b0c6cb53a3f60cba59dbda4d4a349ef013ebf7ca0d6944eae5"
+        ],
+        "kmain_paging.vblk.o": [
+          "c9511d353bc78d68a053955340e8d0783943846f64236487703e7b508bd5e8f9",
+          "c9511d353bc78d68a053955340e8d0783943846f64236487703e7b508bd5e8f9"
+        ],
+        "kmain_paging.virtio.o": [
+          "0ccb6dea4e4c67f8d882558c7b1d41b66610c80f38185bb7f14be09dd354e148",
+          "0ccb6dea4e4c67f8d882558c7b1d41b66610c80f38185bb7f14be09dd354e148"
+        ],
+        "kmain_paging.vm.o": [
+          "6c3ddab21817da9e6a3d38ca54a0d4480de7f1f2191cadb4241abbbcd17d860c",
+          "6c3ddab21817da9e6a3d38ca54a0d4480de7f1f2191cadb4241abbbcd17d860c"
+        ],
+        "kmain_paging.rt-none.a": [
+          "6b9c4852077eee62c059a01c723686f057f0c010239d137fb90c1791203961b6",
+          "6b9c4852077eee62c059a01c723686f057f0c010239d137fb90c1791203961b6"
+        ]
+      },
+      "output_hashes_read_twice": {
+        "candidate": [
+          "04ea9c8931a106409d72db81a09922ef4289c4e4fbcfaabee53a1e107bb3d165",
+          "04ea9c8931a106409d72db81a09922ef4289c4e4fbcfaabee53a1e107bb3d165"
+        ],
+        "lld17": [
+          "5cb7e73c6c0815dde5f296b0fd38733434bac38ee92f296492b8089c68ef6edb",
+          "5cb7e73c6c0815dde5f296b0fd38733434bac38ee92f296492b8089c68ef6edb"
+        ],
+        "lld18": [
+          "5cb7e73c6c0815dde5f296b0fd38733434bac38ee92f296492b8089c68ef6edb",
+          "5cb7e73c6c0815dde5f296b0fd38733434bac38ee92f296492b8089c68ef6edb"
+        ],
+        "gnu": [
+          "79fb176e8b037232cd32a3ba09b3128381910fc49b3021384bd526b6102ae4ee",
+          "79fb176e8b037232cd32a3ba09b3128381910fc49b3021384bd526b6102ae4ee"
+        ]
+      },
+      "independent_candidate_relocations": 66882,
+      "bounds": {
+        "candidate": {
+          "__pax_image_start": 18446744071562067968,
+          "__pax_text_start": 18446744071562067968,
+          "__pax_rodata_start": 18446744071563366400,
+          "__pax_text_end": 18446744071563366400,
+          "__pax_data_start": 18446744071563440128,
+          "__pax_rodata_end": 18446744071563440128,
+          "__pax_image_end": 18446744071568523264
+        },
+        "lld17": {
+          "__pax_image_start": 18446744071562067968,
+          "__pax_text_start": 18446744071562067968,
+          "__pax_rodata_start": 18446744071563366400,
+          "__pax_text_end": 18446744071563366400,
+          "__pax_data_start": 18446744071563440128,
+          "__pax_rodata_end": 18446744071563440128,
+          "__pax_image_end": 18446744071568523264
+        },
+        "lld18": {
+          "__pax_image_start": 18446744071562067968,
+          "__pax_text_start": 18446744071562067968,
+          "__pax_rodata_start": 18446744071563366400,
+          "__pax_text_end": 18446744071563366400,
+          "__pax_data_start": 18446744071563440128,
+          "__pax_rodata_end": 18446744071563440128,
+          "__pax_image_end": 18446744071568523264
+        },
+        "gnu": {
+          "__pax_image_start": 18446744071562067968,
+          "__pax_text_start": 18446744071562067968,
+          "__pax_rodata_start": 18446744071563366400,
+          "__pax_text_end": 18446744071563366400,
+          "__pax_data_start": 18446744071563440128,
+          "__pax_rodata_end": 18446744071563440128,
+          "__pax_image_end": 18446744071568523264
+        }
+      },
+      "bounds_equal_oracles": {
+        "candidate": true,
+        "lld17": true,
+        "lld18": true,
+        "gnu": true
+      },
+      "boot_evidence_hashes_read_twice": {
+        "mpx2-paging-native-kmain_paging-bios.serial.log.halt": [
+          "cfb89ad92368a2c2a6ea59563eb337c22f36af956a82c999e34e597fc47679ee",
+          "cfb89ad92368a2c2a6ea59563eb337c22f36af956a82c999e34e597fc47679ee"
+        ],
+        "mpx2-paging-native-kmain_paging-bios.serial.log.meta": [
+          "f111af2f935a13e97c92e45738745383928377ccd1083423618f155f199d1402",
+          "f111af2f935a13e97c92e45738745383928377ccd1083423618f155f199d1402"
+        ],
+        "mpx2-paging-native-kmain_paging-bios.serial.log.qemu.log": [
+          "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        ],
+        "mpx2-paging-native-kmain_paging-bios.serial.log.cr3": [
+          "5636fdc5009e9461c485ca31b9488fd4f65dae0b08bba35279e0807cbcdce1be",
+          "5636fdc5009e9461c485ca31b9488fd4f65dae0b08bba35279e0807cbcdce1be"
+        ],
+        "mpx2-paging-native-kmain_paging-uefi.serial.log.halt": [
+          "747ec0ae63195abefc0c1861f2d1ca9a7bcb3719ea913adebd36ce2d79e63817",
+          "747ec0ae63195abefc0c1861f2d1ca9a7bcb3719ea913adebd36ce2d79e63817"
+        ],
+        "mpx2-paging-native-kmain_paging-uefi.serial.log.meta": [
+          "3acf9f2e426782a6fe9ab63f4216cbb4c40b9a0c11e5a9046d0e12c481d9068c",
+          "3acf9f2e426782a6fe9ab63f4216cbb4c40b9a0c11e5a9046d0e12c481d9068c"
+        ],
+        "mpx2-paging-native-kmain_paging-uefi.serial.log.qemu.log": [
+          "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        ],
+        "mpx2-paging-native-kmain_paging-uefi.serial.log.cr3": [
+          "76e9555e3ab8b5f78e2ed9f92f95565b115a295ee0cbfa472052c8fb0ad25485",
+          "76e9555e3ab8b5f78e2ed9f92f95565b115a295ee0cbfa472052c8fb0ad25485"
+        ],
+        "mpx2-paging-native-kmain_paging-bios.serial.log.verdict": [
+          "69dd2101e50284999e0bcb85a67a11f18ae7ba3f12a38d6efc9545b217f1c1c1",
+          "69dd2101e50284999e0bcb85a67a11f18ae7ba3f12a38d6efc9545b217f1c1c1"
+        ],
+        "mpx2-paging-native-kmain_paging-bios.serial.log": [
+          "8ae222a0763ef88da635d0f3a5dd42a4b9c9e88a43475c0e33f46881c727348e",
+          "8ae222a0763ef88da635d0f3a5dd42a4b9c9e88a43475c0e33f46881c727348e"
+        ],
+        "mpx2-paging-native-kmain_paging-bios.serial.log.cmd1": [
+          "5636fdc5009e9461c485ca31b9488fd4f65dae0b08bba35279e0807cbcdce1be",
+          "5636fdc5009e9461c485ca31b9488fd4f65dae0b08bba35279e0807cbcdce1be"
+        ],
+        "mpx2-paging-native-kmain_paging-bios.serial.log.cmd2": [
+          "9421f861426cb227cd5a4e2954ab5ca70950348415ec770dbe0fbe1b34962193",
+          "9421f861426cb227cd5a4e2954ab5ca70950348415ec770dbe0fbe1b34962193"
+        ],
+        "mpx2-paging-native-kmain_paging-bios.serial.log.cmd3": [
+          "cfc2c83e84e3d92bd444655bed794620910c75fe2828e4282b95041f5289f630",
+          "cfc2c83e84e3d92bd444655bed794620910c75fe2828e4282b95041f5289f630"
+        ],
+        "mpx2-paging-native-kmain_paging-uefi.serial.log.verdict": [
+          "a00bf7bd86eca78eb78ba5429a06c0ea90718a2e211e7e4c2dd1c505cbde8eb7",
+          "a00bf7bd86eca78eb78ba5429a06c0ea90718a2e211e7e4c2dd1c505cbde8eb7"
+        ],
+        "mpx2-paging-native-kmain_paging-uefi.serial.log": [
+          "d42ba243f9e2eb1b00284b3f20f47eeada72eb8a24a55853d6de1d04ebdfddb1",
+          "d42ba243f9e2eb1b00284b3f20f47eeada72eb8a24a55853d6de1d04ebdfddb1"
+        ],
+        "mpx2-paging-native-kmain_paging-uefi.serial.log.cmd1": [
+          "76e9555e3ab8b5f78e2ed9f92f95565b115a295ee0cbfa472052c8fb0ad25485",
+          "76e9555e3ab8b5f78e2ed9f92f95565b115a295ee0cbfa472052c8fb0ad25485"
+        ],
+        "mpx2-paging-native-kmain_paging-uefi.serial.log.cmd2": [
+          "0d36e361a205bbcfa18bff09492d1ea94db8e97ba6eefd2608ef634ea6e518d2",
+          "0d36e361a205bbcfa18bff09492d1ea94db8e97ba6eefd2608ef634ea6e518d2"
+        ],
+        "mpx2-paging-native-kmain_paging-uefi.serial.log.cmd3": [
+          "cfc2c83e84e3d92bd444655bed794620910c75fe2828e4282b95041f5289f630",
+          "cfc2c83e84e3d92bd444655bed794620910c75fe2828e4282b95041f5289f630"
+        ]
+      },
+      "iso_sha256_read_twice": [
+        "b354951dd496edc77f709c9fa86b7dfd6d35ca2d75188c59661d676f7719d209",
+        "b354951dd496edc77f709c9fa86b7dfd6d35ca2d75188c59661d676f7719d209"
+      ]
+    },
+    {
+      "tier": "release",
+      "input_hashes_read_twice": {
+        "start.o": [
+          "cfa2f305e5aa78585a1d42e24a3d84c056fc14c1ec78042bd139741030512b26",
+          "cfa2f305e5aa78585a1d42e24a3d84c056fc14c1ec78042bd139741030512b26"
+        ],
+        "kmain_paging.asm-console.o": [
+          "1748257d65943f37fdd5484ae0c4a94d6148f80af75b6ccf3624d4f4d6bb2cde",
+          "1748257d65943f37fdd5484ae0c4a94d6148f80af75b6ccf3624d4f4d6bb2cde"
+        ],
+        "kmain_paging.asm-cpu.o": [
+          "bdcc49696f175327563867ecf4868c7a94114322cbea693d328c6c229cadc3ce",
+          "bdcc49696f175327563867ecf4868c7a94114322cbea693d328c6c229cadc3ce"
+        ],
+        "kmain_paging.asm-event.o": [
+          "02ea7efe16017b94f9bc0da0a932371c0f1a2bc17e804b833aeb11a121dc7aac",
+          "02ea7efe16017b94f9bc0da0a932371c0f1a2bc17e804b833aeb11a121dc7aac"
+        ],
+        "kmain_paging.asm-font.o": [
+          "f31bc450710ccb23cd1f272ed153b48d952e6b33297d2df8346f80bb9de01184",
+          "f31bc450710ccb23cd1f272ed153b48d952e6b33297d2df8346f80bb9de01184"
+        ],
+        "kmain_paging.asm-fpu.o": [
+          "55909f503e6796512858072f0b40d9acb6aafb4e43b8c968d97fac38b3267f54",
+          "55909f503e6796512858072f0b40d9acb6aafb4e43b8c968d97fac38b3267f54"
+        ],
+        "kmain_paging.asm-io.o": [
+          "cb8946c1d8da44a7091ae3a5ef51c02cac05abf6c404ccde550d31e08db6a931",
+          "cb8946c1d8da44a7091ae3a5ef51c02cac05abf6c404ccde550d31e08db6a931"
+        ],
+        "kmain_paging.asm-isr.o": [
+          "c6aeb6ab4df8cb937897356bdbda2b0eb41a6bd183a26f50538e2f7a6e46abd5",
+          "c6aeb6ab4df8cb937897356bdbda2b0eb41a6bd183a26f50538e2f7a6e46abd5"
+        ],
+        "kmain_paging.asm-net.o": [
+          "40824dfc7059862935fdd5245d32ca817043690a10c53f38cd19dd7b82ecb287",
+          "40824dfc7059862935fdd5245d32ca817043690a10c53f38cd19dd7b82ecb287"
+        ],
+        "kmain_paging.asm-programs.o": [
+          "70b917b1156567c0a9e89080708d9a13d5df83cfb537f554f0c404de0c5a5437",
+          "70b917b1156567c0a9e89080708d9a13d5df83cfb537f554f0c404de0c5a5437"
+        ],
+        "kmain_paging.asm-sched.o": [
+          "52586c4e47f291a3b26756e0be5868479463cbe4763e86fe6b3a36ab02098846",
+          "52586c4e47f291a3b26756e0be5868479463cbe4763e86fe6b3a36ab02098846"
+        ],
+        "kmain_paging.asm-screen.o": [
+          "cb0b6fd035767beae9169106f961c123625c3ca67b0ddc1749f5edf492f0593e",
+          "cb0b6fd035767beae9169106f961c123625c3ca67b0ddc1749f5edf492f0593e"
+        ],
+        "kmain_paging.asm-sound.o": [
+          "7f6410495d7af5e16167ddc56cb5ca1e259cff1e3c9550fcf96775eae99036ff",
+          "7f6410495d7af5e16167ddc56cb5ca1e259cff1e3c9550fcf96775eae99036ff"
+        ],
+        "kmain_paging.asm-speaker.o": [
+          "5d61b7d635b02e1414cfecaf6349f03d3bc623b31c8b1de64942278883ae9563",
+          "5d61b7d635b02e1414cfecaf6349f03d3bc623b31c8b1de64942278883ae9563"
+        ],
+        "kmain_paging.asm-tree.o": [
+          "280afd2eadc3b64ae351aef0fe168a03c8ebaf35e3834bdb1a9571deee154cc5",
+          "280afd2eadc3b64ae351aef0fe168a03c8ebaf35e3834bdb1a9571deee154cc5"
+        ],
+        "kmain_paging.asm-unix.o": [
+          "81be50acb6d9b9ee03ad9178640dbe1340b5eed5ae3013a2779e635f7f938cd2",
+          "81be50acb6d9b9ee03ad9178640dbe1340b5eed5ae3013a2779e635f7f938cd2"
+        ],
+        "kmain_paging.asm-user.o": [
+          "2a9679b11f8242ce9364b389fc820cca8b975adf314e6f144062b98ab1c81a22",
+          "2a9679b11f8242ce9364b389fc820cca8b975adf314e6f144062b98ab1c81a22"
+        ],
+        "kmain_paging.c00.o": [
+          "995593a242fe921cfeeb4dec2a9b6c076e9c8c7957e0c4cd379f65b379eefd73",
+          "995593a242fe921cfeeb4dec2a9b6c076e9c8c7957e0c4cd379f65b379eefd73"
+        ],
+        "kmain_paging.c01.o": [
+          "8a96e7758f86db588dc21f9787386b56d209c53e30bff9a2892eb37a00371cd2",
+          "8a96e7758f86db588dc21f9787386b56d209c53e30bff9a2892eb37a00371cd2"
+        ],
+        "kmain_paging.c02.o": [
+          "01a3d6448ca3f7b24aa2a42b9637483cf225d3cce88e96f3bcc4d38ae048a6ae",
+          "01a3d6448ca3f7b24aa2a42b9637483cf225d3cce88e96f3bcc4d38ae048a6ae"
+        ],
+        "kmain_paging.c03.o": [
+          "fb97b6eef44e5b6b3e4da551423619dd407c6876bc80c23816f1cb75bc1432d5",
+          "fb97b6eef44e5b6b3e4da551423619dd407c6876bc80c23816f1cb75bc1432d5"
+        ],
+        "kmain_paging.c04.o": [
+          "41759fa701c884127c9e15e2e4b8b9c752c8941b0ee5eafa875552b16052b829",
+          "41759fa701c884127c9e15e2e4b8b9c752c8941b0ee5eafa875552b16052b829"
+        ],
+        "kmain_paging.c05.o": [
+          "e03f37f479c7e82488848b9ac94ef92f3f098c6a7df3d5f57fb3651beb0f913d",
+          "e03f37f479c7e82488848b9ac94ef92f3f098c6a7df3d5f57fb3651beb0f913d"
+        ],
+        "kmain_paging.c06.o": [
+          "1f18cd495d6ee22c9b0b4d4e698260cd3f5c1cd9f6b25d29b61e1b1181d7dac7",
+          "1f18cd495d6ee22c9b0b4d4e698260cd3f5c1cd9f6b25d29b61e1b1181d7dac7"
+        ],
+        "kmain_paging.c07.o": [
+          "c4761d87df4e1ab739183352308cb09e0ee65c7210ea26bad0bd9cc0c1fc9e4c",
+          "c4761d87df4e1ab739183352308cb09e0ee65c7210ea26bad0bd9cc0c1fc9e4c"
+        ],
+        "kmain_paging.rt-none.a": [
+          "6b9c4852077eee62c059a01c723686f057f0c010239d137fb90c1791203961b6",
+          "6b9c4852077eee62c059a01c723686f057f0c010239d137fb90c1791203961b6"
+        ]
+      },
+      "output_hashes_read_twice": {
+        "candidate": [
+          "f3a2a6650fb4458a5cfa6e4d17e4434b77de6e0a5698d918dc249d9228cfdc22",
+          "f3a2a6650fb4458a5cfa6e4d17e4434b77de6e0a5698d918dc249d9228cfdc22"
+        ],
+        "lld17": [
+          "05fcb64b378486f03041b04b0b5466fd1ef01a940739d0db2ae7058d2bd25182",
+          "05fcb64b378486f03041b04b0b5466fd1ef01a940739d0db2ae7058d2bd25182"
+        ],
+        "lld18": [
+          "7cd4f0cdffdfde0b693c09666265dbb27539bc4efce32e33e6f6f101ee68e1a8",
+          "7cd4f0cdffdfde0b693c09666265dbb27539bc4efce32e33e6f6f101ee68e1a8"
+        ],
+        "gnu": [
+          "de5bf4d2314512d88096a9ebd1512e32d6017c45db93dc7cce8e28cb316df318",
+          "de5bf4d2314512d88096a9ebd1512e32d6017c45db93dc7cce8e28cb316df318"
+        ]
+      },
+      "independent_candidate_relocations": 60768,
+      "bounds": {
+        "candidate": {
+          "__pax_image_start": 18446744071562067968,
+          "__pax_text_start": 18446744071562067968,
+          "__pax_rodata_start": 18446744071563124736,
+          "__pax_text_end": 18446744071563124736,
+          "__pax_data_start": 18446744071563198464,
+          "__pax_rodata_end": 18446744071563198464,
+          "__pax_image_end": 18446744071568261120
+        },
+        "lld17": {
+          "__pax_image_start": 18446744071562067968,
+          "__pax_text_start": 18446744071562067968,
+          "__pax_rodata_start": 18446744071563124736,
+          "__pax_text_end": 18446744071563124736,
+          "__pax_data_start": 18446744071563198464,
+          "__pax_rodata_end": 18446744071563198464,
+          "__pax_image_end": 18446744071568261120
+        },
+        "lld18": {
+          "__pax_image_start": 18446744071562067968,
+          "__pax_text_start": 18446744071562067968,
+          "__pax_rodata_start": 18446744071563124736,
+          "__pax_text_end": 18446744071563124736,
+          "__pax_data_start": 18446744071563198464,
+          "__pax_rodata_end": 18446744071563198464,
+          "__pax_image_end": 18446744071568261120
+        },
+        "gnu": {
+          "__pax_image_start": 18446744071562067968,
+          "__pax_text_start": 18446744071562067968,
+          "__pax_rodata_start": 18446744071563124736,
+          "__pax_text_end": 18446744071563124736,
+          "__pax_data_start": 18446744071563198464,
+          "__pax_rodata_end": 18446744071563198464,
+          "__pax_image_end": 18446744071568261120
+        }
+      },
+      "bounds_equal_oracles": {
+        "candidate": true,
+        "lld17": true,
+        "lld18": true,
+        "gnu": true
+      },
+      "boot_evidence_hashes_read_twice": {
+        "mpx2-paging-release-kmain_paging-bios.serial.log.halt": [
+          "8d24bc45b49befc9c4e967e87c2f9066e73e6c3aad285e28ce5038c9c5cd19de",
+          "8d24bc45b49befc9c4e967e87c2f9066e73e6c3aad285e28ce5038c9c5cd19de"
+        ],
+        "mpx2-paging-release-kmain_paging-bios.serial.log.meta": [
+          "0a94f3371fabd9ed939fdf18d72dce2c7a39ebbff85126964a05e395baae02be",
+          "0a94f3371fabd9ed939fdf18d72dce2c7a39ebbff85126964a05e395baae02be"
+        ],
+        "mpx2-paging-release-kmain_paging-bios.serial.log.qemu.log": [
+          "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        ],
+        "mpx2-paging-release-kmain_paging-bios.serial.log.cr3": [
+          "651a1ada2b5b66b61cf51599684338062d47389616dfcbd4c40a641359d8bcf6",
+          "651a1ada2b5b66b61cf51599684338062d47389616dfcbd4c40a641359d8bcf6"
+        ],
+        "mpx2-paging-release-kmain_paging-uefi.serial.log.halt": [
+          "7e14cc399ce16fa01321173388408308ff0b455dd697976e4737f365b0fd8c83",
+          "7e14cc399ce16fa01321173388408308ff0b455dd697976e4737f365b0fd8c83"
+        ],
+        "mpx2-paging-release-kmain_paging-uefi.serial.log.meta": [
+          "ea5150e511b0295f1d9ff6e47fa6323ab699428e907f963d17534adb1777c6aa",
+          "ea5150e511b0295f1d9ff6e47fa6323ab699428e907f963d17534adb1777c6aa"
+        ],
+        "mpx2-paging-release-kmain_paging-uefi.serial.log.qemu.log": [
+          "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        ],
+        "mpx2-paging-release-kmain_paging-uefi.serial.log.cr3": [
+          "f37009f258b235fd607c491693e9f384ffdff12f12fb8342b11e178fc4bed5af",
+          "f37009f258b235fd607c491693e9f384ffdff12f12fb8342b11e178fc4bed5af"
+        ],
+        "mpx2-paging-release-kmain_paging-bios.serial.log.verdict": [
+          "69dd2101e50284999e0bcb85a67a11f18ae7ba3f12a38d6efc9545b217f1c1c1",
+          "69dd2101e50284999e0bcb85a67a11f18ae7ba3f12a38d6efc9545b217f1c1c1"
+        ],
+        "mpx2-paging-release-kmain_paging-bios.serial.log": [
+          "7111bf81d9040535dd05e690aa6602212ea47f2cadb08c507bdd1cec7c437eba",
+          "7111bf81d9040535dd05e690aa6602212ea47f2cadb08c507bdd1cec7c437eba"
+        ],
+        "mpx2-paging-release-kmain_paging-bios.serial.log.cmd1": [
+          "651a1ada2b5b66b61cf51599684338062d47389616dfcbd4c40a641359d8bcf6",
+          "651a1ada2b5b66b61cf51599684338062d47389616dfcbd4c40a641359d8bcf6"
+        ],
+        "mpx2-paging-release-kmain_paging-bios.serial.log.cmd2": [
+          "597a361bbea99d59a22ff24b9a3898ea65b5f0a77088e21aaea1f40a19f871d5",
+          "597a361bbea99d59a22ff24b9a3898ea65b5f0a77088e21aaea1f40a19f871d5"
+        ],
+        "mpx2-paging-release-kmain_paging-bios.serial.log.cmd3": [
+          "cfc2c83e84e3d92bd444655bed794620910c75fe2828e4282b95041f5289f630",
+          "cfc2c83e84e3d92bd444655bed794620910c75fe2828e4282b95041f5289f630"
+        ],
+        "mpx2-paging-release-kmain_paging-uefi.serial.log.verdict": [
+          "a00bf7bd86eca78eb78ba5429a06c0ea90718a2e211e7e4c2dd1c505cbde8eb7",
+          "a00bf7bd86eca78eb78ba5429a06c0ea90718a2e211e7e4c2dd1c505cbde8eb7"
+        ],
+        "mpx2-paging-release-kmain_paging-uefi.serial.log": [
+          "dae8309629bf5caee40c982a7a4aff06e32c59e45c050eeec93fc715fca59877",
+          "dae8309629bf5caee40c982a7a4aff06e32c59e45c050eeec93fc715fca59877"
+        ],
+        "mpx2-paging-release-kmain_paging-uefi.serial.log.cmd1": [
+          "f37009f258b235fd607c491693e9f384ffdff12f12fb8342b11e178fc4bed5af",
+          "f37009f258b235fd607c491693e9f384ffdff12f12fb8342b11e178fc4bed5af"
+        ],
+        "mpx2-paging-release-kmain_paging-uefi.serial.log.cmd2": [
+          "1ef39a9bb77789f36b5ba3725cfdfcc175f43df9a0789cb9ea07107bfcbb8b9c",
+          "1ef39a9bb77789f36b5ba3725cfdfcc175f43df9a0789cb9ea07107bfcbb8b9c"
+        ],
+        "mpx2-paging-release-kmain_paging-uefi.serial.log.cmd3": [
+          "cfc2c83e84e3d92bd444655bed794620910c75fe2828e4282b95041f5289f630",
+          "cfc2c83e84e3d92bd444655bed794620910c75fe2828e4282b95041f5289f630"
+        ]
+      },
+      "iso_sha256_read_twice": [
+        "ef45713b5c4dde1b02b84f4719ff56c9260b7d149553855d3b44fe6d6c37450a",
+        "ef45713b5c4dde1b02b84f4719ff56c9260b7d149553855d3b44fe6d6c37450a"
+      ]
+    }
+  ],
+  "commands": [
+    {
+      "name": "pax-head",
+      "argv": [
+        "git",
+        "rev-parse",
+        "HEAD"
+      ],
+      "status": 0,
+      "seconds": 0.0008377990016015247
+    },
+    {
+      "name": "limine",
+      "argv": [
+        "/lane/pax/tools/fetch-limine"
+      ],
+      "status": 0,
+      "seconds": 0.002793915002257563
+    },
+    {
+      "name": "native-inputs",
+      "argv": [
+        "/lane/pax/tools/build-kernel",
+        "--src",
+        "kernel/kmain_paging.lu",
+        "/lane/kernel-qualified/native"
+      ],
+      "status": 0,
+      "seconds": 1.8417700599966338
+    },
+    {
+      "name": "native-candidate",
+      "argv": [
+        "/lane/ligature/target/ligature",
+        "-nostdlib",
+        "-static",
+        "-T",
+        "/lane/ligature/tests/fixtures/pax-kernel.ld",
+        "-o",
+        "/lane/kernel-qualified/native/candidate.elf",
+        "/lane/kernel-qualified/native/start.o",
+        "/lane/kernel-qualified/native/kmain_paging.asm-console.o",
+        "/lane/kernel-qualified/native/kmain_paging.asm-cpu.o",
+        "/lane/kernel-qualified/native/kmain_paging.asm-event.o",
+        "/lane/kernel-qualified/native/kmain_paging.asm-font.o",
+        "/lane/kernel-qualified/native/kmain_paging.asm-fpu.o",
+        "/lane/kernel-qualified/native/kmain_paging.asm-io.o",
+        "/lane/kernel-qualified/native/kmain_paging.asm-isr.o",
+        "/lane/kernel-qualified/native/kmain_paging.asm-net.o",
+        "/lane/kernel-qualified/native/kmain_paging.asm-programs.o",
+        "/lane/kernel-qualified/native/kmain_paging.asm-sched.o",
+        "/lane/kernel-qualified/native/kmain_paging.asm-screen.o",
+        "/lane/kernel-qualified/native/kmain_paging.asm-sound.o",
+        "/lane/kernel-qualified/native/kmain_paging.asm-speaker.o",
+        "/lane/kernel-qualified/native/kmain_paging.asm-tree.o",
+        "/lane/kernel-qualified/native/kmain_paging.asm-unix.o",
+        "/lane/kernel-qualified/native/kmain_paging.asm-user.o",
+        "/lane/kernel-qualified/native/kmain_paging.arp.o",
+        "/lane/kernel-qualified/native/kmain_paging.block.o",
+        "/lane/kernel-qualified/native/kmain_paging.boot_info.o",
+        "/lane/kernel-qualified/native/kmain_paging.console.o",
+        "/lane/kernel-qualified/native/kmain_paging.cred.o",
+        "/lane/kernel-qualified/native/kmain_paging.elf.o",
+        "/lane/kernel-qualified/native/kmain_paging.event.o",
+        "/lane/kernel-qualified/native/kmain_paging.ext2.o",
+        "/lane/kernel-qualified/native/kmain_paging.files.o",
+        "/lane/kernel-qualified/native/kmain_paging.fpu.o",
+        "/lane/kernel-qualified/native/kmain_paging.frames.o",
+        "/lane/kernel-qualified/native/kmain_paging.futex.o",
+        "/lane/kernel-qualified/native/kmain_paging.gdt.o",
+        "/lane/kernel-qualified/native/kmain_paging.heap.o",
+        "/lane/kernel-qualified/native/kmain_paging.icmp.o",
+        "/lane/kernel-qualified/native/kmain_paging.idt.o",
+        "/lane/kernel-qualified/native/kmain_paging.initramfs.o",
+        "/lane/kernel-qualified/native/kmain_paging.interrupts.o",
+        "/lane/kernel-qualified/native/kmain_paging.ip.o",
+        "/lane/kernel-qualified/native/kmain_paging.journal.o",
+        "/lane/kernel-qualified/native/kmain_paging.log.o",
+        "/lane/kernel-qualified/native/kmain_paging.net.o",
+        "/lane/kernel-qualified/native/kmain_paging.netd.o",
+        "/lane/kernel-qualified/native/kmain_paging.paging.o",
+        "/lane/kernel-qualified/native/kmain_paging.panic.o",
+        "/lane/kernel-qualified/native/kmain_paging.pci.o",
+        "/lane/kernel-qualified/native/kmain_paging.process.o",
+        "/lane/kernel-qualified/native/kmain_paging.procfs.o",
+        "/lane/kernel-qualified/native/kmain_paging.ready.o",
+        "/lane/kernel-qualified/native/kmain_paging.root.o",
+        "/lane/kernel-qualified/native/kmain_paging.rtc.o",
+        "/lane/kernel-qualified/native/kmain_paging.sched.o",
+        "/lane/kernel-qualified/native/kmain_paging.screen.o",
+        "/lane/kernel-qualified/native/kmain_paging.serial.o",
+        "/lane/kernel-qualified/native/kmain_paging.signal.o",
+        "/lane/kernel-qualified/native/kmain_paging.socket.o",
+        "/lane/kernel-qualified/native/kmain_paging.sound.o",
+        "/lane/kernel-qualified/native/kmain_paging.speaker.o",
+        "/lane/kernel-qualified/native/kmain_paging.sync.o",
+        "/lane/kernel-qualified/native/kmain_paging.tcp.o",
+        "/lane/kernel-qualified/native/kmain_paging.timer.o",
+        "/lane/kernel-qualified/native/kmain_paging.tree.o",
+        "/lane/kernel-qualified/native/kmain_paging.uaccess.o",
+        "/lane/kernel-qualified/native/kmain_paging.udp.o",
+        "/lane/kernel-qualified/native/kmain_paging.unix.o",
+        "/lane/kernel-qualified/native/kmain_paging.user.o",
+        "/lane/kernel-qualified/native/kmain_paging.vblk.o",
+        "/lane/kernel-qualified/native/kmain_paging.virtio.o",
+        "/lane/kernel-qualified/native/kmain_paging.vm.o",
+        "/lane/kernel-qualified/native/kmain_paging.rt-none.a"
+      ],
+      "status": 0,
+      "seconds": 4.237611348988139
+    },
+    {
+      "name": "native-candidate-symbols",
+      "argv": [
+        "nm",
+        "-n",
+        "/lane/kernel-qualified/native/candidate.elf"
+      ],
+      "status": 0,
+      "seconds": 0.009061780001502484
+    },
+    {
+      "name": "native-candidate-headers",
+      "argv": [
+        "readelf",
+        "-lSW",
+        "/lane/kernel-qualified/native/candidate.elf"
+      ],
+      "status": 0,
+      "seconds": 0.0006949870003154501
+    },
+    {
+      "name": "native-verify",
+      "argv": [
+        "/lane/ligature/target/ligature",
+        "verify",
+        "/lane/kernel-qualified/native/candidate.elf"
+      ],
+      "status": 0,
+      "seconds": 0.60083133399894
+    },
+    {
+      "name": "native-determinism",
+      "argv": [
+        "/lane/ligature/target/ligature",
+        "-nostdlib",
+        "-static",
+        "-T",
+        "/lane/ligature/tests/fixtures/pax-kernel.ld",
+        "-o",
+        "/lane/kernel-qualified/native/repeat.elf",
+        "/lane/kernel-qualified/native/start.o",
+        "/lane/kernel-qualified/native/kmain_paging.asm-console.o",
+        "/lane/kernel-qualified/native/kmain_paging.asm-cpu.o",
+        "/lane/kernel-qualified/native/kmain_paging.asm-event.o",
+        "/lane/kernel-qualified/native/kmain_paging.asm-font.o",
+        "/lane/kernel-qualified/native/kmain_paging.asm-fpu.o",
+        "/lane/kernel-qualified/native/kmain_paging.asm-io.o",
+        "/lane/kernel-qualified/native/kmain_paging.asm-isr.o",
+        "/lane/kernel-qualified/native/kmain_paging.asm-net.o",
+        "/lane/kernel-qualified/native/kmain_paging.asm-programs.o",
+        "/lane/kernel-qualified/native/kmain_paging.asm-sched.o",
+        "/lane/kernel-qualified/native/kmain_paging.asm-screen.o",
+        "/lane/kernel-qualified/native/kmain_paging.asm-sound.o",
+        "/lane/kernel-qualified/native/kmain_paging.asm-speaker.o",
+        "/lane/kernel-qualified/native/kmain_paging.asm-tree.o",
+        "/lane/kernel-qualified/native/kmain_paging.asm-unix.o",
+        "/lane/kernel-qualified/native/kmain_paging.asm-user.o",
+        "/lane/kernel-qualified/native/kmain_paging.arp.o",
+        "/lane/kernel-qualified/native/kmain_paging.block.o",
+        "/lane/kernel-qualified/native/kmain_paging.boot_info.o",
+        "/lane/kernel-qualified/native/kmain_paging.console.o",
+        "/lane/kernel-qualified/native/kmain_paging.cred.o",
+        "/lane/kernel-qualified/native/kmain_paging.elf.o",
+        "/lane/kernel-qualified/native/kmain_paging.event.o",
+        "/lane/kernel-qualified/native/kmain_paging.ext2.o",
+        "/lane/kernel-qualified/native/kmain_paging.files.o",
+        "/lane/kernel-qualified/native/kmain_paging.fpu.o",
+        "/lane/kernel-qualified/native/kmain_paging.frames.o",
+        "/lane/kernel-qualified/native/kmain_paging.futex.o",
+        "/lane/kernel-qualified/native/kmain_paging.gdt.o",
+        "/lane/kernel-qualified/native/kmain_paging.heap.o",
+        "/lane/kernel-qualified/native/kmain_paging.icmp.o",
+        "/lane/kernel-qualified/native/kmain_paging.idt.o",
+        "/lane/kernel-qualified/native/kmain_paging.initramfs.o",
+        "/lane/kernel-qualified/native/kmain_paging.interrupts.o",
+        "/lane/kernel-qualified/native/kmain_paging.ip.o",
+        "/lane/kernel-qualified/native/kmain_paging.journal.o",
+        "/lane/kernel-qualified/native/kmain_paging.log.o",
+        "/lane/kernel-qualified/native/kmain_paging.net.o",
+        "/lane/kernel-qualified/native/kmain_paging.netd.o",
+        "/lane/kernel-qualified/native/kmain_paging.paging.o",
+        "/lane/kernel-qualified/native/kmain_paging.panic.o",
+        "/lane/kernel-qualified/native/kmain_paging.pci.o",
+        "/lane/kernel-qualified/native/kmain_paging.process.o",
+        "/lane/kernel-qualified/native/kmain_paging.procfs.o",
+        "/lane/kernel-qualified/native/kmain_paging.ready.o",
+        "/lane/kernel-qualified/native/kmain_paging.root.o",
+        "/lane/kernel-qualified/native/kmain_paging.rtc.o",
+        "/lane/kernel-qualified/native/kmain_paging.sched.o",
+        "/lane/kernel-qualified/native/kmain_paging.screen.o",
+        "/lane/kernel-qualified/native/kmain_paging.serial.o",
+        "/lane/kernel-qualified/native/kmain_paging.signal.o",
+        "/lane/kernel-qualified/native/kmain_paging.socket.o",
+        "/lane/kernel-qualified/native/kmain_paging.sound.o",
+        "/lane/kernel-qualified/native/kmain_paging.speaker.o",
+        "/lane/kernel-qualified/native/kmain_paging.sync.o",
+        "/lane/kernel-qualified/native/kmain_paging.tcp.o",
+        "/lane/kernel-qualified/native/kmain_paging.timer.o",
+        "/lane/kernel-qualified/native/kmain_paging.tree.o",
+        "/lane/kernel-qualified/native/kmain_paging.uaccess.o",
+        "/lane/kernel-qualified/native/kmain_paging.udp.o",
+        "/lane/kernel-qualified/native/kmain_paging.unix.o",
+        "/lane/kernel-qualified/native/kmain_paging.user.o",
+        "/lane/kernel-qualified/native/kmain_paging.vblk.o",
+        "/lane/kernel-qualified/native/kmain_paging.virtio.o",
+        "/lane/kernel-qualified/native/kmain_paging.vm.o",
+        "/lane/kernel-qualified/native/kmain_paging.rt-none.a"
+      ],
+      "status": 0,
+      "seconds": 4.238905097998213
+    },
+    {
+      "name": "native-lld17",
+      "argv": [
+        "/lane/ligature/.link-inputs/ld.lld",
+        "--emit-relocs",
+        "-static",
+        "-T",
+        "/lane/ligature/tests/fixtures/pax-kernel.ld",
+        "-o",
+        "/lane/kernel-qualified/native/lld17.elf",
+        "/lane/kernel-qualified/native/start.o",
+        "/lane/kernel-qualified/native/kmain_paging.asm-console.o",
+        "/lane/kernel-qualified/native/kmain_paging.asm-cpu.o",
+        "/lane/kernel-qualified/native/kmain_paging.asm-event.o",
+        "/lane/kernel-qualified/native/kmain_paging.asm-font.o",
+        "/lane/kernel-qualified/native/kmain_paging.asm-fpu.o",
+        "/lane/kernel-qualified/native/kmain_paging.asm-io.o",
+        "/lane/kernel-qualified/native/kmain_paging.asm-isr.o",
+        "/lane/kernel-qualified/native/kmain_paging.asm-net.o",
+        "/lane/kernel-qualified/native/kmain_paging.asm-programs.o",
+        "/lane/kernel-qualified/native/kmain_paging.asm-sched.o",
+        "/lane/kernel-qualified/native/kmain_paging.asm-screen.o",
+        "/lane/kernel-qualified/native/kmain_paging.asm-sound.o",
+        "/lane/kernel-qualified/native/kmain_paging.asm-speaker.o",
+        "/lane/kernel-qualified/native/kmain_paging.asm-tree.o",
+        "/lane/kernel-qualified/native/kmain_paging.asm-unix.o",
+        "/lane/kernel-qualified/native/kmain_paging.asm-user.o",
+        "/lane/kernel-qualified/native/kmain_paging.arp.o",
+        "/lane/kernel-qualified/native/kmain_paging.block.o",
+        "/lane/kernel-qualified/native/kmain_paging.boot_info.o",
+        "/lane/kernel-qualified/native/kmain_paging.console.o",
+        "/lane/kernel-qualified/native/kmain_paging.cred.o",
+        "/lane/kernel-qualified/native/kmain_paging.elf.o",
+        "/lane/kernel-qualified/native/kmain_paging.event.o",
+        "/lane/kernel-qualified/native/kmain_paging.ext2.o",
+        "/lane/kernel-qualified/native/kmain_paging.files.o",
+        "/lane/kernel-qualified/native/kmain_paging.fpu.o",
+        "/lane/kernel-qualified/native/kmain_paging.frames.o",
+        "/lane/kernel-qualified/native/kmain_paging.futex.o",
+        "/lane/kernel-qualified/native/kmain_paging.gdt.o",
+        "/lane/kernel-qualified/native/kmain_paging.heap.o",
+        "/lane/kernel-qualified/native/kmain_paging.icmp.o",
+        "/lane/kernel-qualified/native/kmain_paging.idt.o",
+        "/lane/kernel-qualified/native/kmain_paging.initramfs.o",
+        "/lane/kernel-qualified/native/kmain_paging.interrupts.o",
+        "/lane/kernel-qualified/native/kmain_paging.ip.o",
+        "/lane/kernel-qualified/native/kmain_paging.journal.o",
+        "/lane/kernel-qualified/native/kmain_paging.log.o",
+        "/lane/kernel-qualified/native/kmain_paging.net.o",
+        "/lane/kernel-qualified/native/kmain_paging.netd.o",
+        "/lane/kernel-qualified/native/kmain_paging.paging.o",
+        "/lane/kernel-qualified/native/kmain_paging.panic.o",
+        "/lane/kernel-qualified/native/kmain_paging.pci.o",
+        "/lane/kernel-qualified/native/kmain_paging.process.o",
+        "/lane/kernel-qualified/native/kmain_paging.procfs.o",
+        "/lane/kernel-qualified/native/kmain_paging.ready.o",
+        "/lane/kernel-qualified/native/kmain_paging.root.o",
+        "/lane/kernel-qualified/native/kmain_paging.rtc.o",
+        "/lane/kernel-qualified/native/kmain_paging.sched.o",
+        "/lane/kernel-qualified/native/kmain_paging.screen.o",
+        "/lane/kernel-qualified/native/kmain_paging.serial.o",
+        "/lane/kernel-qualified/native/kmain_paging.signal.o",
+        "/lane/kernel-qualified/native/kmain_paging.socket.o",
+        "/lane/kernel-qualified/native/kmain_paging.sound.o",
+        "/lane/kernel-qualified/native/kmain_paging.speaker.o",
+        "/lane/kernel-qualified/native/kmain_paging.sync.o",
+        "/lane/kernel-qualified/native/kmain_paging.tcp.o",
+        "/lane/kernel-qualified/native/kmain_paging.timer.o",
+        "/lane/kernel-qualified/native/kmain_paging.tree.o",
+        "/lane/kernel-qualified/native/kmain_paging.uaccess.o",
+        "/lane/kernel-qualified/native/kmain_paging.udp.o",
+        "/lane/kernel-qualified/native/kmain_paging.unix.o",
+        "/lane/kernel-qualified/native/kmain_paging.user.o",
+        "/lane/kernel-qualified/native/kmain_paging.vblk.o",
+        "/lane/kernel-qualified/native/kmain_paging.virtio.o",
+        "/lane/kernel-qualified/native/kmain_paging.vm.o",
+        "/lane/kernel-qualified/native/kmain_paging.rt-none.a"
+      ],
+      "status": 0,
+      "seconds": 0.009885747989756055
+    },
+    {
+      "name": "native-lld17-symbols",
+      "argv": [
+        "nm",
+        "-n",
+        "/lane/kernel-qualified/native/lld17.elf"
+      ],
+      "status": 0,
+      "seconds": 0.009346908002044074
+    },
+    {
+      "name": "native-lld17-headers",
+      "argv": [
+        "readelf",
+        "-lSW",
+        "/lane/kernel-qualified/native/lld17.elf"
+      ],
+      "status": 0,
+      "seconds": 0.0006586280069313943
+    },
+    {
+      "name": "native-lld18",
+      "argv": [
+        "ld.lld-18",
+        "--emit-relocs",
+        "-static",
+        "-T",
+        "/lane/ligature/tests/fixtures/pax-kernel.ld",
+        "-o",
+        "/lane/kernel-qualified/native/lld18.elf",
+        "/lane/kernel-qualified/native/start.o",
+        "/lane/kernel-qualified/native/kmain_paging.asm-console.o",
+        "/lane/kernel-qualified/native/kmain_paging.asm-cpu.o",
+        "/lane/kernel-qualified/native/kmain_paging.asm-event.o",
+        "/lane/kernel-qualified/native/kmain_paging.asm-font.o",
+        "/lane/kernel-qualified/native/kmain_paging.asm-fpu.o",
+        "/lane/kernel-qualified/native/kmain_paging.asm-io.o",
+        "/lane/kernel-qualified/native/kmain_paging.asm-isr.o",
+        "/lane/kernel-qualified/native/kmain_paging.asm-net.o",
+        "/lane/kernel-qualified/native/kmain_paging.asm-programs.o",
+        "/lane/kernel-qualified/native/kmain_paging.asm-sched.o",
+        "/lane/kernel-qualified/native/kmain_paging.asm-screen.o",
+        "/lane/kernel-qualified/native/kmain_paging.asm-sound.o",
+        "/lane/kernel-qualified/native/kmain_paging.asm-speaker.o",
+        "/lane/kernel-qualified/native/kmain_paging.asm-tree.o",
+        "/lane/kernel-qualified/native/kmain_paging.asm-unix.o",
+        "/lane/kernel-qualified/native/kmain_paging.asm-user.o",
+        "/lane/kernel-qualified/native/kmain_paging.arp.o",
+        "/lane/kernel-qualified/native/kmain_paging.block.o",
+        "/lane/kernel-qualified/native/kmain_paging.boot_info.o",
+        "/lane/kernel-qualified/native/kmain_paging.console.o",
+        "/lane/kernel-qualified/native/kmain_paging.cred.o",
+        "/lane/kernel-qualified/native/kmain_paging.elf.o",
+        "/lane/kernel-qualified/native/kmain_paging.event.o",
+        "/lane/kernel-qualified/native/kmain_paging.ext2.o",
+        "/lane/kernel-qualified/native/kmain_paging.files.o",
+        "/lane/kernel-qualified/native/kmain_paging.fpu.o",
+        "/lane/kernel-qualified/native/kmain_paging.frames.o",
+        "/lane/kernel-qualified/native/kmain_paging.futex.o",
+        "/lane/kernel-qualified/native/kmain_paging.gdt.o",
+        "/lane/kernel-qualified/native/kmain_paging.heap.o",
+        "/lane/kernel-qualified/native/kmain_paging.icmp.o",
+        "/lane/kernel-qualified/native/kmain_paging.idt.o",
+        "/lane/kernel-qualified/native/kmain_paging.initramfs.o",
+        "/lane/kernel-qualified/native/kmain_paging.interrupts.o",
+        "/lane/kernel-qualified/native/kmain_paging.ip.o",
+        "/lane/kernel-qualified/native/kmain_paging.journal.o",
+        "/lane/kernel-qualified/native/kmain_paging.log.o",
+        "/lane/kernel-qualified/native/kmain_paging.net.o",
+        "/lane/kernel-qualified/native/kmain_paging.netd.o",
+        "/lane/kernel-qualified/native/kmain_paging.paging.o",
+        "/lane/kernel-qualified/native/kmain_paging.panic.o",
+        "/lane/kernel-qualified/native/kmain_paging.pci.o",
+        "/lane/kernel-qualified/native/kmain_paging.process.o",
+        "/lane/kernel-qualified/native/kmain_paging.procfs.o",
+        "/lane/kernel-qualified/native/kmain_paging.ready.o",
+        "/lane/kernel-qualified/native/kmain_paging.root.o",
+        "/lane/kernel-qualified/native/kmain_paging.rtc.o",
+        "/lane/kernel-qualified/native/kmain_paging.sched.o",
+        "/lane/kernel-qualified/native/kmain_paging.screen.o",
+        "/lane/kernel-qualified/native/kmain_paging.serial.o",
+        "/lane/kernel-qualified/native/kmain_paging.signal.o",
+        "/lane/kernel-qualified/native/kmain_paging.socket.o",
+        "/lane/kernel-qualified/native/kmain_paging.sound.o",
+        "/lane/kernel-qualified/native/kmain_paging.speaker.o",
+        "/lane/kernel-qualified/native/kmain_paging.sync.o",
+        "/lane/kernel-qualified/native/kmain_paging.tcp.o",
+        "/lane/kernel-qualified/native/kmain_paging.timer.o",
+        "/lane/kernel-qualified/native/kmain_paging.tree.o",
+        "/lane/kernel-qualified/native/kmain_paging.uaccess.o",
+        "/lane/kernel-qualified/native/kmain_paging.udp.o",
+        "/lane/kernel-qualified/native/kmain_paging.unix.o",
+        "/lane/kernel-qualified/native/kmain_paging.user.o",
+        "/lane/kernel-qualified/native/kmain_paging.vblk.o",
+        "/lane/kernel-qualified/native/kmain_paging.virtio.o",
+        "/lane/kernel-qualified/native/kmain_paging.vm.o",
+        "/lane/kernel-qualified/native/kmain_paging.rt-none.a"
+      ],
+      "status": 0,
+      "seconds": 0.013055613002507016
+    },
+    {
+      "name": "native-lld18-symbols",
+      "argv": [
+        "nm",
+        "-n",
+        "/lane/kernel-qualified/native/lld18.elf"
+      ],
+      "status": 0,
+      "seconds": 0.009358423994854093
+    },
+    {
+      "name": "native-lld18-headers",
+      "argv": [
+        "readelf",
+        "-lSW",
+        "/lane/kernel-qualified/native/lld18.elf"
+      ],
+      "status": 0,
+      "seconds": 0.0006325760041363537
+    },
+    {
+      "name": "native-gnu",
+      "argv": [
+        "ld.bfd",
+        "--emit-relocs",
+        "--no-relax",
+        "-static",
+        "-T",
+        "/lane/ligature/tests/fixtures/pax-kernel.ld",
+        "-o",
+        "/lane/kernel-qualified/native/gnu.elf",
+        "/lane/kernel-qualified/native/start.o",
+        "/lane/kernel-qualified/native/kmain_paging.asm-console.o",
+        "/lane/kernel-qualified/native/kmain_paging.asm-cpu.o",
+        "/lane/kernel-qualified/native/kmain_paging.asm-event.o",
+        "/lane/kernel-qualified/native/kmain_paging.asm-font.o",
+        "/lane/kernel-qualified/native/kmain_paging.asm-fpu.o",
+        "/lane/kernel-qualified/native/kmain_paging.asm-io.o",
+        "/lane/kernel-qualified/native/kmain_paging.asm-isr.o",
+        "/lane/kernel-qualified/native/kmain_paging.asm-net.o",
+        "/lane/kernel-qualified/native/kmain_paging.asm-programs.o",
+        "/lane/kernel-qualified/native/kmain_paging.asm-sched.o",
+        "/lane/kernel-qualified/native/kmain_paging.asm-screen.o",
+        "/lane/kernel-qualified/native/kmain_paging.asm-sound.o",
+        "/lane/kernel-qualified/native/kmain_paging.asm-speaker.o",
+        "/lane/kernel-qualified/native/kmain_paging.asm-tree.o",
+        "/lane/kernel-qualified/native/kmain_paging.asm-unix.o",
+        "/lane/kernel-qualified/native/kmain_paging.asm-user.o",
+        "/lane/kernel-qualified/native/kmain_paging.arp.o",
+        "/lane/kernel-qualified/native/kmain_paging.block.o",
+        "/lane/kernel-qualified/native/kmain_paging.boot_info.o",
+        "/lane/kernel-qualified/native/kmain_paging.console.o",
+        "/lane/kernel-qualified/native/kmain_paging.cred.o",
+        "/lane/kernel-qualified/native/kmain_paging.elf.o",
+        "/lane/kernel-qualified/native/kmain_paging.event.o",
+        "/lane/kernel-qualified/native/kmain_paging.ext2.o",
+        "/lane/kernel-qualified/native/kmain_paging.files.o",
+        "/lane/kernel-qualified/native/kmain_paging.fpu.o",
+        "/lane/kernel-qualified/native/kmain_paging.frames.o",
+        "/lane/kernel-qualified/native/kmain_paging.futex.o",
+        "/lane/kernel-qualified/native/kmain_paging.gdt.o",
+        "/lane/kernel-qualified/native/kmain_paging.heap.o",
+        "/lane/kernel-qualified/native/kmain_paging.icmp.o",
+        "/lane/kernel-qualified/native/kmain_paging.idt.o",
+        "/lane/kernel-qualified/native/kmain_paging.initramfs.o",
+        "/lane/kernel-qualified/native/kmain_paging.interrupts.o",
+        "/lane/kernel-qualified/native/kmain_paging.ip.o",
+        "/lane/kernel-qualified/native/kmain_paging.journal.o",
+        "/lane/kernel-qualified/native/kmain_paging.log.o",
+        "/lane/kernel-qualified/native/kmain_paging.net.o",
+        "/lane/kernel-qualified/native/kmain_paging.netd.o",
+        "/lane/kernel-qualified/native/kmain_paging.paging.o",
+        "/lane/kernel-qualified/native/kmain_paging.panic.o",
+        "/lane/kernel-qualified/native/kmain_paging.pci.o",
+        "/lane/kernel-qualified/native/kmain_paging.process.o",
+        "/lane/kernel-qualified/native/kmain_paging.procfs.o",
+        "/lane/kernel-qualified/native/kmain_paging.ready.o",
+        "/lane/kernel-qualified/native/kmain_paging.root.o",
+        "/lane/kernel-qualified/native/kmain_paging.rtc.o",
+        "/lane/kernel-qualified/native/kmain_paging.sched.o",
+        "/lane/kernel-qualified/native/kmain_paging.screen.o",
+        "/lane/kernel-qualified/native/kmain_paging.serial.o",
+        "/lane/kernel-qualified/native/kmain_paging.signal.o",
+        "/lane/kernel-qualified/native/kmain_paging.socket.o",
+        "/lane/kernel-qualified/native/kmain_paging.sound.o",
+        "/lane/kernel-qualified/native/kmain_paging.speaker.o",
+        "/lane/kernel-qualified/native/kmain_paging.sync.o",
+        "/lane/kernel-qualified/native/kmain_paging.tcp.o",
+        "/lane/kernel-qualified/native/kmain_paging.timer.o",
+        "/lane/kernel-qualified/native/kmain_paging.tree.o",
+        "/lane/kernel-qualified/native/kmain_paging.uaccess.o",
+        "/lane/kernel-qualified/native/kmain_paging.udp.o",
+        "/lane/kernel-qualified/native/kmain_paging.unix.o",
+        "/lane/kernel-qualified/native/kmain_paging.user.o",
+        "/lane/kernel-qualified/native/kmain_paging.vblk.o",
+        "/lane/kernel-qualified/native/kmain_paging.virtio.o",
+        "/lane/kernel-qualified/native/kmain_paging.vm.o",
+        "/lane/kernel-qualified/native/kmain_paging.rt-none.a"
+      ],
+      "status": 0,
+      "seconds": 0.01881368301110342
+    },
+    {
+      "name": "native-gnu-symbols",
+      "argv": [
+        "nm",
+        "-n",
+        "/lane/kernel-qualified/native/gnu.elf"
+      ],
+      "status": 0,
+      "seconds": 0.009262868989026174
+    },
+    {
+      "name": "native-gnu-headers",
+      "argv": [
+        "readelf",
+        "-lSW",
+        "/lane/kernel-qualified/native/gnu.elf"
+      ],
+      "status": 0,
+      "seconds": 0.000753790998714976
+    },
+    {
+      "name": "native-image",
+      "argv": [
+        "/lane/pax/tools/mkimage",
+        "/lane/kernel-qualified/images/native/kmain_paging.elf",
+        "/lane/kernel-qualified/images/native/kmain_paging.iso"
+      ],
+      "status": 0,
+      "seconds": 0.12257053398934659
+    },
+    {
+      "name": "native-boots",
+      "argv": [
+        "/lane/pax/tests/mpx2-paging",
+        "--images",
+        "/lane/kernel-qualified/images",
+        "--tier",
+        "native",
+        "--firmware",
+        "both"
+      ],
+      "status": 0,
+      "seconds": 5.273116609998397
+    },
+    {
+      "name": "release-inputs",
+      "argv": [
+        "/lane/pax/tools/build-kernel",
+        "--release",
+        "--src",
+        "kernel/kmain_paging.lu",
+        "/lane/kernel-qualified/release"
+      ],
+      "status": 0,
+      "seconds": 308.77005147899035
+    },
+    {
+      "name": "release-candidate",
+      "argv": [
+        "/lane/ligature/target/ligature",
+        "-nostdlib",
+        "-static",
+        "-T",
+        "/lane/ligature/tests/fixtures/pax-kernel.ld",
+        "-o",
+        "/lane/kernel-qualified/release/candidate.elf",
+        "/lane/kernel-qualified/release/start.o",
+        "/lane/kernel-qualified/release/kmain_paging.asm-console.o",
+        "/lane/kernel-qualified/release/kmain_paging.asm-cpu.o",
+        "/lane/kernel-qualified/release/kmain_paging.asm-event.o",
+        "/lane/kernel-qualified/release/kmain_paging.asm-font.o",
+        "/lane/kernel-qualified/release/kmain_paging.asm-fpu.o",
+        "/lane/kernel-qualified/release/kmain_paging.asm-io.o",
+        "/lane/kernel-qualified/release/kmain_paging.asm-isr.o",
+        "/lane/kernel-qualified/release/kmain_paging.asm-net.o",
+        "/lane/kernel-qualified/release/kmain_paging.asm-programs.o",
+        "/lane/kernel-qualified/release/kmain_paging.asm-sched.o",
+        "/lane/kernel-qualified/release/kmain_paging.asm-screen.o",
+        "/lane/kernel-qualified/release/kmain_paging.asm-sound.o",
+        "/lane/kernel-qualified/release/kmain_paging.asm-speaker.o",
+        "/lane/kernel-qualified/release/kmain_paging.asm-tree.o",
+        "/lane/kernel-qualified/release/kmain_paging.asm-unix.o",
+        "/lane/kernel-qualified/release/kmain_paging.asm-user.o",
+        "/lane/kernel-qualified/release/kmain_paging.c00.o",
+        "/lane/kernel-qualified/release/kmain_paging.c01.o",
+        "/lane/kernel-qualified/release/kmain_paging.c02.o",
+        "/lane/kernel-qualified/release/kmain_paging.c03.o",
+        "/lane/kernel-qualified/release/kmain_paging.c04.o",
+        "/lane/kernel-qualified/release/kmain_paging.c05.o",
+        "/lane/kernel-qualified/release/kmain_paging.c06.o",
+        "/lane/kernel-qualified/release/kmain_paging.c07.o",
+        "/lane/kernel-qualified/release/kmain_paging.rt-none.a"
+      ],
+      "status": 0,
+      "seconds": 3.0638473849976435
+    },
+    {
+      "name": "release-candidate-symbols",
+      "argv": [
+        "nm",
+        "-n",
+        "/lane/kernel-qualified/release/candidate.elf"
+      ],
+      "status": 0,
+      "seconds": 0.008592144004069269
+    },
+    {
+      "name": "release-candidate-headers",
+      "argv": [
+        "readelf",
+        "-lSW",
+        "/lane/kernel-qualified/release/candidate.elf"
+      ],
+      "status": 0,
+      "seconds": 0.000727855003788136
+    },
+    {
+      "name": "release-verify",
+      "argv": [
+        "/lane/ligature/target/ligature",
+        "verify",
+        "/lane/kernel-qualified/release/candidate.elf"
+      ],
+      "status": 0,
+      "seconds": 0.49017436799476855
+    },
+    {
+      "name": "release-determinism",
+      "argv": [
+        "/lane/ligature/target/ligature",
+        "-nostdlib",
+        "-static",
+        "-T",
+        "/lane/ligature/tests/fixtures/pax-kernel.ld",
+        "-o",
+        "/lane/kernel-qualified/release/repeat.elf",
+        "/lane/kernel-qualified/release/start.o",
+        "/lane/kernel-qualified/release/kmain_paging.asm-console.o",
+        "/lane/kernel-qualified/release/kmain_paging.asm-cpu.o",
+        "/lane/kernel-qualified/release/kmain_paging.asm-event.o",
+        "/lane/kernel-qualified/release/kmain_paging.asm-font.o",
+        "/lane/kernel-qualified/release/kmain_paging.asm-fpu.o",
+        "/lane/kernel-qualified/release/kmain_paging.asm-io.o",
+        "/lane/kernel-qualified/release/kmain_paging.asm-isr.o",
+        "/lane/kernel-qualified/release/kmain_paging.asm-net.o",
+        "/lane/kernel-qualified/release/kmain_paging.asm-programs.o",
+        "/lane/kernel-qualified/release/kmain_paging.asm-sched.o",
+        "/lane/kernel-qualified/release/kmain_paging.asm-screen.o",
+        "/lane/kernel-qualified/release/kmain_paging.asm-sound.o",
+        "/lane/kernel-qualified/release/kmain_paging.asm-speaker.o",
+        "/lane/kernel-qualified/release/kmain_paging.asm-tree.o",
+        "/lane/kernel-qualified/release/kmain_paging.asm-unix.o",
+        "/lane/kernel-qualified/release/kmain_paging.asm-user.o",
+        "/lane/kernel-qualified/release/kmain_paging.c00.o",
+        "/lane/kernel-qualified/release/kmain_paging.c01.o",
+        "/lane/kernel-qualified/release/kmain_paging.c02.o",
+        "/lane/kernel-qualified/release/kmain_paging.c03.o",
+        "/lane/kernel-qualified/release/kmain_paging.c04.o",
+        "/lane/kernel-qualified/release/kmain_paging.c05.o",
+        "/lane/kernel-qualified/release/kmain_paging.c06.o",
+        "/lane/kernel-qualified/release/kmain_paging.c07.o",
+        "/lane/kernel-qualified/release/kmain_paging.rt-none.a"
+      ],
+      "status": 0,
+      "seconds": 3.0654233599925647
+    },
+    {
+      "name": "release-lld17",
+      "argv": [
+        "/lane/ligature/.link-inputs/ld.lld",
+        "--emit-relocs",
+        "-static",
+        "-T",
+        "/lane/ligature/tests/fixtures/pax-kernel.ld",
+        "-o",
+        "/lane/kernel-qualified/release/lld17.elf",
+        "/lane/kernel-qualified/release/start.o",
+        "/lane/kernel-qualified/release/kmain_paging.asm-console.o",
+        "/lane/kernel-qualified/release/kmain_paging.asm-cpu.o",
+        "/lane/kernel-qualified/release/kmain_paging.asm-event.o",
+        "/lane/kernel-qualified/release/kmain_paging.asm-font.o",
+        "/lane/kernel-qualified/release/kmain_paging.asm-fpu.o",
+        "/lane/kernel-qualified/release/kmain_paging.asm-io.o",
+        "/lane/kernel-qualified/release/kmain_paging.asm-isr.o",
+        "/lane/kernel-qualified/release/kmain_paging.asm-net.o",
+        "/lane/kernel-qualified/release/kmain_paging.asm-programs.o",
+        "/lane/kernel-qualified/release/kmain_paging.asm-sched.o",
+        "/lane/kernel-qualified/release/kmain_paging.asm-screen.o",
+        "/lane/kernel-qualified/release/kmain_paging.asm-sound.o",
+        "/lane/kernel-qualified/release/kmain_paging.asm-speaker.o",
+        "/lane/kernel-qualified/release/kmain_paging.asm-tree.o",
+        "/lane/kernel-qualified/release/kmain_paging.asm-unix.o",
+        "/lane/kernel-qualified/release/kmain_paging.asm-user.o",
+        "/lane/kernel-qualified/release/kmain_paging.c00.o",
+        "/lane/kernel-qualified/release/kmain_paging.c01.o",
+        "/lane/kernel-qualified/release/kmain_paging.c02.o",
+        "/lane/kernel-qualified/release/kmain_paging.c03.o",
+        "/lane/kernel-qualified/release/kmain_paging.c04.o",
+        "/lane/kernel-qualified/release/kmain_paging.c05.o",
+        "/lane/kernel-qualified/release/kmain_paging.c06.o",
+        "/lane/kernel-qualified/release/kmain_paging.c07.o",
+        "/lane/kernel-qualified/release/kmain_paging.rt-none.a"
+      ],
+      "status": 1,
+      "seconds": 0.008437864002189599
+    },
+    {
+      "name": "release-lld17-no-relax",
+      "argv": [
+        "/lane/ligature/.link-inputs/ld.lld",
+        "--emit-relocs",
+        "-static",
+        "-T",
+        "/lane/ligature/tests/fixtures/pax-kernel.ld",
+        "-o",
+        "/lane/kernel-qualified/release/lld17.elf",
+        "/lane/kernel-qualified/release/start.o",
+        "/lane/kernel-qualified/release/kmain_paging.asm-console.o",
+        "/lane/kernel-qualified/release/kmain_paging.asm-cpu.o",
+        "/lane/kernel-qualified/release/kmain_paging.asm-event.o",
+        "/lane/kernel-qualified/release/kmain_paging.asm-font.o",
+        "/lane/kernel-qualified/release/kmain_paging.asm-fpu.o",
+        "/lane/kernel-qualified/release/kmain_paging.asm-io.o",
+        "/lane/kernel-qualified/release/kmain_paging.asm-isr.o",
+        "/lane/kernel-qualified/release/kmain_paging.asm-net.o",
+        "/lane/kernel-qualified/release/kmain_paging.asm-programs.o",
+        "/lane/kernel-qualified/release/kmain_paging.asm-sched.o",
+        "/lane/kernel-qualified/release/kmain_paging.asm-screen.o",
+        "/lane/kernel-qualified/release/kmain_paging.asm-sound.o",
+        "/lane/kernel-qualified/release/kmain_paging.asm-speaker.o",
+        "/lane/kernel-qualified/release/kmain_paging.asm-tree.o",
+        "/lane/kernel-qualified/release/kmain_paging.asm-unix.o",
+        "/lane/kernel-qualified/release/kmain_paging.asm-user.o",
+        "/lane/kernel-qualified/release/kmain_paging.c00.o",
+        "/lane/kernel-qualified/release/kmain_paging.c01.o",
+        "/lane/kernel-qualified/release/kmain_paging.c02.o",
+        "/lane/kernel-qualified/release/kmain_paging.c03.o",
+        "/lane/kernel-qualified/release/kmain_paging.c04.o",
+        "/lane/kernel-qualified/release/kmain_paging.c05.o",
+        "/lane/kernel-qualified/release/kmain_paging.c06.o",
+        "/lane/kernel-qualified/release/kmain_paging.c07.o",
+        "/lane/kernel-qualified/release/kmain_paging.rt-none.a",
+        "--no-relax"
+      ],
+      "status": 0,
+      "seconds": 0.0077733560028718784
+    },
+    {
+      "name": "release-lld17-symbols",
+      "argv": [
+        "nm",
+        "-n",
+        "/lane/kernel-qualified/release/lld17.elf"
+      ],
+      "status": 0,
+      "seconds": 0.008465096994768828
+    },
+    {
+      "name": "release-lld17-headers",
+      "argv": [
+        "readelf",
+        "-lSW",
+        "/lane/kernel-qualified/release/lld17.elf"
+      ],
+      "status": 0,
+      "seconds": 0.0006353509961627424
+    },
+    {
+      "name": "release-lld18",
+      "argv": [
+        "ld.lld-18",
+        "--emit-relocs",
+        "-static",
+        "-T",
+        "/lane/ligature/tests/fixtures/pax-kernel.ld",
+        "-o",
+        "/lane/kernel-qualified/release/lld18.elf",
+        "/lane/kernel-qualified/release/start.o",
+        "/lane/kernel-qualified/release/kmain_paging.asm-console.o",
+        "/lane/kernel-qualified/release/kmain_paging.asm-cpu.o",
+        "/lane/kernel-qualified/release/kmain_paging.asm-event.o",
+        "/lane/kernel-qualified/release/kmain_paging.asm-font.o",
+        "/lane/kernel-qualified/release/kmain_paging.asm-fpu.o",
+        "/lane/kernel-qualified/release/kmain_paging.asm-io.o",
+        "/lane/kernel-qualified/release/kmain_paging.asm-isr.o",
+        "/lane/kernel-qualified/release/kmain_paging.asm-net.o",
+        "/lane/kernel-qualified/release/kmain_paging.asm-programs.o",
+        "/lane/kernel-qualified/release/kmain_paging.asm-sched.o",
+        "/lane/kernel-qualified/release/kmain_paging.asm-screen.o",
+        "/lane/kernel-qualified/release/kmain_paging.asm-sound.o",
+        "/lane/kernel-qualified/release/kmain_paging.asm-speaker.o",
+        "/lane/kernel-qualified/release/kmain_paging.asm-tree.o",
+        "/lane/kernel-qualified/release/kmain_paging.asm-unix.o",
+        "/lane/kernel-qualified/release/kmain_paging.asm-user.o",
+        "/lane/kernel-qualified/release/kmain_paging.c00.o",
+        "/lane/kernel-qualified/release/kmain_paging.c01.o",
+        "/lane/kernel-qualified/release/kmain_paging.c02.o",
+        "/lane/kernel-qualified/release/kmain_paging.c03.o",
+        "/lane/kernel-qualified/release/kmain_paging.c04.o",
+        "/lane/kernel-qualified/release/kmain_paging.c05.o",
+        "/lane/kernel-qualified/release/kmain_paging.c06.o",
+        "/lane/kernel-qualified/release/kmain_paging.c07.o",
+        "/lane/kernel-qualified/release/kmain_paging.rt-none.a"
+      ],
+      "status": 0,
+      "seconds": 0.011901024001417682
+    },
+    {
+      "name": "release-lld18-symbols",
+      "argv": [
+        "nm",
+        "-n",
+        "/lane/kernel-qualified/release/lld18.elf"
+      ],
+      "status": 0,
+      "seconds": 0.008451646994217299
+    },
+    {
+      "name": "release-lld18-headers",
+      "argv": [
+        "readelf",
+        "-lSW",
+        "/lane/kernel-qualified/release/lld18.elf"
+      ],
+      "status": 0,
+      "seconds": 0.0006204370001796633
+    },
+    {
+      "name": "release-gnu",
+      "argv": [
+        "ld.bfd",
+        "--emit-relocs",
+        "--no-relax",
+        "-static",
+        "-T",
+        "/lane/ligature/tests/fixtures/pax-kernel.ld",
+        "-o",
+        "/lane/kernel-qualified/release/gnu.elf",
+        "/lane/kernel-qualified/release/start.o",
+        "/lane/kernel-qualified/release/kmain_paging.asm-console.o",
+        "/lane/kernel-qualified/release/kmain_paging.asm-cpu.o",
+        "/lane/kernel-qualified/release/kmain_paging.asm-event.o",
+        "/lane/kernel-qualified/release/kmain_paging.asm-font.o",
+        "/lane/kernel-qualified/release/kmain_paging.asm-fpu.o",
+        "/lane/kernel-qualified/release/kmain_paging.asm-io.o",
+        "/lane/kernel-qualified/release/kmain_paging.asm-isr.o",
+        "/lane/kernel-qualified/release/kmain_paging.asm-net.o",
+        "/lane/kernel-qualified/release/kmain_paging.asm-programs.o",
+        "/lane/kernel-qualified/release/kmain_paging.asm-sched.o",
+        "/lane/kernel-qualified/release/kmain_paging.asm-screen.o",
+        "/lane/kernel-qualified/release/kmain_paging.asm-sound.o",
+        "/lane/kernel-qualified/release/kmain_paging.asm-speaker.o",
+        "/lane/kernel-qualified/release/kmain_paging.asm-tree.o",
+        "/lane/kernel-qualified/release/kmain_paging.asm-unix.o",
+        "/lane/kernel-qualified/release/kmain_paging.asm-user.o",
+        "/lane/kernel-qualified/release/kmain_paging.c00.o",
+        "/lane/kernel-qualified/release/kmain_paging.c01.o",
+        "/lane/kernel-qualified/release/kmain_paging.c02.o",
+        "/lane/kernel-qualified/release/kmain_paging.c03.o",
+        "/lane/kernel-qualified/release/kmain_paging.c04.o",
+        "/lane/kernel-qualified/release/kmain_paging.c05.o",
+        "/lane/kernel-qualified/release/kmain_paging.c06.o",
+        "/lane/kernel-qualified/release/kmain_paging.c07.o",
+        "/lane/kernel-qualified/release/kmain_paging.rt-none.a"
+      ],
+      "status": 0,
+      "seconds": 0.01613563699356746
+    },
+    {
+      "name": "release-gnu-symbols",
+      "argv": [
+        "nm",
+        "-n",
+        "/lane/kernel-qualified/release/gnu.elf"
+      ],
+      "status": 0,
+      "seconds": 0.009565984000801109
+    },
+    {
+      "name": "release-gnu-headers",
+      "argv": [
+        "readelf",
+        "-lSW",
+        "/lane/kernel-qualified/release/gnu.elf"
+      ],
+      "status": 0,
+      "seconds": 0.0007145089912228286
+    },
+    {
+      "name": "release-image",
+      "argv": [
+        "/lane/pax/tools/mkimage",
+        "/lane/kernel-qualified/images/release/kmain_paging.elf",
+        "/lane/kernel-qualified/images/release/kmain_paging.iso"
+      ],
+      "status": 0,
+      "seconds": 0.1219738799991319
+    },
+    {
+      "name": "release-boots",
+      "argv": [
+        "/lane/pax/tests/mpx2-paging",
+        "--images",
+        "/lane/kernel-qualified/images",
+        "--tier",
+        "release",
+        "--firmware",
+        "both"
+      ],
+      "status": 0,
+      "seconds": 5.263377164999838
+    }
+  ]
+}

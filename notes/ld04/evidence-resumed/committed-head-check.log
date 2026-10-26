@@ -1,0 +1,49 @@
+time="2026-10-26T16:11:35-04:00" level=error msg="Refreshing container 44ed2b1e39088ccbc0e57c061764b113005b7eaf0122162425dc70a6dc2acc43: retrieving temporary directory for container 44ed2b1e39088ccbc0e57c061764b113005b7eaf0122162425dc70a6dc2acc43: no such container"
+{"event":"suite","file":"src/address_test.lu","schema":"wolf-test/0","tests":1}
+{"detail":"exit(0)","event":"test","file":"src/address_test.lu","name":"main","schema":"wolf-test/0","status":"pass"}
+{"event":"suite","file":"src/kernel_relocation_test.lu","schema":"wolf-test/0","tests":1}
+{"detail":"exit(0)","event":"test","file":"src/kernel_relocation_test.lu","name":"main","schema":"wolf-test/0","status":"pass"}
+{"event":"suite","file":"src/reader_test.lu","schema":"wolf-test/0","tests":1}
+{"detail":"exit(0)","event":"test","file":"src/reader_test.lu","name":"main","schema":"wolf-test/0","status":"pass"}
+{"event":"suite","file":"src/script_profile_test.lu","schema":"wolf-test/0","tests":1}
+{"detail":"exit(0)","event":"test","file":"src/script_profile_test.lu","name":"main","schema":"wolf-test/0","status":"pass"}
+{"event":"summary","failed":0,"filtered_out":0,"native":0,"passed":4,"rejected":0,"schema":"wolf-test/0","stopped_early":false,"unsupported":0}
+fetch-bundle: mismatched archive refused before extraction; 0 SKIP
+self-link blocker: exact fetched runtime digest and reproduced argv status required; other digests hard-gated; 0 SKIP
+script-profile: 31 rows, 0 SKIP; preflight only; executable kernel links require explicit -T
+archive-write: 35 process rows, deterministic bytes and independent index; three executed links, 0 SKIP
+kernel-script: three executable links, u64 provenance, bounds, permissions, ordering, discards, independent sites, deterministic bytes and refusals; 0 SKIP
+aarch64: 51 independent ELF/range/alignment/mask/pair/GOT/refusal rows; no fixture execution claimed, 0 SKIP
+addrsig: valid symbol index consumed without folding; four malformed forms refused; 0 SKIP
+integration: 43 process rows, 0 SKIP
+oracle: 2 musl links, 2 deterministic relinks, 2 differ plants, 4 verify plants, 0 SKIP
+resolution: 16 oracle rows, 0 SKIP
+resolve: strong/weak/common, indexed archives, groups, duplicate names, COMDAT; 0 SKIP
+lazy-order: forward/backward discovery matches LLD, four-member cyclic graph selected once; 0 SKIP
+writer: 10 three-linker behavior rows, determinism, named refusals and TLS-negative rows; 0 SKIP
+relocation-witness: three linkers, retained sites, unused data/debug corruption red, local/entry normalization; 0 SKIP
+relocation-witness: all writer cases independently decoded, including four TLS models; 0 SKIP
+cc frontend: exact compiler-style option subset links and runs; 0 SKIP
+provenance: canonical manifest, independent SHA256 checks, four negative rows; 0 SKIP
+attribution: complete disjoint coverage, explain, deterministic relink, delta locality, five resealed negative rows; 0 SKIP
+attribution: aliases, archive path, TLS/NOBITS, ambiguous locals and explicit member selection; 0 SKIP
+compact-manifest: legacy JSON explain parity and dropped provenance record refused; 0 SKIP
+explain: dependency sites and distinct discarded-section causes; 0 SKIP
+compact-manifest: five resealed decoder corruptions rejected, signed addend endpoints preserved; 0 SKIP
+compact-manifest: arbitrary-byte symbol text matches legacy JSON origins; 0 SKIP
+PAX transcript validator: one genuine capture, four rejected mutations; replay only, 0 SKIP
+PAX staging: gzip evidence preserves exact program bytes and identical initramfs; 0 SKIP
+static-pax runner: report preserved, nonzero differ status preserved, 0 SKIP
+TLS classification: same named payload despite ordering/binding changes; changed payload remains unequal; no findings waived; 0 SKIP
+named-findings: 87 individually retained; 0 waivers; 0 SKIP
+named-findings: five mutation witnesses rejected; 0 SKIP
+kernel edge: lld17 refuses -2147483652; GNU default refuses, GNU --no-relax keeps GOT load; LLD18 control is separate in tests/ld04-controls.py
+layout-controls: three-linker merge/unwind measurements and two-oracle kernel.ld scope; no high-half ELF executed; 0 SKIP
+roundtrip: PASS .wolf-bin/libwolf_rt.a
+musl-argv glibc 0 b'argc=3\n[--version]\n[space word]\n[]\n' b''
+musl-argv lld 0 b'argc=0\n' b''
+musl-argv gnu 0 b'argc=0\n' b''
+musl-argv c-musl 0 b'argc=3\n[--version]\n[space word]\n[]\n' b''
+BLOCKED self-link: wolf-lang#962; both pinned musl links lose argv while cc/glibc and the pinned C/musl control preserve it
+BLOCKED self-link and executing ligature on PAX: wolf-lang#962; runtime SHA256 9d859b9e6b5319f5a6f609e73ba0d71981d2dfa489882648ac9f454cd9db739c; R-ld02-5 A
+BLOCKED evidence: target/evidence/musl-argv/results.json; notes/ld02a/evidence/argv-probe/; kasumi /home/mfwolffe/lanes/ld02a/ligature/target/evidence/self-link/diagnose-03/results.json

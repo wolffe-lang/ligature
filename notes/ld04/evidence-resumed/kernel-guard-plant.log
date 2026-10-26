@@ -1,0 +1,17 @@
+time="2026-10-26T15:14:15-04:00" level=error msg="Refreshing container 44ed2b1e39088ccbc0e57c061764b113005b7eaf0122162425dc70a6dc2acc43: retrieving temporary directory for container 44ed2b1e39088ccbc0e57c061764b113005b7eaf0122162425dc70a6dc2acc43: no such container"
+Traceback (most recent call last):
+  File "/work/tests/kernel-script.py", line 68, in <module>
+    call([B,'verify',out]);v=snapshot(out,execute=False);assert not v['refused'],v['refused']
+                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/work/tests/kernel-snapshot.py", line 17, in snapshot
+    return function(path,execute=True)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/work/tools/differ", line 137, in snapshot
+    ran=subprocess.run([path.resolve()],cwd=RUN_DIR,env={'PATH':'/usr/bin:/bin','LC_ALL':'C'},capture_output=True,timeout=30) if execute else subprocess.CompletedProcess([],0,b'',b'')
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/work/tests/kernel-snapshot.py", line 14, in run
+    assert pathlib.Path(args[0]).resolve()!=path, 'high-half ELF execution forbidden'
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: high-half ELF execution forbidden
+PLANT inherited execution default restored: guard RED before process launch, status=1
+kernel-script: three executable links, u64 provenance, bounds, permissions, ordering, discards, independent sites, deterministic bytes and refusals; 0 SKIP

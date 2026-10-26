@@ -1,0 +1,2 @@
+aarch64-live: {'candidate': 10, 'oracle-ld.lld-18': 10} all nine types independently proved; candidate and oracle hello executed under qemu user mode; 0 SKIP
+AArch64 ld.lld-18 24 binary endpoint controls and independent equations; 0 SKIP

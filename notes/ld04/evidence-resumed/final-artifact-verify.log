@@ -1,0 +1,4 @@
+time="2026-10-26T15:45:03-04:00" level=error msg="Refreshing container 44ed2b1e39088ccbc0e57c061764b113005b7eaf0122162425dc70a6dc2acc43: retrieving temporary directory for container 44ed2b1e39088ccbc0e57c061764b113005b7eaf0122162425dc70a6dc2acc43: no such container"
+verify: PASS /lane/kernel-qualified/native/candidate.elf
+verify: PASS /lane/kernel-qualified/release/candidate.elf
+verify: PASS target/evidence/aarch64-live/candidate

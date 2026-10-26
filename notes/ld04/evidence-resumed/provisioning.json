@@ -1,0 +1,50 @@
+{
+  "provisioned_by": "coordinator, not lane package installation",
+  "packages": "qemu-user-static 11.1.2-1\naarch64-linux-gnu-glibc 2.44-1\naarch64-linux-gnu-gcc 16.2.0-1.1\naarch64-linux-gnu-binutils 2.47-1.1\n",
+  "execution": "explicit qemu user mode, not native hardware; no binfmt registration",
+  "cross_compiler_oracles_used": false,
+  "files": [
+    {
+      "path": "/usr/bin/qemu-aarch64-static",
+      "sha256_read_twice": [
+        "66bdc286fd30970a1c3d2029b460605a3dc843ed6b397f4cd9825f9c19551507",
+        "66bdc286fd30970a1c3d2029b460605a3dc843ed6b397f4cd9825f9c19551507"
+      ]
+    },
+    {
+      "path": "/usr/aarch64-linux-gnu/lib/ld-linux-aarch64.so.1",
+      "sha256_read_twice": [
+        "235b42db8f6ecc981afa67ba87211aac1900eb4ae06fe4f3d4d35d04efce94f4",
+        "235b42db8f6ecc981afa67ba87211aac1900eb4ae06fe4f3d4d35d04efce94f4"
+      ]
+    },
+    {
+      "path": "/usr/aarch64-linux-gnu/lib/libc.so.6",
+      "sha256_read_twice": [
+        "529658f3e9df02b276ca24359630e9623b4a2a075c4e1d2f47bca212faf51a67",
+        "529658f3e9df02b276ca24359630e9623b4a2a075c4e1d2f47bca212faf51a67"
+      ]
+    },
+    {
+      "path": "/usr/aarch64-linux-gnu/lib/libgcc_s.so.1",
+      "sha256_read_twice": [
+        "777cbc512ad17362d2fb023a07b8adcbd86e435f71b327101b0cdb329d7664c3",
+        "777cbc512ad17362d2fb023a07b8adcbd86e435f71b327101b0cdb329d7664c3"
+      ]
+    },
+    {
+      "path": "/home/mfwolffe/lanes/ld04/spec/aaelf64-2025Q1.rst",
+      "sha256_read_twice": [
+        "6ffa88bcaf204f7443dceb2c1d0aace377f2c33e91c248473b0d6640e788657b",
+        "6ffa88bcaf204f7443dceb2c1d0aace377f2c33e91c248473b0d6640e788657b"
+      ]
+    },
+    {
+      "path": "/home/mfwolffe/lanes/ld04/spec/llvm-extensions.html",
+      "sha256_read_twice": [
+        "f39e12fd190199ee1e51c7262fa5438dc4e06930e44b5b4a7f1e0dedf4002d82",
+        "f39e12fd190199ee1e51c7262fa5438dc4e06930e44b5b4a7f1e0dedf4002d82"
+      ]
+    }
+  ]
+}

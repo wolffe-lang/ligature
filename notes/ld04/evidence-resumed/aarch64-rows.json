@@ -1,0 +1,257 @@
+[
+  {
+    "name": "282-min",
+    "status": 0,
+    "stderr": ""
+  },
+  {
+    "name": "282-max",
+    "status": 0,
+    "stderr": ""
+  },
+  {
+    "name": "282-zero",
+    "status": 0,
+    "stderr": ""
+  },
+  {
+    "name": "282-under",
+    "status": 1,
+    "stderr": "ligature: AArch64 branch range overflow at /lane/ligature/target/evidence/aarch64/282-under.o:.text+0 type 282\n"
+  },
+  {
+    "name": "282-over",
+    "status": 1,
+    "stderr": "ligature: AArch64 branch range overflow at /lane/ligature/target/evidence/aarch64/282-over.o:.text+0 type 282\n"
+  },
+  {
+    "name": "282-target-align",
+    "status": 1,
+    "stderr": "ligature: AArch64 branch target alignment at /lane/ligature/target/evidence/aarch64/282-target-align.o:.text+0 type 282\n"
+  },
+  {
+    "name": "282-mask",
+    "status": 1,
+    "stderr": "ligature: AArch64 branch instruction mask at /lane/ligature/target/evidence/aarch64/282-mask.o:.text+0 type 282\n"
+  },
+  {
+    "name": "282-site-align",
+    "status": 1,
+    "stderr": "ligature: AArch64 instruction relocation alignment at /lane/ligature/target/evidence/aarch64/282-site-align.o:.text+1 type 282\n"
+  },
+  {
+    "name": "283-min",
+    "status": 0,
+    "stderr": ""
+  },
+  {
+    "name": "283-max",
+    "status": 0,
+    "stderr": ""
+  },
+  {
+    "name": "283-zero",
+    "status": 0,
+    "stderr": ""
+  },
+  {
+    "name": "283-under",
+    "status": 1,
+    "stderr": "ligature: AArch64 branch range overflow at /lane/ligature/target/evidence/aarch64/283-under.o:.text+0 type 283\n"
+  },
+  {
+    "name": "283-over",
+    "status": 1,
+    "stderr": "ligature: AArch64 branch range overflow at /lane/ligature/target/evidence/aarch64/283-over.o:.text+0 type 283\n"
+  },
+  {
+    "name": "283-target-align",
+    "status": 1,
+    "stderr": "ligature: AArch64 branch target alignment at /lane/ligature/target/evidence/aarch64/283-target-align.o:.text+0 type 283\n"
+  },
+  {
+    "name": "283-mask",
+    "status": 1,
+    "stderr": "ligature: AArch64 branch instruction mask at /lane/ligature/target/evidence/aarch64/283-mask.o:.text+0 type 283\n"
+  },
+  {
+    "name": "283-site-align",
+    "status": 1,
+    "stderr": "ligature: AArch64 instruction relocation alignment at /lane/ligature/target/evidence/aarch64/283-site-align.o:.text+1 type 283\n"
+  },
+  {
+    "name": "prel-min",
+    "status": 0,
+    "stderr": ""
+  },
+  {
+    "name": "prel-max",
+    "status": 0,
+    "stderr": ""
+  },
+  {
+    "name": "prel-unsigned",
+    "status": 0,
+    "stderr": ""
+  },
+  {
+    "name": "prel-under",
+    "status": 1,
+    "stderr": "ligature: AArch64 PREL32 overflow at /lane/ligature/target/evidence/aarch64/prel-under.o:.text+0 type 261\n"
+  },
+  {
+    "name": "prel-over",
+    "status": 1,
+    "stderr": "ligature: AArch64 PREL32 overflow at /lane/ligature/target/evidence/aarch64/prel-over.o:.text+0 type 261\n"
+  },
+  {
+    "name": "abs-max",
+    "status": 0,
+    "stderr": ""
+  },
+  {
+    "name": "abs-wrap",
+    "status": 0,
+    "stderr": ""
+  },
+  {
+    "name": "abs-negative",
+    "status": 0,
+    "stderr": ""
+  },
+  {
+    "name": "abs-unaligned",
+    "status": 0,
+    "stderr": ""
+  },
+  {
+    "name": "prel-unaligned",
+    "status": 0,
+    "stderr": ""
+  },
+  {
+    "name": "adrp-min",
+    "status": 0,
+    "stderr": ""
+  },
+  {
+    "name": "adrp-max",
+    "status": 0,
+    "stderr": ""
+  },
+  {
+    "name": "adrp-negative-low",
+    "status": 0,
+    "stderr": ""
+  },
+  {
+    "name": "adrp-under",
+    "status": 1,
+    "stderr": "ligature: AArch64 ADRP range overflow at /lane/ligature/target/evidence/aarch64/adrp-under.o:.text+0 type 275\n"
+  },
+  {
+    "name": "adrp-over",
+    "status": 1,
+    "stderr": "ligature: AArch64 ADRP range overflow at /lane/ligature/target/evidence/aarch64/adrp-over.o:.text+0 type 275\n"
+  },
+  {
+    "name": "adrp-mask",
+    "status": 1,
+    "stderr": "ligature: AArch64 ADRP instruction mask at /lane/ligature/target/evidence/aarch64/adrp-mask.o:.text+0 type 275\n"
+  },
+  {
+    "name": "pair-277",
+    "status": 0,
+    "stderr": ""
+  },
+  {
+    "name": "pair-277-register",
+    "status": 1,
+    "stderr": "ligature: AArch64 ADRP/low12 register or instruction mismatch\n"
+  },
+  {
+    "name": "pair-277-missing",
+    "status": 1,
+    "stderr": "ligature: AArch64 low12 relocation has no preceding ADRP\n"
+  },
+  {
+    "name": "pair-277-addend",
+    "status": 1,
+    "stderr": "ligature: AArch64 ADRP/low12 target or addend mismatch\n"
+  },
+  {
+    "name": "pair-286",
+    "status": 0,
+    "stderr": ""
+  },
+  {
+    "name": "pair-286-register",
+    "status": 1,
+    "stderr": "ligature: AArch64 ADRP/low12 register or instruction mismatch\n"
+  },
+  {
+    "name": "pair-286-missing",
+    "status": 1,
+    "stderr": "ligature: AArch64 low12 relocation has no preceding ADRP\n"
+  },
+  {
+    "name": "pair-286-addend",
+    "status": 1,
+    "stderr": "ligature: AArch64 ADRP/low12 target or addend mismatch\n"
+  },
+  {
+    "name": "pair-312",
+    "status": 0,
+    "stderr": ""
+  },
+  {
+    "name": "pair-312-register",
+    "status": 1,
+    "stderr": "ligature: AArch64 ADRP/low12 register or instruction mismatch\n"
+  },
+  {
+    "name": "pair-312-missing",
+    "status": 1,
+    "stderr": "ligature: AArch64 low12 relocation has no preceding ADRP\n"
+  },
+  {
+    "name": "pair-312-addend",
+    "status": 1,
+    "stderr": "ligature: AArch64 GOT addend must be zero (measured subset)\n"
+  },
+  {
+    "name": "pair-sp-xzr",
+    "status": 1,
+    "stderr": "ligature: AArch64 ADRP/low12 register or instruction mismatch\n"
+  },
+  {
+    "name": "ldst-align",
+    "status": 1,
+    "stderr": "ligature: AArch64 LDST64 target alignment at /lane/ligature/target/evidence/aarch64/ldst-align.o:.text+4 type 286\n"
+  },
+  {
+    "name": "add-mask",
+    "status": 1,
+    "stderr": "ligature: AArch64 ADD low12 instruction mask at /lane/ligature/target/evidence/aarch64/add-mask.o:.text+4 type 277\n"
+  },
+  {
+    "name": "load-mask",
+    "status": 1,
+    "stderr": "ligature: AArch64 LDST64 low12 instruction mask at /lane/ligature/target/evidence/aarch64/load-mask.o:.text+4 type 286\n"
+  },
+  {
+    "name": "duplicate",
+    "status": 1,
+    "stderr": "ligature: duplicate AArch64 relocation site\n"
+  },
+  {
+    "name": "unknown",
+    "status": 1,
+    "stderr": "ligature: unsupported AArch64 relocation 313 (AAELF64 2025Q1 section 6)\n"
+  },
+  {
+    "name": "tls",
+    "status": 1,
+    "stderr": "ligature: unsupported AArch64 relocation 541 (AAELF64 2025Q1 section 6)\n"
+  }
+]

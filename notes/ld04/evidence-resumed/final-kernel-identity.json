@@ -1,0 +1,18 @@
+[
+  {
+    "tier": "native",
+    "sha256_read_twice": [
+      "04ea9c8931a106409d72db81a09922ef4289c4e4fbcfaabee53a1e107bb3d165",
+      "04ea9c8931a106409d72db81a09922ef4289c4e4fbcfaabee53a1e107bb3d165"
+    ],
+    "identical_to_four_boot_qualification": true
+  },
+  {
+    "tier": "release",
+    "sha256_read_twice": [
+      "f3a2a6650fb4458a5cfa6e4d17e4434b77de6e0a5698d918dc249d9228cfdc22",
+      "f3a2a6650fb4458a5cfa6e4d17e4434b77de6e0a5698d918dc249d9228cfdc22"
+    ],
+    "identical_to_four_boot_qualification": true
+  }
+]

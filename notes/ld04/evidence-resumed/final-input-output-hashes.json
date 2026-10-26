@@ -1,0 +1,698 @@
+[
+  {
+    "path": "ligature/src/kernel_relocation_test.lu",
+    "bytes": 3580,
+    "sha256_read_twice": [
+      "31e9825592429d65f1cedb0edb5c38c747a3431e40b6853b808e7e313b857e62",
+      "31e9825592429d65f1cedb0edb5c38c747a3431e40b6853b808e7e313b857e62"
+    ]
+  },
+  {
+    "path": "ligature/src/reader_test.lu",
+    "bytes": 1165,
+    "sha256_read_twice": [
+      "695953d725f5c9552679f73d2181e7da2ff3fd71cf658401d299e84522481137",
+      "695953d725f5c9552679f73d2181e7da2ff3fd71cf658401d299e84522481137"
+    ]
+  },
+  {
+    "path": "ligature/src/script_profile_test.lu",
+    "bytes": 934,
+    "sha256_read_twice": [
+      "93a585c6169bb94901999f2bd49f85693407f15029f5d684af00ccbbe1c1a6fc",
+      "93a585c6169bb94901999f2bd49f85693407f15029f5d684af00ccbbe1c1a6fc"
+    ]
+  },
+  {
+    "path": "ligature/src/address_test.lu",
+    "bytes": 1216,
+    "sha256_read_twice": [
+      "54aa16005a94983d18dd39464c575e0e920c73b1479d0df60c0082a7e68e9c5e",
+      "54aa16005a94983d18dd39464c575e0e920c73b1479d0df60c0082a7e68e9c5e"
+    ]
+  },
+  {
+    "path": "ligature/src/ligature.lu",
+    "bytes": 2066,
+    "sha256_read_twice": [
+      "837a3278526d370e3d3b132bcf0b61d8061c1b40540fd6d105c03a6a541142f9",
+      "837a3278526d370e3d3b132bcf0b61d8061c1b40540fd6d105c03a6a541142f9"
+    ]
+  },
+  {
+    "path": "ligature/src/ar/ar.lu",
+    "bytes": 5448,
+    "sha256_read_twice": [
+      "3907bb6fcfd176e6cb993bfc252a39985d1584f2f2d2fd2c36a99138758a2fb8",
+      "3907bb6fcfd176e6cb993bfc252a39985d1584f2f2d2fd2c36a99138758a2fb8"
+    ]
+  },
+  {
+    "path": "ligature/src/binary/binary.lu",
+    "bytes": 4573,
+    "sha256_read_twice": [
+      "1076c6d678d53a1f5287a2d6590dd90f4c6924f160de46bc89f9ae303d843a07",
+      "1076c6d678d53a1f5287a2d6590dd90f4c6924f160de46bc89f9ae303d843a07"
+    ]
+  },
+  {
+    "path": "ligature/src/census/census.lu",
+    "bytes": 1207,
+    "sha256_read_twice": [
+      "dfab890b533b01291ad657bfd3949f44f3ab74fce4d63096880071203e587120",
+      "dfab890b533b01291ad657bfd3949f44f3ab74fce4d63096880071203e587120"
+    ]
+  },
+  {
+    "path": "ligature/src/elf/elf.lu",
+    "bytes": 15030,
+    "sha256_read_twice": [
+      "f77d2bf686f9a83061de3a2b4d1857762fa3d61c0f74135f8f1f25a54f2a3219",
+      "f77d2bf686f9a83061de3a2b4d1857762fa3d61c0f74135f8f1f25a54f2a3219"
+    ]
+  },
+  {
+    "path": "ligature/src/explain/explain.lu",
+    "bytes": 6842,
+    "sha256_read_twice": [
+      "3cb54619c7e3c2e2994f3b0fc2c8e11dbee262761a87f83901b567dc333646f7",
+      "3cb54619c7e3c2e2994f3b0fc2c8e11dbee262761a87f83901b567dc333646f7"
+    ]
+  },
+  {
+    "path": "ligature/src/front/front.lu",
+    "bytes": 5919,
+    "sha256_read_twice": [
+      "19ec776bf44826f721a9494a5a64fe8ef8ff116bd487eb7e0b34d24fb12e75f9",
+      "19ec776bf44826f721a9494a5a64fe8ef8ff116bd487eb7e0b34d24fb12e75f9"
+    ]
+  },
+  {
+    "path": "ligature/src/layout/kernel.lu",
+    "bytes": 5967,
+    "sha256_read_twice": [
+      "f4409d6fc4ced3e6a82ade92d9db6441286d9c93dca85d6ef4c56228adf8f5c4",
+      "f4409d6fc4ced3e6a82ade92d9db6441286d9c93dca85d6ef4c56228adf8f5c4"
+    ]
+  },
+  {
+    "path": "ligature/src/layout/layout.lu",
+    "bytes": 20922,
+    "sha256_read_twice": [
+      "2cf5ed9c6ded02400677fcc61052edef19a9b11d97532ed94d37b2486a63096a",
+      "2cf5ed9c6ded02400677fcc61052edef19a9b11d97532ed94d37b2486a63096a"
+    ]
+  },
+  {
+    "path": "ligature/src/oracle/oracle.lu",
+    "bytes": 3834,
+    "sha256_read_twice": [
+      "0549be17db91305a14c9cb4ee9b1c9ab99127320d667b45e9efb116394eb4d3a",
+      "0549be17db91305a14c9cb4ee9b1c9ab99127320d667b45e9efb116394eb4d3a"
+    ]
+  },
+  {
+    "path": "ligature/src/provenance/compact.lu",
+    "bytes": 7790,
+    "sha256_read_twice": [
+      "aacf7290669671674b3c81c7df858025d24f558e27f970b598c327579bdab38f",
+      "aacf7290669671674b3c81c7df858025d24f558e27f970b598c327579bdab38f"
+    ]
+  },
+  {
+    "path": "ligature/src/provenance/validate.lu",
+    "bytes": 6783,
+    "sha256_read_twice": [
+      "15d1c0af3c93548fcdb61b31e09d64d72d8f484a315e67d0427bbabb78125f6f",
+      "15d1c0af3c93548fcdb61b31e09d64d72d8f484a315e67d0427bbabb78125f6f"
+    ]
+  },
+  {
+    "path": "ligature/src/provenance/attribution.lu",
+    "bytes": 10226,
+    "sha256_read_twice": [
+      "45dd7f3472cd2936a4f2de2210e6342b4a557eda27e9d14fedfcd00f3ff1593c",
+      "45dd7f3472cd2936a4f2de2210e6342b4a557eda27e9d14fedfcd00f3ff1593c"
+    ]
+  },
+  {
+    "path": "ligature/src/provenance/provenance.lu",
+    "bytes": 9032,
+    "sha256_read_twice": [
+      "6f31abc7154712d68ae3120a8d79d5c6b0cb91cfcb4f6199dfb681c390371206",
+      "6f31abc7154712d68ae3120a8d79d5c6b0cb91cfcb4f6199dfb681c390371206"
+    ]
+  },
+  {
+    "path": "ligature/src/relocate/relocate.lu",
+    "bytes": 8316,
+    "sha256_read_twice": [
+      "950485ee8728e685b7311495797f3b961dc306d1368314b8fed578510eb40c00",
+      "950485ee8728e685b7311495797f3b961dc306d1368314b8fed578510eb40c00"
+    ]
+  },
+  {
+    "path": "ligature/src/relocate/address.lu",
+    "bytes": 2157,
+    "sha256_read_twice": [
+      "5fd8ca40a1b42ff65012c73c29d1b3b70b648714d2909a19897113d5d1bb7202",
+      "5fd8ca40a1b42ff65012c73c29d1b3b70b648714d2909a19897113d5d1bb7202"
+    ]
+  },
+  {
+    "path": "ligature/src/relocate/aarch64.lu",
+    "bytes": 5975,
+    "sha256_read_twice": [
+      "027568b8bf2452b1a2ad4d6f2e11f55a6aa8746552dad8c9e89d14f13821e533",
+      "027568b8bf2452b1a2ad4d6f2e11f55a6aa8746552dad8c9e89d14f13821e533"
+    ]
+  },
+  {
+    "path": "ligature/src/resolve/resolve.lu",
+    "bytes": 14901,
+    "sha256_read_twice": [
+      "e82fb049b088830d4bd7d1f7b74c85fe7a70d2af6d0b5f8a68dfb1eb78749cb4",
+      "e82fb049b088830d4bd7d1f7b74c85fe7a70d2af6d0b5f8a68dfb1eb78749cb4"
+    ]
+  },
+  {
+    "path": "ligature/src/verify/verify.lu",
+    "bytes": 4467,
+    "sha256_read_twice": [
+      "c0129ab7c7be1f5afcd67070c9db1f7955f2ab2e0ec2a0bb28bbe79adb8f850c",
+      "c0129ab7c7be1f5afcd67070c9db1f7955f2ab2e0ec2a0bb28bbe79adb8f850c"
+    ]
+  },
+  {
+    "path": "ligature/src/writer/writer.lu",
+    "bytes": 12620,
+    "sha256_read_twice": [
+      "a835d7611decd050166538ddcdf5ea438f19cc35bb1b27bbc38a16973b46e9da",
+      "a835d7611decd050166538ddcdf5ea438f19cc35bb1b27bbc38a16973b46e9da"
+    ]
+  },
+  {
+    "path": "ligature/src/script/script.lu",
+    "bytes": 4831,
+    "sha256_read_twice": [
+      "0a6facdc977c221cb6e90811357686be1cb132f046bcf2cc709e91932ef0a424",
+      "0a6facdc977c221cb6e90811357686be1cb132f046bcf2cc709e91932ef0a424"
+    ]
+  },
+  {
+    "path": "ligature/src/arwrite/arwrite.lu",
+    "bytes": 5964,
+    "sha256_read_twice": [
+      "0f1d75c60ff73761871bad8987f0cca123b14d1acb735ac359d9d2b08dfcb9a4",
+      "0f1d75c60ff73761871bad8987f0cca123b14d1acb735ac359d9d2b08dfcb9a4"
+    ]
+  },
+  {
+    "path": "ligature/src/wolf.pkg",
+    "bytes": 99,
+    "sha256_read_twice": [
+      "72d1a6e918a3e050e6cadba92a75c7c6ee02e260be6c36b039e24dca878e86a9",
+      "72d1a6e918a3e050e6cadba92a75c7c6ee02e260be6c36b039e24dca878e86a9"
+    ]
+  },
+  {
+    "path": "ligature/wolf-toolchain.toml",
+    "bytes": 1138,
+    "sha256_read_twice": [
+      "c0dcfcbb373f7157130dd53f6276cb981b973a88d9d1ccf8efd8eea699bc9a25",
+      "c0dcfcbb373f7157130dd53f6276cb981b973a88d9d1ccf8efd8eea699bc9a25"
+    ]
+  },
+  {
+    "path": "ligature/tests/pax-link.sums",
+    "bytes": 679,
+    "sha256_read_twice": [
+      "45cadc84a40736cb2c7b7ccff77ab3f112686d69bfb39d65b110a5d19eb52e54",
+      "45cadc84a40736cb2c7b7ccff77ab3f112686d69bfb39d65b110a5d19eb52e54"
+    ]
+  },
+  {
+    "path": "ligature/tests/aarch64-census.py",
+    "bytes": 2813,
+    "sha256_read_twice": [
+      "078c36e7837435f79d34b76802ae1a9cebb52c3632b5a9c552bae18b66afd70d",
+      "078c36e7837435f79d34b76802ae1a9cebb52c3632b5a9c552bae18b66afd70d"
+    ]
+  },
+  {
+    "path": "ligature/tests/aarch64-live.py",
+    "bytes": 2999,
+    "sha256_read_twice": [
+      "d53dd7ae67414eb74bd14aff5474de091eb800c8d1f902509be04186d224955e",
+      "d53dd7ae67414eb74bd14aff5474de091eb800c8d1f902509be04186d224955e"
+    ]
+  },
+  {
+    "path": "ligature/tests/archive-write.py",
+    "bytes": 5706,
+    "sha256_read_twice": [
+      "70b8f004f2605be9d35821bbbb77906784b6be7fe61e0d614fada0a0a80aec4d",
+      "70b8f004f2605be9d35821bbbb77906784b6be7fe61e0d614fada0a0a80aec4d"
+    ]
+  },
+  {
+    "path": "ligature/tests/attribution.py",
+    "bytes": 7676,
+    "sha256_read_twice": [
+      "0d646d0cfa33038d17360d7d054095a74d77750b0d23aaed80bdf82d356a30a5",
+      "0d646d0cfa33038d17360d7d054095a74d77750b0d23aaed80bdf82d356a30a5"
+    ]
+  },
+  {
+    "path": "ligature/tests/cc.py",
+    "bytes": 1502,
+    "sha256_read_twice": [
+      "5de8d7ba0f26c0c797ce7b135f3c9b935707be3ee4b3a08a16636c1872ef50a3",
+      "5de8d7ba0f26c0c797ce7b135f3c9b935707be3ee4b3a08a16636c1872ef50a3"
+    ]
+  },
+  {
+    "path": "ligature/tests/classify-static.py",
+    "bytes": 1575,
+    "sha256_read_twice": [
+      "d3bc0084ee794d899b9413a32046b96f21e06258835969cc4123425f4c87af82",
+      "d3bc0084ee794d899b9413a32046b96f21e06258835969cc4123425f4c87af82"
+    ]
+  },
+  {
+    "path": "ligature/tests/compact.py",
+    "bytes": 3272,
+    "sha256_read_twice": [
+      "b5e23b4571b6936111d48674e70103fd368a207fb9a261b122cbc0142d05f2a4",
+      "b5e23b4571b6936111d48674e70103fd368a207fb9a261b122cbc0142d05f2a4"
+    ]
+  },
+  {
+    "path": "ligature/tests/fetch-bundle.py",
+    "bytes": 747,
+    "sha256_read_twice": [
+      "ca1180062d4a7cddf5213ee178b03156c4efb64351443c84c579fa6cd8486ec6",
+      "ca1180062d4a7cddf5213ee178b03156c4efb64351443c84c579fa6cd8486ec6"
+    ]
+  },
+  {
+    "path": "ligature/tests/findings.py",
+    "bytes": 912,
+    "sha256_read_twice": [
+      "6bf8e9d42ce83d10601581f217257e77278b513945230fcd6d0e4b305e8f086f",
+      "6bf8e9d42ce83d10601581f217257e77278b513945230fcd6d0e4b305e8f086f"
+    ]
+  },
+  {
+    "path": "ligature/tests/kernel-edge.py",
+    "bytes": 1855,
+    "sha256_read_twice": [
+      "374ff72b134f0e0e520843509fb824dd4d07ccf25737e83e905d4cdf7d015292",
+      "374ff72b134f0e0e520843509fb824dd4d07ccf25737e83e905d4cdf7d015292"
+    ]
+  },
+  {
+    "path": "ligature/tests/layout-controls.py",
+    "bytes": 3641,
+    "sha256_read_twice": [
+      "5368411715b241cff62223a716a1876fef7e3ba1eda091cc8397ef03d2901ec6",
+      "5368411715b241cff62223a716a1876fef7e3ba1eda091cc8397ef03d2901ec6"
+    ]
+  },
+  {
+    "path": "ligature/tests/lazy-order.py",
+    "bytes": 1926,
+    "sha256_read_twice": [
+      "04e0e2003453418c6ee2797ef471b95aff66ad79a3042436b2538ed881038c02",
+      "04e0e2003453418c6ee2797ef471b95aff66ad79a3042436b2538ed881038c02"
+    ]
+  },
+  {
+    "path": "ligature/tests/ld04-controls.py",
+    "bytes": 4766,
+    "sha256_read_twice": [
+      "5c37950d6dc72c67dec197d529b68b44065cf35c1c0381ed5e8ee02a9a799f18",
+      "5c37950d6dc72c67dec197d529b68b44065cf35c1c0381ed5e8ee02a9a799f18"
+    ]
+  },
+  {
+    "path": "ligature/tests/lld18-control.py",
+    "bytes": 2110,
+    "sha256_read_twice": [
+      "2a065f5a7249022587835565559db427ab55dcab7689f40400d6dbf48f7ee60d",
+      "2a065f5a7249022587835565559db427ab55dcab7689f40400d6dbf48f7ee60d"
+    ]
+  },
+  {
+    "path": "ligature/tests/manifest-codec.py",
+    "bytes": 2682,
+    "sha256_read_twice": [
+      "dc376cfed5519489bb63a0349805a111eb52daa411cd6d020b6492f940ce77b6",
+      "dc376cfed5519489bb63a0349805a111eb52daa411cd6d020b6492f940ce77b6"
+    ]
+  },
+  {
+    "path": "ligature/tests/musl-argv.py",
+    "bytes": 2707,
+    "sha256_read_twice": [
+      "7118bea2a47b16ab33f4dd6484955cd9a6f710f44e68d0ba90b573b0f66cb88b",
+      "7118bea2a47b16ab33f4dd6484955cd9a6f710f44e68d0ba90b573b0f66cb88b"
+    ]
+  },
+  {
+    "path": "ligature/tests/oracle.py",
+    "bytes": 3440,
+    "sha256_read_twice": [
+      "9e8cfdbac4a1467ef4a726b9c86bfa94281811ea28b69dd9296a25f9e59057a9",
+      "9e8cfdbac4a1467ef4a726b9c86bfa94281811ea28b69dd9296a25f9e59057a9"
+    ]
+  },
+  {
+    "path": "ligature/tests/pax-plant.py",
+    "bytes": 716,
+    "sha256_read_twice": [
+      "22cb0481b50a226567bd8a526518d15a42ab2bba6f3ee6e85a154c80cdd4f706",
+      "22cb0481b50a226567bd8a526518d15a42ab2bba6f3ee6e85a154c80cdd4f706"
+    ]
+  },
+  {
+    "path": "ligature/tests/pax-row.py",
+    "bytes": 1513,
+    "sha256_read_twice": [
+      "3d4506948f38687400363a600bf868b16a209183b48cc9e4bfda70a42688f8f1",
+      "3d4506948f38687400363a600bf868b16a209183b48cc9e4bfda70a42688f8f1"
+    ]
+  },
+  {
+    "path": "ligature/tests/pax-stage.py",
+    "bytes": 1435,
+    "sha256_read_twice": [
+      "d7aa97cb267df27f84845dafb3d017c4fb1c6982a82e13118d656a2882285611",
+      "d7aa97cb267df27f84845dafb3d017c4fb1c6982a82e13118d656a2882285611"
+    ]
+  },
+  {
+    "path": "ligature/tests/pax-validator.py",
+    "bytes": 1512,
+    "sha256_read_twice": [
+      "fc5054fcdf3affbdd955e115c0397f64342e02937a9599d26318365d7ce6224b",
+      "fc5054fcdf3affbdd955e115c0397f64342e02937a9599d26318365d7ce6224b"
+    ]
+  },
+  {
+    "path": "ligature/tests/provenance.py",
+    "bytes": 2267,
+    "sha256_read_twice": [
+      "fd49ef061eba4b9d0511020814b5ff89ad31a62aeda1e4415f57cded7e9cb3cc",
+      "fd49ef061eba4b9d0511020814b5ff89ad31a62aeda1e4415f57cded7e9cb3cc"
+    ]
+  },
+  {
+    "path": "ligature/tests/relocation-witness.py",
+    "bytes": 4513,
+    "sha256_read_twice": [
+      "f7802be5f896bb0eb977e9ba73143a87b6ed7bff90c300b58d67a3de0f4a62c8",
+      "f7802be5f896bb0eb977e9ba73143a87b6ed7bff90c300b58d67a3de0f4a62c8"
+    ]
+  },
+  {
+    "path": "ligature/tests/resolution.py",
+    "bytes": 2684,
+    "sha256_read_twice": [
+      "155cfab823880ada98f67c65cab28792a59dd3af57a077c42cb5334c65092391",
+      "155cfab823880ada98f67c65cab28792a59dd3af57a077c42cb5334c65092391"
+    ]
+  },
+  {
+    "path": "ligature/tests/resolve.py",
+    "bytes": 3756,
+    "sha256_read_twice": [
+      "5c635caa1d52541207973d06762cd958c73024557be4e37ae5c8508c72a6278f",
+      "5c635caa1d52541207973d06762cd958c73024557be4e37ae5c8508c72a6278f"
+    ]
+  },
+  {
+    "path": "ligature/tests/self-link-blocker.py",
+    "bytes": 971,
+    "sha256_read_twice": [
+      "a506cf05b7b81ce28cf989434d906980f56fcd1fc068df97697ffb6d1046360c",
+      "a506cf05b7b81ce28cf989434d906980f56fcd1fc068df97697ffb6d1046360c"
+    ]
+  },
+  {
+    "path": "ligature/tests/self-link.py",
+    "bytes": 5109,
+    "sha256_read_twice": [
+      "c5284ab4197031c4bda14a5206e66a7b9939b2a7081aadfaac7794e0f8fded30",
+      "c5284ab4197031c4bda14a5206e66a7b9939b2a7081aadfaac7794e0f8fded30"
+    ]
+  },
+  {
+    "path": "ligature/tests/static-pax-runner.py",
+    "bytes": 1248,
+    "sha256_read_twice": [
+      "88c7781f1eb816f4885fbaea9b4472fcc10deba5d22bd6f170805f82733ef815",
+      "88c7781f1eb816f4885fbaea9b4472fcc10deba5d22bd6f170805f82733ef815"
+    ]
+  },
+  {
+    "path": "ligature/tests/static-pax.py",
+    "bytes": 7999,
+    "sha256_read_twice": [
+      "9d29fa06bddc0570f8a6bff1bb2ca7641d6ae35e0ce8e65981542aac82756489",
+      "9d29fa06bddc0570f8a6bff1bb2ca7641d6ae35e0ce8e65981542aac82756489"
+    ]
+  },
+  {
+    "path": "ligature/tests/tiers.py",
+    "bytes": 894,
+    "sha256_read_twice": [
+      "adcac1b6c651dc8b1b5a87afd60080645dbd28da40076c055214fc1a2f6cd271",
+      "adcac1b6c651dc8b1b5a87afd60080645dbd28da40076c055214fc1a2f6cd271"
+    ]
+  },
+  {
+    "path": "ligature/tests/writer.py",
+    "bytes": 4621,
+    "sha256_read_twice": [
+      "f0d1b61db2da09230acf588a7f0f6b154f6f2deae4e60fa1abb9719e526d62cc",
+      "f0d1b61db2da09230acf588a7f0f6b154f6f2deae4e60fa1abb9719e526d62cc"
+    ]
+  },
+  {
+    "path": "ligature/tests/addrsig.py",
+    "bytes": 1782,
+    "sha256_read_twice": [
+      "ec05b7cf81a722a8c43897843063c76182620d7a5859d8f36b7c52408814afd4",
+      "ec05b7cf81a722a8c43897843063c76182620d7a5859d8f36b7c52408814afd4"
+    ]
+  },
+  {
+    "path": "ligature/tests/aarch64-oracles.py",
+    "bytes": 1245,
+    "sha256_read_twice": [
+      "e088cc8d4245aa170952b9ac862250c9d5aa7faca145926672bdcbbac757a1e4",
+      "e088cc8d4245aa170952b9ac862250c9d5aa7faca145926672bdcbbac757a1e4"
+    ]
+  },
+  {
+    "path": "ligature/tests/aarch64-sites.py",
+    "bytes": 2751,
+    "sha256_read_twice": [
+      "a5a6bd4ba2cffd5f8559f858df67b6c5cef6623678d6ff206e69dedb8cabeccb",
+      "a5a6bd4ba2cffd5f8559f858df67b6c5cef6623678d6ff206e69dedb8cabeccb"
+    ]
+  },
+  {
+    "path": "ligature/tests/integration.py",
+    "bytes": 5535,
+    "sha256_read_twice": [
+      "4a8854cee22753fc372c7d313244572b107d8a9b438e3fc563d2dcbf214a78e3",
+      "4a8854cee22753fc372c7d313244572b107d8a9b438e3fc563d2dcbf214a78e3"
+    ]
+  },
+  {
+    "path": "ligature/tests/aarch64.py",
+    "bytes": 4621,
+    "sha256_read_twice": [
+      "61bf853c185f911a1ee2eb9d11028675a64564e133462f0bd113c93cc771c14d",
+      "61bf853c185f911a1ee2eb9d11028675a64564e133462f0bd113c93cc771c14d"
+    ]
+  },
+  {
+    "path": "ligature/tests/aarch64-compiler.py",
+    "bytes": 1872,
+    "sha256_read_twice": [
+      "637aba946cec702f061abd337c7402ced72e1b6cf2d8e0b7c67c0ad694ceaf73",
+      "637aba946cec702f061abd337c7402ced72e1b6cf2d8e0b7c67c0ad694ceaf73"
+    ]
+  },
+  {
+    "path": "ligature/tests/script-profile.py",
+    "bytes": 3397,
+    "sha256_read_twice": [
+      "28e5c6fd42d6cff27ef032df1bf86d9799caca2155a32849e2565998dc13cf81",
+      "28e5c6fd42d6cff27ef032df1bf86d9799caca2155a32849e2565998dc13cf81"
+    ]
+  },
+  {
+    "path": "ligature/tests/kernel-pax.py",
+    "bytes": 5910,
+    "sha256_read_twice": [
+      "54b4e0682a5f65cd9c512faf3e1c99fbf2f3ce3ee3fa392210e3f97d2165d5fe",
+      "54b4e0682a5f65cd9c512faf3e1c99fbf2f3ce3ee3fa392210e3f97d2165d5fe"
+    ]
+  },
+  {
+    "path": "ligature/tests/kernel-script.py",
+    "bytes": 8434,
+    "sha256_read_twice": [
+      "9087df7faa37e1465465a25cb4d83cef126dd3ff87b4c1f4f5e6059d00c71d14",
+      "9087df7faa37e1465465a25cb4d83cef126dd3ff87b4c1f4f5e6059d00c71d14"
+    ]
+  },
+  {
+    "path": "ligature/tests/kernel-snapshot.py",
+    "bytes": 772,
+    "sha256_read_twice": [
+      "58864aad632fcc03a85de6f660f329e6af925c26ff132ded535d7932e0662537",
+      "58864aad632fcc03a85de6f660f329e6af925c26ff132ded535d7932e0662537"
+    ]
+  },
+  {
+    "path": "ligature/tests/kernel-records.py",
+    "bytes": 2825,
+    "sha256_read_twice": [
+      "583ca1acb18f40af7c99feaa47381310a7c0f6f1a3c949ccc0823cfedf26e896",
+      "583ca1acb18f40af7c99feaa47381310a7c0f6f1a3c949ccc0823cfedf26e896"
+    ]
+  },
+  {
+    "path": "ligature/tests/ld04-corpus-compare.py",
+    "bytes": 1903,
+    "sha256_read_twice": [
+      "ef88d435cf66f2efaadc4213d4499cdc4f625c82c3974460cb3ef8cfe2c0de20",
+      "ef88d435cf66f2efaadc4213d4499cdc4f625c82c3974460cb3ef8cfe2c0de20"
+    ]
+  },
+  {
+    "path": "ligature/target/ligature",
+    "bytes": 14745912,
+    "sha256_read_twice": [
+      "2c54fc468f113420097f698d6a56791367dd9e5de31186fe7f5b74b2050ae4cd",
+      "2c54fc468f113420097f698d6a56791367dd9e5de31186fe7f5b74b2050ae4cd"
+    ]
+  },
+  {
+    "path": "kernel-qualified/native/candidate.elf",
+    "bytes": 7625648,
+    "sha256_read_twice": [
+      "04ea9c8931a106409d72db81a09922ef4289c4e4fbcfaabee53a1e107bb3d165",
+      "04ea9c8931a106409d72db81a09922ef4289c4e4fbcfaabee53a1e107bb3d165"
+    ]
+  },
+  {
+    "path": "kernel-qualified/native/lld17.elf",
+    "bytes": 4475208,
+    "sha256_read_twice": [
+      "5cb7e73c6c0815dde5f296b0fd38733434bac38ee92f296492b8089c68ef6edb",
+      "5cb7e73c6c0815dde5f296b0fd38733434bac38ee92f296492b8089c68ef6edb"
+    ]
+  },
+  {
+    "path": "kernel-qualified/native/lld18.elf",
+    "bytes": 4475208,
+    "sha256_read_twice": [
+      "5cb7e73c6c0815dde5f296b0fd38733434bac38ee92f296492b8089c68ef6edb",
+      "5cb7e73c6c0815dde5f296b0fd38733434bac38ee92f296492b8089c68ef6edb"
+    ]
+  },
+  {
+    "path": "kernel-qualified/native/gnu.elf",
+    "bytes": 4465600,
+    "sha256_read_twice": [
+      "79fb176e8b037232cd32a3ba09b3128381910fc49b3021384bd526b6102ae4ee",
+      "79fb176e8b037232cd32a3ba09b3128381910fc49b3021384bd526b6102ae4ee"
+    ]
+  },
+  {
+    "path": "kernel-qualified/release/candidate.elf",
+    "bytes": 5932672,
+    "sha256_read_twice": [
+      "f3a2a6650fb4458a5cfa6e4d17e4434b77de6e0a5698d918dc249d9228cfdc22",
+      "f3a2a6650fb4458a5cfa6e4d17e4434b77de6e0a5698d918dc249d9228cfdc22"
+    ]
+  },
+  {
+    "path": "kernel-qualified/release/lld17.elf",
+    "bytes": 3600360,
+    "sha256_read_twice": [
+      "05fcb64b378486f03041b04b0b5466fd1ef01a940739d0db2ae7058d2bd25182",
+      "05fcb64b378486f03041b04b0b5466fd1ef01a940739d0db2ae7058d2bd25182"
+    ]
+  },
+  {
+    "path": "kernel-qualified/release/lld18.elf",
+    "bytes": 3599712,
+    "sha256_read_twice": [
+      "7cd4f0cdffdfde0b693c09666265dbb27539bc4efce32e33e6f6f101ee68e1a8",
+      "7cd4f0cdffdfde0b693c09666265dbb27539bc4efce32e33e6f6f101ee68e1a8"
+    ]
+  },
+  {
+    "path": "kernel-qualified/release/gnu.elf",
+    "bytes": 3592400,
+    "sha256_read_twice": [
+      "de5bf4d2314512d88096a9ebd1512e32d6017c45db93dc7cce8e28cb316df318",
+      "de5bf4d2314512d88096a9ebd1512e32d6017c45db93dc7cce8e28cb316df318"
+    ]
+  },
+  {
+    "path": "ligature/target/evidence/aarch64-live/entry.o",
+    "bytes": 1040,
+    "sha256_read_twice": [
+      "4cf62475ff00d185b751b5aea17baf7fef7c06b6b87e28fd25515bbc33618c07",
+      "4cf62475ff00d185b751b5aea17baf7fef7c06b6b87e28fd25515bbc33618c07"
+    ]
+  },
+  {
+    "path": "ligature/target/evidence/aarch64-live/functions.o",
+    "bytes": 784,
+    "sha256_read_twice": [
+      "5c2cd2837043e27ceb6823b5addb8f270ad23cf41ca6ce93852e40ad7a75795e",
+      "5c2cd2837043e27ceb6823b5addb8f270ad23cf41ca6ce93852e40ad7a75795e"
+    ]
+  },
+  {
+    "path": "ligature/target/evidence/aarch64-live/data.o",
+    "bytes": 696,
+    "sha256_read_twice": [
+      "6569ce025c0c26afb447d333335009f992511cc8d19c50fe4cb3729298942a31",
+      "6569ce025c0c26afb447d333335009f992511cc8d19c50fe4cb3729298942a31"
+    ]
+  },
+  {
+    "path": "ligature/target/evidence/aarch64-live/candidate",
+    "bytes": 22240,
+    "sha256_read_twice": [
+      "864dbc48e3be7b3e944abbbc4d83ab61e98e2b160b807fedd2eae47b3ddc01ce",
+      "864dbc48e3be7b3e944abbbc4d83ab61e98e2b160b807fedd2eae47b3ddc01ce"
+    ]
+  },
+  {
+    "path": "ligature/target/evidence/aarch64-live/helpers.a",
+    "bytes": 1814,
+    "sha256_read_twice": [
+      "e707ed1b469963696f39b49499c45ae922152006ed9d7eff81c45744e02361b9",
+      "e707ed1b469963696f39b49499c45ae922152006ed9d7eff81c45744e02361b9"
+    ]
+  },
+  {
+    "path": "aarch64-live-evidence.tar.gz",
+    "bytes": 7760,
+    "sha256_read_twice": [
+      "51ca9e89a91fbce82016ff54e34cd42f471f118843356601e02851ee52b13a32",
+      "51ca9e89a91fbce82016ff54e34cd42f471f118843356601e02851ee52b13a32"
+    ]
+  }
+]

@@ -1,0 +1,49 @@
+{
+  "status": "BLOCKED",
+  "issue": "wolf-lang#614",
+  "compiler_version": "wolf 0.2.35 (wolfgang, pin cf0c13d)\npaired with lupin 0.1.56 (reference interpreter), pin 294d626\n",
+  "compiler_sha256_read_twice": [
+    "495064ecc4db1bb6cf270f6cf2cd15761628097d35e5f7868c33e76066b4faa1",
+    "495064ecc4db1bb6cf270f6cf2cd15761628097d35e5f7868c33e76066b4faa1"
+  ],
+  "emulation": "explicit qemu user mode; no binfmt or host-guard workaround",
+  "rows": [
+    {
+      "tier": "native",
+      "argv": [
+        "qemu-aarch64-static",
+        "-L",
+        "/arm",
+        "/lane/aarch64-release/extracted/wolf-0.2.35-aarch64-unknown-linux-gnu/wolf",
+        "build",
+        "--emit=obj",
+        "/lane/ligature/tests/corpus/hello/hello.lu",
+        "-o",
+        "/lane/compiler-blocker/hello-native.o"
+      ],
+      "status": 2,
+      "stdout": "",
+      "stderr": "wolf build: this host cannot run the native tier: native codegen targets linux/x86-64, macOS/aarch64, and windows/x86-64 (s28 + s59 + s60a; the rest of D35's matrix is c13) \u2014 host: aarch64-unknown-linux-gnu\n",
+      "output_exists": false
+    },
+    {
+      "tier": "release",
+      "argv": [
+        "qemu-aarch64-static",
+        "-L",
+        "/arm",
+        "/lane/aarch64-release/extracted/wolf-0.2.35-aarch64-unknown-linux-gnu/wolf",
+        "build",
+        "--release",
+        "--emit=llvm-ir",
+        "/lane/ligature/tests/corpus/hello/hello.lu",
+        "-o",
+        "/lane/compiler-blocker/hello-release.ll"
+      ],
+      "status": 2,
+      "stdout": "",
+      "stderr": "wolf build: this host cannot run the release tier: the release tier targets linux/x86-64 and macOS/aarch64 (s41 + s127; c13 owns the matrix) \u2014 this host is neither, and further platforms follow as their own sprints\n",
+      "output_exists": false
+    }
+  ]
+}

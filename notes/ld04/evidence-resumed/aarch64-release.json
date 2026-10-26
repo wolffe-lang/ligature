@@ -1,0 +1,7 @@
+{
+  "url": "https://github.com/wolffe-lang/wolf-lang/releases/download/v0.2.35/wolf-0.2.35-aarch64-unknown-linux-gnu.tar.gz",
+  "sha256_read_twice": [
+    "30ccded432264b7ddd4ebf738d4f895d12091ca604e2da4c2f831da807886f3e",
+    "30ccded432264b7ddd4ebf738d4f895d12091ca604e2da4c2f831da807886f3e"
+  ]
+}

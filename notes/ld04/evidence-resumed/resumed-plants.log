@@ -1,0 +1,29 @@
+Traceback (most recent call last):
+  File "/work/tests/kernel-script.py", line 55, in <module>
+    assert [p[1] for p in loads]==[5,4,6]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError
+PLANT kernel rodata LOAD writable: target RED status=1
+Traceback (most recent call last):
+  File "/work/tests/aarch64.py", line 45, in <module>
+    case(f'pair-{k}',word(0x90000000)+word(low),[(0,high,0),(4,k,0)],P+0x1ff8)
+  File "/work/tests/aarch64.py", line 24, in case
+    assert p.returncode==0,(name,p.stderr);validate(out)
+                                           ^^^^^^^^^^^^^
+  File "/work/tests/aarch64-sites.py", line 52, in validate
+    got=page(w,p)+((low>>10)&4095)*8;assert read(got,8)==s and a==0,r
+                                            ^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: {'place': 2101248, 'symbol': 2109432, 'addend': 0, 'type': 311, 'word': 2952790016, 'section': '.text'}
+PLANT AArch64 GOT value changed by eight: target RED status=1
+Traceback (most recent call last):
+  File "/work/tests/addrsig.py", line 18, in <module>
+    bad=bytearray(b);bad[sh[i][4]]=127;check('out-of-table',bad,'symbol index outside')
+                                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/work/tests/addrsig.py", line 12, in check
+    p=subprocess.run([B,'roundtrip',path],capture_output=True);assert p.returncode==(1 if reason else 0),(name,p.stderr)
+                                                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: ('out-of-table', b'')
+PLANT ADDRSIG invalid index accepted: target RED status=1
+kernel-script: three executable links, u64 provenance, bounds, permissions, ordering, discards, independent sites, deterministic bytes and refusals; 0 SKIP
+aarch64: 50 independent ELF/range/alignment/mask/pair/GOT/refusal rows; no fixture execution claimed, 0 SKIP
+addrsig: valid symbol index consumed without folding; four malformed forms refused; 0 SKIP

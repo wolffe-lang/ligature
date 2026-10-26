@@ -1,0 +1,17 @@
+{
+  "rows": [
+    {
+      "tier": "native",
+      "retained_sites": 66882,
+      "native_execution_requested": false,
+      "guarded": true
+    },
+    {
+      "tier": "release",
+      "retained_sites": 60768,
+      "native_execution_requested": false,
+      "guarded": true
+    }
+  ],
+  "correction": "Earlier new kernel callers accidentally used tools/differ snapshot execute=True default. These final callers explicitly disable execution and guard against launching the kernel path. Prior attempts were inside the lane container and were not used as functional pass evidence. QEMU boot proofs are separate."
+}
