@@ -1,0 +1,30 @@
+//! member: false
+
+use script
+
+fn witness() -> () ! {Bad(str)} {
+    let a = script.tokens("ENTRY/* Unicode is allowed in comments: é */(_start)")?
+    assert(a.len == 4)
+    assert(a[0] == "ENTRY" && a[1] == "(" && a[2] == "_start" && a[3] == ")")
+    let b = script.tokens("foo/* boundary */bar")?
+    assert(b.len == 2 && b[0] == "foo" && b[1] == "bar")
+    let c = script.tokens("/* empty token stream */")?
+    assert(c.len == 0)
+    var failed = false
+    script.tokens("/* unclosed") else |_| { failed = true; List[str]() }
+    assert(failed)
+    failed = false
+    script.tokens("é") else |_| { failed = true; List[str]() }
+    assert(failed)
+    failed = false
+    script.check("ENTRY(_start)") else |_| { failed = true }
+    assert(failed)
+    print("script profile: 7 checked assertions, 0 SKIP")
+}
+
+fn main() -> int {
+    witness() else |e| match e {
+        Bad(message) => { eprint(message); return 1 },
+    }
+    0
+}

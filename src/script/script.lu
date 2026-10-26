@@ -1,0 +1,103 @@
+//! member: true
+
+use binary
+
+// This is a closed profile, not a general linker-script interpreter. Changing a
+// token changes the contract and must add layout/oracle evidence before acceptance.
+fn profile() -> str {
+    "OUTPUT_FORMAT(elf64-x86-64) ENTRY(_start) PHDRS {{ text PT_LOAD FLAGS(5); rodata PT_LOAD FLAGS(4); data PT_LOAD FLAGS(6); }} SECTIONS {{ . = 0xffffffff80000000; __pax_image_start = .; __pax_text_start = .; .text : {{ *(.text .text.*) }} :text . = ALIGN(0x1000); __pax_text_end = .; __pax_rodata_start = .; .rodata : {{ *(.rodata .rodata.*) *(.data.rel.ro .data.rel.ro.*) }} :rodata . = ALIGN(0x1000); __pax_rodata_end = .; __pax_data_start = .; .data : {{ *(.data.limine) *(.data .data.*) *(.got .got.plt) }} :data .bss : {{ *(.bss .bss.*) *(COMMON) }} :data . = ALIGN(0x1000); __pax_image_end = .; /DISCARD/ : {{ *(.note .note.*) *(.comment) *(.eh_frame) }} }}"
+}
+
+fn space(b: byte) -> bool {
+    b == 32 as byte || b == 9 as byte || b == 10 as byte || b == 13 as byte
+}
+
+fn punctuation(b: byte) -> bool {
+    b == 40 as byte ||
+        b == 41 as byte ||
+        b == 123 as byte ||
+        b == 125 as byte ||
+        b == 58 as byte ||
+        b == 59 as byte ||
+        b == 61 as byte
+}
+
+/// Tokenize ASCII scripts, preserving token boundaries across C-style comments.
+pub fn tokens(source: str) -> List[str] ! {Bad(str)} {
+    var out = List[str]()
+    var at: int = 0
+    while at < source.len {
+        let b = source.bytes()[at]
+        if b > 126 as byte || b < 32 as byte && !space(b) {
+            return Bad("script: non-ASCII/control byte at {at} (closed PAX profile)")
+        }
+        if space(b) { at += 1; continue }
+        if at + 1 < source.len &&
+            source.bytes()[at] == 47 as byte &&
+            source.bytes()[at + 1] == 42 as byte {
+            let begin = at
+            at += 2
+            while at + 1 < source.len &&
+                !(source.bytes()[at] == 42 as byte && source.bytes()[at + 1] == 47 as byte) {
+                at += 1
+            }
+            if at + 1 >= source.len { return Bad("script: unterminated comment at {begin}") }
+            at += 2
+            continue
+        }
+        if punctuation(b) {
+            (mut out).push(source[at..at + 1])
+            at += 1
+            continue
+        }
+        let begin = at
+        while at < source.len {
+            let c = source.bytes()[at]
+            if space(c) || punctuation(c) { break }
+            if at + 1 < source.len &&
+                source.bytes()[at] == 47 as byte &&
+                source.bytes()[at + 1] == 42 as byte {
+                break
+            }
+            if c > 126 as byte || c < 32 as byte {
+                return Bad("script: non-ASCII/control byte at {at}")
+            }
+            at += 1
+        }
+        (mut out).push(source[begin..at])
+    }
+    out
+}
+
+/// Validate exactly the permitted kernel profile; acceptance does not enable linking.
+pub fn check(source: str) -> () ! {Bad(str)} {
+    let actual = tokens(source)?
+    let expected = tokens(profile())?
+    for i in 0..expected.len {
+        if i >= actual.len {
+            return Bad("script: missing token {expected[i]} at {i} (closed PAX profile)")
+        }
+        if actual[i] != expected[i] {
+            return Bad(
+                "script: unsupported token {actual[i]} at {i}; expected {expected[i]} (closed PAX profile)",
+            )
+        }
+    }
+    if actual.len != expected.len {
+        return Bad("script: trailing token {actual[expected.len]} (closed PAX profile)")
+    }
+}
+
+/// Validate a bounded script without opening object inputs or writing an executable.
+pub fn inspect(path: str) -> () ! {Bad(str)} {
+    let size = fs_size(path) else |_| { return Bad("cannot stat {path}") }
+    if size > 65536 { return Bad("script: exceeds 65536-byte profile limit") }
+    let fd = fs_open(path) else |_| { return Bad("cannot open {path}") }
+    defer fs_close(fd) else |_| {}
+    let raw = binary.read(binary.Input { fd: fd, base: 0, size: size }, 0, size)?
+    let source = str_from_utf8(raw) else |_| { return Bad("script: invalid UTF-8") }
+    check(source)?
+    print(
+        "{{\"format\":\"ligature.script-profile.v1\",\"profile\":\"pax-kernel\",\"linking\":false,\"base\":18446744071562067968,\"entry\":\"_start\",\"load_flags\":[5,4,6],\"alignment\":4096}}",
+    )
+}
