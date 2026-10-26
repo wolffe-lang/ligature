@@ -10,7 +10,7 @@ use arwrite
 
 fn execute(args: List[str]) -> () ! {Bad(str)} {
     if args.len == 1 && args[0] == "--version" {
-        print("ligature 0.0.2 (static x86-64 ELF)")
+        print("ligature 0.0.2 (static ELF; x86-64, AArch64 subset)")
         return
     }
     if args.len == 2 && (args[0] == "inspect" || args[0] == "verify" || args[0] == "roundtrip") {
@@ -28,11 +28,11 @@ fn execute(args: List[str]) -> () ! {Bad(str)} {
         return
     }
     var plan = front.parse(args)?
+    if plan.print_plan { front.emit(plan); return }
     if plan.script.len != 0 {
         if !plan.nostdlib { return Bad("kernel script requires -nostdlib") }
         script.validate_file(plan.script)?
     }
-    if plan.print_plan { front.emit(plan); return }
     if !plan.nostdlib {
         let root = env_get("LIGATURE_SYSROOT") else |e| match e {
             missing => "/usr/lib/wolf-musl",

@@ -155,6 +155,7 @@ pub fn emit(p: Plan) {
     strings(p.undefined)
     print_raw(",\"definitions\":")
     strings(p.definitions)
+    if p.script.len != 0 { print_raw(",\"script\":{binary.quote(p.script.bytes())}") }
     print(",\"static\":{p.static_link},\"nostdlib\":{p.nostdlib},\"gc_sections\":{p.gc}}}")
 }
 

@@ -45,5 +45,8 @@ for operands in ([], ['one', 'two']):
     run = subprocess.run([BIN, 'script-plan', *operands], capture_output=True, timeout=30)
     assert run.returncode == 1 and b'script-plan: usage:' in run.stderr, (operands, run.stderr)
     rows.append({'name':'arity-' + str(len(operands)), 'status':run.returncode, 'stderr':run.stderr.decode()})
+plan = subprocess.run([BIN, '--print-plan', '-nostdlib', '-T', '/missing-profile.ld', '/missing-object.o'], capture_output=True, timeout=30)
+assert plan.returncode == 0 and json.loads(plan.stdout)['script'] == '/missing-profile.ld', plan.stderr
+rows.append({'name':'declarative-plan-opens-no-input', 'status':plan.returncode, 'stderr':plan.stderr.decode()})
 (OUT / 'results.json').write_text(json.dumps(rows,indent=2)+'\n')
 print(f'script-profile: {len(rows)} rows, 0 SKIP; preflight only; executable kernel links require explicit -T')
