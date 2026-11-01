@@ -1,0 +1,41 @@
+#!/usr/bin/env python3
+"""Fetch the musl runtime the pinned wolf release publishes, by its own digests; never the bundle's runtime.
+
+0.2.36-compiled objects call __wolf_rt_main_start from their entry (#962/#963): "objects and runtime
+must come from this release together". The link bundle (tools/fetch-bundle) keeps its own identity,
+including its 0.2.35 libwolf_rt.a; this runtime is a separate pin ([wolf-rt] in wolf-toolchain.toml).
+Stages .wolf-bin/musl/libwolf_rt.a.
+"""
+import hashlib,pathlib,tarfile,tempfile,tomllib,urllib.request
+ROOT=pathlib.Path(__file__).resolve().parent.parent
+pin=tomllib.loads((ROOT/'wolf-toolchain.toml').read_text())['wolf-rt']
+base=f'wolf-rt-{pin["version"]}-x86_64-unknown-linux-musl'
+URL=f'https://github.com/{pin["repo"]}/releases/download/v{pin["version"]}/{base}.tar.gz'
+FILES={base,f'{base}/libwolf_rt.a',f'{base}/LICENSE',f'{base}/LICENSE-EXCEPTION',f'{base}/SHA256SUMS'}
+stage=ROOT/'.wolf-bin';stage.mkdir(exist_ok=True)
+def digest(path):
+    with path.open('rb') as stream:return hashlib.file_digest(stream,'sha256').hexdigest()
+with tempfile.TemporaryDirectory(prefix='fetch-rt-',dir=stage) as temp:
+    archive=pathlib.Path(temp)/'runtime.tar.gz'
+    urllib.request.urlretrieve(URL,archive)
+    for _ in range(2):
+        actual=digest(archive)
+        if actual!=pin['x86_64-unknown-linux-musl']:raise SystemExit(f'REFUSED musl runtime archive digest {actual}')
+        print(base,'sha256',actual,flush=True)
+    with tarfile.open(archive) as tf:
+        members=tf.getmembers()
+        if {m.name.rstrip('/') for m in members}!=FILES or len(members)!=len(FILES):
+            raise SystemExit('REFUSED musl runtime members')
+        tf.extractall(stage,filter='data')
+lib=stage/base/'libwolf_rt.a'
+for _ in range(2):
+    actual=digest(lib)
+    if actual!=pin['libwolf_rt']:raise SystemExit(f'REFUSED musl libwolf_rt.a digest {actual}')
+    print(f'{base}/libwolf_rt.a sha256',actual,flush=True)
+sums=(stage/base/'SHA256SUMS').read_text().split()
+if sums!=[pin['libwolf_rt'],'libwolf_rt.a']:raise SystemExit('REFUSED musl runtime SHA256SUMS')
+musl=stage/'musl';musl.mkdir(exist_ok=True)
+dest=musl/'libwolf_rt.a'
+if dest.is_symlink() or dest.exists():dest.unlink()
+dest.symlink_to(f'../{base}/libwolf_rt.a')
+print('musl runtime: archive, runtime and SHA256SUMS verified; .wolf-bin/musl/libwolf_rt.a; distinct from the link bundle',flush=True)
