@@ -77,6 +77,13 @@ provisions the real self-link CI row (ligature#13). Wolf 0.2.35's public Linux
 runtime targets glibc and cannot substitute for it (`open64`, `fstat64` and
 unwind references differ). The full PAX/Wolf corpus remains a separate local
 strict run; distro fixtures are not represented as that corpus.
+At the 0.2.36 pin, objects that compiler emits link against the release's own
+musl runtime, a separate pin (`[wolf-rt]` in `wolf-toolchain.toml`, fetched by
+`tools/fetch-musl-runtime`): asset `wolf-rt-0.2.36-x86_64-unknown-linux-musl.tar.gz`,
+SHA-256 `3aba9c8b4e5c51f2094242946fae0e6f1cd64bc7837b7484e1085ce63373aa57`, its
+`libwolf_rt.a` `6892dac8a6e211f12c6823c0f19497d820a47fdbfe7fb569cd967acf86461aad`,
+each read twice. The bundle's runtime (`9d859b9e…`, 0.2.35's) lacks the new
+entry's `__wolf_rt_main_start` and stays the PAX link set's input only.
 
 The public glibc runtime additionally contains empty, excluded
 `SHT_LLVM_ADDRSIG` sections: LLVM 17 Language Reference Extensions,
