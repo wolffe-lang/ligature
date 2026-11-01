@@ -26,3 +26,5 @@ for name in ('wolf', 'lupin'):
         dest = stage / 'std'
         if dest.is_symlink(): dest.unlink()
         dest.symlink_to(f'{base}/std')
+# The same release's musl runtime, its own pin ([wolf-rt]); the link bundle keeps its own.
+subprocess.run([str(root / 'tools/fetch-musl-runtime')], check=True)
