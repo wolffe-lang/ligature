@@ -5,6 +5,9 @@ ROOT=pathlib.Path(__file__).resolve().parent.parent
 OUT=ROOT/'target/evidence/musl-argv';OUT.mkdir(parents=True,exist_ok=True)
 BASE=pathlib.Path(os.environ.get('LIGATURE_LINK_INPUTS',str(ROOT/'.link-inputs'))).resolve();LIB=BASE/'sysroot'
 WOLF=pathlib.Path(os.environ.get('WOLF',str(ROOT/'.wolf-bin/wolf'))).resolve()
+# The pinned compiler's own musl runtime ([wolf-rt], tools/fetch-musl-runtime): its objects and runtime
+# come from one release (#962/#963). The bundle supplies the sysroot and lld, never the runtime.
+RUNTIME=pathlib.Path(os.environ.get('LIGATURE_MUSL_RUNTIME',str(ROOT/'.wolf-bin/musl/libwolf_rt.a'))).resolve()
 SOURCE=ROOT/'tests/fixtures/musl-argv'
 def call(args,env=None):
     p=subprocess.run(list(map(str,args)),capture_output=True,timeout=120,env=env)
@@ -13,7 +16,7 @@ def call(args,env=None):
 call([WOLF,'build','--no-cache','--emit=obj',SOURCE/'main.lu','-o',OUT/'main.o'])
 env={**os.environ,'CC':'cc','WOLF_RT_LIB':str(WOLF.parent/'libwolf_rt.a')}
 call([WOLF,'build','--no-cache',SOURCE/'main.lu','-o',OUT/'glibc'],env)
-objects=[LIB/'crt1.o',LIB/'crti.o','--start-group',OUT/'main.o',BASE/'libwolf_rt.a',LIB/'libc.a',LIB/'libunwind.a','--end-group',LIB/'crtn.o']
+objects=[LIB/'crt1.o',LIB/'crti.o','--start-group',OUT/'main.o',RUNTIME,LIB/'libc.a',LIB/'libunwind.a','--end-group',LIB/'crtn.o']
 for label,ld in [('lld',BASE/'ld.lld'),('gnu','ld.bfd')]:
     call([ld,'-static','--gc-sections','--undefined=__wolf_rt_trap_at','--defsym=wolf_trap=__wolf_rt_trap_at','-o',OUT/label,*objects])
 call(['musl-gcc','-c',SOURCE/'control.c','-o',OUT/'control.o'])
@@ -28,7 +31,8 @@ for label in ('glibc','lld','gnu','c-musl'):
 assert all(r['status']==0 and r['stderr']=='' for r in rows),rows
 assert rows[0]['stdout']==rows[3]['stdout']==expected.decode(),rows
 blocked=rows[1]['stdout']==rows[2]['stdout']=='argc=0\n'
-result={'row':'self-link runtime argv','status':'BLOCKED' if blocked else 'PASS','issue':'wolf-lang#962' if blocked else None,'rows':rows}
+with RUNTIME.open('rb') as stream:runtime_sha=hashlib.file_digest(stream,'sha256').hexdigest()
+result={'row':'self-link runtime argv','status':'BLOCKED' if blocked else 'PASS','issue':'wolf-lang#962' if blocked else None,'runtime':str(RUNTIME),'runtime_sha256':runtime_sha,'rows':rows}
 (OUT/'results.json').write_text(json.dumps(result,indent=2)+'\n')
 if blocked:
     print('BLOCKED self-link: wolf-lang#962; both pinned musl links lose argv while cc/glibc and the pinned C/musl control preserve it',flush=True)
