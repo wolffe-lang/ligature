@@ -3,6 +3,9 @@
 
 The PAX musl runtime is not replaceable with the public glibc release. Fetch
 the digest-pinned published bundle first; an absent bundle is a named failure.
+The objects link against the pinned compiler's own musl runtime ([wolf-rt],
+tools/fetch-musl-runtime): one release for objects and runtime (#962/#963).
+The bundle supplies the sysroot, cc and lld, and its pins stay checked.
 """
 import hashlib,json,os,pathlib,subprocess,sys,tempfile,time
 def permits_blocked(runtime_sha,argv_status):
@@ -23,7 +26,8 @@ for _ in range(2):
     for row in (ROOT/'tests/pax-link.sums').read_text().splitlines():
         name,sha,size=row.split();p=BASE/name
         assert p.stat().st_size==int(size) and digest(p)==sha,('self-link pin',name)
-runtime_digest=digest(BASE/'libwolf_rt.a')
+RUNTIME=pathlib.Path(os.environ.get('LIGATURE_MUSL_RUNTIME',str(ROOT/'.wolf-bin/musl/libwolf_rt.a'))).resolve()
+runtime_digest=digest(RUNTIME)
 def call(name,args):
     print('SELF-LINK',name,'START',flush=True);start=time.monotonic()
     p=subprocess.run(list(map(str,args)),capture_output=True,timeout=2400)
@@ -46,7 +50,7 @@ call('objects',[wolf,'build','--no-cache','--emit=obj',ROOT/'src/ligature.lu','-
 objects=sorted(object_dir.glob('*.o'))
 assert len(objects)>1,'self-link compiler module object set is missing'
 def link_args(inputs):
-    return ['-static','-nostdlib','--gc-sections','--undefined=__wolf_rt_trap_at','--defsym=wolf_trap=__wolf_rt_trap_at',LIB/'crt1.o',LIB/'crti.o','--start-group',*inputs,BASE/'libwolf_rt.a',LIB/'libc.a',LIB/'libunwind.a','--end-group',LIB/'crtn.o']
+    return ['-static','-nostdlib','--gc-sections','--undefined=__wolf_rt_trap_at','--defsym=wolf_trap=__wolf_rt_trap_at',LIB/'crt1.o',LIB/'crti.o','--start-group',*inputs,RUNTIME,LIB/'libc.a',LIB/'libunwind.a','--end-group',LIB/'crtn.o']
 args=link_args(objects)
 first=OUT/'ligature-first';second=OUT/'ligature-second';third=OUT/'ligature-third'
 call('first',[BIN,*args,'-o',first]);call('second',[BIN,*args,'-o',second])
