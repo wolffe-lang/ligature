@@ -14,8 +14,8 @@ byte-and-patch provenance manifest.
 On x86-64 Linux with a C toolchain and Python 3.12:
 
 ```sh
-tools/fetch-toolchain       # digest-verified wolf 0.2.35 and lupin 0.1.56
-tools/fetch-bundle          # digest-verified musl runtime, CRTs and oracle controls
+tools/fetch-toolchain       # digest-verified wolf 0.2.36, lupin 0.1.58 and the release's musl runtime
+tools/fetch-bundle          # digest-verified PAX musl runtime, CRTs and oracle controls
 tools/build
 target/ligature --version
 # Use a matching musl runtime and sysroot; the public GNU/Linux runtime is not musl.
@@ -91,14 +91,16 @@ provenance hashes and resealed corruption witnesses, full byte coverage,
 explanation queries, the high-half GOT range fixture and the public runtime
 archive. The self-link gate compiles every linker module with the pinned compiler,
 links the object set twice, executes that linker and demands a byte-identical
-bootstrap relink and an executed hello. Its runtime preflight currently reports
-**BLOCKED on [wolf-lang#962](https://github.com/wolffe-lang/wolf-lang/issues/962)**:
-the pinned musl runtime loses command-line arguments under both reference
-linkers too. CI records this as BLOCKED, neither a passing self-link nor a SKIP, only
-for runtime SHA-256 `9d859b9e6b5319f5a6f609e73ba0d71981d2dfa489882648ac9f454cd9db739c`.
-Any other runtime digest must pass the hard self-link assertions. `tools/check-core` runs the independent linker/provenance gates. Both a Wolf release carrying the new entry (0.2.36 at the earliest) and
-its matching musl bundle are required before self-link execution can qualify;
-a runtime-only update leaves 0.2.35-compiled objects without argv.
+bootstrap relink and an executed hello. Since the 0.2.36 pin it **passes**: wolf
+0.2.36's entry hands argc, argv and envp to the runtime
+([wolf-lang#962](https://github.com/wolffe-lang/wolf-lang/issues/962)), and the
+objects link against the same release's published musl runtime
+(`wolf-rt-0.2.36-x86_64-unknown-linux-musl`, `libwolf_rt.a` SHA-256
+`6892dac8a6e211f12c6823c0f19497d820a47fdbfe7fb569cd967acf86461aad`, pinned as
+`[wolf-rt]`), so the argv preflight sees all three arguments under both
+reference linkers. The BLOCKED row remains admitted only for the old bundle
+runtime, SHA-256 `9d859b9e6b5319f5a6f609e73ba0d71981d2dfa489882648ac9f454cd9db739c`;
+any other runtime digest must pass the hard self-link assertions. `tools/check-core` runs the independent linker/provenance gates.
 No linker, binutils or libc source is fetched or built.
 
 The strict PAX run additionally reads the **complete** PAX runtime, musl libc
@@ -112,7 +114,10 @@ example sites, extraction traces and output observations. See
 The exact PAX LLD control, musl runtime and sysroot are available as the
 [link-bundle-2026-10-25 release](https://github.com/wolffe-lang/ligature/releases/tag/link-bundle-2026-10-25).
 `tools/fetch-bundle` verifies its digest twice and checks every extracted binary.
-The public Wolf GNU/Linux runtime cannot substitute for this musl runtime.
+The public Wolf GNU/Linux runtime cannot substitute for this musl runtime. The
+bundle's runtime is 0.2.35's, so objects the pinned 0.2.36 compiler emits link
+against the release's own musl runtime (`tools/fetch-musl-runtime`), a separate
+pin; the bundle still supplies the CRTs, libc, libunwind, cc and LLD control.
 CI additionally uses version-pinned distro LLD 17, binutils and musl binary
 packages for independent C/assembly fixtures.
 
