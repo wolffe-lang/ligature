@@ -26,3 +26,14 @@ aarch64-unknown-linux-gnu = "00e40fa22d99046b28357f56092075cdb3e3e36a21cc44bf04d
 [std]
 repo = "wolffe-lang/wolf-std"
 rev = "78b9d3cbc41d51db44d18c40b6694403644d1c83"
+
+[wolf-rt]
+# The musl runtime 0.2.36 publishes as its fifth release asset, pinned as its
+# own identity. 0.2.36-compiled objects link against it: their entry calls
+# __wolf_rt_main_start (#962/#963), which the link bundle's runtime (0.2.35's,
+# tests/pax-link.sums) lacks. Never the bundle's libwolf_rt.a, never the GNU
+# archive's (47fb9ad0...). tools/fetch-musl-runtime reads both digests twice.
+version = "0.2.36"
+repo = "wolffe-lang/wolf-lang"
+x86_64-unknown-linux-musl = "3aba9c8b4e5c51f2094242946fae0e6f1cd64bc7837b7484e1085ce63373aa57"
+libwolf_rt = "6892dac8a6e211f12c6823c0f19497d820a47fdbfe7fb569cd967acf86461aad"
