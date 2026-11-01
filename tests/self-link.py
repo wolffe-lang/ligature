@@ -46,6 +46,8 @@ if permits_blocked(runtime_digest,preflight.returncode):
 assert preflight.returncode==0,'self-link runtime argv preflight failed unexpectedly'
 wolf=os.environ.get('WOLF',str(ROOT/'.wolf-bin/wolf'))
 object_dir=pathlib.Path(tempfile.mkdtemp(prefix='objects-',dir=OUT))
+# mkdtemp makes it 0700, owned by the container's root; the evidence upload reads it from the host.
+object_dir.chmod(0o755)
 call('objects',[wolf,'build','--no-cache','--emit=obj',ROOT/'src/ligature.lu','-o',object_dir/'ligature.o'])
 objects=sorted(object_dir.glob('*.o'))
 assert len(objects)>1,'self-link compiler module object set is missing'
