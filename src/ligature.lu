@@ -7,6 +7,7 @@ use writer
 use explain
 use script
 use arwrite
+use profile
 
 fn execute(args: List[str]) -> () ! {Bad(str)} {
     if args.len == 1 && args[0] == "--version" {
@@ -52,9 +53,12 @@ fn execute(args: List[str]) -> () ! {Bad(str)} {
     }
     var state = resolve.empty()
     defer resolve.finish(state)
+    profile.mark("resolve")
     resolve.run(mut state, plan)?
+    profile.mark("visibility")
     resolve.visibility(mut state)
     writer.link(state, plan)?
+    profile.mark("done")
 }
 
 fn main() -> int {
