@@ -1,0 +1,22 @@
+{
+  "lane": "ld05",
+  "base": "c7465f81",
+  "prediction": [
+    "Measure the unchanged pinned hello link by phase before optimizing; archive lookup or repeated provenance/byte conversion is expected to dominate, but measurement decides.",
+    "A bounded hello timing gate will fail on the baseline and pass after the measured hotspot fix, with exact output identity and executed oracle comparisons retained.",
+    "The existing explicit PAX script profile should accept trunk 3e28a8bc's script; real native kernel inputs must link, independently resolve every relocation, and boot first-light/core under BIOS and UEFI. Differences from lld must be named, not waived.",
+    "An off-line PC32 addend-minus-four plant must fail the independent relocation witness by name.",
+    "A deterministic musl bundle combining existing binary controls with the pinned 0.2.36 runtime should verify twice; stage only, never publish it."
+  ],
+  "plan": [
+    "Verify Linux host, toolchain and bundle; profile unchanged hello and inspect existing kernel harness.",
+    "Commit failing regression rows, optimize only measured causes, preserve link and provenance semantics.",
+    "Stage digest-addressed bundle and publication command; execute kernel qualification if host inputs permit.",
+    "Run final committed-head gauntlet with END lines, open draft plant and implementation PRs, read run ids once, run lane audit once and hand back."
+  ],
+  "recommendations": [
+    {"id": "R-ld05-1", "options": ["Preserve all retained relocations and provenance while fixing measured hot loops", "Drop debug/provenance records to reduce time"], "recommendation": "Preserve all records; no performance shortcut that changes the contract."},
+    {"id": "R-ld05-2", "options": ["Stage an independently hashed 0.2.36 bundle without changing live fetch pins before publication", "Point CI at an unpublished asset"], "recommendation": "Stage only; retain working published pins until publication."},
+    {"id": "R-ld05-3", "options": ["Qualify PAX through explicit input and existing QEMU harness without changing its default linker", "Flip the PAX default"], "recommendation": "Explicit qualification; default unchanged."}
+  ]
+}
