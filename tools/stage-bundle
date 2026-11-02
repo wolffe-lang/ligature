@@ -1,0 +1,100 @@
+#!/usr/bin/env python3
+"""Stage (never publish) deterministic link inputs with the pinned musl runtime."""
+import argparse
+import gzip
+import hashlib
+import io
+import json
+import pathlib
+import tarfile
+import tempfile
+import tomllib
+
+ROOT = pathlib.Path(__file__).resolve().parent.parent
+
+
+def digest(path):
+    with path.open('rb') as stream:
+        return hashlib.file_digest(stream, 'sha256').hexdigest()
+
+
+def stage(bundle, runtime, expected, runtime_sha, destination):
+    """Only the eight existing bundle members are admitted; runtime is replaced."""
+    destination.mkdir(parents=True, exist_ok=False)
+    names = {'cc', 'ld.lld', 'libwolf_rt.a', 'sysroot/crt1.o', 'sysroot/crti.o',
+             'sysroot/crtn.o', 'sysroot/libc.a', 'sysroot/libunwind.a'}
+    if set(expected) != names:
+        raise ValueError('REFUSED input member roster')
+    for _ in range(2):
+        for name, (sha, size) in expected.items():
+            path = bundle / name
+            if path.stat().st_size != size or digest(path) != sha:
+                raise ValueError(f'REFUSED original bundle input {name}')
+        if digest(runtime) != runtime_sha:
+            raise ValueError('REFUSED replacement musl runtime digest')
+    paths = {name: (runtime if name == 'libwolf_rt.a' else bundle / name) for name in names}
+    actual = {name: {'sha256': digest(path), 'size': path.stat().st_size}
+              for name, path in paths.items()}
+    with tempfile.TemporaryDirectory(prefix='pack-', dir=destination) as temp:
+        archive = pathlib.Path(temp) / 'bundle.tar.gz'
+        with archive.open('wb') as raw:
+            with gzip.GzipFile(fileobj=raw, filename='', mode='wb', mtime=0, compresslevel=9) as zipped:
+                with tarfile.open(fileobj=zipped, mode='w', format=tarfile.USTAR_FORMAT) as tf:
+                    for name in sorted(names):
+                        data = paths[name].read_bytes()
+                        if hashlib.sha256(data).hexdigest() != actual[name]['sha256']:
+                            raise ValueError(f'REFUSED input changed while packing {name}')
+                        member = tarfile.TarInfo(name)
+                        member.size = len(data)
+                        member.mode = 0o755 if name in {'cc', 'ld.lld'} else 0o644
+                        tf.addfile(member, io.BytesIO(data))
+        sha = digest(archive)
+        for _ in range(2):
+            if digest(archive) != sha:
+                raise ValueError('REFUSED staged archive changed')
+            with tarfile.open(archive) as tf:
+                members = tf.getmembers()
+                if len(members) != len(names) or {m.name for m in members} != names:
+                    raise ValueError('REFUSED staged archive roster')
+                for member in members:
+                    if not member.isfile() or member.mtime or member.uid or member.gid:
+                        raise ValueError('REFUSED nondeterministic member metadata')
+                    with tf.extractfile(member) as stream:
+                        got = hashlib.file_digest(stream, 'sha256').hexdigest()
+                    if got != actual[member.name]['sha256'] or member.size != actual[member.name]['size']:
+                        raise ValueError(f'REFUSED staged member {member.name}')
+            for name, path in paths.items():
+                if digest(path) != actual[name]['sha256']:
+                    raise ValueError(f'REFUSED input changed after packing {name}')
+        final = destination / f'musl-link-bundle-sha256-{sha}.tar.gz'
+        archive.rename(final)
+    sums = ''.join(f'{name} {actual[name]["sha256"]} {actual[name]["size"]}\n' for name in sorted(names))
+    (destination / 'pax-link.sums').write_text(sums)
+    receipt = {'format': 'ligature.staged-bundle.v1', 'published': False,
+               'archive': final.name, 'sha256_read_twice': [sha, sha],
+               'bytes': final.stat().st_size, 'members': actual,
+               'runtime_sha256': runtime_sha}
+    (destination / 'receipt.json').write_text(json.dumps(receipt, indent=2, sort_keys=True) + '\n')
+    return receipt
+
+
+def main():
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('--bundle', type=pathlib.Path, default=ROOT / '.link-inputs')
+    parser.add_argument('--runtime', type=pathlib.Path, default=ROOT / '.wolf-bin/musl/libwolf_rt.a')
+    parser.add_argument('--out', type=pathlib.Path, required=True, help='new destination directory')
+    args = parser.parse_args()
+    expected = {}
+    for row in (ROOT / 'tests/pax-link.sums').read_text().splitlines():
+        name, sha, size = row.split()
+        if name in expected:
+            raise ValueError('REFUSED duplicate input pin')
+        expected[name] = (sha, int(size))
+    pin = tomllib.loads((ROOT / 'wolf-toolchain.toml').read_text())['wolf-rt']
+    receipt = stage(args.bundle, args.runtime, expected, pin['libwolf_rt'], args.out)
+    print(json.dumps(receipt, indent=2, sort_keys=True))
+    print('STAGED ONLY: no release, tag, upload or live pin change')
+
+
+if __name__ == '__main__':
+    main()
