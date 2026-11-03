@@ -1,8 +1,0 @@
-//! member: true
-
-/// Optional phase boundaries; the external timing harness owns the clock.
-/// No timestamps enter the output ELF or its provenance.
-pub fn mark(name: str) {
-    let enabled = env_get("LIGATURE_PROFILE") else |_| ""
-    if enabled == "1" { eprint("ligature-phase {name}") }
-}

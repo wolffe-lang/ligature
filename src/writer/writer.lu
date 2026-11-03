@@ -8,7 +8,6 @@ use relocate
 use resolve
 use verify
 use provenance
-use profile
 
 fn append(mut dst: List[byte], bytes: List[byte]) {
     for b in bytes { (mut dst).push(b) }
@@ -206,19 +205,13 @@ fn insert(mut file: List[byte], off: int, data: List[byte]) -> () ! {Bad(str)} {
 
 /// Build a static ET_EXEC, re-read and verify it before reporting success.
 pub fn link(s: resolve.State, p: front.Plan) -> () ! {Bad(str)} {
-    profile.mark("read")
     var l = layout.read_for(s, p.script.len != 0)?
     if l.kernel && l.machine != 62 { return Bad("PAX kernel profile requires EM_X86_64") }
-    profile.mark("collect")
     layout.collect(mut l, s, p)?
-    profile.mark("place")
     if l.kernel { layout.kernel_place(mut l, s)? } else { layout.place(mut l, s)? }
-    profile.mark("relocate")
     relocate.apply(mut l, s)?
-    profile.mark("symbols")
     let symtab = l.outputs.len
     let indices = symbols(mut l, s)?
-    profile.mark("retained")
     retained(mut l, s, indices, symtab)?
     let note_index = l.outputs.len
     var note = layout.output(".note.wolf.link", 7, 0, 4)
@@ -226,7 +219,6 @@ pub fn link(s: resolve.State, p: front.Plan) -> () ! {Bad(str)} {
     (mut l.outputs).push(note)
     let manifest_index = l.outputs.len
     (mut l.outputs).push(layout.output(".wolf.link.manifest", 1, 0, 1))
-    profile.mark("input-hashes")
     let inputs = provenance.inputs(s)?
     let shstr = l.outputs.len
     (mut l.outputs).push(layout.output(".shstrtab", 3, 0, 1))
@@ -237,8 +229,7 @@ pub fn link(s: resolve.State, p: front.Plan) -> () ! {Bad(str)} {
     l.outputs[shstr].size = l.outputs[shstr].data.len
     var shoff: int = 0
     var fixed = false
-    for pass in 0..16 {
-        profile.mark("manifest-{pass}")
+    for _ in 0..16 {
         var cursor = l.data_file_end
         for j in 1..l.outputs.len {
             if l.outputs[j].flags & 2 != 0 { continue }
@@ -259,7 +250,6 @@ pub fn link(s: resolve.State, p: front.Plan) -> () ! {Bad(str)} {
         l.outputs[manifest_index].size,
         l.outputs[manifest_index].fileoff,
     )?
-    profile.mark("serialize")
     var file = List[byte]()
     for _ in 0..shoff + l.outputs.len * 64 { (mut file).push(0 as byte) }
     var phdrs = List[byte]()
@@ -378,18 +368,14 @@ pub fn link(s: resolve.State, p: front.Plan) -> () ! {Bad(str)} {
             )?,
         )?
     }
-    profile.mark("seal")
     provenance.seal(mut file, l.outputs[note_index].fileoff, l.outputs[manifest_index].data)
-    profile.mark("write")
     fs_write_bytes(p.output, file) else |_| { return Bad("cannot write {p.output}") }
     fs_set_mode(p.output, 493) else |_| { return Bad("cannot mark {p.output} executable") }
     let fd = fs_open(p.output) else |_| { return Bad("cannot reopen output for verify") }
     defer fs_close(fd) else |_| {}
     let input = binary.Input { fd: fd, base: 0, size: file.len }
-    profile.mark("readback")
     let image = elf.parse(input)?
     elf.walk(input, image, false)?
     verify.check(image)?
-    profile.mark("provenance-check")
     provenance.check(input, image)?
 }
