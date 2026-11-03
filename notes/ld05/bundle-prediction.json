@@ -1,0 +1,11 @@
+{
+  "scope": "Complete the licensed musl bundle; kernel/performance work remains separate and unfinished.",
+  "prediction": [
+    "The previous staged archive has no licence members; an exact licensed-roster test must reject it.",
+    "Adding unchanged upstream licence texts, binary attribution, and a complete payload manifest must preserve all eight binary hashes and deterministic archive bytes.",
+    "An unpacked archive must reproduce its manifest, run LLD 17.0.6, and link and execute the pinned Wolf hello using the replacement runtime.",
+    "A fresh PC32 plus-four plant based on the final head must fail pc32-equation locally; the green head must pass the complete local linker gate."
+  ],
+  "recommendation": {"id": "R-ld05-4", "options": ["Ship complete component licences and notices with a strict manifest", "Publish the existing binary-only archive"], "implemented_choice": "Ship complete notices; publication remains held and live download pins stay unchanged."},
+  "prior_measurement": {"host": "hasu", "baseline_head": "18c70d7", "hello_seconds": 261.73317248700187, "resolve_seconds": 0.21409366186708212, "verify_seconds": 4.522375817876309, "profile_result": "build refused W0314; no profile or performance fix claimed"}
+}
