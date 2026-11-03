@@ -80,8 +80,9 @@ docker build -t ligature-oracle -f ci/oracle.Containerfile ci
 docker run --rm -v "$PWD:/work" ligature-oracle bash -c 'tools/fetch-toolchain && tools/fetch-bundle && tools/check'
 ```
 
-The PR tier and full tier currently run the same two jobs: planner checks and
-the Linux gate. The `full-matrix` label selects the full-tier verdict. The
+Unlabelled PRs run one cheap job. The `ci` or `full-matrix` label selects the
+full set: planner checks and the Linux gate. Trunk pushes run that set only
+on cross-cutting paths; the nightly still runs the full set. The
 Linux gate checks formatting, Wolf unit tests, malformed-file/native integration,
 real musl links with LLD 17 and GNU ld, script-profile refusals, independently
 parsed archive indexes and three-linker archive execution, executable kernel
