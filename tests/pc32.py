@@ -42,7 +42,9 @@ for name, linker, extra in [('candidate', str(ROOT / 'target/ligature'), ['-nost
     # Both target and place are in this section; no candidate symbol/map is trusted.
     actual = struct.unpack_from('<i', data, section[4])[0]
     expected = (section[3] + 16) - section[3]
-    assert actual == expected, ('pc32-equation', name, actual, expected)
+    if actual != expected:
+        print(f'FAIL pc32-equation {name}: actual={actual} expected={expected}', flush=True)
+        raise AssertionError(('pc32-equation', name, actual, expected))
     result = subprocess.run([str(exe)], capture_output=True, timeout=10)
     assert (result.returncode, result.stdout, result.stderr) == (0, b'', b'')
 print('pc32-equation: three linker equations and executed outputs; 0 SKIP')
