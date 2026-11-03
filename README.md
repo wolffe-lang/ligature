@@ -102,7 +102,9 @@ objects link against the same release's published musl runtime
 reference linkers. The BLOCKED row remains admitted only for the old bundle
 runtime, SHA-256 `9d859b9e6b5319f5a6f609e73ba0d71981d2dfa489882648ac9f454cd9db739c`;
 any other runtime digest must pass the hard self-link assertions. `tools/check-core` runs the independent linker/provenance gates.
-No linker, binutils or libc source is fetched or built.
+The gate fetches binary inputs only; no external linker or libc implementation
+source is read or built. Bundle licence texts are copied unchanged from upstream
+release archives, separately from the binary inputs.
 
 The strict PAX run additionally reads the **complete** PAX runtime, musl libc
 and libunwind archives and all nine program input sets. Both pinned linkers
@@ -121,6 +123,26 @@ against the release's own musl runtime (`tools/fetch-musl-runtime`), a separate
 pin; the bundle still supplies the CRTs, libc, libunwind, cc and LLD control.
 CI additionally uses version-pinned distro LLD 17, binutils and musl binary
 packages for independent C/assembly fixtures.
+
+To stage a unified, licensed bundle locally after fetching those inputs:
+
+```sh
+python3 -I tools/stage-bundle --out target/licensed-bundle
+python3 -I tests/bundle-smoke.py target/licensed-bundle
+```
+
+The destination must be new. The archive preserves the seven control/sysroot
+binaries and replaces only the runtime with the pinned 0.2.36 musl runtime.
+It includes unchanged musl, LLVM, Rust, PAX and wolf licence/notice texts,
+`NOTICE` with each binary's version and source URL, `SOURCES.json` with the
+licence provenance, and a SHA-256 `MANIFEST` covering every other member.
+The external receipt hashes every member, including the manifest, twice.
+The archive is deterministic and named by its digest. Staging does not publish
+anything or change the live fetch pins. `tests/stage-bundle.py` checks the
+licence roster, complete manifest, deterministic bytes and seven refusals;
+`tests/bundle-smoke.py` unpacks, rechecks all hashes twice, and executes hello
+through both the bundled cc/LLD and ligature. `tests/pc32.py` independently
+checks the PC-relative equation under all three linkers.
 
 The static-writer corpus adds five runnable compiler smoke programs to the nine
 initial sets: fourteen cases, linked twice, verified and run against both
@@ -165,12 +187,11 @@ hashes were read twice; `notes/ld02a/` indexes the full evidence. Hosted CI
 replays a genuine transcript with corruption fixtures; live boots run on the
 Linux test host through PAX's own QEMU harness.
 
-Self-link execution and running ligature itself on PAX remain **BLOCKED on
-[wolf-lang#962](https://github.com/wolffe-lang/wolf-lang/issues/962)** under the
-exact-runtime-digest CI condition above. Two seed links produced byte-identical
-linker binaries, but they lose argv just like the same objects linked by LLD
-and GNU ld. A compiler release carrying the new entry and its matching runtime
-bundle are both required; a runtime-only update is insufficient.
+Linux self-link execution passes with wolf 0.2.36 and its matching musl runtime,
+as described above. The earlier argv failure remains reproducible only with
+the old bundle runtime. Running that newly self-linked linker inside PAX is
+not established by the Linux gate; the historical PAX results below do not
+claim a fresh on-PAX linker execution.
 
 The compact-format outputs were also exercised in 56 new BIOS/UEFI boots
 using those preserved native/release kernel binaries: 52 Linux-equal rows and
