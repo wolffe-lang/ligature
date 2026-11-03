@@ -18,8 +18,42 @@ def digest(path):
         return hashlib.file_digest(stream, 'sha256').hexdigest()
 
 
-def stage(bundle, runtime, expected, runtime_sha, destination):
-    """Only the eight existing bundle members are admitted; runtime is replaced."""
+def notice_files(directory):
+    """Admit only inventoried text files; never silently omit a licence."""
+    source = directory / 'SOURCES.json'
+    inventory = json.loads(source.read_text())
+    required = {'NOTICE', 'LICENSES/musl/COPYRIGHT', 'LICENSES/musl/debian-copyright',
+                'LICENSES/llvm/llvm/LICENSE.TXT', 'LICENSES/llvm/lld/LICENSE.TXT',
+                'LICENSES/llvm/libcxx/LICENSE.TXT', 'LICENSES/llvm/libcxxabi/LICENSE.TXT',
+                'LICENSES/llvm/libunwind/LICENSE.TXT', 'LICENSES/llvm/compiler-rt/LICENSE.TXT',
+                'LICENSES/llvm/llvm/lib/Support/BLAKE3/LICENSE',
+                'LICENSES/llvm/llvm/lib/Support/COPYRIGHT.regex',
+                'LICENSES/rust/COPYRIGHT-library.html', 'LICENSES/libc-rust/LICENSE-MIT',
+                'LICENSES/wolf/LICENSE', 'LICENSES/wolf/LICENSE-EXCEPTION',
+                'LICENSES/pax/LICENSE', 'LICENSES/pax/LICENSE-TRAINING-DATA'}
+    if inventory.get('format') != 'ligature.bundle.notices.v1' or not required <= inventory['files'].keys():
+        raise ValueError('REFUSED incomplete licence inventory')
+    paths = {'SOURCES.json': source}
+    for name, pin in inventory['files'].items():
+        parts = pathlib.PurePosixPath(name).parts
+        if not parts or '..' in parts or name.startswith('/') or '\\' in name or not (name == 'NOTICE' or name.startswith('LICENSES/')):
+            raise ValueError('REFUSED notice path')
+        path = directory / name
+        if path.is_symlink() or not path.is_file():
+            raise ValueError(f'REFUSED missing licence {name}')
+        for _ in range(2):
+            if path.stat().st_size != pin['bytes'] or digest(path) != pin['sha256']:
+                raise ValueError(f'REFUSED licence digest {name}')
+        path.read_text(encoding='utf-8')
+        paths[name] = path
+    found = {str(p.relative_to(directory)) for p in directory.rglob('*') if p.is_file() or p.is_symlink()}
+    if found != set(paths):
+        raise ValueError('REFUSED uninventoried notice files')
+    return paths
+
+
+def stage(bundle, runtime, expected, runtime_sha, destination, notices=None):
+    """Preserve eight binary identities and add mandatory licensed documentation."""
     destination.mkdir(parents=True, exist_ok=False)
     names = {'cc', 'ld.lld', 'libwolf_rt.a', 'sysroot/crt1.o', 'sysroot/crti.o',
              'sysroot/crtn.o', 'sysroot/libc.a', 'sysroot/libunwind.a'}
@@ -33,14 +67,20 @@ def stage(bundle, runtime, expected, runtime_sha, destination):
         if digest(runtime) != runtime_sha:
             raise ValueError('REFUSED replacement musl runtime digest')
     paths = {name: (runtime if name == 'libwolf_rt.a' else bundle / name) for name in names}
-    actual = {name: {'sha256': digest(path), 'size': path.stat().st_size}
+    paths.update(notice_files(notices if notices is not None else ROOT / 'bundle/notices'))
+    actual = {name: {'sha256': digest(path), 'size': path.stat().st_size, 'sha256_read_twice': []}
               for name, path in paths.items()}
+    manifest = ''.join(f'{actual[name]["sha256"]}  {name}\n' for name in sorted(paths)).encode()
+    manifest_path = destination / 'MANIFEST'
+    manifest_path.write_bytes(manifest)
+    paths['MANIFEST'] = manifest_path
+    actual['MANIFEST'] = {'sha256': digest(manifest_path), 'size': len(manifest), 'sha256_read_twice': []}
     with tempfile.TemporaryDirectory(prefix='pack-', dir=destination) as temp:
         archive = pathlib.Path(temp) / 'bundle.tar.gz'
         with archive.open('wb') as raw:
             with gzip.GzipFile(fileobj=raw, filename='', mode='wb', mtime=0, compresslevel=9) as zipped:
                 with tarfile.open(fileobj=zipped, mode='w', format=tarfile.USTAR_FORMAT) as tf:
-                    for name in sorted(names):
+                    for name in sorted(paths):
                         data = paths[name].read_bytes()
                         if hashlib.sha256(data).hexdigest() != actual[name]['sha256']:
                             raise ValueError(f'REFUSED input changed while packing {name}')
@@ -54,15 +94,17 @@ def stage(bundle, runtime, expected, runtime_sha, destination):
                 raise ValueError('REFUSED staged archive changed')
             with tarfile.open(archive) as tf:
                 members = tf.getmembers()
-                if len(members) != len(names) or {m.name for m in members} != names:
+                if [m.name for m in members] != sorted(paths):
                     raise ValueError('REFUSED staged archive roster')
                 for member in members:
-                    if not member.isfile() or member.mtime or member.uid or member.gid:
+                    mode = 0o755 if member.name in {'cc', 'ld.lld'} else 0o644
+                    if not member.isfile() or member.mtime or member.uid or member.gid or member.uname or member.gname or member.mode != mode:
                         raise ValueError('REFUSED nondeterministic member metadata')
                     with tf.extractfile(member) as stream:
                         got = hashlib.file_digest(stream, 'sha256').hexdigest()
                     if got != actual[member.name]['sha256'] or member.size != actual[member.name]['size']:
                         raise ValueError(f'REFUSED staged member {member.name}')
+                    actual[member.name]['sha256_read_twice'].append(got)
             for name, path in paths.items():
                 if digest(path) != actual[name]['sha256']:
                     raise ValueError(f'REFUSED input changed after packing {name}')
@@ -70,7 +112,7 @@ def stage(bundle, runtime, expected, runtime_sha, destination):
         archive.rename(final)
     sums = ''.join(f'{name} {actual[name]["sha256"]} {actual[name]["size"]}\n' for name in sorted(names))
     (destination / 'pax-link.sums').write_text(sums)
-    receipt = {'format': 'ligature.staged-bundle.v1', 'published': False,
+    receipt = {'format': 'ligature.staged-bundle.v2', 'published': False,
                'archive': final.name, 'sha256_read_twice': [sha, sha],
                'bytes': final.stat().st_size, 'members': actual,
                'runtime_sha256': runtime_sha}

@@ -1,0 +1,85 @@
+Musl link bundle for wolf 0.2.36 (x86-64 Linux)
+================================================
+
+This is an aggregate of independently licensed binaries. No licence here
+relicenses the other components. Complete, unchanged upstream notices are
+under LICENSES/. SOURCES.json identifies each notice's original member, URL,
+archive digest and file digest. MANIFEST lists the SHA-256 of every other
+archive member (including this notice and SOURCES.json). Its own digest is
+in the external receipt; the archive digest authenticates all members.
+
+Binaries and their sources
+-------------------------
+
+ld.lld: LLD/LLVM 17.0.6, built static for X86 with libc++, libc++abi,
+LLVM libunwind and compiler-rt 17.0.6, and musl 1.2.5. No zlib/zstd is linked
+into this original control. Apache-2.0 WITH LLVM-exception, with the legacy
+and third-party terms reproduced in LICENSES/llvm/ and musl's terms below.
+Source: https://github.com/llvm/llvm-project/releases/tag/llvmorg-17.0.6
+Build recipe: https://github.com/wolffe-lang/pax/blob/3e28a8bc79d7ff879f74c1872fe1bc9ccfa97a1f/notes/px60/build-lld.sh
+LLVM Support's regex derives from Henry Spencer's implementation and the
+University of California's work; it is the LLVM-adapted version, not their
+original software. The unchanged copyright notices and terms are included.
+LLVM Support's BLAKE3 is CC0-1.0 OR Apache-2.0; its complete notice is included.
+
+cc: PAX's link-only Rust frontend, source revision
+3e28a8bc79d7ff879f74c1872fe1bc9ccfa97a1f, built with Rust 1.97.1 for
+x86_64-unknown-linux-musl. It is not a C compiler. GPL-3.0 with the wolf
+Training Data Permission; see LICENSES/pax/ for the complete terms.
+Source and build recipe:
+https://github.com/wolffe-lang/pax/blob/3e28a8bc79d7ff879f74c1872fe1bc9ccfa97a1f/notes/px60/cc.rs
+https://github.com/wolffe-lang/pax/blob/3e28a8bc79d7ff879f74c1872fe1bc9ccfa97a1f/notes/px60/build-m2.sh
+Complete source tree:
+https://github.com/wolffe-lang/pax/archive/3e28a8bc79d7ff879f74c1872fe1bc9ccfa97a1f.tar.gz
+The Rust standard library linked into cc is MIT OR Apache-2.0, with the
+third-party notices in LICENSES/rust/COPYRIGHT-library.html. The unmodified
+Rust distribution identifies its dependencies and their versions there.
+Rust source: https://github.com/rust-lang/rust/releases/tag/1.97.1
+
+sysroot/crt1.o, sysroot/crti.o, sysroot/crtn.o, sysroot/libc.a:
+musl 1.2.5 from Alpine 3.20 musl-dev 1.2.5-r4. MIT, plus the compatible
+third-party terms identified by the unchanged LICENSES/musl/COPYRIGHT.
+Source: https://musl.libc.org/releases/musl-1.2.5.tar.gz
+Package source: https://gitlab.alpinelinux.org/alpine/aports/-/tree/3.20-stable/main/musl
+Debug sections were decompressed with LLVM objcopy 17; executable code and
+debug content are unchanged. The musl copyright file also covers the musl
+linked into the executable controls. LICENSES/musl/debian-copyright is an
+unchanged supplementary licence-only inventory distributed with Debian's
+musl 1.2.5 package, preserving the TRE, Sun/FreeBSD math, crypt, qsort and
+architecture notices without consulting implementation source. Debian-only
+and other-architecture entries in that inventory do not imply their code
+is present in these Alpine x86-64 binaries.
+
+sysroot/libunwind.a: LLVM libunwind as shipped in Rust 1.97.1's
+x86_64-unknown-linux-musl self-contained libraries. Its distribution version
+is Rust 1.97.1 (not a claim that this archive was built with LLD 17).
+Apache-2.0 WITH LLVM-exception, with the legacy dual MIT/NCSA terms in
+LICENSES/llvm/libunwind/LICENSE.TXT. Rewritten by the same objcopy command;
+it had no compressed sections. Rust release/source URL is given above.
+
+libwolf_rt.a: wolf 0.2.36 musl runtime, revision
+5adf3d91f75b3545ff8d38e5b6693b0b9f367a05. GPL-3.0-or-later with the wolf
+Runtime Library Exception; the unchanged release LICENSE and
+LICENSE-EXCEPTION are in LICENSES/wolf/. This replaces only the old bundle's
+0.2.35 runtime. Its Rust standard library is covered by LICENSES/rust/;
+its libc Rust bindings 0.2.189 are MIT OR Apache-2.0 (LICENSES/libc-rust/).
+Source and complete source tree:
+https://github.com/wolffe-lang/wolf-lang/tree/5adf3d91f75b3545ff8d38e5b6693b0b9f367a05
+https://github.com/wolffe-lang/wolf-lang/archive/5adf3d91f75b3545ff8d38e5b6693b0b9f367a05.tar.gz
+Binary release (including runtime):
+https://github.com/wolffe-lang/wolf-lang/releases/tag/v0.2.36
+Rust libc bindings source: https://crates.io/crates/libc/0.2.189
+
+Use and verification
+--------------------
+
+The complete files in LICENSES/ are authoritative; this inventory is not a
+replacement for their terms. The source trees and build recipes above are
+available without charge. Redistribution must preserve this notice, the
+licence files, and clear access to corresponding source alongside binaries.
+
+After verifying the archive's published SHA-256 and extracting it into a new
+directory, run `sha256sum -c MANIFEST` there. The eight binary paths retain
+the existing bundle interface. cc uses PAX_LLD and PAX_CC_SYSROOT; ligature
+uses LIGATURE_SYSROOT. Set WOLF_RT_LIB to this bundle's libwolf_rt.a when
+compiling with wolf 0.2.36. Nothing here changes your system toolchain.

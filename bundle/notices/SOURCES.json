@@ -1,0 +1,197 @@
+{
+  "files": {
+    "LICENSES/libc-rust/LICENSE-APACHE": {
+      "archive_sha256": "3eaf3ede3fee6db1a4c2ee091bf8a8b4dccdc6d17f656fb07896ee72867612f2",
+      "bytes": 9723,
+      "member": "libc-0.2.189/LICENSE-APACHE",
+      "sha256": "62c7a1e35f56406896d7aa7ca52d0cc0d272ac022b5d2796e7d6905db8a3636a",
+      "source_url": "https://static.crates.io/crates/libc/libc-0.2.189.crate"
+    },
+    "LICENSES/libc-rust/LICENSE-MIT": {
+      "archive_sha256": "3eaf3ede3fee6db1a4c2ee091bf8a8b4dccdc6d17f656fb07896ee72867612f2",
+      "bytes": 1066,
+      "member": "libc-0.2.189/LICENSE-MIT",
+      "sha256": "123a331b5dbf04c30097fa43b8f858bc85df671fe776de498d01f3d6b7c1f69e",
+      "source_url": "https://static.crates.io/crates/libc/libc-0.2.189.crate"
+    },
+    "LICENSES/llvm/compiler-rt/CREDITS.TXT": {
+      "archive_sha256": "58a8818c60e6627064f312dbf46c02d9949956558340938b71cf731ad8bc0813",
+      "bytes": 1049,
+      "member": "llvm-project-17.0.6.src/compiler-rt/CREDITS.TXT",
+      "sha256": "a9901f47a089da41e4690682d00ce4cedaa2baf41fedbe79beee366d43ac2461",
+      "source_url": "https://github.com/llvm/llvm-project/releases/download/llvmorg-17.0.6/llvm-project-17.0.6.src.tar.xz"
+    },
+    "LICENSES/llvm/compiler-rt/LICENSE.TXT": {
+      "archive_sha256": "58a8818c60e6627064f312dbf46c02d9949956558340938b71cf731ad8bc0813",
+      "bytes": 16708,
+      "member": "llvm-project-17.0.6.src/compiler-rt/LICENSE.TXT",
+      "sha256": "1a8f1058753f1ba890de984e48f0242a3a5c29a6a8f2ed9fd813f36985387e8d",
+      "source_url": "https://github.com/llvm/llvm-project/releases/download/llvmorg-17.0.6/llvm-project-17.0.6.src.tar.xz"
+    },
+    "LICENSES/llvm/libcxx/CREDITS.TXT": {
+      "archive_sha256": "58a8818c60e6627064f312dbf46c02d9949956558340938b71cf731ad8bc0813",
+      "bytes": 4124,
+      "member": "llvm-project-17.0.6.src/libcxx/CREDITS.TXT",
+      "sha256": "054e099bf5954c8821b880f5751d2fbf221bf43cf7c57ac1c2c5ff6263d6d9c3",
+      "source_url": "https://github.com/llvm/llvm-project/releases/download/llvmorg-17.0.6/llvm-project-17.0.6.src.tar.xz"
+    },
+    "LICENSES/llvm/libcxx/LICENSE.TXT": {
+      "archive_sha256": "58a8818c60e6627064f312dbf46c02d9949956558340938b71cf731ad8bc0813",
+      "bytes": 16703,
+      "member": "llvm-project-17.0.6.src/libcxx/LICENSE.TXT",
+      "sha256": "539dd7aed86e8a4f12cbdd0e6c50c189c7d74847e4fecc64ce2c6ee3a01da38b",
+      "source_url": "https://github.com/llvm/llvm-project/releases/download/llvmorg-17.0.6/llvm-project-17.0.6.src.tar.xz"
+    },
+    "LICENSES/llvm/libcxxabi/CREDITS.TXT": {
+      "archive_sha256": "58a8818c60e6627064f312dbf46c02d9949956558340938b71cf731ad8bc0813",
+      "bytes": 1660,
+      "member": "llvm-project-17.0.6.src/libcxxabi/CREDITS.TXT",
+      "sha256": "a259fff28a51623f14917dd68f97f3af7804984087ddc1bfd8196d08ebb75b83",
+      "source_url": "https://github.com/llvm/llvm-project/releases/download/llvmorg-17.0.6/llvm-project-17.0.6.src.tar.xz"
+    },
+    "LICENSES/llvm/libcxxabi/LICENSE.TXT": {
+      "archive_sha256": "58a8818c60e6627064f312dbf46c02d9949956558340938b71cf731ad8bc0813",
+      "bytes": 16706,
+      "member": "llvm-project-17.0.6.src/libcxxabi/LICENSE.TXT",
+      "sha256": "e2b35be49f7284a45b7baca8fc7b3ab7440e7902392b2528a457816b5bb2a15c",
+      "source_url": "https://github.com/llvm/llvm-project/releases/download/llvmorg-17.0.6/llvm-project-17.0.6.src.tar.xz"
+    },
+    "LICENSES/llvm/libunwind/LICENSE.TXT": {
+      "archive_sha256": "58a8818c60e6627064f312dbf46c02d9949956558340938b71cf731ad8bc0813",
+      "bytes": 16706,
+      "member": "llvm-project-17.0.6.src/libunwind/LICENSE.TXT",
+      "sha256": "b5efebcaca80879234098e52d1725e6d9eb8fb96a19fce625d39184b705f7b6d",
+      "source_url": "https://github.com/llvm/llvm-project/releases/download/llvmorg-17.0.6/llvm-project-17.0.6.src.tar.xz"
+    },
+    "LICENSES/llvm/lld/LICENSE.TXT": {
+      "archive_sha256": "58a8818c60e6627064f312dbf46c02d9949956558340938b71cf731ad8bc0813",
+      "bytes": 15138,
+      "member": "llvm-project-17.0.6.src/lld/LICENSE.TXT",
+      "sha256": "f7891568956e34643eb6a0db1462db30820d40d7266e2a78063f2fe233ece5a0",
+      "source_url": "https://github.com/llvm/llvm-project/releases/download/llvmorg-17.0.6/llvm-project-17.0.6.src.tar.xz"
+    },
+    "LICENSES/llvm/llvm/LICENSE.TXT": {
+      "archive_sha256": "58a8818c60e6627064f312dbf46c02d9949956558340938b71cf731ad8bc0813",
+      "bytes": 15141,
+      "member": "llvm-project-17.0.6.src/llvm/LICENSE.TXT",
+      "sha256": "8d85c1057d742e597985c7d4e6320b015a9139385cff4cbae06ffc0ebe89afee",
+      "source_url": "https://github.com/llvm/llvm-project/releases/download/llvmorg-17.0.6/llvm-project-17.0.6.src.tar.xz"
+    },
+    "LICENSES/llvm/llvm/include/llvm/Support/LICENSE.TXT": {
+      "archive_sha256": "58a8818c60e6627064f312dbf46c02d9949956558340938b71cf731ad8bc0813",
+      "bytes": 303,
+      "member": "llvm-project-17.0.6.src/llvm/include/llvm/Support/LICENSE.TXT",
+      "sha256": "54cbc326a78b9400065bfc5830a57fdcdaf808286d4ac35d8a9e324aa77b7241",
+      "source_url": "https://github.com/llvm/llvm-project/releases/download/llvmorg-17.0.6/llvm-project-17.0.6.src.tar.xz"
+    },
+    "LICENSES/llvm/llvm/lib/Support/BLAKE3/LICENSE": {
+      "archive_sha256": "58a8818c60e6627064f312dbf46c02d9949956558340938b71cf731ad8bc0813",
+      "bytes": 18691,
+      "member": "llvm-project-17.0.6.src/llvm/lib/Support/BLAKE3/LICENSE",
+      "sha256": "6a94bedb8b707ed97f6e310d0d015ab14e0683ffa0a612b02958581b9cc9fc0e",
+      "source_url": "https://github.com/llvm/llvm-project/releases/download/llvmorg-17.0.6/llvm-project-17.0.6.src.tar.xz"
+    },
+    "LICENSES/llvm/llvm/lib/Support/COPYRIGHT.regex": {
+      "archive_sha256": "58a8818c60e6627064f312dbf46c02d9949956558340938b71cf731ad8bc0813",
+      "bytes": 2718,
+      "member": "llvm-project-17.0.6.src/llvm/lib/Support/COPYRIGHT.regex",
+      "sha256": "0424e57d4303164dc59a8509c20dae0518b853692e5c2b0e98b11816fdbc97c7",
+      "source_url": "https://github.com/llvm/llvm-project/releases/download/llvmorg-17.0.6/llvm-project-17.0.6.src.tar.xz"
+    },
+    "LICENSES/musl/COPYRIGHT": {
+      "archive_sha256": "a9a118bbe84d8764da0ea0d28b3ab3fae8477fc7e4085d90102b8596fc7c75e4",
+      "bytes": 6204,
+      "member": "musl-1.2.5/COPYRIGHT",
+      "sha256": "f9bc4423732350eb0b3f7ed7e91d530298476f8fec0c6c427a1c04ade22655af",
+      "source_url": "https://musl.libc.org/releases/musl-1.2.5.tar.gz"
+    },
+    "LICENSES/musl/debian-copyright": {
+      "bytes": 10801,
+      "member": "licence-only supplementary inventory",
+      "sha256": "8d51fb83b8860aca6362ccf2b4eaa71362e7c2ca54c09cdaa5da18e419ef4a91",
+      "source_url": "https://metadata.ftp-master.debian.org/changelogs/main/m/musl/musl_1.2.5-3.1~deb13u1_copyright"
+    },
+    "LICENSES/pax/LICENSE": {
+      "bytes": 35149,
+      "member": "LICENSE",
+      "sha256": "3972dc9744f6499f0f9b2dbf76696f2ae7ad8af9b23dde66d6af86c9dfb36986",
+      "source_url": "https://github.com/wolffe-lang/pax/blob/3e28a8bc79d7ff879f74c1872fe1bc9ccfa97a1f/LICENSE"
+    },
+    "LICENSES/pax/LICENSE-TRAINING-DATA": {
+      "bytes": 1450,
+      "member": "LICENSE-TRAINING-DATA",
+      "sha256": "39d16667f8215642b3e1f6b65c5169dc4ca288c5cef87b17f2c16a0be5a74da3",
+      "source_url": "https://github.com/wolffe-lang/pax/blob/3e28a8bc79d7ff879f74c1872fe1bc9ccfa97a1f/LICENSE-TRAINING-DATA"
+    },
+    "LICENSES/rust/COPYRIGHT-library.html": {
+      "archive_sha256": "9819d0a32d56bd339585319c80260e332779f5541fd66838ab7e016d6c814819",
+      "bytes": 279302,
+      "member": "rustc-1.97.1-x86_64-unknown-linux-gnu/rustc/share/doc/rust/COPYRIGHT-library.html",
+      "sha256": "0a65bb747c49c7bb816cbc7188319bd6e4e8d08091c1190b8a3c0971c47968ed",
+      "source_url": "https://static.rust-lang.org/dist/rustc-1.97.1-x86_64-unknown-linux-gnu.tar.xz"
+    },
+    "LICENSES/rust/licenses/Apache-2.0.txt": {
+      "archive_sha256": "9819d0a32d56bd339585319c80260e332779f5541fd66838ab7e016d6c814819",
+      "bytes": 10280,
+      "member": "rustc-1.97.1-x86_64-unknown-linux-gnu/rustc/share/doc/rust/licenses/Apache-2.0.txt",
+      "sha256": "074e6e32c86a4c0ef8b3ed25b721ca23aca83df277cd88106ef7177c354615ff",
+      "source_url": "https://static.rust-lang.org/dist/rustc-1.97.1-x86_64-unknown-linux-gnu.tar.xz"
+    },
+    "LICENSES/rust/licenses/BSD-2-Clause.txt": {
+      "archive_sha256": "9819d0a32d56bd339585319c80260e332779f5541fd66838ab7e016d6c814819",
+      "bytes": 1267,
+      "member": "rustc-1.97.1-x86_64-unknown-linux-gnu/rustc/share/doc/rust/licenses/BSD-2-Clause.txt",
+      "sha256": "f32fb3b417a194167cfad068223fc975ba96c5960513a10f66a3c28720aec1df",
+      "source_url": "https://static.rust-lang.org/dist/rustc-1.97.1-x86_64-unknown-linux-gnu.tar.xz"
+    },
+    "LICENSES/rust/licenses/LLVM-exception.txt": {
+      "archive_sha256": "9819d0a32d56bd339585319c80260e332779f5541fd66838ab7e016d6c814819",
+      "bytes": 919,
+      "member": "rustc-1.97.1-x86_64-unknown-linux-gnu/rustc/share/doc/rust/licenses/LLVM-exception.txt",
+      "sha256": "e34c58338bd89d43e709e226610d8f32b3e3c47f4ad9a99a8dc1d4ac7842488e",
+      "source_url": "https://static.rust-lang.org/dist/rustc-1.97.1-x86_64-unknown-linux-gnu.tar.xz"
+    },
+    "LICENSES/rust/licenses/MIT.txt": {
+      "archive_sha256": "9819d0a32d56bd339585319c80260e332779f5541fd66838ab7e016d6c814819",
+      "bytes": 1078,
+      "member": "rustc-1.97.1-x86_64-unknown-linux-gnu/rustc/share/doc/rust/licenses/MIT.txt",
+      "sha256": "b85dcd3e453d05982552c52b5fc9e0bdd6d23c6f8e844b984a88af32570b0cc0",
+      "source_url": "https://static.rust-lang.org/dist/rustc-1.97.1-x86_64-unknown-linux-gnu.tar.xz"
+    },
+    "LICENSES/rust/licenses/NCSA.txt": {
+      "archive_sha256": "9819d0a32d56bd339585319c80260e332779f5541fd66838ab7e016d6c814819",
+      "bytes": 1676,
+      "member": "rustc-1.97.1-x86_64-unknown-linux-gnu/rustc/share/doc/rust/licenses/NCSA.txt",
+      "sha256": "39cb0234065c92b9e6cee3830cbb52b1aa289aa8fe9ba2e66730fec5cf05c630",
+      "source_url": "https://static.rust-lang.org/dist/rustc-1.97.1-x86_64-unknown-linux-gnu.tar.xz"
+    },
+    "LICENSES/rust/licenses/Unicode-3.0.txt": {
+      "archive_sha256": "9819d0a32d56bd339585319c80260e332779f5541fd66838ab7e016d6c814819",
+      "bytes": 1995,
+      "member": "rustc-1.97.1-x86_64-unknown-linux-gnu/rustc/share/doc/rust/licenses/Unicode-3.0.txt",
+      "sha256": "f5062c9a188d81dfe66b56db4182dcf9e4b17c0d9b0d311a8e20b3a1b075c443",
+      "source_url": "https://static.rust-lang.org/dist/rustc-1.97.1-x86_64-unknown-linux-gnu.tar.xz"
+    },
+    "LICENSES/wolf/LICENSE": {
+      "archive_sha256": "3aba9c8b4e5c51f2094242946fae0e6f1cd64bc7837b7484e1085ce63373aa57",
+      "bytes": 35149,
+      "member": "wolf-rt-0.2.36-x86_64-unknown-linux-musl/LICENSE",
+      "sha256": "3972dc9744f6499f0f9b2dbf76696f2ae7ad8af9b23dde66d6af86c9dfb36986",
+      "source_url": "https://github.com/wolffe-lang/wolf-lang/releases/download/v0.2.36/wolf-rt-0.2.36-x86_64-unknown-linux-musl.tar.gz"
+    },
+    "LICENSES/wolf/LICENSE-EXCEPTION": {
+      "archive_sha256": "3aba9c8b4e5c51f2094242946fae0e6f1cd64bc7837b7484e1085ce63373aa57",
+      "bytes": 1273,
+      "member": "wolf-rt-0.2.36-x86_64-unknown-linux-musl/LICENSE-EXCEPTION",
+      "sha256": "a0eec20d7b98b1cd0e5b4d23c3965667c97b68fb365ec95a9516b0c3cbc4fec4",
+      "source_url": "https://github.com/wolffe-lang/wolf-lang/releases/download/v0.2.36/wolf-rt-0.2.36-x86_64-unknown-linux-musl.tar.gz"
+    },
+    "NOTICE": {
+      "bytes": 5135,
+      "member": "bundle/notices/NOTICE (bundle inventory, not an upstream licence)",
+      "sha256": "d63118282bb45cc651d8614f4281f60617d46a1102a320329fd1f7ce0a0db94f",
+      "source_url": "https://github.com/wolffe-lang/ligature"
+    }
+  },
+  "format": "ligature.bundle.notices.v1"
+}
