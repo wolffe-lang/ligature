@@ -44,7 +44,17 @@ with tempfile.TemporaryDirectory(prefix='stage-bundle-test-', dir=ROOT / 'target
     archive = root / 'one' / first['archive']
     assert archive.read_bytes() == (root / 'two' / second['archive']).read_bytes()
     with tarfile.open(archive) as tf:
-        assert tf.getnames() == sorted(names)
+        required = {'NOTICE', 'MANIFEST', 'SOURCES.json', 'LICENSES/musl/COPYRIGHT',
+                    'LICENSES/llvm/llvm/LICENSE.TXT', 'LICENSES/llvm/lld/LICENSE.TXT',
+                    'LICENSES/llvm/libunwind/LICENSE.TXT', 'LICENSES/rust/COPYRIGHT-library.html',
+                    'LICENSES/wolf/LICENSE', 'LICENSES/wolf/LICENSE-EXCEPTION',
+                    'LICENSES/pax/LICENSE'}
+        assert required <= set(tf.getnames()), 'bundle-licence-roster: missing complete notices'
+        assert tf.getnames() == sorted(first['members'])
+        manifest = dict(line.split('  ', 1)[::-1] for line in tf.extractfile('MANIFEST').read().decode().splitlines())
+        assert set(manifest) == set(tf.getnames()) - {'MANIFEST'}, 'manifest covers every other file'
+        for name, expected_sha in manifest.items():
+            assert sha(tf.extractfile(name).read()) == expected_sha, ('manifest', name)
         for name in names:
             member = tf.getmember(name)
             assert member.mode == (0o755 if name in {'cc', 'ld.lld'} else 0o644)
