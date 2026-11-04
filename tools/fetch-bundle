@@ -1,26 +1,105 @@
 #!/usr/bin/env python3
-"""Fetch the exact published musl link inputs, never substitute host libraries."""
-import hashlib,pathlib,tarfile,tempfile,urllib.request
-ROOT=pathlib.Path(__file__).resolve().parent.parent
-SHA='6f99a2794da54b2dd85f06713d736b27862a7cd0da9e28bd940d975a4603a1d1'
-URL='https://github.com/wolffe-lang/ligature/releases/download/link-bundle-2026-10-25/ld02-musl-link-bundle.tar.gz'
-FILES={'cc','ld.lld','libwolf_rt.a','sysroot/crt1.o','sysroot/crti.o','sysroot/crtn.o','sysroot/libc.a','sysroot/libunwind.a'}
-stage=ROOT/'.link-inputs';stage.mkdir(exist_ok=True)
-with tempfile.TemporaryDirectory(prefix='fetch-',dir=stage) as temp:
-    archive=pathlib.Path(temp)/'bundle.tar.gz'
-    urllib.request.urlretrieve(URL,archive)
+"""Fetch and verify the licensed, content-addressed musl link bundle."""
+import hashlib
+import pathlib
+import re
+import tarfile
+import tempfile
+import urllib.request
+
+ROOT = pathlib.Path(__file__).resolve().parent.parent
+SHA = '8210ac2223d969ab8f0845cc74950a1c68226b58b10dd083cd2e2113acd3e37a'
+MANIFEST_SHA = '8bcea75770a47a23f619ad778d05c84a028f2e840964302d164195ea74e73886'
+URL = f'https://github.com/wolffe-lang/ligature/releases/download/link-bundle-wolf-0.2.36/musl-link-bundle-sha256-{SHA}.tar.gz'
+
+
+def digest(stream):
+    return hashlib.file_digest(stream, 'sha256').hexdigest()
+
+
+def verify_bundle(archive, archive_sha=SHA, manifest_sha=MANIFEST_SHA):
+    """Verify before extraction, including duplicate, non-file and path refusal."""
     for _ in range(2):
-        with archive.open('rb') as stream:actual=hashlib.file_digest(stream,'sha256').hexdigest()
-        if actual!=SHA:raise SystemExit(f'REFUSED link bundle digest {actual}')
-        print('link-bundle sha256',actual,flush=True)
+        with archive.open('rb') as stream:
+            actual = digest(stream)
+        if actual != archive_sha:
+            raise SystemExit(f'REFUSED link bundle digest {actual}')
+        print('link-bundle sha256', actual, flush=True)
     with tarfile.open(archive) as tf:
-        members=tf.getmembers()
-        if {m.name for m in members}!=FILES or len(members)!=len(FILES) or any(not m.isfile() for m in members):
-            raise SystemExit('REFUSED link bundle members')
-        tf.extractall(stage,filter='data')
-for _ in range(2):
-    for row in (ROOT/'tests/pax-link.sums').read_text().splitlines():
-        name,sha,size=row.split();path=stage/name
-        with path.open('rb') as stream:actual=hashlib.file_digest(stream,'sha256').hexdigest()
-        if path.stat().st_size!=int(size) or actual!=sha:raise SystemExit(f'REFUSED link input {name}')
-print('link-bundle: exact binary inputs verified twice; ligature#13',flush=True)
+        members = {}
+        for member in tf.getmembers():
+            name = member.name
+            parts = pathlib.PurePosixPath(name).parts
+            if not parts or name.startswith('/') or '..' in parts or '\\' in name or str(pathlib.PurePosixPath(name)) != name:
+                raise SystemExit(f'REFUSED link bundle path {name}')
+            if name in members:
+                raise SystemExit(f'REFUSED link bundle duplicate member {name}')
+            if not member.isfile():
+                raise SystemExit(f'REFUSED link bundle non-file {name}')
+            members[name] = member
+        if 'MANIFEST' not in members:
+            raise SystemExit('REFUSED link bundle missing member MANIFEST')
+        if members['MANIFEST'].size > 1048576:
+            raise SystemExit('REFUSED link bundle MANIFEST size')
+        for _ in range(2):
+            with tf.extractfile(members['MANIFEST']) as stream:
+                actual = digest(stream)
+            if actual != manifest_sha:
+                raise SystemExit(f'REFUSED link bundle MANIFEST digest {actual}')
+        with tf.extractfile(members['MANIFEST']) as stream:
+            raw = stream.read()
+        try:
+            lines = raw.decode('utf-8').splitlines()
+        except UnicodeDecodeError:
+            raise SystemExit('REFUSED link bundle MANIFEST format') from None
+        expected = {}
+        for line in lines:
+            match = re.fullmatch(r'([0-9a-f]{64})  (.+)', line)
+            if not match or match[2] in expected or match[2] == 'MANIFEST':
+                raise SystemExit('REFUSED link bundle MANIFEST format')
+            expected[match[2]] = match[1]
+        if not expected:
+            raise SystemExit('REFUSED link bundle MANIFEST format')
+        for name in sorted(expected.keys() - members.keys()):
+            raise SystemExit(f'REFUSED link bundle missing member {name}')
+        for name in sorted(members.keys() - expected.keys() - {'MANIFEST'}):
+            raise SystemExit(f'REFUSED link bundle unexpected member {name}')
+        for _ in range(2):
+            for name, sha in expected.items():
+                with tf.extractfile(members[name]) as stream:
+                    actual = digest(stream)
+                if actual != sha:
+                    raise SystemExit(f'REFUSED link bundle member {name}: {actual}')
+    return expected
+
+
+def main():
+    stage = ROOT / '.link-inputs'
+    if stage.is_symlink():
+        raise SystemExit('REFUSED link bundle destination symlink')
+    with tempfile.TemporaryDirectory(prefix='fetch-bundle-', dir=ROOT) as temp:
+        temp = pathlib.Path(temp)
+        download = temp / 'download'
+        download.mkdir()
+        archive = download / 'bundle.tar.gz'
+        urllib.request.urlretrieve(URL, archive)
+        expected = verify_bundle(archive)
+        unpacked = temp / 'unpacked'
+        unpacked.mkdir()
+        with tarfile.open(archive) as tf:
+            tf.extractall(unpacked, filter='data')
+        for _ in range(2):
+            for name, sha in {**expected, 'MANIFEST': MANIFEST_SHA}.items():
+                with (unpacked / name).open('rb') as stream:
+                    actual = digest(stream)
+                if actual != sha:
+                    raise SystemExit(f'REFUSED link bundle extracted member {name}: {actual}')
+        # Replace the directory, not files beneath possibly stale/symlinked parents.
+        if stage.exists():
+            stage.rename(temp / 'previous')
+        unpacked.rename(stage)
+    print('link-bundle: licensed archive, MANIFEST and every member verified twice; ligature#13', flush=True)
+
+
+if __name__ == '__main__':
+    main()
