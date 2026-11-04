@@ -14,19 +14,96 @@ fn logical(path: str) -> str {
     pieces[pieces.len - 1]
 }
 
-/// SHA-256 over a bounded positional input, with temporary state reclaimed after the digest.
-pub fn digest(input: binary.Input) -> List[byte] ! {Bad(str)} {
-    copy region hashing {
-        var hash = sha2.new256()
-        var at: int = 0
-        while at < input.size {
-            let count = if input.size - at > 65536 then 65536 else input.size - at
-            let bytes = binary.read(input, at, count)?
-            sha2.update256(mut hash, bytes)
-            at += count
+/// The running SHA-256 state between bounded steps: eight words and the byte count.
+struct Step { words: List[int], digest: List[byte] }
+
+fn initial() -> List[int] {
+    let iv = sha2.new256()
+    [
+        iv.h0 as int,
+        iv.h1 as int,
+        iv.h2 as int,
+        iv.h3 as int,
+        iv.h4 as int,
+        iv.h5 as int,
+        iv.h6 as int,
+        iv.h7 as int,
+        0,
+    ]
+}
+
+// The pinned hash allocates a fresh schedule and buffer for every 64-byte block. Resuming its
+// state for each step, inside a region the step's caller frees, keeps a digest's working set to
+// one step whatever the input's size. Steps are whole blocks, so the buffer is empty between them.
+fn absorb(words: List[int], bytes: List[byte], last: bool) -> Step {
+    var st = sha2.new256()
+    st.h0 = words[0] as wrapping[u64]
+    st.h1 = words[1] as wrapping[u64]
+    st.h2 = words[2] as wrapping[u64]
+    st.h3 = words[3] as wrapping[u64]
+    st.h4 = words[4] as wrapping[u64]
+    st.h5 = words[5] as wrapping[u64]
+    st.h6 = words[6] as wrapping[u64]
+    st.h7 = words[7] as wrapping[u64]
+    st.total = words[8]
+    sha2.update256(mut st, bytes)
+    let next = [
+        st.h0 as int,
+        st.h1 as int,
+        st.h2 as int,
+        st.h3 as int,
+        st.h4 as int,
+        st.h5 as int,
+        st.h6 as int,
+        st.h7 as int,
+        st.total,
+    ]
+    if last { return Step { words: next, digest: sha2.final256(take st) } }
+    Step { words: next, digest: List[byte]() }
+}
+
+fn step_size(size: int, at: int) -> int { if size - at > 65536 then 65536 else size - at }
+
+/// SHA-256 over a bounded positional input, one 64 KiB step at a time, each step's
+/// temporary state reclaimed before the next.
+pub fn digest(input: binary.Input) -> List[byte] ! {Bad(str)} { digest_zeroed(input, 0, 0)? }
+
+/// SHA-256 over a positional input with the bytes at [zero_start, zero_end) read as zero.
+pub fn digest_zeroed(input: binary.Input, zero_start: int, zero_end: int) -> List[byte] ! {
+    Bad(str),
+} {
+    var words = initial()
+    var at: int = 0
+    loop {
+        let count = step_size(input.size, at)
+        let last = at + count == input.size
+        let step = copy region hashing {
+            var bytes = binary.read(input, at, count)?
+            for i in 0..bytes.len {
+                if at + i >= zero_start && at + i < zero_end { bytes[i] = 0 as byte }
+            }
+            absorb(words, bytes, last)
         }
-        sha2.final256(take hash)
+        if last { return step.digest }
+        words = step.words
+        at += count
     }
+    List[byte]()
+}
+
+/// SHA-256 over bytes in memory, by the same bounded steps.
+pub fn digest_bytes(data: List[byte]) -> List[byte] {
+    var words = initial()
+    var at: int = 0
+    loop {
+        let count = step_size(data.len, at)
+        let last = at + count == data.len
+        let step = copy region hashing { absorb(words, data[at..at + count], last) }
+        if last { return step.digest }
+        words = step.words
+        at += count
+    }
+    List[byte]()
 }
 
 /// Hash each original input once and each selected member independently.
@@ -153,8 +230,8 @@ pub fn note(total: int, manifest_size: int, manifest_offset: int) -> List[byte] 
 
 /// Seal the manifest and output digests after the complete ELF has been written in memory.
 pub fn seal(mut file: List[byte], note_offset: int, manifest_bytes: List[byte]) {
-    let whole = copy region hashing { sha2.sum256(file) }
-    let content = copy region hashing { sha2.sum256(manifest_bytes) }
+    let whole = digest_bytes(file)
+    let content = digest_bytes(manifest_bytes)
     for i in 0..32 {
         file[note_offset + 44 + i] = content[i]
         file[note_offset + 76 + i] = whole[i]
@@ -207,20 +284,7 @@ pub fn check(f: binary.Input, image: elf.Image) -> () ! {Bad(str)} {
     for i in 0..32 {
         if content[i] != raw[44 + i] { return Bad("provenance manifest digest mismatch") }
     }
-    let whole = copy region hashing {
-        var hash = sha2.new256()
-        var at: int = 0
-        while at < f.size {
-            let count = if f.size - at > 65536 then 65536 else f.size - at
-            var bytes = binary.read(f, at, count)?
-            for i in 0..bytes.len {
-                if at + i >= n.off + 44 && at + i < n.off + 108 { bytes[i] = 0 as byte }
-            }
-            sha2.update256(mut hash, bytes)
-            at += count
-        }
-        sha2.final256(take hash)
-    }
+    let whole = digest_zeroed(f, n.off + 44, n.off + 108)?
     for i in 0..32 {
         if whole[i] != raw[76 + i] { return Bad("provenance output digest mismatch") }
     }
