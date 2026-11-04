@@ -67,3 +67,22 @@ identical object inputs for baseline/candidate, not this strace timing.
 Licensed bundle rows red at 64997b2 on satoyama: all twelve named rows failed,
 including licensed-bundle-pin, licensed-bundle-member-digest and
 licensed-bundle-ci-rows. The test discovery intentionally blocks network access.
+
+Pre-fix speed rows observed on committed base 4fedadb, same-run controls:
+hello: baseline 377.433262s, unchanged candidate 353.976014s, ratio 0.937851;
+self-link: baseline 365.338776s, unchanged candidate 356.642350s, ratio 0.976196.
+Both failed the 0.50 bound by name; both output pairs were byte-identical.
+The relocation-index unit row separately failed by name before implementation.
+The frozen control is original relocation source, SHA-256
+950485ee8728e685b7311495797f3b961dc306d1368314b8fed578510eb40c00.
+
+R-ld06-1: require candidate/baseline <= 0.50 independently for hello and
+self-link, plus byte identity and execution. Implemented in tests/link-cost.py.
+R-ld06-2: retain a SHA-pinned local copy of this project's original relocation
+implementation as the control, rather than depending on mutable history or a
+network fetch during the gate. Implemented.
+R-ld06-3: keep this change scoped to ligature. The compiler consumer's existing
+strict real-link tests already run, but its separate bundle fetch still uses
+historical inputs. Recommend migrating that consumer before retiring the old
+binary-only asset; the separate follow-on is recorded in the lane handback.
+No historical census bytes or expectations are rewritten as current evidence.
