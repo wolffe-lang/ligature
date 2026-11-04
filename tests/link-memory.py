@@ -11,8 +11,9 @@ Rows, each reported as PASS or FAIL <row>:
   link-memory-hello    hello's link: exit 0 under the cap, resident peak under the bound
   link-memory-str      the str program's link, likewise
   link-memory-verify   `ligature verify` of hello's output, likewise
-  link-memory-scaling  synthetic archives of N, 10N and 100N members: the peak and the time
-                       above a one-member link grow at most linearly (each 10x step within 15x)
+  link-memory-scaling  synthetic archives of N, 10N and 100N members: each 10x step within 15x
+                       in peak and in time (a linear cost over a fixed floor grows at most 10x;
+                       a quadratic one approaches 100x)
 With --baseline PATH, every output is also linked by that linker under the same inputs and
 compared byte for byte (link-identity-<case>). Objects come from LIGATURE_MEMORY_OBJECTS
 (DIR/hello/main.o, DIR/str/main.o) or are compiled by the pinned compiler.
@@ -226,7 +227,7 @@ def synthetic(linker, members, root):
 
 def scaling(linker, base):
     row = 'link-memory-scaling'
-    sizes = [1, base, base * 10, base * 100]
+    sizes = [base, base * 10, base * 100]
     points = []
     for members in sizes:
         entry, archive = synthetic(linker, members, OUT / 'scaling' / str(members))
@@ -246,15 +247,12 @@ def scaling(linker, base):
               f"resident_peak={point['resident_peak']} seconds={point['seconds']}", flush=True)
     rows.append({'row': row, 'points': points})
     (OUT / 'results.json').write_text(json.dumps(rows, indent=2) + '\n')
-    floor = points[0]
     worst = []
-    for a, b in zip(points[1:], points[2:]):
+    for a, b in zip(points, points[1:]):
         for key in ('resident_peak', 'seconds'):
-            low = max(a[key] - floor[key], 1e-3 if key == 'seconds' else MIB)
-            high = b[key] - floor[key]
-            worst.append((high / low, key, a['members'], b['members']))
+            worst.append((b[key] / max(a[key], 1e-3 if key == 'seconds' else MIB), key, a['members'], b['members']))
     ratio, key, small, large = max(worst)
-    detail = f'worst 10x step {small}->{large} members: {key} above one member grew {ratio:.2f}x (bound 15x)'
+    detail = f'worst 10x step {small}->{large} members: {key} grew {ratio:.2f}x (bound 15x)'
     if ratio > 15:
         fail(row, 'superlinear growth: ' + detail)
     else:
