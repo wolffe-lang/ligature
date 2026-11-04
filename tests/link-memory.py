@@ -174,7 +174,8 @@ def program(case, linker, obj, env):
     row = 'link-memory-' + case
     result = measured(link_argv(linker, obj, exe), CAP, env)
     record(row, result, BOUND[case])
-    if not check_peak(row, result, BOUND[case]):
+    within = check_peak(row, result, BOUND[case])
+    if result['status'] != 0:
         return None
     if LINUX:
         ran = subprocess.run([str(exe)], capture_output=True, timeout=60)
@@ -184,7 +185,8 @@ def program(case, linker, obj, env):
         print(f'  {case}: executed, stdout {EXPECTED[case]!r}', flush=True)
     else:
         print(f'  {case}: not executed on {platform.system()} (x86-64 Linux ELF)', flush=True)
-    return exe
+    # A linked output over the bound is still verified and compared: its row has already failed.
+    return exe if within or result['status'] == 0 else None
 
 
 def assemble(source, output):
