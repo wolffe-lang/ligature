@@ -35,3 +35,33 @@ Done-when
 Licensed fetching and strict CI rows; measured dominant-cost fix; ratio and byte
 identity gates; final-head green record; final-head one-hunk plant red by name;
 open cross-cutting PR; one local audit; CI run id read once, no CI waiting.
+
+Satoyama baseline, before selecting the fix (instrumented 8cf1ceb)
+Phase                             seconds
+resolution/archive index             0.597
+visibility                           0.042
+archive-section reading              1.260
+garbage collection                   1.131
+layout                               0.445
+relocation                         299.309
+symbol table                         4.144
+retained relocation table            4.466
+input hashing                        4.827
+manifest                             3.583
+assembly                             0.156
+sealing                              2.565
+output I/O                           0.014
+ELF verify                           6.600
+provenance verify                   11.644
+Total                              340.785
+strace accounts for 1.500 seconds of kernel time in 1,369,108 syscalls.
+The relocation map is built for all sites, but only TLS pairs query it. The
+pinned native Map implementation linearly scans on insertion and lookup. The
+fix will use an explicit open-addressed integer-pair index with exact equality,
+last-write-wins duplicate behavior and a <= 0.5 load factor. No output iteration
+will depend on hash-table order. The gate uses an uninstrumented baseline and
+identical object inputs for baseline/candidate, not this strace timing.
+
+Licensed bundle rows red at 64997b2 on satoyama: all twelve named rows failed,
+including licensed-bundle-pin, licensed-bundle-member-digest and
+licensed-bundle-ci-rows. The test discovery intentionally blocks network access.
