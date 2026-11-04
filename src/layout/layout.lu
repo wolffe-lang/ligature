@@ -579,8 +579,14 @@ pub fn place(mut l: Layout, s: resolve.State) -> () ! {Bad(str)} {
         l.synthetics["__{pair}_array_end"] = end
     }
     for o in l.outputs { if o.name == ".got" { l.synthetics["_GLOBAL_OFFSET_TABLE_"] = o.address } }
+    fill(mut l)
+}
+
+/// Zero-fill each output's bytes at exact capacity, then copy the live input sections in.
+pub fn fill(mut l: Layout) {
     for j in 1..l.outputs.len {
         if l.outputs[j].kind == 8 { continue }
+        (mut l.outputs[j].data).reserve(l.outputs[j].size)
         for _ in 0..l.outputs[j].size { (mut l.outputs[j].data).push(0 as byte) }
     }
     for a in l.atoms {

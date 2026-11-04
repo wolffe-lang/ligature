@@ -143,12 +143,5 @@ pub fn kernel_place(mut l: Layout, s: resolve.State) -> () ! {Bad(str)} {
         l.outputs[j].fileoff = cursor
         cursor += l.outputs[j].size
     }
-    for j in 1..l.outputs.len {
-        if l.outputs[j].kind == 8 { continue }
-        for _ in 0..l.outputs[j].size { (mut l.outputs[j].data).push(0 as byte) }
-    }
-    for a in l.atoms {
-        if !a.live || a.kind == 8 { continue }
-        for k in 0..a.data.len { l.outputs[a.output].data[a.offset + k] = a.data[k] }
-    }
+    fill(mut l)
 }
