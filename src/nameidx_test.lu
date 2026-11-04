@@ -1,0 +1,20 @@
+//! member: false
+
+use nameidx
+
+fn main() -> int {
+    var n = nameidx.names()
+    assert(nameidx.lookup(n, "absent") == -1 && !nameidx.has(n, ""))
+    nameidx.set(mut n, "", 7)
+    assert(nameidx.lookup(n, "") == 7)
+    // Shared prefixes, as mangled names have, across several growths.
+    for i in 0..5000 { nameidx.set(mut n, "_ZN4core3fmt{i}E", i * 2) }
+    for i in 0..5000 { assert(nameidx.lookup(n, "_ZN4core3fmt{i}E") == i * 2) }
+    assert(nameidx.lookup(n, "_ZN4core3fmt5000E") == -1 && nameidx.count(n) == 5001)
+    // A later set replaces the value without adding a key.
+    nameidx.set(mut n, "_ZN4core3fmt42E", 1)
+    assert(nameidx.lookup(n, "_ZN4core3fmt42E") == 1 && nameidx.count(n) == 5001)
+    assert(nameidx.lookup(n, "") == 7)
+    print("nameidx: 5001 keys stored, found, replaced and refused, 0 SKIP")
+    0
+}

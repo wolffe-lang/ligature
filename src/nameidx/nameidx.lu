@@ -1,0 +1,75 @@
+//! member: true
+
+/// A string-keyed index: open addressing over a rolling hash of the key's bytes, kept at most half
+/// full. The runtime's Map costs time in proportion to its size on every operation, so a symbol
+/// table looked up once per symbol or per relocation made links superlinear in their inputs.
+/// No order is ever derived from this index; callers keep their own ordered lists.
+pub struct Names {
+    slots: List[int],
+    keys: List[str],
+    values: List[int],
+}
+
+fn hash(key: str) -> int {
+    var h: int = 0
+    for i in 0..key.len { h = (h * 131 + key.bytes()[i] as int + 1) % 2147483647 }
+    h
+}
+
+fn table(capacity: int) -> List[int] {
+    var slots = List[int]()
+    (mut slots).reserve(capacity)
+    for _ in 0..capacity { (mut slots).push(0) }
+    slots
+}
+
+/// An empty index.
+pub fn names() -> Names { Names { slots: table(16), keys: List[str](), values: List[int]() } }
+
+/// The value stored for key, or -1 when the key is absent.
+pub fn lookup(n: Names, key: str) -> int {
+    var at = hash(key) % n.slots.len
+    for _ in 0..n.slots.len {
+        let slot = n.slots[at]
+        if slot == 0 { return -1 }
+        if n.keys[slot - 1] == key { return n.values[slot - 1] }
+        at = (at + 1) % n.slots.len
+    }
+    -1
+}
+
+/// True when the key is present.
+pub fn has(n: Names, key: str) -> bool { lookup(n, key) >= 0 }
+
+/// Store value for key, replacing any earlier value. Values are nonnegative.
+pub fn set(mut n: Names, key: str, value: int) {
+    if (n.keys.len + 1) * 2 > n.slots.len { grow(mut n) }
+    var at = hash(key) % n.slots.len
+    loop {
+        let slot = n.slots[at]
+        if slot == 0 {
+            (mut n.keys).push(key)
+            (mut n.values).push(value)
+            n.slots[at] = n.keys.len
+            return
+        }
+        if n.keys[slot - 1] == key {
+            n.values[slot - 1] = value
+            return
+        }
+        at = (at + 1) % n.slots.len
+    }
+}
+
+/// The number of keys stored.
+pub fn count(n: Names) -> int { n.keys.len }
+
+fn grow(mut n: Names) {
+    var slots = table(n.slots.len * 2)
+    for i in 0..n.keys.len {
+        var at = hash(n.keys[i]) % slots.len
+        while slots[at] != 0 { at = (at + 1) % slots.len }
+        slots[at] = i + 1
+    }
+    n.slots = slots
+}
