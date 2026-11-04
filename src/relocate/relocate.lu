@@ -62,35 +62,8 @@ pub fn pc32_reachable(sa: int, place: int) -> bool {
     displacement >= -2147483648 && displacement <= 2147483647
 }
 
-fn relocation_slot(atom: int, offset: int, capacity: int) -> int {
-    (atom % capacity * 65599 + offset % capacity) % capacity
-}
-
-/// Index validated (atom, offset) pairs without the runtime Map's linear insertion.
-/// Slots store relocation ordinal + 1; zero is empty. Keep at most half full.
-/// Exact key comparison preserves last-write-wins behavior even on collisions.
-/// No output order is derived from this table.
-pub fn relocation_index(relocs: List[layout.Reloc]) -> List[int] {
-    var capacity: int = 8
-    while capacity < relocs.len * 2 { capacity *= 2 }
-    var index = List[int]()
-    (mut index).reserve(capacity)
-    for _ in 0..capacity { (mut index).push(0) }
-    for i in 0..relocs.len {
-        let r = copy relocs[i]
-        var at = relocation_slot(r.atom, r.offset, capacity)
-        loop {
-            let previous = index[at] - 1
-            if previous < 0 ||
-                relocs[previous].atom == r.atom && relocs[previous].offset == r.offset {
-                index[at] = i + 1
-                break
-            }
-            at = (at + 1) % capacity
-        }
-    }
-    index
-}
+/// Index validated (atom, offset) pairs; the index lives in layout, where provenance shares it.
+pub fn relocation_index(relocs: List[layout.Reloc]) -> List[int] { layout.site_index(relocs) }
 
 /// Return the last relocation at the exact site, or -1 for an absent pair.
 pub fn relocation_lookup(
@@ -99,15 +72,7 @@ pub fn relocation_lookup(
     atom: int,
     offset: int,
 ) -> int {
-    if index.len == 0 || atom < 0 || offset < 0 { return -1 }
-    var at = relocation_slot(atom, offset, index.len)
-    for _ in 0..index.len {
-        let previous = index[at] - 1
-        if previous < 0 { return -1 }
-        if relocs[previous].atom == atom && relocs[previous].offset == offset { return previous }
-        at = (at + 1) % index.len
-    }
-    -1
+    layout.site_lookup(relocs, index, atom, offset)
 }
 
 /// Apply the census relocation set and recognized psABI TLS instruction transitions.

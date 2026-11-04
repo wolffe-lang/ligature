@@ -2,7 +2,6 @@
 
 use binary
 use layout
-use relocate
 use resolve
 use script
 
@@ -100,7 +99,7 @@ fn hex(data: List[byte], from: int, width: int) -> str {
 pub fn patches(l: layout.Layout, s: resolve.State) -> PatchTable ! {Bad(str)} {
     var table = patch_table()
     // The consumer of each TLS call site, by the site's last relocation (last write wins).
-    let sites = relocate.relocation_index(l.relocs)
+    let sites = layout.site_index(l.relocs)
     var consumer = List[int]()
     (mut consumer).reserve(l.relocs.len)
     for _ in 0..l.relocs.len { (mut consumer).push(-1) }
@@ -114,7 +113,7 @@ pub fn patches(l: layout.Layout, s: resolve.State) -> PatchTable ! {Bad(str)} {
             call = r.offset + (if indirect then 6 else 5)
         }
         if call < 0 { continue }
-        let at = relocate.relocation_lookup(l.relocs, sites, r.atom, call)
+        let at = layout.site_lookup(l.relocs, sites, r.atom, call)
         if at >= 0 { consumer[at] = i }
     }
     var values = List[int]()
@@ -125,7 +124,7 @@ pub fn patches(l: layout.Layout, s: resolve.State) -> PatchTable ! {Bad(str)} {
         let ai = r.atom
         if !l.atoms[ai].live { continue }
         let oi = l.atoms[ai].output
-        let here = relocate.relocation_lookup(l.relocs, sites, r.atom, r.offset)
+        let here = layout.site_lookup(l.relocs, sites, r.atom, r.offset)
         let owner = if here >= 0 then consumer[here] else -1
         var begin = r.offset
         var width = if r.kind == 1 || r.kind == 17 || r.kind == 257 then 8 else 4
