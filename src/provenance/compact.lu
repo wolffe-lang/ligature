@@ -234,7 +234,7 @@ pub fn decode_document(raw: List[byte]) -> json.Value ! {Bad(str)} {
         let text = str_from_utf8(raw) else { return Bad("provenance is not UTF-8") }
         return json.parse(text) else |_| { return Bad("invalid provenance JSON") }
     }
-    let (doc, cursor) = patch_open(copy raw)?
+    let (doc, cursor) = patch_open(take copy raw)?
     var p = cursor
     var object = json.as_obj(doc) else |_| { return Bad("invalid provenance metadata object") }
     let keys = patch_keys()

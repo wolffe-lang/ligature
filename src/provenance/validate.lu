@@ -91,7 +91,7 @@ fn patch_row_checks(
 pub fn validate(f: binary.Input, image: elf.Image) -> () ! {Bad(str)} {
     let raw = manifest_bytes(f, image)?
     if !is_table(raw) { return validate_document(f, image, decode_document(raw)?) }
-    let (doc, opened) = patch_open(raw)?
+    let (doc, opened) = patch_open(take raw)?
     var cursor = opened
     var values = patch_values()
     for _ in 0..cursor.rows { patch_next(mut cursor, mut values)? }
