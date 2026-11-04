@@ -1,0 +1,29 @@
+//! member: false
+
+use layout
+use relocate
+
+fn main() -> int {
+    var relocs = List[layout.Reloc]()
+    let empty = relocate.relocation_index(relocs)
+    assert((relocate.relocation_lookup(relocs, empty, 0, 0) else -1) == -1)
+    for i in 0..30000 {
+        (mut relocs).push(layout.Reloc {
+            atom: i % 37,
+            offset: i / 37 * 8,
+            symbol: i,
+            kind: 4,
+            addend: -4,
+        })
+    }
+    (mut relocs).push(layout.Reloc { atom: 0, offset: 0, symbol: 99, kind: 1, addend: 0 })
+    let index = relocate.relocation_index(relocs)
+    assert(index.len >= relocs.len * 2)
+    assert((relocate.relocation_lookup(relocs, index, 0, 0) else -1) == 30000)
+    for i in 1..30000 {
+        assert((relocate.relocation_lookup(relocs, index, i % 37, i / 37 * 8) else -1) == i)
+    }
+    assert((relocate.relocation_lookup(relocs, index, 99, 0) else -1) == -1)
+    assert((relocate.relocation_lookup(relocs, index, 0, 999999) else -1) == -1)
+    0
+}
