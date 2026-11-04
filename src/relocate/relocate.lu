@@ -11,6 +11,13 @@ fn put(mut bytes: List[byte], at: int, width: int, bits: u64) -> () ! {Bad(str)}
     for i in 0..width { bytes[at + i] = (n & 255) as int as byte; n = n >> 8 }
 }
 
+// A relocation's site, for refusals only: built when a message needs it, never per relocation.
+fn site(l: layout.Layout, s: resolve.State, ri: int) -> str {
+    if ri < 0 { return "generated GOT" }
+    let r = copy l.relocs[ri]
+    "{s.objects[l.atoms[r.atom].object].label}:{l.atoms[r.atom].name}+{r.offset} type {r.kind}"
+}
+
 fn number(
     mut l: layout.Layout,
     out: int,
@@ -18,7 +25,8 @@ fn number(
     width: int,
     value: int,
     signed: bool,
-    site: str,
+    s: resolve.State,
+    ri: int,
 ) -> () ! {Bad(str)} {
     if width == 4 &&
         (
@@ -26,7 +34,7 @@ fn number(
                 !signed && (value < 0 || value > 4294967295)
         ) {
         return Bad(
-            "relocation overflow at {site}: {value} does not fit {width * 8} bits (AMD64 psABI table 4.9)",
+            "relocation overflow at {site(l, s, ri)}: {value} does not fit {width * 8} bits (AMD64 psABI table 4.9)",
         )
     }
     put(mut l.outputs[out].data, at, width, layout.bits(value))?
@@ -104,78 +112,85 @@ pub fn relocation_lookup(
 /// Apply the census relocation set and recognized psABI TLS instruction transitions.
 pub fn apply(mut l: layout.Layout, s: resolve.State) -> () ! {Bad(str)} {
     if l.machine == 183 { apply_aarch64(mut l, s)?; return }
-    var skipped = Map[str, bool]()
     let relocation_at = relocation_index(l.relocs)
+    // A TLS call consumed by its transition is skipped by site: the last relocation recorded
+    // at a site stands for every relocation there, as the index's last-write-wins lookup does.
+    var skipped = List[bool]()
+    (mut skipped).reserve(l.relocs.len)
+    for _ in 0..l.relocs.len { (mut skipped).push(false) }
     let tls_end = layout.align(l.tls_size, l.tls_align)
     for ri in 0..l.relocs.len {
         let r = copy l.relocs[ri]
-        if !l.atoms[r.atom].live || (skipped["{r.atom}:{r.offset}"] else false) { continue }
+        if !l.atoms[r.atom].live { continue }
+        let here = relocation_lookup(l.relocs, relocation_at, r.atom, r.offset)
+        if here >= 0 && skipped[here] { continue }
         let out = l.atoms[r.atom].output
         let at = l.atoms[r.atom].offset + r.offset
         let place = layout.vadd(l.outputs[out].address, at)?
-        let site = "{s.objects[l.atoms[r.atom].object].label}:{l.atoms[r.atom].name}+{r.offset} type {r.kind}"
         let tombstone = l.atoms[r.atom].flags & 2 == 0 || l.atoms[r.atom].name == ".eh_frame"
         let symbol = layout.target(s, r.symbol)?
         let fullvalue = layout.address(l, s, symbol, tombstone)?
         let value = layout.signed(fullvalue)
         let sa = layout.signed(absolute64(fullvalue, r.addend)?)
         if r.kind == 19 || r.kind == 20 {
-            if r.addend != -4 { return Bad("unsupported TLS addend at {site} (psABI 4.5)") }
+            if r.addend != -4 {
+                return Bad("unsupported TLS addend at {site(l, s, ri)} (psABI 4.5)")
+            }
             let gd = r.kind == 19
             let begin = r.offset - (if gd then 4 else 3)
             var calloff = r.offset + (if gd then 8 else 5)
             var indirect = false
             if gd {
                 if !matches(l.atoms[r.atom].data, begin, [102, 72, 141, 61]) {
-                    return Bad("unrecognized TLSGD prefix at {site} (psABI 11.1)")
+                    return Bad("unrecognized TLSGD prefix at {site(l, s, ri)} (psABI 11.1)")
                 }
                 if !matches(l.atoms[r.atom].data, begin + 8, [102, 102, 72, 232]) {
                     if !matches(l.atoms[r.atom].data, begin + 8, [102, 72, 255, 21]) {
-                        return Bad("unrecognized TLSGD call at {site}")
+                        return Bad("unrecognized TLSGD call at {site(l, s, ri)}")
                     }
                     indirect = true
                 }
             } else {
                 if !matches(l.atoms[r.atom].data, begin, [72, 141, 61]) {
-                    return Bad("unrecognized TLSLD prefix at {site}")
+                    return Bad("unrecognized TLSLD prefix at {site(l, s, ri)}")
                 }
                 if !matches(l.atoms[r.atom].data, begin + 7, [232]) {
                     if !matches(l.atoms[r.atom].data, begin + 7, [255, 21]) {
-                        return Bad("unrecognized TLSLD call at {site}")
+                        return Bad("unrecognized TLSLD call at {site(l, s, ri)}")
                     }
                     calloff += 1
                     indirect = true
                 }
             }
             let pair = relocation_lookup(l.relocs, relocation_at, r.atom, calloff)
-            if pair < 0 { return Bad("missing TLS call relocation at {site}") }
+            if pair < 0 { return Bad("missing TLS call relocation at {site(l, s, ri)}") }
             if s.symbols[l.relocs[pair].symbol].name != "__tls_get_addr" ||
                 l.relocs[pair].kind != (if indirect then 9 else 4) ||
                 l.relocs[pair].addend != -4 {
-                return Bad("invalid TLS call pair at {site}")
+                return Bad("invalid TLS call pair at {site(l, s, ri)}")
             }
-            skipped["{r.atom}:{calloff}"] = true
+            skipped[pair] = true
             let start = l.atoms[r.atom].offset + begin
             if gd {
                 if s.symbols[symbol].kind != 6 {
-                    return Bad("TLSGD target is not STT_TLS at {site}")
+                    return Bad("TLSGD target is not STT_TLS at {site(l, s, ri)}")
                 }
                 bytes(mut l, out, start, [100, 72, 139, 4, 37, 0, 0, 0, 0, 72, 141, 128])?
-                number(mut l, out, start + 12, 4, value - tls_end, true, site)?
+                number(mut l, out, start + 12, 4, value - tls_end, true, s, ri)?
             } else if indirect {
                 bytes(mut l, out, start, [102, 102, 102, 102, 100, 72, 139, 4, 37, 0, 0, 0, 0])?
             } else {
                 bytes(mut l, out, start, [102, 102, 102, 100, 72, 139, 4, 37, 0, 0, 0, 0])?
             }
         } else if r.kind == 1 || r.kind == 17 {
-            number(mut l, out, at, 8, sa, false, site)?
+            number(mut l, out, at, 8, sa, false, s, ri)?
         } else if r.kind == 2 || r.kind == 4 {
-            number(mut l, out, at, 4, relative64(fullvalue, r.addend, place)?, true, site)?
+            number(mut l, out, at, 4, relative64(fullvalue, r.addend, place)?, true, s, ri)?
         } else if r.kind == 10 || r.kind == 11 {
-            number(mut l, out, at, 4, sa, r.kind == 11, site)?
+            number(mut l, out, at, 4, sa, r.kind == 11, s, ri)?
         } else if r.kind == 21 || r.kind == 23 {
             let tp = r.kind == 23 || l.atoms[r.atom].flags & 4 != 0
-            number(mut l, out, at, 4, sa - (if tp then tls_end else 0), true, site)?
+            number(mut l, out, at, 4, sa - (if tp then tls_end else 0), true, s, ri)?
         } else if r.kind == 9 || r.kind == 42 || r.kind == 22 {
             let rex = if r.offset >= 3 then l.atoms[r.atom].data[r.offset - 3] as int else 0
             let opcode = if r.offset >= 2 then l.atoms[r.atom].data[r.offset - 2] as int else 0
@@ -187,7 +202,7 @@ pub fn apply(mut l: layout.Layout, s: resolve.State) -> () ! {Bad(str)} {
                 r.addend == -4 &&
                 reachable32(fullvalue, r.addend, place) {
                 l.outputs[out].data[at - 2] = 141 as byte
-                number(mut l, out, at, 4, relative64(fullvalue, r.addend, place)?, true, site)?
+                number(mut l, out, at, 4, relative64(fullvalue, r.addend, place)?, true, s, ri)?
             } else if r.kind == 22 &&
                 (rex == 72 || rex == 76) &&
                 opcode == 139 &&
@@ -197,10 +212,10 @@ pub fn apply(mut l: layout.Layout, s: resolve.State) -> () ! {Bad(str)} {
                 l.outputs[out].data[at - 3] = (72 | (rex & 4) >> 2) as byte
                 l.outputs[out].data[at - 2] = 199 as byte
                 l.outputs[out].data[at - 1] = (192 | modrm >> 3 & 7) as byte
-                number(mut l, out, at, 4, value - tls_end, true, site)?
+                number(mut l, out, at, 4, value - tls_end, true, s, ri)?
             } else {
                 let off = l.got["{symbol}:{r.kind == 22}"] else {
-                    return Bad("missing GOT slot at {site}")
+                    return Bad("missing GOT slot at {site(l, s, ri)}")
                 }
                 let base = l.synthetics["_GLOBAL_OFFSET_TABLE_"] else {
                     return Bad("missing GOT base")
@@ -212,7 +227,8 @@ pub fn apply(mut l: layout.Layout, s: resolve.State) -> () ! {Bad(str)} {
                     4,
                     relative64(layout.vadd(base, off)?, r.addend, place)?,
                     true,
-                    site,
+                    s,
+                    ri,
                 )?
             }
         }
@@ -222,7 +238,7 @@ pub fn apply(mut l: layout.Layout, s: resolve.State) -> () ! {Bad(str)} {
         for i in 0..l.got_symbols.len {
             let v = layout.value(l, s, l.got_symbols[i], true)? -
                 (if l.got_tls[i] then tls_end else 0)
-            number(mut l, j, l.got_offset + i * 8, 8, v, false, "generated GOT")?
+            number(mut l, j, l.got_offset + i * 8, 8, v, false, s, -1)?
         }
     }
 }
