@@ -156,6 +156,23 @@ The pinned native `Map` costs time in proportion to its size on every operation,
 shape (2,000 to 8,000 entries: about 20x the time). Lookups once per symbol or per relocation made
 trunk's links superlinear in their inputs; the name index and the integer indexes remove that cost.
 
+### After, Linux x86-64 (the same host and CPUs as trunk's rows)
+
+The issue's command, each link a direct child; trunk under a 10 GiB address-space cap, the head under
+the memory rows' 2 GiB. Timing alternates trunk and head, three rounds each:
+
+| row | trunk | head |
+|---|---|---|
+| hello link, resident peak | 7.291 GiB | 0.615 GiB |
+| hello link, address-space peak | 7.35–7.38 GiB | 0.653 GiB |
+| hello link, seconds (median of 3) | 24.74 | 8.30 (0.336x) |
+| `str` link, resident peak | 7.317 GiB | 0.618 GiB |
+| `ligature verify` of hello | 4.901 GiB | 0.245 GiB |
+| the linker's own self-link, resident peak and seconds | 7.469 GiB, 30.1 | 0.637 GiB, 8.6 |
+
+The linked hello and `str` executed and printed their lines; every head output was byte-identical to
+trunk's on the same objects.
+
 ### After, macOS arm64 (the same object files)
 
 | row | resident peak | seconds |
@@ -175,10 +192,12 @@ working set, though freed, still stands on top of the root's at its own peak.
 
 - `tests/link-memory.py` (in `tools/check`): `link-memory-hello`, `link-memory-str`,
   `link-memory-verify` (each resident peak under 1 GiB, the child under a 2 GiB address-space cap) and
-  `link-memory-scaling` (N/10N/100N synthetic archives; each 10x step within 15x in peak and time).
+  `link-memory-scaling` (N/10N/100N synthetic archives, N = 40; each 10x step within 15x in peak
+  and in time: a linear cost over a fixed floor grows at most 10x, a quadratic one approaches 100x).
   Seen red at trunk on Linux: hello, `str` and verify each aborted under the cap (status -6,
-  `memory allocation of … failed`, 1.93–1.99 GiB), and the scaling row grew 45.68x in time from 400
-  to 4,000 members.
+  `memory allocation of … failed`, 1.93–1.99 GiB), and the scaling row grew 44.9x in time from 400
+  to 4,000 members (13.39 s against 0.30 s). At the head the same step grows 10.4x in time and 8.7x
+  in peak.
 - Identity: hello and `str` byte-identical to trunk (`75f2c22a…df75`, `6b2c7c72…a0df`); the synthetic
   archives' links at 1, 10, 40, 100, 400, 1,000 and 4,000 members byte-identical to trunk's; the
   link-cost row's baseline/candidate pairs; and, in the lane's green record, every ELF executable the
