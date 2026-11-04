@@ -4,6 +4,7 @@ use ar
 use binary
 use elf
 use front
+use nameidx
 use script
 
 /// A symbol preserves its input identity, including local names.
@@ -51,17 +52,17 @@ pub struct Library {
 
 struct Lazy { library: int, member: int }
 
-/// Resolution state uses ordered lists for observable order, maps only for lookup.
+/// Resolution state uses ordered lists for observable order, name indexes only for lookup.
+/// demanders holds each demanded name's parent object + 1 (0: a forced root); presence is the demand.
 pub struct State {
     objects: List[Object],
     symbols: List[Symbol],
-    globals: Map[str, int],
+    globals: nameidx.Names,
     demands: List[str],
-    demanded: Map[str, bool],
-    demanders: Map[str, int],
-    lazy: Map[str, int],
+    demanders: nameidx.Names,
+    lazy: nameidx.Names,
     lazy_entries: List[Lazy],
-    groups: Map[str, bool],
+    groups: nameidx.Names,
     libraries: List[Library],
     descriptors: List[int],
     input_paths: List[str],
@@ -76,13 +77,12 @@ pub fn empty() -> State {
     State {
         objects: List[Object](),
         symbols: List[Symbol](),
-        globals: Map[str, int](),
+        globals: nameidx.names(),
         demands: List[str](),
-        demanded: Map[str, bool](),
-        demanders: Map[str, int](),
-        lazy: Map[str, int](),
+        demanders: nameidx.names(),
+        lazy: nameidx.names(),
         lazy_entries: List[Lazy](),
-        groups: Map[str, bool](),
+        groups: nameidx.names(),
         libraries: List[Library](),
         descriptors: List[int](),
         input_paths: List[str](),
@@ -92,6 +92,19 @@ pub fn empty() -> State {
         alias_names: List[str](),
     }
 }
+
+/// The winning definition of a global name, or -1 when none has been seen.
+pub fn global(s: State, name: str) -> int { nameidx.lookup(s.globals, name) }
+
+/// The winning definition of a global name, or fallback when none has been seen.
+pub fn global_or(s: State, name: str, fallback: int) -> int {
+    let id = nameidx.lookup(s.globals, name)
+    if id < 0 { return fallback }
+    id
+}
+
+/// Record a name's winning definition directly (fixtures that build a state by hand).
+pub fn set_global(mut s: State, name: str, id: int) { nameidx.set(mut s.globals, name, id) }
 
 /// Close every input descriptor exactly once, including on failure.
 pub fn finish(s: State) {
@@ -128,9 +141,8 @@ fn key(bytes: List[byte], offset: int) -> str ! {Bad(str)} {
 
 /// Mark a strong undefined reference; weak undefineds deliberately do not pull.
 pub fn demand(mut s: State, name: str, parent: int) -> () ! {Bad(str)} {
-    if !(s.demanded[name] else false) {
-        s.demanded[name] = true
-        s.demanders[name] = parent
+    if !nameidx.has(s.demanders, name) {
+        nameidx.set(mut s.demanders, name, parent + 1)
         (mut s.demands).push(name)
     }
     extract(mut s, name)?
@@ -147,17 +159,18 @@ fn define(mut s: State, id: int) -> () ! {Bad(str)} {
         return
     }
     if sym.section < 65280 && s.objects[sym.object].discarded[sym.section] { return }
-    let old = s.globals[sym.name] else { s.globals[sym.name] = id; return }
+    let old = nameidx.lookup(s.globals, sym.name)
+    if old < 0 { nameidx.set(mut s.globals, sym.name, id); return }
     let prev = copy s.symbols[old]
     if sym.binding == 2 { return }
-    if prev.binding == 2 { s.globals[sym.name] = id; return }
+    if prev.binding == 2 { nameidx.set(mut s.globals, sym.name, id); return }
     if sym.section == 65522 && prev.section == 65522 {
         if sym.size > prev.size { s.symbols[old].size = sym.size }
         if sym.value > prev.value { s.symbols[old].value = sym.value }
         return
     }
     if sym.section == 65522 { return }
-    if prev.section == 65522 { s.globals[sym.name] = id; return }
+    if prev.section == 65522 { nameidx.set(mut s.globals, sym.name, id); return }
     return Bad(
         "duplicate strong symbol {sym.name}: {s.objects[prev.object].label} and {s.objects[sym.object].label} (gABI Symbol Table)",
     )
@@ -227,8 +240,8 @@ fn object(mut s: State, f: binary.Input, label: str) -> () ! {Bad(str)} {
         let sig = group_signature(symbol_base, image, sec.link, sec.info)
         if sig < 0 { return Bad("missing COMDAT signature") }
         let name = s.symbols[sig].name
-        let loser = flag == 1 && (s.groups[name] else false)
-        if flag == 1 { s.groups[name] = true }
+        let loser = flag == 1 && nameidx.has(s.groups, name)
+        if flag == 1 { nameidx.set(mut s.groups, name, 1) }
         for j in 1..sec.size / 4 {
             let member = binary.decode(raw, j * 4, 4)? as int
             if member <= 0 || member >= discarded.len { return Bad("invalid COMDAT member") }
@@ -252,6 +265,19 @@ fn group_signature(symbol_base: List[int], image: elf.Image, link: int, info: in
     symbol_base[link] + info
 }
 
+// Members are in archive order, so their header offsets ascend: find one by binary search.
+fn member_at(archive: ar.Archive, header: int) -> int {
+    var low: int = 0
+    var high = archive.members.len
+    while low < high {
+        let mid = low + (high - low) / 2
+        let at = archive.members[mid].header
+        if at == header { return mid }
+        if at < header { low = mid + 1 } else { high = mid }
+    }
+    -1
+}
+
 fn library(mut s: State, f: binary.Input, path: str) -> int ! {Bad(str)} {
     let archive = ar.parse(f)?
     if archive.index_off == 0 { return Bad("{path}: missing archive symbol index (SysV ar)") }
@@ -259,12 +285,8 @@ fn library(mut s: State, f: binary.Input, path: str) -> int ! {Bad(str)} {
     if raw.len < 4 { return Bad("truncated archive symbol index") }
     let n = raw[0] as int << 24 | raw[1] as int << 16 | raw[2] as int << 8 | raw[3] as int
     if n > (raw.len - 4) / 4 { return Bad("truncated archive index offsets") }
-    var by_offset = Map[int, int]()
     var selected = List[bool]()
-    for i in 0..archive.members.len {
-        by_offset[archive.members[i].header] = i
-        (mut selected).push(false)
-    }
+    for _ in 0..archive.members.len { (mut selected).push(false) }
     var names = List[str]()
     var members = List[int]()
     var at = 4 + n * 4
@@ -274,7 +296,8 @@ fn library(mut s: State, f: binary.Input, path: str) -> int ! {Bad(str)} {
             raw[a + 1] as int << 16 |
             raw[a + 2] as int << 8 |
             raw[a + 3] as int
-        let member = by_offset[off] else { return Bad("archive index target is not a member") }
+        let member = member_at(archive, off)
+        if member < 0 { return Bad("archive index target is not a member") }
         let name = key(raw, at)?
         while at < raw.len && raw[at] != 0 as byte { at += 1 }
         at += 1
@@ -297,23 +320,23 @@ fn library(mut s: State, f: binary.Input, path: str) -> int ! {Bad(str)} {
 }
 
 fn unresolved(s: State, name: str) -> bool {
-    let _definition = s.globals[name] else { return true }
-    false
+    !nameidx.has(s.globals, name)
 }
 
 // Measured lazy discovery: publish each index entry in archive order, and
 // recurse immediately when an unresolved strong symbol meets an available member.
 // Earlier archives remain lazy, as in the LLD black-box backward-reference control.
 fn extract(mut s: State, name: str) -> () ! {Bad(str)} {
-    if !(s.demanded[name] else false) || !unresolved(s, name) { return }
-    let entry = s.lazy[name] else { return }
+    if !nameidx.has(s.demanders, name) || !unresolved(s, name) { return }
+    let entry = nameidx.lookup(s.lazy, name)
+    if entry < 0 { return }
     let lib = s.lazy_entries[entry].library
     let member = s.lazy_entries[entry].member
     if s.libraries[lib].selected[member] { return }
     s.libraries[lib].selected[member] = true
     let m = copy s.libraries[lib].archive.members[member]
     let path = s.libraries[lib].path
-    let parent = s.demanders[name] else -1
+    let parent = nameidx.lookup(s.demanders, name) - 1
     let selected = s.objects.len
     let f = binary.Input {
         fd: s.libraries[lib].file.fd,
@@ -330,11 +353,10 @@ fn scan(mut s: State, lib: int) -> bool ! {Bad(str)} {
     let before = s.objects.len
     for i in 0..s.libraries[lib].names.len {
         let name = s.libraries[lib].names[i]
-        let _previous = s.lazy[name] else {
-            s.lazy[name] = s.lazy_entries.len
+        if !nameidx.has(s.lazy, name) {
+            nameidx.set(mut s.lazy, name, s.lazy_entries.len)
             (mut s.lazy_entries).push(Lazy { library: lib, member: s.libraries[lib].members[i] })
             extract(mut s, name)?
-            continue
         }
     }
     s.objects.len != before
@@ -398,17 +420,19 @@ fn visibility_rank(v: int) -> int {
 
 /// Propagate the most constraining visibility from declarations and definitions.
 pub fn visibility(mut s: State) {
-    var seen = Map[str, int]()
+    var seen = nameidx.names()
     for sym in s.symbols {
         if sym.binding == 0 { continue }
-        let old = seen[sym.name] else 0
+        let found = nameidx.lookup(seen, sym.name)
+        let old = if found < 0 then 0 else found
         let v = sym.other & 3
-        if visibility_rank(v) > visibility_rank(old) { seen[sym.name] = v }
+        if visibility_rank(v) > visibility_rank(old) { nameidx.set(mut seen, sym.name, v) }
     }
     for i in 0..s.symbols.len {
         let name = s.symbols[i].name
-        if (s.globals[name] else -1) != i { continue }
-        let v = seen[name] else 0
+        if global(s, name) != i { continue }
+        let found = nameidx.lookup(seen, name)
+        let v = if found < 0 then 0 else found
         s.symbols[i].other = s.symbols[i].other & 252 | v
     }
 }
@@ -421,7 +445,8 @@ pub fn emit(s: State) {
     for pull in s.pulls { print("{{\"row\":\"pull\",\"edge\":{pull}}}") }
     for i in 0..s.symbols.len {
         let sym = copy s.symbols[i]
-        let winner = s.globals[sym.name] else { continue }
+        let winner = global(s, sym.name)
+        if winner < 0 { continue }
         if winner == i {
             print(
                 "{{\"row\":\"definition\",\"name\":{binary.quote(sym.name.bytes())},\"object\":{sym.object},\"section\":{sym.section},\"binding\":{sym.binding},\"size\":{sym.size},\"value\":{sym.value}}}",

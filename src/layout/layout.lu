@@ -103,7 +103,7 @@ pub fn target(s: resolve.State, id: int) -> int ! {Bad(str)} {
     if sym.binding == 0 { return id }
     var name = sym.name
     for _ in 0..s.alias_names.len + 1 {
-        let next = s.aliases[name] else { return s.globals[name] else id }
+        let next = s.aliases[name] else { return resolve.global_or(s, name, id) }
         name = next
     }
     Bad("cyclic --defsym alias {sym.name}")
@@ -334,10 +334,12 @@ fn fde_start(a: Atom, at: int) -> int ! {Bad(str)} {
 
 /// Compute GC roots and relocation reachability without treating debug or dead FDEs as roots.
 pub fn collect(mut l: Layout, s: resolve.State, p: front.Plan) -> () ! {Bad(str)} {
-    let entry = s.globals["_start"] else { return Bad("undefined entry _start") }
+    let entry = resolve.global(s, "_start")
+    if entry < 0 { return Bad("undefined entry _start") }
     let _marked = mark(mut l, s, entry)?
     for name in p.undefined {
-        let id = s.globals[name] else { return Bad("undefined forced symbol {name}") }
+        let id = resolve.global(s, name)
+        if id < 0 { return Bad("undefined forced symbol {name}") }
         let _root = mark(mut l, s, id)?
     }
     for i in 1..l.atoms.len {
@@ -456,7 +458,7 @@ pub fn place(mut l: Layout, s: resolve.State) -> () ! {Bad(str)} {
     (mut l.outputs).push(output(".got", 1, 3, 8))
     var common_needed = false
     for i in 0..s.symbols.len {
-        if s.symbols[i].section == 65522 && (s.globals[s.symbols[i].name] else 0) == i {
+        if s.symbols[i].section == 65522 && resolve.global_or(s, s.symbols[i].name, 0) == i {
             common_needed = true
         }
     }
@@ -494,7 +496,7 @@ pub fn place(mut l: Layout, s: resolve.State) -> () ! {Bad(str)} {
     }
     for i in 0..s.symbols.len {
         let sym = copy s.symbols[i]
-        if sym.section != 65522 || (s.globals[sym.name] else 0) != i { continue }
+        if sym.section != 65522 || resolve.global_or(s, sym.name, 0) != i { continue }
         if !binary.pow2(sym.value) { return Bad("COMMON alignment is not a power of two") }
         for j in 1..l.outputs.len {
             if l.outputs[j].name != ".bss" || l.outputs[j].kind != 8 { continue }

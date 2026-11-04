@@ -98,7 +98,7 @@ fn symbols(mut l: layout.Layout, s: resolve.State) -> List[int] ! {Bad(str)} {
         for id in 0..s.symbols.len {
             let sym = copy s.symbols[id]
             if sym.index == 0 || sym.section == 0 { continue }
-            if sym.binding != 0 && (s.globals[sym.name] else -1) != id { continue }
+            if sym.binding != 0 && resolve.global(s, sym.name) != id { continue }
             let section = section_of(l, s, id)
             if section == 0 { continue }
             let local = sym.binding == 0 || sym.other & 3 == 2 || sym.other & 3 == 1
@@ -121,7 +121,8 @@ fn symbols(mut l: layout.Layout, s: resolve.State) -> List[int] ! {Bad(str)} {
     }
     for name in s.alias_names {
         let target_name = s.aliases[name] else { return Bad("missing alias") }
-        let id = s.globals[target_name] else { return Bad("undefined alias target {target_name}") }
+        let id = resolve.global(s, target_name)
+        if id < 0 { return Bad("undefined alias target {target_name}") }
         let v = layout.address(l, s, id, false)?
         symbol(mut table, mut strings, name, 1, s.symbols[id].kind, 0, section_of(l, s, id), v, 0)?
         count += 1
@@ -326,7 +327,8 @@ pub fn link(s: resolve.State, p: front.Plan) -> () ! {Bad(str)} {
         }
     }
     append(mut phdrs, ph(1685382481, 6, 0, 0, 0, 0, 16)?)
-    let entryid = s.globals["_start"] else { return Bad("undefined entry _start") }
+    let entryid = resolve.global(s, "_start")
+    if entryid < 0 { return Bad("undefined entry _start") }
     let entry = layout.address(l, s, entryid, false)?
     let ident: List[byte] = [
         127 as byte,

@@ -50,7 +50,7 @@ fn reserve(mut l: Layout, out: int, size: int, alignment: int) -> int ! {Bad(str
 /// Place only the validated kernel profile, without signed virtual-address storage.
 pub fn kernel_place(mut l: Layout, s: resolve.State) -> () ! {Bad(str)} {
     for name in kernel_symbols() {
-        let _defined = s.globals[name] else { continue }
+        if resolve.global(s, name) < 0 { continue }
         return Bad("kernel script symbol conflicts with input definition {name}")
     }
     (mut l.outputs).push(output(".text", 1, 6, 1))
@@ -96,7 +96,7 @@ pub fn kernel_place(mut l: Layout, s: resolve.State) -> () ! {Bad(str)} {
     }
     for i in 0..s.symbols.len {
         let sym = copy s.symbols[i]
-        if sym.section != 65522 || (s.globals[sym.name] else -1) != i { continue }
+        if sym.section != 65522 || resolve.global(s, sym.name) != i { continue }
         if !binary.pow2(sym.value) { return Bad("COMMON alignment is not a power of two") }
         l.common[i] = reserve(
             mut l,

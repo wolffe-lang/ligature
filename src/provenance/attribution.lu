@@ -203,7 +203,7 @@ pub fn origins(l: layout.Layout, s: resolve.State) -> List[byte] ! {Bad(str)} {
     for id in 0..s.symbols.len {
         let sym = copy s.symbols[id]
         if sym.index == 0 || sym.section == 0 || sym.name.len == 0 { continue }
-        if sym.binding != 0 && (s.globals[sym.name] else -1) != id { continue }
+        if sym.binding != 0 && resolve.global(s, sym.name) != id { continue }
         origin(mut bytes, l, s, id, sym.name)?
     }
     if l.kernel {
@@ -218,7 +218,8 @@ pub fn origins(l: layout.Layout, s: resolve.State) -> List[byte] ! {Bad(str)} {
     }
     for name in s.alias_names {
         let target = s.aliases[name] else { return Bad("missing provenance alias") }
-        let id = s.globals[target] else { return Bad("missing provenance alias target") }
+        let id = resolve.global(s, target)
+        if id < 0 { return Bad("missing provenance alias target") }
         origin(mut bytes, l, s, id, name)?
     }
     bytes

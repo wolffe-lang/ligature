@@ -46,7 +46,7 @@ fn witness() -> () ! {Bad(str)} {
         value: 0,
         size: 8,
     })
-    state.globals["far"] = 0
+    resolve.set_global(mut state, "far", 0)
     let instruction: List[byte] = [
         72 as byte,
         139 as byte,
