@@ -194,8 +194,9 @@ working set, though freed, still stands on top of the root's at its own peak.
 - **R-ld07-1, the bound.** (A) 1 GiB resident under a 2 GiB address-space cap, as the brief set it:
   the head measures 0.70 GiB, so about 30% headroom. (B) 768 MiB, which catches smaller regressions
   with less headroom. (C) 1.5 GiB. **Recommend A; implemented.**
-- **R-ld07-2, the footprint.** (A) The rows run in `tools/check`, so CI keeps them: cross-cutting,
-  with the labelled full run before the merge. (B) The rows run only in lane gauntlets: module.
+- **R-ld07-2, where the rows run.** (A) In `tools/check`, so every full run keeps them. The
+  repository's planner classes `tools/**` with the code (the pr tier), so the footprint stays module,
+  and the nightly full run is the first CI to execute them. (B) Only in lane gauntlets.
   **Recommend A; implemented.**
 - **R-ld07-3, fenrir's link budget.** Each link's address space can come down from 10 GiB to 2 GiB,
   the memory rows' own cap (about 2.8x the measured peak), with the 16 MiB starved control unchanged.
