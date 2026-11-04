@@ -39,6 +39,7 @@ def call(name,args):
 # Prove the exact runtime blocker before spending minutes linking the full tool.
 preflight=subprocess.run([sys.executable,'-I',str(ROOT/'tests/musl-argv.py')])
 if permits_blocked(runtime_digest,preflight.returncode):
+    assert os.environ.get('LIGATURE_REQUIRE_SELF_LINK') != '1', 'FAIL licensed-self-link: historical BLOCKED runtime is not admitted in CI'
     (OUT/'status.json').write_text(json.dumps({'status':'BLOCKED','row':'self-link','issue':'wolf-lang#962','runtime_sha256':runtime_digest,'ruling':'R-ld02-5 A','evidence':'target/evidence/musl-argv/results.json','same_object_evidence':'notes/ld02a/evidence/argv-probe/same-object-controls.json'})+'\n')
     print(f'BLOCKED self-link and executing ligature on PAX: wolf-lang#962; runtime SHA256 {runtime_digest}; R-ld02-5 A',flush=True)
     print('BLOCKED evidence: target/evidence/musl-argv/results.json; notes/ld02a/evidence/argv-probe/; kasumi /home/mfwolffe/lanes/ld02a/ligature/target/evidence/self-link/diagnose-03/results.json',flush=True)

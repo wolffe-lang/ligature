@@ -78,7 +78,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - run: docker build -t ligature-oracle -f ci/oracle.Containerfile ci
-      - run: docker run --rm -v "$PWD:/work" ligature-oracle bash -c 'tools/fetch-toolchain && tools/fetch-bundle && tools/check'
+      - run: docker run --rm -v "$PWD:/work" ligature-oracle bash -c 'tools/fetch-toolchain && tools/fetch-bundle && tools/check --require-licensed-bundle'
       - if: always()
         uses: actions/upload-artifact@v4
         with:

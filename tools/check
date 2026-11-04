@@ -1,6 +1,13 @@
 #!/usr/bin/env bash
 set -euo pipefail
 cd "$(dirname "$0")/.."
+case "${1:-}" in
+    --require-licensed-bundle) export LIGATURE_REQUIRE_SELF_LINK=1 ;;
+    '') ;;
+    *) echo 'usage: tools/check [--require-licensed-bundle]' >&2; exit 2 ;;
+esac
 tools/check-core
-# R-ld02-5 A: only the exact known runtime digest may record BLOCKED without failing CI.
+python3 -I tests/real-ligature.py
+# Historical local replay may still diagnose the exact old runtime; CI may not.
 python3 -I tests/self-link.py
+python3 -I tests/link-cost.py
