@@ -40,9 +40,10 @@ pub struct Output {
 }
 
 /// Layout and reachability data; slot zero is the ELF null section.
+/// locations[object][section] is the input section's atom, or 0.
 pub struct Layout {
     atoms: List[Atom],
-    locations: Map[str, int],
+    locations: List[List[int]],
     relocs: List[Reloc],
     outputs: List[Output],
     got: Map[str, int],
@@ -108,10 +109,23 @@ pub fn target(s: resolve.State, id: int) -> int ! {Bad(str)} {
     Bad("cyclic --defsym alias {sym.name}")
 }
 
+/// The atom of an object's input section, or 0 when the section has none.
+pub fn location(l: Layout, object: int, section: int) -> int {
+    if object < 0 || object >= l.locations.len { return 0 }
+    if section < 0 || section >= l.locations[object].len { return 0 }
+    l.locations[object][section]
+}
+
+/// Record the atom of an object's input section.
+pub fn locate(mut l: Layout, object: int, section: int, atom: int) {
+    while l.locations.len <= object { (mut l.locations).push(List[int]()) }
+    while l.locations[object].len <= section { (mut l.locations[object]).push(0) }
+    l.locations[object][section] = atom
+}
+
 /// Find the input section for a symbol; absent ABS/COMMON/UNDEF have ELF section zero.
 pub fn atom_for(l: Layout, s: resolve.State, id: int) -> int {
-    let sym = copy s.symbols[id]
-    l.locations["{sym.object}:{sym.section}"] else 0
+    location(l, s.symbols[id].object, s.symbols[id].section)
 }
 
 fn supported(machine: int, k: int) -> bool {
@@ -148,7 +162,7 @@ pub fn read(s: resolve.State) -> Layout ! {Bad(str)} { read_for(s, false)? }
 pub fn read_for(s: resolve.State, kernel: bool) -> Layout ! {Bad(str)} {
     var l = Layout {
         atoms: List[Atom](),
-        locations: Map[str, int](),
+        locations: List[List[int]](),
         relocs: List[Reloc](),
         outputs: List[Output](),
         got: Map[str, int](),
@@ -184,7 +198,19 @@ pub fn read_for(s: resolve.State, kernel: bool) -> Layout ! {Bad(str)} {
         offset: 0,
     })
     (mut l.outputs).push(output("", 0, 0, 0))
+    var entries: int = 0
+    for o in s.objects {
+        for sec in o.image.sections {
+            if sec.kind == 4 && sec.entsize == 24 { entries += sec.size / 24 }
+        }
+    }
+    (mut l.relocs).reserve(entries)
+    (mut l.locations).reserve(s.objects.len)
     for oi in 0..s.objects.len {
+        var here = List[int]()
+        (mut here).reserve(s.objects[oi].image.sections.len)
+        for _ in 0..s.objects[oi].image.sections.len { (mut here).push(0) }
+        (mut l.locations).push(here)
         for si in 1..s.objects[oi].image.sections.len {
             let sec = copy s.objects[oi].image.sections[si]
             let name = s.objects[oi].names[si]
@@ -225,7 +251,7 @@ pub fn read_for(s: resolve.State, kernel: bool) -> Layout ! {Bad(str)} {
                     off += length + 4
                 }
             }
-            l.locations["{oi}:{si}"] = l.atoms.len
+            l.locations[oi][si] = l.atoms.len
             (mut l.atoms).push(Atom {
                 object: oi,
                 index: si,
@@ -243,7 +269,8 @@ pub fn read_for(s: resolve.State, kernel: bool) -> Layout ! {Bad(str)} {
         }
         for sec in s.objects[oi].image.sections {
             if sec.kind != 4 { continue }
-            let atom = l.locations["{oi}:{sec.info}"] else { continue }
+            let atom = location(l, oi, sec.info)
+            if atom == 0 { continue }
             if sec.entsize != 24 { return Bad("invalid Elf64_Rela size") }
             let raw = binary.read(s.objects[oi].file, sec.off, sec.size)?
             for i in 0..sec.size / 24 {
@@ -257,9 +284,8 @@ pub fn read_for(s: resolve.State, kernel: bool) -> Layout ! {Bad(str)} {
                     }
                     return Bad("unsupported R_X86_64 relocation {kind} (AMD64 psABI table 4.9)")
                 }
-                let symbol = s.objects[oi].symbols["{sec.link}:{info >> 32}"] else {
-                    return Bad("relocation symbol index outside table")
-                }
+                let symbol = resolve.symbol_id(s.objects[oi], sec.link as u64, info >> 32)
+                if symbol < 0 { return Bad("relocation symbol index outside table") }
                 let width = if kind == 1 || kind == 17 || kind == 257 then 8 else 4
                 let offset = binary.bounded(binary.decode(raw, i * 24, 8)?, l.atoms[atom].size)?
                 if width > l.atoms[atom].size - offset {
@@ -355,13 +381,15 @@ pub fn collect(mut l: Layout, s: resolve.State, p: front.Plan) -> () ! {Bad(str)
                 var live = false
                 for j in 1..sec.size / 4 {
                     let si = binary.decode(raw, j * 4, 4)?
-                    let a = l.locations["{oi}:{si}"] else { continue }
+                    let a = location(l, oi, si as int)
+                    if a == 0 { continue }
                     if l.atoms[a].live { live = true }
                 }
                 if !live { continue }
                 for j in 1..sec.size / 4 {
                     let si = binary.decode(raw, j * 4, 4)?
-                    let a = l.locations["{oi}:{si}"] else { continue }
+                    let a = location(l, oi, si as int)
+                    if a == 0 { continue }
                     if !l.atoms[a].live { l.atoms[a].live = true; changed = true }
                 }
             }

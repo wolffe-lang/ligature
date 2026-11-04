@@ -31,7 +31,7 @@ fn witness() -> () ! {Bad(str)} {
             programs: List[elf.Program](),
         },
         names: List[str](),
-        symbols: Map[str, int](),
+        symbol_base: List[int](),
         discarded: List[bool](),
     })
     (mut state.symbols).push(resolve.Symbol {
@@ -84,7 +84,7 @@ fn witness() -> () ! {Bad(str)} {
         output: 3,
         offset: 0,
     })
-    placed.locations["0:2"] = 2
+    layout.locate(mut placed, 0, 2, 2)
     var text = layout.output(".text", 1, 6, 1)
     text.address = layout.bits(base)
     text.size = 7

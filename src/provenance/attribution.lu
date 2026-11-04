@@ -230,7 +230,7 @@ pub fn discards(l: layout.Layout, s: resolve.State) -> List[byte] {
         for si in 1..s.objects[oi].image.sections.len {
             let sec = copy s.objects[oi].image.sections[si]
             let name = s.objects[oi].names[si]
-            let ai = l.locations["{oi}:{si}"] else 0
+            let ai = layout.location(l, oi, si)
             var reason = ""
             if l.kernel && script.discards(name) {
                 reason = "script-DISCARD"

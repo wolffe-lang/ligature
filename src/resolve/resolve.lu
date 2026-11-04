@@ -21,13 +21,22 @@ pub struct Symbol {
 }
 
 /// Selected object metadata; descriptors are closed by finish.
+/// symbol_base[t] is the global id of SHT_SYMTAB t's entry 0, or -1 for any other section.
 pub struct Object {
     label: str,
     file: binary.Input,
     image: elf.Image,
     names: List[str],
-    symbols: Map[str, int],
+    symbol_base: List[int],
     discarded: List[bool],
+}
+
+/// The global id of entry index of symbol table t, or -1 when there is no such entry.
+pub fn symbol_id(o: Object, t: u64, index: u64) -> int {
+    if t >= o.symbol_base.len as u64 { return -1 }
+    let base = o.symbol_base[t as int]
+    if base < 0 || index >= (o.image.sections[t as int].size / 24) as u64 { return -1 }
+    base + index as int
 }
 
 /// Indexed archive state preserves duplicate members by header position.
@@ -163,9 +172,11 @@ fn object(mut s: State, f: binary.Input, label: str) -> () ! {Bad(str)} {
     let obj = s.objects.len
     var names = List[str]()
     var discarded = List[bool]()
-    var symmap = Map[str, int]()
+    var symbol_base = List[int]()
+    (mut symbol_base).reserve(image.sections.len)
     let first = s.symbols.len
     for sec in image.sections {
+        (mut symbol_base).push(-1)
         let raw = elf.name(f, image, sec)?
         var terminated = copy raw
         (mut terminated).push(0 as byte)
@@ -182,6 +193,7 @@ fn object(mut s: State, f: binary.Input, label: str) -> () ! {Bad(str)} {
         if strings.kind != 3 { return Bad("symbol sh_link is not STRTAB") }
         let text = binary.read(f, strings.off, strings.size)?
         let bytes = binary.read(f, sec.off, sec.size)?
+        symbol_base[t] = s.symbols.len
         for i in 0..sec.size / 24 {
             let at = i * 24
             let ni = binary.decode(bytes, at, 4)? as int
@@ -202,7 +214,6 @@ fn object(mut s: State, f: binary.Input, label: str) -> () ! {Bad(str)} {
                 value: binary.decode(bytes, at + 8, 8)?,
                 size: binary.decode(bytes, at + 16, 8)?,
             }
-            symmap["{t}:{i}"] = s.symbols.len
             (mut s.symbols).push(sy)
         }
     }
@@ -213,7 +224,8 @@ fn object(mut s: State, f: binary.Input, label: str) -> () ! {Bad(str)} {
         let raw = binary.read(f, sec.off, sec.size)?
         let flag = binary.decode(raw, 0, 4)?
         if flag > 1 { return Bad("unknown SHT_GROUP flags") }
-        let sig = symmap["{sec.link}:{sec.info}"] else { return Bad("missing COMDAT signature") }
+        let sig = group_signature(symbol_base, image, sec.link, sec.info)
+        if sig < 0 { return Bad("missing COMDAT signature") }
         let name = s.symbols[sig].name
         let loser = flag == 1 && (s.groups[name] else false)
         if flag == 1 { s.groups[name] = true }
@@ -228,10 +240,16 @@ fn object(mut s: State, f: binary.Input, label: str) -> () ! {Bad(str)} {
         file: copy f,
         image: image,
         names: names,
-        symbols: symmap,
+        symbol_base: symbol_base,
         discarded: discarded,
     })
     for id in first..s.symbols.len { define(mut s, id)? }
+}
+
+fn group_signature(symbol_base: List[int], image: elf.Image, link: int, info: int) -> int {
+    if link < 0 || link >= symbol_base.len || symbol_base[link] < 0 { return -1 }
+    if info < 0 || info >= image.sections[link].size / 24 { return -1 }
+    symbol_base[link] + info
 }
 
 fn library(mut s: State, f: binary.Input, path: str) -> int ! {Bad(str)} {
