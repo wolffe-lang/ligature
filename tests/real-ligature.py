@@ -12,7 +12,7 @@ BUNDLE = ROOT / '.link-inputs'
 WOLF = pathlib.Path(os.environ.get('WOLF', str(ROOT / '.wolf-bin/wolf'))).resolve()
 LINKER = ROOT / 'target/ligature'
 TARGET = OUT / 'hello'
-env = dict(os.environ, LIGATURE_SYSROOT=str(BUNDLE / 'sysroot'), WOLF_RT_LIB=str(BUNDLE / 'libwolf_rt.a'))
+env = dict(os.environ, CC='/missing/cc', LIGATURE_SYSROOT=str(BUNDLE / 'sysroot'), WOLF_RT_LIB=str(BUNDLE / 'libwolf_rt.a'))
 command = [str(WOLF), 'build', '--no-cache', '--linker', str(LINKER), str(ROOT / 'tests/corpus/hello/hello.lu'), '-o', str(TARGET)]
 result = subprocess.run(command, env=env, capture_output=True, timeout=1200)
 assert result.returncode == 0, ('FAIL real-ligature-link', result.returncode, result.stderr[-2000:])
