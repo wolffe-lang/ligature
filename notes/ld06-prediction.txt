@@ -26,6 +26,8 @@ Inputs verified
 Base 4986159; wolf 0.2.36; licensed bundle archive SHA-256
 8210ac2223d969ab8f0845cc74950a1c68226b58b10dd083cd2e2113acd3e37a;
 MANIFEST 8bcea75770a47a23f619ad778d05c84a028f2e840964302d164195ea74e73886.
+GitHub's published asset metadata independently confirms both digests and the
+36,514,237-byte archive and 3,510-byte MANIFEST (release published 2026-11-04).
 All timings on satoyama slot A, inside a memory-capped binary-toolchain container.
 
 Evidence index
@@ -36,7 +38,7 @@ Licensed fetching and strict CI rows; measured dominant-cost fix; ratio and byte
 identity gates; final-head green record; final-head one-hunk plant red by name;
 open cross-cutting PR; one local audit; CI run id read once, no CI waiting.
 
-Satoyama baseline, before selecting the fix (instrumented 8cf1ceb)
+Satoyama baseline, before selecting the fix (instrumented base 4986159)
 Phase                             seconds
 resolution/archive index             0.597
 visibility                           0.042
