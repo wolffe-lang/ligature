@@ -86,3 +86,15 @@ strict real-link tests already run, but its separate bundle fetch still uses
 historical inputs. Recommend migrating that consumer before retiring the old
 binary-only asset; the separate follow-on is recorded in the lane handback.
 No historical census bytes or expectations are rewritten as current evidence.
+
+R-ld06-4: include the existing CI planner and command-preservation self-tests in
+check-core, before compiler work. At 2a95945 the inherited
+Gate.test_original_commands_and_nightlies_preserved failed by name because the
+Linux command snapshot lacked --require-licensed-bundle. Commit 922c0ce adds the
+red gate; f614ee3 updates only that expected command. All six wiring tests and
+the planner's success/failure/noop rows then pass. Implemented.
+
+The completed 2a95945 record is preliminary evidence, not the final-head gate:
+hello 404.924133s -> 40.561560s, ratio 0.100171; self-link 449.184215s ->
+42.388862s, ratio 0.094369. Each pair is byte-identical on two SHA-256 reads.
+A fresh complete record must cover the CI snapshot correction above.
