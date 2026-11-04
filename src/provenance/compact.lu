@@ -100,37 +100,20 @@ fn varint(mut c: Cursor) -> u64 ! {Bad(str)} {
     Bad("overlong provenance table integer")
 }
 
-/// Decode both the legacy JSON form and the versioned table into the same query model.
-pub fn decode_document(raw: List[byte]) -> json.Value ! {Bad(str)} {
-    if raw.len < 8 || (str_from_utf8(raw[0..8]) else "") != "WLPATCH2" {
-        let text = str_from_utf8(raw) else { return Bad("provenance is not UTF-8") }
-        return json.parse(text) else |_| { return Bad("invalid provenance JSON") }
-    }
-    if raw.len < 40 { return Bad("truncated provenance table header") }
-    let m = binary.bounded(binary.decode(raw, 8, 8)?, raw.len - 40)?
-    let strings = binary.bounded(binary.decode(raw, 16, 8)?, raw.len)?
-    let rows = binary.bounded(binary.decode(raw, 24, 8)?, raw.len / 2)?
-    let size = binary.bounded(binary.decode(raw, 32, 8)?, raw.len)?
-    let text = str_from_utf8(raw[40..40 + m]) else {
-        return Bad("invalid provenance metadata UTF-8")
-    }
-    let doc = json.parse(text) else |_| { return Bad("invalid provenance metadata JSON") }
-    var object = json.as_obj(doc) else |_| { return Bad("invalid provenance metadata object") }
-    if array(doc, "patches")?.len != 0 { return Bad("duplicate provenance patches") }
-    var c = Cursor { bytes: copy raw, at: 40 + m }
-    var pool = patch_table()
-    for _ in 0..strings {
-        let n = binary.bounded(varint(mut c)?, raw.len - c.at)?
-        let s = str_from_utf8(raw[c.at..c.at + n]) else {
-            return Bad("invalid provenance string UTF-8")
-        }
-        let next = pool.strings.len
-        if intern(mut pool, s) != next { return Bad("duplicate provenance pooled string") }
-        c.at += n
-    }
-    if size > raw.len - c.at { return Bad("truncated provenance patch table") }
-    let end = c.at + size
-    let keys = [
+/// A versioned patch table opened for streaming: rows decode one at a time into a caller's list.
+pub struct PatchCursor {
+    c: Cursor,
+    first: int,
+    end: int,
+    rows: int,
+    done: int,
+    strings: List[str],
+    previous: List[int],
+}
+
+/// The fifteen row columns in table order; `end` is decoded as a width and reported as start + width.
+pub fn patch_keys() -> List[str] {
+    [
         "addend",
         "after",
         "before",
@@ -147,47 +130,130 @@ pub fn decode_document(raw: List[byte]) -> json.Value ! {Bad(str)} {
         "target_symbol",
         "type",
     ]
-    var previous: List[int] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-    var patches = List[json.Value]()
-    for _ in 0..rows {
-        if c.at > end - 2 { return Bad("truncated provenance patch row") }
-        let mask = binary.decode(raw, c.at, 2)? as int
-        c.at += 2
-        if mask >= 32768 { return Bad("unknown provenance patch column") }
-        var values = List[int]()
-        for i in 0..15 {
-            let z = if mask & 1 << i != 0 then varint(mut c)? else 0 as u64
-            if mask & 1 << i != 0 && z == 0 { return Bad("noncanonical zero provenance delta") }
-            let d = if z & 1 == 0 then (z >> 1) as int else -1 - (z >> 1) as int
-            if i != 0 &&
-                (
-                    d > 0 && previous[i] > 9223372036854775807 - d ||
-                        d < 0 && previous[i] < -9223372036854775807 - 1 - d
-                ) {
-                return Bad("overflow provenance delta")
-            }
-            (mut values).push(if i == 0 then d else previous[i] + d)
+}
+
+/// True for the versioned table; anything else is the legacy JSON form.
+pub fn is_table(raw: List[byte]) -> bool {
+    raw.len >= 8 && (str_from_utf8(raw[0..8]) else "") == "WLPATCH2"
+}
+
+/// Check the table header, parse its metadata and pooled strings, and position at the first row.
+pub fn patch_open(take raw: List[byte]) -> (json.Value, PatchCursor) ! {Bad(str)} {
+    if raw.len < 40 { return Bad("truncated provenance table header") }
+    let m = binary.bounded(binary.decode(raw, 8, 8)?, raw.len - 40)?
+    let strings = binary.bounded(binary.decode(raw, 16, 8)?, raw.len)?
+    let rows = binary.bounded(binary.decode(raw, 24, 8)?, raw.len / 2)?
+    let size = binary.bounded(binary.decode(raw, 32, 8)?, raw.len)?
+    let text = str_from_utf8(raw[40..40 + m]) else {
+        return Bad("invalid provenance metadata UTF-8")
+    }
+    let doc = json.parse(text) else |_| { return Bad("invalid provenance metadata JSON") }
+    let _object = json.as_obj(doc) else |_| { return Bad("invalid provenance metadata object") }
+    if array(doc, "patches")?.len != 0 { return Bad("duplicate provenance patches") }
+    var c = Cursor { bytes: raw, at: 40 + m }
+    var pool = patch_table()
+    for _ in 0..strings {
+        let n = binary.bounded(varint(mut c)?, c.bytes.len - c.at)?
+        let s = str_from_utf8(c.bytes[c.at..c.at + n]) else {
+            return Bad("invalid provenance string UTF-8")
         }
-        if c.at > end { return Bad("provenance patch table overrun") }
+        let next = pool.strings.len
+        if intern(mut pool, s) != next { return Bad("duplicate provenance pooled string") }
+        c.at += n
+    }
+    if size > c.bytes.len - c.at { return Bad("truncated provenance patch table") }
+    let first = c.at
+    let end = c.at + size
+    (
+        doc,
+        PatchCursor {
+            c: c,
+            first: first,
+            end: end,
+            rows: rows,
+            done: 0,
+            strings: pool.strings,
+            previous: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        },
+    )
+}
+
+/// Decode the next row into values (15 columns, `end` already start + width). Allocates nothing.
+pub fn patch_next(mut p: PatchCursor, mut values: List[int]) -> () ! {Bad(str)} {
+    if p.c.at > p.end - 2 { return Bad("truncated provenance patch row") }
+    let mask = binary.decode(p.c.bytes, p.c.at, 2)? as int
+    p.c.at += 2
+    if mask >= 32768 { return Bad("unknown provenance patch column") }
+    for i in 0..15 {
+        let z = if mask & 1 << i != 0 then varint(mut p.c)? else 0 as u64
+        if mask & 1 << i != 0 && z == 0 { return Bad("noncanonical zero provenance delta") }
+        let d = if z & 1 == 0 then (z >> 1) as int else -1 - (z >> 1) as int
+        let previous = p.previous[i]
+        if i != 0 &&
+            (
+                d > 0 && previous > 9223372036854775807 - d ||
+                    d < 0 && previous < -9223372036854775807 - 1 - d
+            ) {
+            return Bad("overflow provenance delta")
+        }
+        values[i] = if i == 0 then d else previous + d
+    }
+    if p.c.at > p.end { return Bad("provenance patch table overrun") }
+    for i in [1, 2, 8, 11] {
+        if values[i] < 0 || values[i] >= p.strings.len { return Bad("provenance string index") }
+    }
+    if values[4] < 0 || values[10] < 0 || values[4] > 9223372036854775807 - values[10] {
+        return Bad("provenance patch width overflow")
+    }
+    for i in 0..15 { p.previous[i] = values[i] }
+    values[4] = values[4] + values[10]
+    p.done += 1
+}
+
+/// After the last row: no extra table bytes and zero padding to the end.
+pub fn patch_close(p: PatchCursor) -> () ! {Bad(str)} {
+    if p.c.at != p.end { return Bad("extra provenance patch bytes") }
+    for i in p.end..p.c.bytes.len {
+        if p.c.bytes[i] != 0 as byte { return Bad("nonzero provenance padding") }
+    }
+}
+
+/// Return to the first row, so a second pass decodes exactly what the first did.
+pub fn patch_rewind(mut p: PatchCursor) {
+    p.c.at = p.first
+    p.done = 0
+    for i in 0..15 { p.previous[i] = 0 }
+}
+
+/// A fresh column list for patch_next.
+pub fn patch_values() -> List[int] { [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0] }
+
+/// Decode both the legacy JSON form and the versioned table into the same query model.
+pub fn decode_document(raw: List[byte]) -> json.Value ! {Bad(str)} {
+    if !is_table(raw) {
+        let text = str_from_utf8(raw) else { return Bad("provenance is not UTF-8") }
+        return json.parse(text) else |_| { return Bad("invalid provenance JSON") }
+    }
+    let (doc, cursor) = patch_open(copy raw)?
+    var p = cursor
+    var object = json.as_obj(doc) else |_| { return Bad("invalid provenance metadata object") }
+    let keys = patch_keys()
+    var values = patch_values()
+    var patches = List[json.Value]()
+    for _ in 0..p.rows {
+        patch_next(mut p, mut values)?
         var row = Map[str, json.Value]()
         for i in 0..15 {
             let v = values[i]
             if i == 1 || i == 2 || i == 8 || i == 11 {
-                if v < 0 || v >= pool.strings.len { return Bad("provenance string index") }
-                row[keys[i]] = json.from_str(pool.strings[v])
+                row[keys[i]] = json.from_str(p.strings[v])
             } else {
                 row[keys[i]] = json.from_int(v)
             }
         }
-        if values[4] < 0 || values[10] < 0 || values[4] > 9223372036854775807 - values[10] {
-            return Bad("provenance patch width overflow")
-        }
-        row["end"] = json.from_int(values[4] + values[10])
         (mut patches).push(json.from_map(row))
-        previous = values
     }
-    if c.at != end { return Bad("extra provenance patch bytes") }
-    for i in end..raw.len { if raw[i] != 0 as byte { return Bad("nonzero provenance padding") } }
+    patch_close(p)?
     object["patches"] = json.from_list(patches)
     json.from_map(object)
 }
