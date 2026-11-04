@@ -27,7 +27,9 @@ pub fn range(f: Input, off: int, size: int) -> () ! {Bad(str)} {
 pub fn read(f: Input, off: int, size: int) -> List[byte] ! {Bad(str)} {
     range(f, off, size)?
     if size > 0 && size <= 65536 {
-        let part = fs_read_at(f.fd, f.base + off, size) else |_| { return Bad("positional read failed") }
+        let part = fs_read_at(f.fd, f.base + off, size) else |_| {
+            return Bad("positional read failed")
+        }
         if part.len == 0 { return Bad("short positional read") }
         if part.len == size { return part }
     }
