@@ -90,7 +90,7 @@ fn patch_row_checks(
 /// row is ever materialized as JSON; the legacy JSON form is checked as one document.
 pub fn validate(f: binary.Input, image: elf.Image) -> () ! {Bad(str)} {
     let raw = manifest_bytes(f, image)?
-    if !is_table(raw) { return validate_document(f, image, decode_document(raw)?) }
+    if !is_table(raw) || raw.len > 0 { return validate_document(f, image, decode_document(raw)?) }
     let (doc, opened) = patch_open(take raw)?
     var cursor = opened
     var values = patch_values()
