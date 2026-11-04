@@ -236,8 +236,12 @@ pub fn read_for(s: resolve.State, kernel: bool) -> Layout ! {Bad(str)} {
                 return Bad("{name}: SHF_OS_NONCONFORMING refused (gABI Sections)")
             }
             let alignment = binary.bounded(sec.align, 1073741824)?
+            // Only .eh_frame's bytes decide liveness; every other section's bytes wait for
+            // load, after collect, so a section --gc-sections drops is never read.
             var data = List[byte]()
-            if sec.kind != 8 { data = binary.read(s.objects[oi].file, sec.off, sec.size)? }
+            if sec.kind != 8 && name == ".eh_frame" {
+                data = binary.read(s.objects[oi].file, sec.off, sec.size)?
+            }
             var records = List[int]()
             if name == ".eh_frame" {
                 var off: int = 0
@@ -400,9 +404,24 @@ pub fn collect(mut l: Layout, s: resolve.State, p: front.Plan) -> () ! {Bad(str)
 
 fn merged(name: str) -> str {
     for prefix in [".text", ".rodata", ".data.rel.ro", ".data", ".bss", ".tdata", ".tbss"] {
-        if name == prefix || name.starts_with("{prefix}.") { return prefix }
+        if name == prefix ||
+            name.len > prefix.len &&
+                name.starts_with(prefix) &&
+                name.bytes()[prefix.len] == 46 as byte {
+            return prefix
+        }
     }
     name
+}
+
+/// Read the bytes of every live input section, once, after collect has decided liveness.
+pub fn load(mut l: Layout, s: resolve.State) -> () ! {Bad(str)} {
+    for i in 1..l.atoms.len {
+        if !l.atoms[i].live || l.atoms[i].kind == 8 || l.atoms[i].name == ".eh_frame" { continue }
+        let o = l.atoms[i].object
+        let sec = copy s.objects[o].image.sections[l.atoms[i].index]
+        l.atoms[i].data = binary.read(s.objects[o].file, sec.off, sec.size)?
+    }
 }
 
 fn rank(o: Output) -> int {

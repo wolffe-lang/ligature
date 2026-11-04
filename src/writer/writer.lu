@@ -208,6 +208,7 @@ pub fn link(s: resolve.State, p: front.Plan) -> () ! {Bad(str)} {
     var l = layout.read_for(s, p.script.len != 0)?
     if l.kernel && l.machine != 62 { return Bad("PAX kernel profile requires EM_X86_64") }
     layout.collect(mut l, s, p)?
+    layout.load(mut l, s)?
     if l.kernel { layout.kernel_place(mut l, s)? } else { layout.place(mut l, s)? }
     relocate.apply(mut l, s)?
     let symtab = l.outputs.len
