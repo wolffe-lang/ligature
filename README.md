@@ -107,6 +107,14 @@ The Linux gate also invokes the released compiler's `--linker` route on hello.
 the current sources and compares hello and self-link using identical objects.
 Both outputs must be byte-identical and the candidate must take at most half
 the same run's baseline time. No absolute host-speed bound is used.
+`tests/link-memory.py` bounds memory: it links hello and `str` against the
+46.7 MB musl runtime and verifies hello, each as a direct child under a 2 GiB
+address-space cap, and requires each resident peak (the child's own
+`ru_maxrss`) to stay under 1 GiB. Synthetic archives of N, 10N and 100N members
+must grow at most linearly in peak and in time. Allocation is region-scoped:
+digests are taken in bounded steps, each manifest iteration and each verified
+patch row frees its working set, and only the sections `--gc-sections` keeps
+are read.
 `tools/check-core` runs the independent linker/provenance gates.
 The gate fetches binary inputs only; no external linker or libc implementation
 source is read or built. Bundle licence texts are copied unchanged from upstream
