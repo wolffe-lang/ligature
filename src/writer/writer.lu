@@ -145,6 +145,12 @@ fn retained(mut l: layout.Layout, s: resolve.State, indices: Map[int, int], symt
     Bad(str),
 } {
     var tables = Map[int, int]()
+    var entries = Map[int, int]()
+    for r in l.relocs {
+        if !l.atoms[r.atom].live { continue }
+        let target = l.atoms[r.atom].output
+        entries[target] = (entries[target] else 0) + 1
+    }
     for r in l.relocs {
         if !l.atoms[r.atom].live { continue }
         let target = l.atoms[r.atom].output
@@ -154,6 +160,7 @@ fn retained(mut l: layout.Layout, s: resolve.State, indices: Map[int, int], symt
             out.link = symtab
             out.info = target
             out.entsize = 24
+            (mut out.data).reserve((entries[target] else 0) * 24)
             (mut l.outputs).push(out)
             tables[target] = index
             index
@@ -161,15 +168,17 @@ fn retained(mut l: layout.Layout, s: resolve.State, indices: Map[int, int], symt
         let id = layout.target(s, r.symbol)?
         let index = indices[id] else { return Bad("missing retained relocation symbol") }
         let offset = layout.vadd(l.outputs[target].address, l.atoms[r.atom].offset + r.offset)?
-        append(
-            mut l.outputs[table].data,
-            binary.encode(
-                [offset as u64, index as u64 << 32 | r.kind as u64, layout.bits(r.addend)],
-                [8, 8, 8],
-            )?,
-        )
+        // Elf64_Rela: r_offset, r_info (symbol << 32 | type), r_addend, each little-endian.
+        word(mut l.outputs[table].data, offset)
+        word(mut l.outputs[table].data, index as u64 << 32 | r.kind as u64)
+        word(mut l.outputs[table].data, layout.bits(r.addend))
         l.outputs[table].size = l.outputs[table].data.len
     }
+}
+
+fn word(mut out: List[byte], value: u64) {
+    var n = value
+    for _ in 0..8 { (mut out).push((n & 255) as int as byte); n = n >> 8 }
 }
 
 fn ph(
