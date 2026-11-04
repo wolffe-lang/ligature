@@ -15,7 +15,7 @@ On x86-64 Linux with a C toolchain and Python 3.12:
 
 ```sh
 tools/fetch-toolchain       # digest-verified wolf 0.2.36, lupin 0.1.58 and the release's musl runtime
-tools/fetch-bundle          # digest-verified PAX musl runtime, CRTs and oracle controls
+tools/fetch-bundle          # licensed, digest/MANIFEST-verified musl inputs and oracle controls
 tools/build
 target/ligature --version
 # Use a matching musl runtime and sysroot; the public GNU/Linux runtime is not musl.
@@ -70,8 +70,7 @@ archive is supplied by the compiler, not silently replaced. `-fuse-ld=lld` is
 accepted and ignored. Use `-nostdlib` for explicit CRT/archive order. Static
 non-PIE is the only output mode; no external linker is executed. Archive entries
 are discovered lazily, including backward references to earlier archives. Strong
-demands extract immediately; weak references do not pull members. The measured
-hello sequence now matches all 359 LLD-selected members in order.
+demands extract immediately; weak references do not pull members. The historical hello census matches all 359 LLD-selected members in order.
 
 ## Tests and reference tools
 
@@ -142,7 +141,7 @@ python3 -I tests/bundle-smoke.py target/licensed-bundle
 ```
 
 The destination must be new. The archive preserves the seven control/sysroot
-binaries and replaces only the runtime with the pinned 0.2.36 musl runtime.
+binaries and uses the pinned 0.2.36 musl runtime.
 It includes unchanged musl, LLVM, Rust, PAX and wolf licence/notice texts,
 `NOTICE` with each binary's version and source URL, `SOURCES.json` with the
 licence provenance, and a SHA-256 `MANIFEST` covering every other member.
@@ -215,7 +214,7 @@ tests preserve legacy JSON name semantics for non-ASCII inputs as well.
 The nonallocated 116-byte `.note.wolf.link` seals input hashes, disjoint file
 ranges and relocation patches with SHA-256. It is integrity, not a signature
 or proof of authorship. `explain` validates the manifest before answering.
-Hello retains all 590,358 relocation records. Its interned binary patch table
+The recorded compact-format hello retained all 590,358 relocation records. Its interned binary patch table
 reduces the embedded manifest from 147,136,512 to 12,414,976 bytes (11.85×),
 including 17,765 newly explicit discard/consumed-metadata records. Legacy JSON
 manifests remain readable by `verify` and `explain`; no debug sites are omitted. Unwind data has no generated unwind header, strings are not merged,
