@@ -22,9 +22,17 @@ pub fn range(f: Input, off: int, size: int) -> () ! {Bad(str)} {
 }
 
 /// Read exactly a bounded range with positional IO; Bad names IO or truncation.
+/// The result is one list at exact capacity: a single positional read is returned as it came,
+/// and a longer range is gathered into a list reserved once, never grown by doubling.
 pub fn read(f: Input, off: int, size: int) -> List[byte] ! {Bad(str)} {
     range(f, off, size)?
+    if size > 0 && size <= 65536 {
+        let part = fs_read_at(f.fd, f.base + off, size) else |_| { return Bad("positional read failed") }
+        if part.len == 0 { return Bad("short positional read") }
+        if part.len == size { return part }
+    }
     var out = List[byte]()
+    (mut out).reserve(size)
     var done: int = 0
     while done < size {
         {
