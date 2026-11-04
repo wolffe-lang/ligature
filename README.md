@@ -77,7 +77,7 @@ hello sequence now matches all 359 LLD-selected members in order.
 
 ```sh
 docker build -t ligature-oracle -f ci/oracle.Containerfile ci
-docker run --rm -v "$PWD:/work" ligature-oracle bash -c 'tools/fetch-toolchain && tools/fetch-bundle && tools/check'
+docker run --rm -v "$PWD:/work" ligature-oracle bash -c 'tools/fetch-toolchain && tools/fetch-bundle && tools/check --require-licensed-bundle'
 ```
 
 Unlabelled PRs run one cheap job. The `ci` or `full-matrix` label selects the
@@ -101,7 +101,14 @@ objects link against the same release's published musl runtime
 `[wolf-rt]`), so the argv preflight sees all three arguments under both
 reference linkers. The BLOCKED row remains admitted only for the old bundle
 runtime, SHA-256 `9d859b9e6b5319f5a6f609e73ba0d71981d2dfa489882648ac9f454cd9db739c`;
-any other runtime digest must pass the hard self-link assertions. `tools/check-core` runs the independent linker/provenance gates.
+any other runtime digest must pass the hard self-link assertions. CI explicitly
+requires a passing self-link; the historical BLOCKED result is not accepted.
+The Linux gate also invokes the released compiler's `--linker` route on hello.
+`tests/link-cost.py` builds a frozen pre-optimization relocation control against
+the current sources and compares hello and self-link using identical objects.
+Both outputs must be byte-identical and the candidate must take at most half
+the same run's baseline time. No absolute host-speed bound is used.
+`tools/check-core` runs the independent linker/provenance gates.
 The gate fetches binary inputs only; no external linker or libc implementation
 source is read or built. Bundle licence texts are copied unchanged from upstream
 release archives, separately from the binary inputs.
@@ -115,12 +122,15 @@ example sites, extraction traces and output observations. See
 [formats](docs/FORMATS.md).
 
 The exact PAX LLD control, musl runtime and sysroot are available as the
-[link-bundle-2026-10-25 release](https://github.com/wolffe-lang/ligature/releases/tag/link-bundle-2026-10-25).
-`tools/fetch-bundle` verifies its digest twice and checks every extracted binary.
-The public Wolf GNU/Linux runtime cannot substitute for this musl runtime. The
-bundle's runtime is 0.2.35's, so objects the pinned 0.2.36 compiler emits link
-against the release's own musl runtime (`tools/fetch-musl-runtime`), a separate
-pin; the bundle still supplies the CRTs, libc, libunwind, cc and LLD control.
+[link-bundle-wolf-0.2.36 release](https://github.com/wolffe-lang/ligature/releases/tag/link-bundle-wolf-0.2.36).
+The licensed archive is named `musl-link-bundle-sha256-8210ac2223d969ab8f0845cc74950a1c68226b58b10dd083cd2e2113acd3e37a.tar.gz`.
+`tools/fetch-bundle` verifies that archive digest twice, pins MANIFEST SHA-256
+`8bcea75770a47a23f619ad778d05c84a028f2e840964302d164195ea74e73886`,
+and checks every member twice before extraction and twice afterwards. Unknown,
+missing, duplicate, non-file and unsafe-path members are refused by name.
+The bundle includes the matching 0.2.36 musl runtime; `tools/fetch-musl-runtime`
+independently verifies the same runtime from the compiler release. The public
+Wolf GNU/Linux runtime cannot substitute for this musl runtime.
 CI additionally uses version-pinned distro LLD 17, binutils and musl binary
 packages for independent C/assembly fixtures.
 
