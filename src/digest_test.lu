@@ -1,0 +1,22 @@
+//! member: false
+
+use provenance
+use std.x.crypto.sha2
+
+fn main() -> int {
+    var data = List[byte]()
+    for i in 0..131075 { (mut data).push((i * 7 + i / 300) as byte) }
+    var checked: int = 0
+    // Block edges (55, 56, 63, 64, 65) and step edges (65535, 65536, 65537, two steps and more).
+    for n in [0, 1, 55, 56, 63, 64, 65, 127, 128, 65535, 65536, 65537, 131072, 131075] {
+        let slice = data[0..n]
+        assert(sha2.to_hex(provenance.digest_bytes(slice)) == sha2.to_hex(sha2.sum256(slice)))
+        checked += 1
+    }
+    assert(
+        sha2.to_hex(provenance.digest_bytes(List[byte]())) ==
+            "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    )
+    print("digest: {checked + 1} stepped digests equal the one-shot digest, 0 SKIP")
+    0
+}
