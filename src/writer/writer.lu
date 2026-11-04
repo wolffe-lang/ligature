@@ -263,6 +263,7 @@ pub fn link(s: resolve.State, p: front.Plan) -> () ! {Bad(str)} {
         l.outputs[manifest_index].fileoff,
     )?
     var file = List[byte]()
+    (mut file).reserve(shoff + l.outputs.len * 64)
     for _ in 0..shoff + l.outputs.len * 64 { (mut file).push(0 as byte) }
     var phdrs = List[byte]()
     if l.kernel {
@@ -358,23 +359,22 @@ pub fn link(s: resolve.State, p: front.Plan) -> () ! {Bad(str)} {
     )?
     insert(mut file, 64, phdrs)?
     for j in 1..l.outputs.len {
-        let o = copy l.outputs[j]
-        if o.kind != 8 { insert(mut file, o.fileoff, o.data)? }
+        if l.outputs[j].kind != 8 { insert(mut file, l.outputs[j].fileoff, l.outputs[j].data)? }
         insert(
             mut file,
             shoff + j * 64,
             binary.encode(
                 [
                     name_offsets[j] as u64,
-                    o.kind as u64,
-                    o.flags,
-                    o.address as u64,
-                    o.fileoff as u64,
-                    o.size as u64,
-                    o.link as u64,
-                    o.info as u64,
-                    o.align as u64,
-                    o.entsize as u64,
+                    l.outputs[j].kind as u64,
+                    l.outputs[j].flags,
+                    l.outputs[j].address as u64,
+                    l.outputs[j].fileoff as u64,
+                    l.outputs[j].size as u64,
+                    l.outputs[j].link as u64,
+                    l.outputs[j].info as u64,
+                    l.outputs[j].align as u64,
+                    l.outputs[j].entsize as u64,
                 ],
                 [4, 4, 8, 8, 8, 8, 4, 4, 8, 8],
             )?,
