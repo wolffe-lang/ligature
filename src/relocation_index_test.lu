@@ -7,6 +7,9 @@ fn main() -> int {
     var relocs = List[layout.Reloc]()
     let empty = relocate.relocation_index(relocs)
     assert(relocate.relocation_lookup(relocs, empty, 0, 0) == -1)
+    assert(relocate.relocation_lookup(relocs, List[int](), 0, 0) == -1)
+    assert(relocate.relocation_lookup(relocs, empty, -1, 0) == -1)
+    assert(relocate.relocation_lookup(relocs, empty, 0, -1) == -1)
     for i in 0..30000 {
         (mut relocs).push(layout.Reloc {
             atom: i % 37,
@@ -37,5 +40,6 @@ fn main() -> int {
     }
     assert(relocate.relocation_lookup(relocs, index, 99, 0) == -1)
     assert(relocate.relocation_lookup(relocs, index, 0, 999999) == -1)
+    assert(relocate.relocation_lookup(relocs, [1], 99, 8) == -1)
     0
 }
