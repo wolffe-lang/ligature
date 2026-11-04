@@ -1,0 +1,37 @@
+ld06 prediction — licensed bundle and measured link cost
+
+Prediction
+- fetch-bundle will admit only the published content-addressed licensed archive,
+  verifying archive and MANIFEST twice and every member against that MANIFEST.
+- New named rows will refuse archive, MANIFEST, member, roster and path mutations.
+  The licensed-pin row must fail on the base before the implementation changes.
+- Linux CI will execute real-ligature hello and hard self-link assertions with the
+  licensed bundle. No old release URL will remain, including historical notes.
+- First measure resolution/archive indexing, layout/symbols, relocation,
+  provenance and I/O separately on satoyama slot A. Record the measured table
+  here before selecting an implementation change. No phase is presumed dominant.
+- Preserve byte-identical hello and self-link outputs, including retained debug
+  relocations and complete provenance. Compare baseline and candidate within one
+  run on the same pinned objects and paths; gate a ratio, not wall-clock seconds.
+- R-ld06-1 recommendation: candidate/baseline <= 0.50 for both hello and self-link
+  (at least 2x faster), with SHA-256 identity and executed outputs required. Retain
+  the original implementation as a test-only baseline if needed, never dispatch
+  to another linker or suppress provenance to meet the bound.
+
+Forbidden
+No external linker/libc/kernel implementation source, publication, tag, label,
+merge, issue closure, GPU/server changes, or host-wide configuration changes.
+
+Inputs verified
+Base 4986159; wolf 0.2.36; licensed bundle archive SHA-256
+8210ac2223d969ab8f0845cc74950a1c68226b58b10dd083cd2e2113acd3e37a;
+MANIFEST 8bcea75770a47a23f619ad778d05c84a028f2e840964302d164195ea74e73886.
+All timings on satoyama slot A, inside a memory-capped binary-toolchain container.
+
+Evidence index
+Pending named red rows, phase measurements, final gauntlet and one local plant.
+
+Done-when
+Licensed fetching and strict CI rows; measured dominant-cost fix; ratio and byte
+identity gates; final-head green record; final-head one-hunk plant red by name;
+open cross-cutting PR; one local audit; CI run id read once, no CI waiting.
