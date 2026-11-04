@@ -248,7 +248,9 @@ pub fn link(s: resolve.State, p: front.Plan) -> () ! {Bad(str)} {
             cursor += l.outputs[j].size
         }
         shoff = layout.align(cursor, 8)
-        let manifest = provenance.manifest(l, s, inputs, shoff + l.outputs.len * 64)?
+        let total = shoff + l.outputs.len * 64
+        // Each iteration's working set is freed with its region; only the manifest bytes leave.
+        let manifest = copy region manifesting { provenance.manifest(l, s, inputs, total)? }
         let stable = manifest.len == l.outputs[manifest_index].size
         l.outputs[manifest_index].size = manifest.len
         l.outputs[manifest_index].data = manifest
