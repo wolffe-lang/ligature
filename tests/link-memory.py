@@ -281,6 +281,7 @@ def main():
     parser.add_argument('--baseline', help='a second linker whose outputs must be byte-identical')
     parser.add_argument('--scale', type=int, default=40, help='N for the N/10N/100N scaling row')
     parser.add_argument('--rows', default='hello,str,verify,scaling')
+    parser.add_argument('--verify-input', help='verify this executable instead of the hello row output')
     args = parser.parse_args()
     OUT.mkdir(parents=True, exist_ok=True)
     wanted = args.rows.split(',')
@@ -293,10 +294,11 @@ def main():
             outputs[case] = program(case, linker, found[case], env)
     if 'verify' in wanted:
         row = 'link-memory-verify'
-        if outputs.get('hello') is None:
+        target = pathlib.Path(args.verify_input) if args.verify_input else outputs.get('hello')
+        if target is None:
             fail(row, 'no hello output to verify')
         else:
-            result = measured([linker, 'verify', outputs['hello']], CAP)
+            result = measured([linker, 'verify', target], CAP)
             record(row, result, BOUND['verify'])
             check_peak(row, result, BOUND['verify'])
     if 'scaling' in wanted:
