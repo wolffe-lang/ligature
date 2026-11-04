@@ -44,22 +44,22 @@ fn put_uint(mut bytes: List[byte], value: u64) {
 }
 
 /// end is stored as width. Addends are absolute signed values; other columns are deltas.
+/// Allocates only as the table's own data grows.
 pub fn patch_row(mut table: PatchTable, values: List[int]) {
     var mask: int = 0
-    var deltas = List[int]()
     for i in 0..15 {
         let d = if i == 0 then values[i] else values[i] - table.previous[i]
         if d != 0 { mask |= 1 << i }
-        (mut deltas).push(d)
     }
     (mut table.data).push((mask & 255) as byte)
     (mut table.data).push((mask >> 8) as byte)
-    for d in deltas {
+    for i in 0..15 {
+        let d = if i == 0 then values[i] else values[i] - table.previous[i]
         if d == 0 { continue }
         let z = if d < 0 then -(d + 1) as u64 * 2 + 1 else d as u64 * 2
         put_uint(mut table.data, z)
     }
-    table.previous = copy values
+    for i in 0..15 { table.previous[i] = values[i] }
     table.count += 1
 }
 

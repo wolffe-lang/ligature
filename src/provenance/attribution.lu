@@ -2,9 +2,9 @@
 
 use binary
 use layout
+use relocate
 use resolve
 use script
-use std.x.crypto.sha2
 
 fn span(
     mut bytes: List[byte],
@@ -82,26 +82,51 @@ pub fn ranges(l: layout.Layout, s: resolve.State, total: int) -> List[byte] ! {B
     bytes
 }
 
+// Lowercase hex of data[from..from + width], the text sha2.to_hex gives, built in one list.
+fn hex(data: List[byte], from: int, width: int) -> str {
+    let digits = "0123456789abcdef"
+    var out = List[byte]()
+    (mut out).reserve(2 * width)
+    for i in from..from + width {
+        let v = data[i] as int
+        (mut out).push(digits.bytes()[v / 16])
+        (mut out).push(digits.bytes()[v % 16])
+    }
+    str_from_utf8(out) else ""
+}
+
 /// Attribute every retained relocation, including TLS call sites consumed by a transition.
 /// Bytes are evidence, not an independent proof: the differential decoder checks them.
 pub fn patches(l: layout.Layout, s: resolve.State) -> PatchTable ! {Bad(str)} {
     var table = patch_table()
-    var consumed = Map[str, int]()
+    // The consumer of each TLS call site, by the site's last relocation (last write wins).
+    let sites = relocate.relocation_index(l.relocs)
+    var consumer = List[int]()
+    (mut consumer).reserve(l.relocs.len)
+    for _ in 0..l.relocs.len { (mut consumer).push(-1) }
     for i in 0..l.relocs.len {
         let r = copy l.relocs[i]
         if !l.atoms[r.atom].live { continue }
-        if r.kind == 19 { consumed["{r.atom}:{r.offset + 8}"] = i }
+        var call: int = -1
+        if r.kind == 19 { call = r.offset + 8 }
         if r.kind == 20 {
             let indirect = l.atoms[r.atom].data[r.offset + 4] == 255 as byte
-            consumed["{r.atom}:{r.offset + (if indirect then 6 else 5)}"] = i
+            call = r.offset + (if indirect then 6 else 5)
         }
+        if call < 0 { continue }
+        let at = relocate.relocation_lookup(l.relocs, sites, r.atom, call)
+        if at >= 0 { consumer[at] = i }
     }
+    var values = List[int]()
+    (mut values).reserve(15)
+    for _ in 0..15 { (mut values).push(0) }
     for i in 0..l.relocs.len {
         let r = copy l.relocs[i]
         let ai = r.atom
         if !l.atoms[ai].live { continue }
         let oi = l.atoms[ai].output
-        let owner = consumed["{r.atom}:{r.offset}"] else -1
+        let here = relocate.relocation_lookup(l.relocs, sites, r.atom, r.offset)
+        let owner = if here >= 0 then consumer[here] else -1
         var begin = r.offset
         var width = if r.kind == 1 || r.kind == 17 || r.kind == 257 then 8 else 4
         var rule = "field"
@@ -124,36 +149,27 @@ pub fn patches(l: layout.Layout, s: resolve.State) -> PatchTable ! {Bad(str)} {
             return Bad("provenance patch outside input")
         }
         let id = layout.target(s, r.symbol)?
-        let target = copy s.symbols[id]
         let start = l.outputs[oi].fileoff + l.atoms[ai].offset + begin
-        let before = sha2.to_hex(l.atoms[ai].data[begin..begin + width])
-        let after = sha2.to_hex(
-            l.outputs[oi].data[l.atoms[ai].offset + begin..l.atoms[ai].offset + begin + width],
-        )
-        let after_id = intern(mut table, after)
-        let before_id = intern(mut table, before)
+        let after_id = intern(mut table, hex(l.outputs[oi].data, l.atoms[ai].offset + begin, width))
+        let before_id = intern(mut table, hex(l.atoms[ai].data, begin, width))
         let rule_id = intern(mut table, rule)
-        let symbol_id = intern(mut table, quoted_name(target.name))
-        patch_row(
-            mut table,
-            [
-                r.addend,
-                after_id,
-                before_id,
-                owner,
-                width,
-                i,
-                l.atoms[ai].object,
-                r.offset,
-                rule_id,
-                l.atoms[ai].index,
-                start,
-                symbol_id,
-                target.object,
-                target.index,
-                r.kind,
-            ],
-        )
+        let symbol_id = intern(mut table, quoted_name(s.symbols[id].name))
+        values[0] = r.addend
+        values[1] = after_id
+        values[2] = before_id
+        values[3] = owner
+        values[4] = width
+        values[5] = i
+        values[6] = l.atoms[ai].object
+        values[7] = r.offset
+        values[8] = rule_id
+        values[9] = l.atoms[ai].index
+        values[10] = start
+        values[11] = symbol_id
+        values[12] = s.symbols[id].object
+        values[13] = s.symbols[id].index
+        values[14] = r.kind
+        patch_row(mut table, values)
     }
     table
 }
