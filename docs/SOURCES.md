@@ -69,21 +69,31 @@ the binutils hashes match the table above. The local image digest is
 The generated CI C fixture exercises musl CRT startup, TLS, initialization
 arrays, static archive extraction, relocation retention and a real run.
 CI fetches the exact PAX-specific binary link bundle through `tools/fetch-bundle`:
-release `link-bundle-2026-10-25`, asset `ld02-musl-link-bundle.tar.gz`, 36,594,483
-bytes, SHA-256 `6f99a2794da54b2dd85f06713d736b27862a7cd0da9e28bd940d975a4603a1d1`.
-Both the archive digest and extracted file identities are checked twice. It
-contains the exact LLD control, musl runtime, CRTs, libc and libunwind. This
-provisions the real self-link CI row (ligature#13). Wolf 0.2.35's public Linux
-runtime targets glibc and cannot substitute for it (`open64`, `fstat64` and
-unwind references differ). The full PAX/Wolf corpus remains a separate local
-strict run; distro fixtures are not represented as that corpus.
+release `link-bundle-wolf-0.2.36`, asset
+`musl-link-bundle-sha256-8210ac2223d969ab8f0845cc74950a1c68226b58b10dd083cd2e2113acd3e37a.tar.gz`,
+36,514,237 bytes, SHA-256 `8210ac2223d969ab8f0845cc74950a1c68226b58b10dd083cd2e2113acd3e37a`.
+The archive and its pinned MANIFEST
+(`8bcea75770a47a23f619ad778d05c84a028f2e840964302d164195ea74e73886`)
+are checked twice; every member is checked twice before and after extraction.
+The complete roster includes licence/notice texts and source attribution.
+It contains the exact LLD control, 0.2.36 musl runtime, CRTs, libc and libunwind.
+This provisions the real-ligature and self-link CI rows (ligature#13). The
+public Linux runtime targets glibc and cannot substitute for it (`open64`,
+`fstat64` and unwind references differ). The full PAX/Wolf corpus remains a
+separate local strict run; distro fixtures are not represented as that corpus.
 At the 0.2.36 pin, objects that compiler emits link against the release's own
 musl runtime, a separate pin (`[wolf-rt]` in `wolf-toolchain.toml`, fetched by
 `tools/fetch-musl-runtime`): asset `wolf-rt-0.2.36-x86_64-unknown-linux-musl.tar.gz`,
 SHA-256 `3aba9c8b4e5c51f2094242946fae0e6f1cd64bc7837b7484e1085ce63373aa57`, its
 `libwolf_rt.a` `6892dac8a6e211f12c6823c0f19497d820a47fdbfe7fb569cd967acf86461aad`,
-each read twice. The bundle's runtime (`9d859b9e…`, 0.2.35's) lacks the new
-entry's `__wolf_rt_main_start` and stays the PAX link set's input only.
+each read twice. That archive is byte-identical to the licensed bundle's
+runtime. Historical census evidence retains the earlier runtime identity.
+
+The relocation-index optimization consults only this project's own code and
+wolf-lang's `crates/wolf_rt/src/map.rs` (`find`, `__wolf_rt_map_set`): the pinned
+native map performs linear scans. The frozen baseline in
+`tests/fixtures/ld06-relocate.baseline` is ligature's own original implementation,
+not external linker code.
 
 The public glibc runtime additionally contains empty, excluded
 `SHT_LLVM_ADDRSIG` sections: LLVM 17 Language Reference Extensions,

@@ -17,7 +17,7 @@
   ],
   "runtime_sha256": "9d859b9e6b5319f5a6f609e73ba0d71981d2dfa489882648ac9f454cd9db739c",
   "runtime_bytes": 45363160,
-  "state": "published by the maintainer; tools/fetch-bundle pins the digest and CI executes self-link; ligature#13 closes at merge",
-  "url": "https://github.com/wolffe-lang/ligature/releases/download/link-bundle-2026-10-25/ld02-musl-link-bundle.tar.gz",
+  "state": "historical binary-only input evidence; superseded by the licensed bundle pinned in tools/fetch-bundle",
+  "url": null,
   "archive_bytes": 36594483
 }
