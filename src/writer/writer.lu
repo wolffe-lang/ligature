@@ -53,9 +53,16 @@ fn section_of(l: layout.Layout, s: resolve.State, id: int) -> int {
     l.atoms[a].output
 }
 
-fn symbols(mut l: layout.Layout, s: resolve.State) -> Map[int, int] ! {Bad(str)} {
-    var indices = Map[int, int]()
-    var needed = Map[int, bool]()
+// Output symbol index by input symbol id (-1: none), and which ids a live relocation needs.
+fn symbols(mut l: layout.Layout, s: resolve.State) -> List[int] ! {Bad(str)} {
+    var indices = List[int]()
+    var needed = List[bool]()
+    (mut indices).reserve(s.symbols.len)
+    (mut needed).reserve(s.symbols.len)
+    for _ in 0..s.symbols.len {
+        (mut indices).push(-1)
+        (mut needed).push(false)
+    }
     for r in l.relocs {
         if l.atoms[r.atom].live { needed[layout.target(s, r.symbol)?] = true }
     }
@@ -68,7 +75,7 @@ fn symbols(mut l: layout.Layout, s: resolve.State) -> Map[int, int] ! {Bad(str)}
             // Preserve undefined, synthetic and discarded targets too. They are local
             // witnesses, not new public definitions; dead targets carry a zero value.
             for id in 0..s.symbols.len {
-                if !(needed[id] else false) { continue }
+                if !needed[id] { continue }
                 let sym = copy s.symbols[id]
                 if sym.index != 0 && sym.section != 0 && section_of(l, s, id) != 0 { continue }
                 let value = layout.address(l, s, id, true)?
@@ -141,32 +148,37 @@ fn symbols(mut l: layout.Layout, s: resolve.State) -> Map[int, int] ! {Bad(str)}
 
 // Keep original RELA types/addends even when their instruction has been relaxed.
 // This is the gABI --emit-relocs convention used by both black-box oracles.
-fn retained(mut l: layout.Layout, s: resolve.State, indices: Map[int, int], symtab: int) -> () ! {
+fn retained(mut l: layout.Layout, s: resolve.State, indices: List[int], symtab: int) -> () ! {
     Bad(str),
 } {
-    var tables = Map[int, int]()
-    var entries = Map[int, int]()
+    // The retained table of each target output (-1: not yet made) and its entry count.
+    let targets = l.outputs.len
+    var tables = List[int]()
+    var entries = List[int]()
+    for _ in 0..targets {
+        (mut tables).push(-1)
+        (mut entries).push(0)
+    }
     for r in l.relocs {
         if !l.atoms[r.atom].live { continue }
-        let target = l.atoms[r.atom].output
-        entries[target] = (entries[target] else 0) + 1
+        entries[l.atoms[r.atom].output] += 1
     }
     for r in l.relocs {
         if !l.atoms[r.atom].live { continue }
         let target = l.atoms[r.atom].output
-        let table = tables[target] else {
-            let index = l.outputs.len
+        if tables[target] < 0 {
             var out = layout.output(".rela{l.outputs[target].name}", 4, 0, 8)
             out.link = symtab
             out.info = target
             out.entsize = 24
-            (mut out.data).reserve((entries[target] else 0) * 24)
+            (mut out.data).reserve(entries[target] * 24)
+            tables[target] = l.outputs.len
             (mut l.outputs).push(out)
-            tables[target] = index
-            index
         }
+        let table = tables[target]
         let id = layout.target(s, r.symbol)?
-        let index = indices[id] else { return Bad("missing retained relocation symbol") }
+        let index = indices[id]
+        if index < 0 { return Bad("missing retained relocation symbol") }
         let offset = layout.vadd(l.outputs[target].address, l.atoms[r.atom].offset + r.offset)?
         // Elf64_Rela: r_offset, r_info (symbol << 32 | type), r_addend, each little-endian.
         word(mut l.outputs[table].data, offset)
