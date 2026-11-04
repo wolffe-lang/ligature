@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
 set -euo pipefail
 cd "$(dirname "$0")/.."
+python3 -I tests/tiers.py
+python3 -I ci/local-gate-test.py
 export WOLF_STD=${WOLF_STD:-$PWD/.wolf-bin/std}
 wolf=${WOLF:-$PWD/.wolf-bin/wolf}
 "$wolf" fmt --check src
