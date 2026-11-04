@@ -1,0 +1,1 @@
+fn main() { let a = "hello, wolf"; print(a + a) }
