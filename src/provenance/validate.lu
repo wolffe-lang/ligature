@@ -24,14 +24,17 @@ pub fn array(v: json.Value, key: str) -> List[json.Value] ! {Bad(str)} {
     json.as_arr(field(v, key)?) else |_| { return Bad("provenance array field {key}") }
 }
 
-/// Read the embedded document. Call check first; parsing is not authentication.
-pub fn document(f: binary.Input, image: elf.Image) -> json.Value ! {Bad(str)} {
+fn manifest_bytes(f: binary.Input, image: elf.Image) -> List[byte] ! {Bad(str)} {
     for sec in image.sections {
         if (str_from_utf8(elf.name(f, image, sec)?) else "") != ".wolf.link.manifest" { continue }
-        let raw = binary.read(f, sec.off, sec.size)?
-        return decode_document(raw)
+        return binary.read(f, sec.off, sec.size)
     }
     Bad("missing provenance manifest")
+}
+
+/// Read the embedded document. Call check first; parsing is not authentication.
+pub fn document(f: binary.Input, image: elf.Image) -> json.Value ! {Bad(str)} {
+    decode_document(manifest_bytes(f, image)?)
 }
 
 fn hex_digit(c: byte) -> int ! {Bad(str)} {
@@ -41,12 +44,107 @@ fn hex_digit(c: byte) -> int ! {Bad(str)} {
     Bad("invalid provenance hex bytes")
 }
 
+// One retained patch's recorded bytes against the file. Returns "" or the refusal.
+fn patch_bytes(f: binary.Input, start: int, end: int, after: str, before: str) -> str {
+    let bytes = binary.read(f, start, end - start) else |e| match e {
+        Bad(message) => { return message },
+    }
+    for i in 0..bytes.len {
+        let hi = hex_digit(after.bytes()[2 * i]) else |_| { return "invalid provenance hex bytes" }
+        let lo = hex_digit(after.bytes()[2 * i + 1]) else |_| {
+            return "invalid provenance hex bytes"
+        }
+        if hi * 16 + lo != bytes[i] as int { return "provenance patch bytes differ" }
+        let _hi = hex_digit(before.bytes()[2 * i]) else |_| {
+            return "invalid provenance hex bytes"
+        }
+        let _lo = hex_digit(before.bytes()[2 * i + 1]) else |_| {
+            return "invalid provenance hex bytes"
+        }
+    }
+    ""
+}
+
+// The patch checks, one row at a time; each row's file read is freed before the next.
+fn patch_row_checks(
+    f: binary.Input,
+    values: List[int],
+    strings: List[str],
+    previous_index: int,
+) -> () ! {Bad(str)} {
+    if values[5] <= previous_index { return Bad("provenance patch index order or duplicate") }
+    let start = values[10]
+    let end = values[4]
+    if start < 0 || end <= start || end > f.size { return Bad("provenance patch range") }
+    let after = strings[values[1]]
+    let before = strings[values[2]]
+    if after.len != 2 * (end - start) || before.len != after.len {
+        return Bad("provenance patch length")
+    }
+    let problem = copy region row { patch_bytes(f, start, end, after, before) }
+    if problem.len != 0 { return Bad(problem) }
+}
+
 /// Digest validation precedes these semantic checks: signed garbage is still garbage.
+/// The versioned patch table is validated in two streaming passes (format, then content), so no
+/// row is ever materialized as JSON; the legacy JSON form is checked as one document.
 pub fn validate(f: binary.Input, image: elf.Image) -> () ! {Bad(str)} {
-    let doc = document(f, image)?
+    let raw = manifest_bytes(f, image)?
+    if !is_table(raw) { return validate_document(f, image, decode_document(raw)?) }
+    let (doc, opened) = patch_open(raw)?
+    var cursor = opened
+    var values = patch_values()
+    for _ in 0..cursor.rows { patch_next(mut cursor, mut values)? }
+    patch_close(cursor)?
+    if !validate_metadata(f, image, doc)? { return }
+    if cursor.rows != retained_count(image) {
+        return Bad("provenance retained patch count mismatch")
+    }
+    patch_rewind(mut cursor)
+    var previous_index: int = -1
+    for _ in 0..cursor.rows {
+        patch_next(mut cursor, mut values)?
+        patch_row_checks(f, values, cursor.strings, previous_index)?
+        previous_index = values[5]
+    }
+}
+
+fn retained_count(image: elf.Image) -> int {
+    var retained: int = 0
+    for sec in image.sections { if sec.kind == 4 { retained += sec.size / 24 } }
+    retained
+}
+
+fn validate_document(f: binary.Input, image: elf.Image, doc: json.Value) -> () ! {Bad(str)} {
+    if !validate_metadata(f, image, doc)? { return }
+    let changes = array(doc, "patches")?
+    if changes.len != retained_count(image) {
+        return Bad("provenance retained patch count mismatch")
+    }
+    var previous_index: int = -1
+    for p in changes {
+        let index = integer(p, "index")?
+        if index <= previous_index { return Bad("provenance patch index order or duplicate") }
+        previous_index = index
+        let start = integer(p, "start")?
+        let end = integer(p, "end")?
+        if start < 0 || end <= start || end > f.size { return Bad("provenance patch range") }
+        let after = text(p, "after")?
+        let before = text(p, "before")?
+        if after.len != 2 * (end - start) || before.len != after.len {
+            return Bad("provenance patch length")
+        }
+        let problem = copy region row { patch_bytes(f, start, end, after, before) }
+        if problem.len != 0 { return Bad(problem) }
+    }
+}
+
+// Everything but the patches: format, coverage, sections, byte ranges and extraction edges.
+// False when the coverage is sections only, which has no patches to check.
+fn validate_metadata(f: binary.Input, image: elf.Image, doc: json.Value) -> bool ! {Bad(str)} {
     if text(doc, "format")? != "wolf.link.provenance.v1" { return Bad("unknown provenance format") }
     let coverage = text(doc, "coverage")?
-    if coverage == "sections" { return }
+    if coverage == "sections" { return false }
     if coverage != "bytes-and-patches" { return Bad("unknown provenance coverage") }
     if integer(field(doc, "output")?, "bytes")? != f.size { return Bad("provenance output length") }
     for section in array(doc, "sections")? {
@@ -98,31 +196,7 @@ pub fn validate(f: binary.Input, image: elf.Image) -> () ! {Bad(str)} {
         }
         selected[object] = true
     }
-    let changes = array(doc, "patches")?
-    var retained: int = 0
-    for sec in image.sections { if sec.kind == 4 { retained += sec.size / 24 } }
-    if changes.len != retained { return Bad("provenance retained patch count mismatch") }
-    var previous_index: int = -1
-    for p in changes {
-        let index = integer(p, "index")?
-        if index <= previous_index { return Bad("provenance patch index order or duplicate") }
-        previous_index = index
-        let start = integer(p, "start")?
-        let end = integer(p, "end")?
-        if start < 0 || end <= start || end > f.size { return Bad("provenance patch range") }
-        let after = text(p, "after")?
-        let before = text(p, "before")?
-        if after.len != 2 * (end - start) || before.len != after.len {
-            return Bad("provenance patch length")
-        }
-        let bytes = binary.read(f, start, end - start)?
-        for i in 0..bytes.len {
-            let value = hex_digit(after.bytes()[2 * i])? * 16 + hex_digit(after.bytes()[2 * i + 1])?
-            if value != bytes[i] as int { return Bad("provenance patch bytes differ") }
-            let _hi = hex_digit(before.bytes()[2 * i])?
-            let _lo = hex_digit(before.bytes()[2 * i + 1])?
-        }
-    }
+    true
 }
 
 /// Decimal u64 text avoids JSON's lossy floating number tier above INT64_MAX.
