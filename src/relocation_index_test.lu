@@ -6,7 +6,7 @@ use relocate
 fn main() -> int {
     var relocs = List[layout.Reloc]()
     let empty = relocate.relocation_index(relocs)
-    assert((relocate.relocation_lookup(relocs, empty, 0, 0) else -1) == -1)
+    assert((relocate.relocation_lookup(relocs, empty, 0, 0)) == -1)
     for i in 0..30000 {
         (mut relocs).push(layout.Reloc {
             atom: i % 37,
@@ -17,13 +17,25 @@ fn main() -> int {
         })
     }
     (mut relocs).push(layout.Reloc { atom: 0, offset: 0, symbol: 99, kind: 1, addend: 0 })
-    let index = relocate.relocation_index(relocs)
-    assert(index.len >= relocs.len * 2)
-    assert((relocate.relocation_lookup(relocs, index, 0, 0) else -1) == 30000)
-    for i in 1..30000 {
-        assert((relocate.relocation_lookup(relocs, index, i % 37, i / 37 * 8) else -1) == i)
+    for i in 0..64 {
+        (mut relocs).push(layout.Reloc {
+            atom: 13,
+            offset: 1000000 + i * 65536,
+            symbol: i,
+            kind: 9,
+            addend: -4,
+        })
     }
-    assert((relocate.relocation_lookup(relocs, index, 99, 0) else -1) == -1)
-    assert((relocate.relocation_lookup(relocs, index, 0, 999999) else -1) == -1)
+    let index = relocate.relocation_index(relocs)
+    for i in 0..64 {
+        assert(relocate.relocation_lookup(relocs, index, 13, 1000000 + i * 65536) == 30001 + i)
+    }
+    assert(index.len >= relocs.len * 2)
+    assert((relocate.relocation_lookup(relocs, index, 0, 0)) == 30000)
+    for i in 1..30000 {
+        assert((relocate.relocation_lookup(relocs, index, i % 37, i / 37 * 8)) == i)
+    }
+    assert((relocate.relocation_lookup(relocs, index, 99, 0)) == -1)
+    assert((relocate.relocation_lookup(relocs, index, 0, 999999)) == -1)
     0
 }
