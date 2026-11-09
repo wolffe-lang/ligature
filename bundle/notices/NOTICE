@@ -1,4 +1,4 @@
-Musl link bundle for wolf 0.2.36 (x86-64 Linux)
+Musl link bundle for wolf 0.2.38 (x86-64 Linux)
 ================================================
 
 This is an aggregate of independently licensed binaries. No licence here
@@ -57,17 +57,17 @@ Apache-2.0 WITH LLVM-exception, with the legacy dual MIT/NCSA terms in
 LICENSES/llvm/libunwind/LICENSE.TXT. Rewritten by the same objcopy command;
 it had no compressed sections. Rust release/source URL is given above.
 
-libwolf_rt.a: wolf 0.2.36 musl runtime, revision
-5adf3d91f75b3545ff8d38e5b6693b0b9f367a05. GPL-3.0-or-later with the wolf
+libwolf_rt.a: wolf 0.2.38 musl runtime, revision
+95ae0827a8ad4d0bbed9302df7811caaa7009fa1. GPL-3.0-or-later with the wolf
 Runtime Library Exception; the unchanged release LICENSE and
-LICENSE-EXCEPTION are in LICENSES/wolf/. This replaces only the old bundle's
-0.2.35 runtime. Its Rust standard library is covered by LICENSES/rust/;
+LICENSE-EXCEPTION are in LICENSES/wolf/. This replaces only the 0.2.36
+bundle's runtime; the seven other binaries are byte-identical to it. Its Rust standard library is covered by LICENSES/rust/;
 its libc Rust bindings 0.2.189 are MIT OR Apache-2.0 (LICENSES/libc-rust/).
 Source and complete source tree:
-https://github.com/wolffe-lang/wolf-lang/tree/5adf3d91f75b3545ff8d38e5b6693b0b9f367a05
-https://github.com/wolffe-lang/wolf-lang/archive/5adf3d91f75b3545ff8d38e5b6693b0b9f367a05.tar.gz
+https://github.com/wolffe-lang/wolf-lang/tree/95ae0827a8ad4d0bbed9302df7811caaa7009fa1
+https://github.com/wolffe-lang/wolf-lang/archive/95ae0827a8ad4d0bbed9302df7811caaa7009fa1.tar.gz
 Binary release (including runtime):
-https://github.com/wolffe-lang/wolf-lang/releases/tag/v0.2.36
+https://github.com/wolffe-lang/wolf-lang/releases/tag/v0.2.38
 Rust libc bindings source: https://crates.io/crates/libc/0.2.189
 
 Use and verification
@@ -82,4 +82,4 @@ After verifying the archive's published SHA-256 and extracting it into a new
 directory, run `sha256sum -c MANIFEST` there. The eight binary paths retain
 the existing bundle interface. cc uses PAX_LLD and PAX_CC_SYSROOT; ligature
 uses LIGATURE_SYSROOT. Set WOLF_RT_LIB to this bundle's libwolf_rt.a when
-compiling with wolf 0.2.36. Nothing here changes your system toolchain.
+compiling with wolf 0.2.38. Nothing here changes your system toolchain.
