@@ -69,25 +69,35 @@ the binutils hashes match the table above. The local image digest is
 The generated CI C fixture exercises musl CRT startup, TLS, initialization
 arrays, static archive extraction, relocation retention and a real run.
 CI fetches the exact PAX-specific binary link bundle through `tools/fetch-bundle`:
-release `link-bundle-wolf-0.2.36`, asset
-`musl-link-bundle-sha256-8210ac2223d969ab8f0845cc74950a1c68226b58b10dd083cd2e2113acd3e37a.tar.gz`,
-36,514,237 bytes, SHA-256 `8210ac2223d969ab8f0845cc74950a1c68226b58b10dd083cd2e2113acd3e37a`.
+release `link-bundle-wolf-0.2.38`, asset
+`musl-link-bundle-sha256-4cff0af6a27d200def3651bf3caee77f9bd9452be715ce878e2f0197a0516a36.tar.gz`,
+36,613,546 bytes, SHA-256 `4cff0af6a27d200def3651bf3caee77f9bd9452be715ce878e2f0197a0516a36`.
 The archive and its pinned MANIFEST
-(`8bcea75770a47a23f619ad778d05c84a028f2e840964302d164195ea74e73886`)
+(`ef3261a0f7c05082c949945d259d7896ab9ce340c083ef76a0be834f40c69950`)
 are checked twice; every member is checked twice before and after extraction.
 The complete roster includes licence/notice texts and source attribution.
-It contains the exact LLD control, 0.2.36 musl runtime, CRTs, libc and libunwind.
+It contains the exact LLD control, 0.2.38 musl runtime, CRTs, libc and libunwind.
+It was staged by `tools/stage-bundle` from the 0.2.36 bundle
+(`musl-link-bundle-sha256-8210ac2223d969ab8f0845cc74950a1c68226b58b10dd083cd2e2113acd3e37a.tar.gz`,
+MANIFEST `8bcea75770a47a23f619ad778d05c84a028f2e840964302d164195ea74e73886`):
+the seven control and sysroot binaries byte-identical, the runtime member
+replaced by the 0.2.38 release's, the notices' runtime rows moved; staged twice
+to the same bytes.
 This provisions the real-ligature and self-link CI rows (ligature#13). The
 public Linux runtime targets glibc and cannot substitute for it (`open64`,
 `fstat64` and unwind references differ). The full PAX/Wolf corpus remains a
 separate local strict run; distro fixtures are not represented as that corpus.
-At the 0.2.36 pin, objects that compiler emits link against the release's own
+At the 0.2.38 pin, objects that compiler emits link against the release's own
 musl runtime, a separate pin (`[wolf-rt]` in `wolf-toolchain.toml`, fetched by
-`tools/fetch-musl-runtime`): asset `wolf-rt-0.2.36-x86_64-unknown-linux-musl.tar.gz`,
-SHA-256 `3aba9c8b4e5c51f2094242946fae0e6f1cd64bc7837b7484e1085ce63373aa57`, its
-`libwolf_rt.a` `6892dac8a6e211f12c6823c0f19497d820a47fdbfe7fb569cd967acf86461aad`,
-each read twice. That archive is byte-identical to the licensed bundle's
-runtime. Historical census evidence retains the earlier runtime identity.
+`tools/fetch-musl-runtime`): asset `wolf-rt-0.2.38-x86_64-unknown-linux-musl.tar.gz`,
+SHA-256 `486f54735c18a352ae20eb7a7c2bbc3c7d245ca1be488841727d1e4ca6bfa125`, its
+`libwolf_rt.a` `37252e1d0d97d917bc19e95f27d8304b8da3d31afd7a2120395e0c9a87bbc740`
+(47,350,818 bytes), each read twice. That archive is byte-identical to the
+licensed bundle's runtime. The 0.2.36 pin's runtime was
+`wolf-rt-0.2.36-x86_64-unknown-linux-musl.tar.gz`
+`3aba9c8b4e5c51f2094242946fae0e6f1cd64bc7837b7484e1085ce63373aa57`, its
+`libwolf_rt.a` `6892dac8a6e211f12c6823c0f19497d820a47fdbfe7fb569cd967acf86461aad`.
+Historical census evidence retains the earlier runtime identity.
 
 The relocation-index optimization consults only this project's own code and
 wolf-lang's `crates/wolf_rt/src/map.rs` (`find`, `__wolf_rt_map_set`): the pinned
