@@ -29,6 +29,7 @@ python3 -I tests/compact.py
 python3 -I tests/pax-validator.py
 python3 -I tests/pax-stage.py
 python3 -I tests/static-pax-runner.py
+python3 -I tests/hello-identity.py
 python3 -I tests/classify-static.py
 python3 -I tools/check-findings
 python3 -I tests/findings.py
