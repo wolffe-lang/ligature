@@ -1,39 +1,43 @@
-# r41p: release APIs 427033151 and 425116893 read twice 2026-10-31,
-# compared with r41's published table. Linux x86-64 archives hashed twice
-# on hasu; the complete wolf archive bundles the std pin (STD-REV 78b9d3cb)
-# and the GNU runtime (libwolf_rt.a 47fb9ad0...). The musl link bundle is
-# its own pin (tools/fetch-bundle, tests/pax-link.sums), never this file's.
-# (ct02: release APIs 421613621 and 421458363 read twice 2026-10-23.)
+# ld03b: release APIs for wolf v0.2.38 (tag commit 95ae0827), lupin v0.1.60
+# (tag commit 17bd5223) and wolf-rt 0.2.38 read twice 2026-11-09; every
+# archive below hashed twice on the Mac and compared with the release pages.
+# The complete wolf archive bundles the std pin (d4a4d4ca) and the GNU
+# runtime. The musl link bundle is its own pin (tools/fetch-bundle,
+# tests/pax-link.sums), never this file's; its runtime member is [wolf-rt]'s.
+# (r41p: release APIs 427033151 and 425116893 read twice 2026-10-31.
+# ct02: release APIs 421613621 and 421458363 read twice 2026-10-23.)
 
 [wolf]
-version = "0.2.36"
+version = "0.2.38"
 repo = "wolffe-lang/wolf-lang"
-rev = "5adf3d91f75b3545ff8d38e5b6693b0b9f367a05"
-version_line = "wolf 0.2.36 (wolfgang, pin 5adf3d9)"
-aarch64-apple-darwin = "b79d55845f349d56789d9d1cb057ee88b5a7128d3b6dd77ca070707cfa4aa632"
-x86_64-unknown-linux-gnu = "d383c74c8cd123b9d9dfaa268271d4f004294f85c2b230237d0ef07027d9500d"
-aarch64-unknown-linux-gnu = "3d5bd9ef47d3d198dd67fb3f995dff3ef7b169097529fa0e7ae8524e723be3d4"
+rev = "95ae0827a8ad4d0bbed9302df7811caaa7009fa1"
+version_line = "wolf 0.2.38 (wolfgang, pin 95ae082)"
+aarch64-apple-darwin = "66a2c31324e9e4c4cbb6f103e4014e36b400366c198598b67c71491a65cffba4"
+x86_64-unknown-linux-gnu = "8447a57944da67ba8e76f5b4e88c2f38a32f39466f44b65e5817dcc276394f39"
+aarch64-unknown-linux-gnu = "e0a6763095cf99cb60a18f260966c96dd62be826076aa0ea22e4ad4f141a60e6"
 
 [lupin]
-version = "0.1.58"
+version = "0.1.60"
 repo = "wolffe-lang/wolf-interp"
-rev = "6240efe5570dba1a33ba6269e3ba44bae33dd972"
-version_line = "lupin 0.1.58 (wolf-interp, reference interpreter at pin a5378e3)"
-aarch64-apple-darwin = "c1b0277133c052892be10539062666e873e874997cbb5be300cffe2c309ec055"
-x86_64-unknown-linux-gnu = "34f52792bb59bc7565e0edc1235cd47d9a6ad13d5e6528993627f2e699b62193"
-aarch64-unknown-linux-gnu = "00e40fa22d99046b28357f56092075cdb3e3e36a21cc44bf04d6b46605db432c"
+rev = "17bd522382373b361fe035a5cc61f9e136e1caba"
+version_line = "lupin 0.1.60 (wolf-interp, reference interpreter at pin 5f1f1c9)"
+aarch64-apple-darwin = "f3cae16fdb88a94702c0fd816d5eb90cdc8e8636c028dcf40f03868c5dc36bb8"
+x86_64-unknown-linux-gnu = "e7d4c4f1534736c9262f4ccd01a631f03ff70e3b8122eefe6e9ec1e15c02637e"
+aarch64-unknown-linux-gnu = "dc19e519c77e3b830965ba1516cecf3ef0097d658bc8dfd12ae96f2693d3373c"
 
 [std]
 repo = "wolffe-lang/wolf-std"
-rev = "78b9d3cbc41d51db44d18c40b6694403644d1c83"
+rev = "d4a4d4cab358e1e8c174f0206f9e13ad5cfe6c61"
 
 [wolf-rt]
-# The musl runtime 0.2.36 publishes as its fifth release asset, pinned as its
-# own identity. 0.2.36-compiled objects link against it: their entry calls
-# __wolf_rt_main_start (#962/#963), which the link bundle's runtime (0.2.35's,
-# tests/pax-link.sums) lacks. Never the bundle's libwolf_rt.a, never the GNU
-# archive's (47fb9ad0...). tools/fetch-musl-runtime reads both digests twice.
-version = "0.2.36"
+# The release's musl runtime publishes as its own asset, pinned as its own
+# identity. Objects the pinned compiler emits link against this runtime and
+# no other: their entry calls __wolf_rt_main_start (#962/#963), so objects and
+# runtime come from one release. The link bundle (tools/fetch-bundle) carries
+# a copy of this same archive member, checked against this digest by
+# tests/bundle-smoke.py. Never the GNU archive's libwolf_rt.a.
+# tools/fetch-musl-runtime reads both digests twice.
+version = "0.2.38"
 repo = "wolffe-lang/wolf-lang"
-x86_64-unknown-linux-musl = "3aba9c8b4e5c51f2094242946fae0e6f1cd64bc7837b7484e1085ce63373aa57"
-libwolf_rt = "6892dac8a6e211f12c6823c0f19497d820a47fdbfe7fb569cd967acf86461aad"
+x86_64-unknown-linux-musl = "486f54735c18a352ae20eb7a7c2bbc3c7d245ca1be488841727d1e4ca6bfa125"
+libwolf_rt = "37252e1d0d97d917bc19e95f27d8304b8da3d31afd7a2120395e0c9a87bbc740"

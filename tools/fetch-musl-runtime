@@ -1,9 +1,10 @@
 #!/usr/bin/env python3
 """Fetch the musl runtime the pinned wolf release publishes, by its own digests; never the bundle's runtime.
 
-0.2.36-compiled objects call __wolf_rt_main_start from their entry (#962/#963): "objects and runtime
-must come from this release together". The link bundle (tools/fetch-bundle) keeps its own identity,
-including its 0.2.35 libwolf_rt.a; this runtime is a separate pin ([wolf-rt] in wolf-toolchain.toml).
+Objects the pinned compiler emits (0.2.36 and later) call __wolf_rt_main_start from their entry
+(#962/#963): "objects and runtime must come from this release together". The link bundle
+(tools/fetch-bundle) keeps its own identity and carries a copy of this same runtime; this pin
+([wolf-rt] in wolf-toolchain.toml) is the one the self-link and argv rows link against.
 Stages .wolf-bin/musl/libwolf_rt.a.
 """
 import hashlib,pathlib,tarfile,tempfile,tomllib,urllib.request
