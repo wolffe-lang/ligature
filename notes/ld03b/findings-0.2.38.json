@@ -1,0 +1,5111 @@
+{
+  "baseline": "structural-classes-v2.json",
+  "baseline_names": 87,
+  "counts": {
+    "resolved": 3,
+    "retained": 84
+  },
+  "current_names": 84,
+  "format": "ligature.ld03b.findings-at-pin.v1",
+  "pin": "wolf 0.2.38 (95ae082), wolf-rt 0.2.38 37252e1d",
+  "retained_by_kind": {
+    "relocations": 28,
+    "segments": 28,
+    "symbols": 28
+  },
+  "rows": [
+    {
+      "baseline_facts": {
+        "candidate_records": 590207,
+        "cause": "retained per-site relocation records differ in identity, normalization or ordering; every candidate site is independently validated by the corpus gate",
+        "reference_records": 380307
+      },
+      "baseline_record_sha256": "22168f60583c34fae384b0cf94ab089f1d3a05d6add5da799fa58b2e6354aa71",
+      "current_facts": {
+        "candidate_records": 627901,
+        "cause": "retained per-site relocation records differ in identity, normalization or ordering; every candidate site is independently validated by the corpus gate",
+        "reference_records": 403886
+      },
+      "current_record_sha256": "b2c76dad6957bb69ce926ccd84d04b2b8c2039cbb4f52260644d38f7346bfb46",
+      "facts_equal": false,
+      "name": "compiler-comptime/gnu/relocations",
+      "status": "retained"
+    },
+    {
+      "baseline_facts": {
+        "candidate": [
+          [
+            1,
+            5,
+            4096
+          ],
+          [
+            1,
+            6,
+            4096
+          ],
+          [
+            7,
+            4,
+            8
+          ],
+          [
+            1685382481,
+            6,
+            16
+          ]
+        ],
+        "reference": [
+          [
+            1,
+            4,
+            4096
+          ],
+          [
+            1,
+            4,
+            4096
+          ],
+          [
+            1,
+            5,
+            4096
+          ],
+          [
+            1,
+            6,
+            4096
+          ],
+          [
+            7,
+            4,
+            8
+          ],
+          [
+            1685382481,
+            6,
+            16
+          ],
+          [
+            1685382482,
+            4,
+            1
+          ]
+        ]
+      },
+      "baseline_record_sha256": "22168f60583c34fae384b0cf94ab089f1d3a05d6add5da799fa58b2e6354aa71",
+      "current_facts": {
+        "candidate": [
+          [
+            1,
+            5,
+            4096
+          ],
+          [
+            1,
+            6,
+            4096
+          ],
+          [
+            7,
+            4,
+            8
+          ],
+          [
+            1685382481,
+            6,
+            16
+          ]
+        ],
+        "reference": [
+          [
+            1,
+            4,
+            4096
+          ],
+          [
+            1,
+            4,
+            4096
+          ],
+          [
+            1,
+            5,
+            4096
+          ],
+          [
+            1,
+            6,
+            4096
+          ],
+          [
+            7,
+            4,
+            8
+          ],
+          [
+            1685382481,
+            6,
+            16
+          ],
+          [
+            1685382482,
+            4,
+            1
+          ]
+        ]
+      },
+      "current_record_sha256": "b2c76dad6957bb69ce926ccd84d04b2b8c2039cbb4f52260644d38f7346bfb46",
+      "facts_equal": true,
+      "name": "compiler-comptime/gnu/segments",
+      "status": "retained"
+    },
+    {
+      "baseline_facts": {
+        "candidate_binding_counts": {
+          "0": 571,
+          "1": 2
+        },
+        "candidate_only": 573,
+        "reference_binding_counts": {
+          "0": 141,
+          "1": 160,
+          "2": 45
+        },
+        "reference_only": 346
+      },
+      "baseline_record_sha256": "22168f60583c34fae384b0cf94ab089f1d3a05d6add5da799fa58b2e6354aa71",
+      "current_facts": {
+        "candidate_binding_counts": {
+          "0": 579
+        },
+        "candidate_only": 579,
+        "reference_binding_counts": {
+          "0": 140,
+          "1": 170,
+          "2": 45
+        },
+        "reference_only": 355
+      },
+      "current_record_sha256": "b2c76dad6957bb69ce926ccd84d04b2b8c2039cbb4f52260644d38f7346bfb46",
+      "facts_equal": false,
+      "name": "compiler-comptime/gnu/symbols",
+      "status": "retained"
+    },
+    {
+      "baseline_facts": {
+        "candidate_records": 590207,
+        "cause": "retained per-site relocation records differ in identity, normalization or ordering; every candidate site is independently validated by the corpus gate",
+        "reference_records": 392393
+      },
+      "baseline_record_sha256": "6b4fdb171c6dd10c6d75f2693ef2b61a47de2038fefa6fc3e39e4d455e20a2e2",
+      "current_facts": {
+        "candidate_records": 627901,
+        "cause": "retained per-site relocation records differ in identity, normalization or ordering; every candidate site is independently validated by the corpus gate",
+        "reference_records": 416616
+      },
+      "current_record_sha256": "f3d8335df241c818f4b2c1793acf6913857af56f3e4772b7690c7c9217d5c6e5",
+      "facts_equal": false,
+      "name": "compiler-comptime/lld/relocations",
+      "status": "retained"
+    },
+    {
+      "baseline_facts": {
+        "candidate": [
+          [
+            1,
+            5,
+            4096
+          ],
+          [
+            1,
+            6,
+            4096
+          ],
+          [
+            7,
+            4,
+            8
+          ],
+          [
+            1685382481,
+            6,
+            16
+          ]
+        ],
+        "reference": [
+          [
+            1,
+            4,
+            4096
+          ],
+          [
+            1,
+            5,
+            4096
+          ],
+          [
+            1,
+            6,
+            4096
+          ],
+          [
+            1,
+            6,
+            4096
+          ],
+          [
+            6,
+            4,
+            8
+          ],
+          [
+            7,
+            4,
+            8
+          ],
+          [
+            1685382481,
+            6,
+            0
+          ],
+          [
+            1685382482,
+            4,
+            1
+          ]
+        ]
+      },
+      "baseline_record_sha256": "6b4fdb171c6dd10c6d75f2693ef2b61a47de2038fefa6fc3e39e4d455e20a2e2",
+      "current_facts": {
+        "candidate": [
+          [
+            1,
+            5,
+            4096
+          ],
+          [
+            1,
+            6,
+            4096
+          ],
+          [
+            7,
+            4,
+            8
+          ],
+          [
+            1685382481,
+            6,
+            16
+          ]
+        ],
+        "reference": [
+          [
+            1,
+            4,
+            4096
+          ],
+          [
+            1,
+            5,
+            4096
+          ],
+          [
+            1,
+            6,
+            4096
+          ],
+          [
+            1,
+            6,
+            4096
+          ],
+          [
+            6,
+            4,
+            8
+          ],
+          [
+            7,
+            4,
+            8
+          ],
+          [
+            1685382481,
+            6,
+            0
+          ],
+          [
+            1685382482,
+            4,
+            1
+          ]
+        ]
+      },
+      "current_record_sha256": "f3d8335df241c818f4b2c1793acf6913857af56f3e4772b7690c7c9217d5c6e5",
+      "facts_equal": true,
+      "name": "compiler-comptime/lld/segments",
+      "status": "retained"
+    },
+    {
+      "baseline_facts": {
+        "candidate_binding_counts": {
+          "0": 381
+        },
+        "candidate_only": 381,
+        "reference_binding_counts": {
+          "0": 975
+        },
+        "reference_only": 975
+      },
+      "baseline_record_sha256": "6b4fdb171c6dd10c6d75f2693ef2b61a47de2038fefa6fc3e39e4d455e20a2e2",
+      "current_facts": {
+        "candidate_binding_counts": {
+          "0": 381
+        },
+        "candidate_only": 381,
+        "reference_binding_counts": {
+          "0": 1022
+        },
+        "reference_only": 1022
+      },
+      "current_record_sha256": "f3d8335df241c818f4b2c1793acf6913857af56f3e4772b7690c7c9217d5c6e5",
+      "facts_equal": false,
+      "name": "compiler-comptime/lld/symbols",
+      "status": "retained"
+    },
+    {
+      "baseline_facts": {
+        "candidate_records": 590356,
+        "cause": "retained per-site relocation records differ in identity, normalization or ordering; every candidate site is independently validated by the corpus gate",
+        "reference_records": 381188
+      },
+      "baseline_record_sha256": "81ff5caeb12e06dc95b519799476c382015f521dbc8de02502a3c853682c19c7",
+      "current_facts": {
+        "candidate_records": 628045,
+        "cause": "retained per-site relocation records differ in identity, normalization or ordering; every candidate site is independently validated by the corpus gate",
+        "reference_records": 404657
+      },
+      "current_record_sha256": "98f7a4cb19098b969f2e1bf5331e4807a28fadc9589507ed72f519984f95c889",
+      "facts_equal": false,
+      "name": "compiler-entry_no_return/gnu/relocations",
+      "status": "retained"
+    },
+    {
+      "baseline_facts": {
+        "candidate": [
+          [
+            1,
+            5,
+            4096
+          ],
+          [
+            1,
+            6,
+            4096
+          ],
+          [
+            7,
+            4,
+            8
+          ],
+          [
+            1685382481,
+            6,
+            16
+          ]
+        ],
+        "reference": [
+          [
+            1,
+            4,
+            4096
+          ],
+          [
+            1,
+            4,
+            4096
+          ],
+          [
+            1,
+            5,
+            4096
+          ],
+          [
+            1,
+            6,
+            4096
+          ],
+          [
+            7,
+            4,
+            8
+          ],
+          [
+            1685382481,
+            6,
+            16
+          ],
+          [
+            1685382482,
+            4,
+            1
+          ]
+        ]
+      },
+      "baseline_record_sha256": "81ff5caeb12e06dc95b519799476c382015f521dbc8de02502a3c853682c19c7",
+      "current_facts": {
+        "candidate": [
+          [
+            1,
+            5,
+            4096
+          ],
+          [
+            1,
+            6,
+            4096
+          ],
+          [
+            7,
+            4,
+            8
+          ],
+          [
+            1685382481,
+            6,
+            16
+          ]
+        ],
+        "reference": [
+          [
+            1,
+            4,
+            4096
+          ],
+          [
+            1,
+            4,
+            4096
+          ],
+          [
+            1,
+            5,
+            4096
+          ],
+          [
+            1,
+            6,
+            4096
+          ],
+          [
+            7,
+            4,
+            8
+          ],
+          [
+            1685382481,
+            6,
+            16
+          ],
+          [
+            1685382482,
+            4,
+            1
+          ]
+        ]
+      },
+      "current_record_sha256": "98f7a4cb19098b969f2e1bf5331e4807a28fadc9589507ed72f519984f95c889",
+      "facts_equal": true,
+      "name": "compiler-entry_no_return/gnu/segments",
+      "status": "retained"
+    },
+    {
+      "baseline_facts": {
+        "candidate_binding_counts": {
+          "0": 584
+        },
+        "candidate_only": 584,
+        "reference_binding_counts": {
+          "0": 147,
+          "1": 165,
+          "2": 45
+        },
+        "reference_only": 357
+      },
+      "baseline_record_sha256": "81ff5caeb12e06dc95b519799476c382015f521dbc8de02502a3c853682c19c7",
+      "current_facts": {
+        "candidate_binding_counts": {
+          "0": 591
+        },
+        "candidate_only": 591,
+        "reference_binding_counts": {
+          "0": 147,
+          "1": 175,
+          "2": 45
+        },
+        "reference_only": 367
+      },
+      "current_record_sha256": "98f7a4cb19098b969f2e1bf5331e4807a28fadc9589507ed72f519984f95c889",
+      "facts_equal": false,
+      "name": "compiler-entry_no_return/gnu/symbols",
+      "status": "retained"
+    },
+    {
+      "baseline_facts": {
+        "candidate_records": 590356,
+        "cause": "retained per-site relocation records differ in identity, normalization or ordering; every candidate site is independently validated by the corpus gate",
+        "reference_records": 393247
+      },
+      "baseline_record_sha256": "39a3ed60546bc7f81bcd39de44ad1353c459e1a8cacda994b78a37c8b464c309",
+      "current_facts": {
+        "candidate_records": 628045,
+        "cause": "retained per-site relocation records differ in identity, normalization or ordering; every candidate site is independently validated by the corpus gate",
+        "reference_records": 417362
+      },
+      "current_record_sha256": "c17c2fb4edd9fba73b0624ee903d8667027cd0e836b460b9ca3c92bebf7ed9d3",
+      "facts_equal": false,
+      "name": "compiler-entry_no_return/lld/relocations",
+      "status": "retained"
+    },
+    {
+      "baseline_facts": {
+        "candidate": [
+          [
+            1,
+            5,
+            4096
+          ],
+          [
+            1,
+            6,
+            4096
+          ],
+          [
+            7,
+            4,
+            8
+          ],
+          [
+            1685382481,
+            6,
+            16
+          ]
+        ],
+        "reference": [
+          [
+            1,
+            4,
+            4096
+          ],
+          [
+            1,
+            5,
+            4096
+          ],
+          [
+            1,
+            6,
+            4096
+          ],
+          [
+            1,
+            6,
+            4096
+          ],
+          [
+            6,
+            4,
+            8
+          ],
+          [
+            7,
+            4,
+            8
+          ],
+          [
+            1685382481,
+            6,
+            0
+          ],
+          [
+            1685382482,
+            4,
+            1
+          ]
+        ]
+      },
+      "baseline_record_sha256": "39a3ed60546bc7f81bcd39de44ad1353c459e1a8cacda994b78a37c8b464c309",
+      "current_facts": {
+        "candidate": [
+          [
+            1,
+            5,
+            4096
+          ],
+          [
+            1,
+            6,
+            4096
+          ],
+          [
+            7,
+            4,
+            8
+          ],
+          [
+            1685382481,
+            6,
+            16
+          ]
+        ],
+        "reference": [
+          [
+            1,
+            4,
+            4096
+          ],
+          [
+            1,
+            5,
+            4096
+          ],
+          [
+            1,
+            6,
+            4096
+          ],
+          [
+            1,
+            6,
+            4096
+          ],
+          [
+            6,
+            4,
+            8
+          ],
+          [
+            7,
+            4,
+            8
+          ],
+          [
+            1685382481,
+            6,
+            0
+          ],
+          [
+            1685382482,
+            4,
+            1
+          ]
+        ]
+      },
+      "current_record_sha256": "c17c2fb4edd9fba73b0624ee903d8667027cd0e836b460b9ca3c92bebf7ed9d3",
+      "facts_equal": true,
+      "name": "compiler-entry_no_return/lld/segments",
+      "status": "retained"
+    },
+    {
+      "baseline_facts": {
+        "candidate_binding_counts": {
+          "0": 389
+        },
+        "candidate_only": 389,
+        "reference_binding_counts": {
+          "0": 975
+        },
+        "reference_only": 975
+      },
+      "baseline_record_sha256": "39a3ed60546bc7f81bcd39de44ad1353c459e1a8cacda994b78a37c8b464c309",
+      "current_facts": {
+        "candidate_binding_counts": {
+          "0": 387
+        },
+        "candidate_only": 387,
+        "reference_binding_counts": {
+          "0": 1022
+        },
+        "reference_only": 1022
+      },
+      "current_record_sha256": "c17c2fb4edd9fba73b0624ee903d8667027cd0e836b460b9ca3c92bebf7ed9d3",
+      "facts_equal": false,
+      "name": "compiler-entry_no_return/lld/symbols",
+      "status": "retained"
+    },
+    {
+      "baseline_facts": {
+        "candidate_records": 590208,
+        "cause": "retained per-site relocation records differ in identity, normalization or ordering; every candidate site is independently validated by the corpus gate",
+        "reference_records": 380308
+      },
+      "baseline_record_sha256": "c7d9609b0ea8d966db5f1eb4eaa967d7eb157b88d2a7f2520f94f984381c64d2",
+      "current_facts": {
+        "candidate_records": 627902,
+        "cause": "retained per-site relocation records differ in identity, normalization or ordering; every candidate site is independently validated by the corpus gate",
+        "reference_records": 403887
+      },
+      "current_record_sha256": "0154c11d00d935be7a258b02cd43bd7e704d2ff94625036ebcc120e8429fd0f4",
+      "facts_equal": false,
+      "name": "compiler-overflow/gnu/relocations",
+      "status": "retained"
+    },
+    {
+      "baseline_facts": {
+        "candidate": [
+          [
+            1,
+            5,
+            4096
+          ],
+          [
+            1,
+            6,
+            4096
+          ],
+          [
+            7,
+            4,
+            8
+          ],
+          [
+            1685382481,
+            6,
+            16
+          ]
+        ],
+        "reference": [
+          [
+            1,
+            4,
+            4096
+          ],
+          [
+            1,
+            4,
+            4096
+          ],
+          [
+            1,
+            5,
+            4096
+          ],
+          [
+            1,
+            6,
+            4096
+          ],
+          [
+            7,
+            4,
+            8
+          ],
+          [
+            1685382481,
+            6,
+            16
+          ],
+          [
+            1685382482,
+            4,
+            1
+          ]
+        ]
+      },
+      "baseline_record_sha256": "c7d9609b0ea8d966db5f1eb4eaa967d7eb157b88d2a7f2520f94f984381c64d2",
+      "current_facts": {
+        "candidate": [
+          [
+            1,
+            5,
+            4096
+          ],
+          [
+            1,
+            6,
+            4096
+          ],
+          [
+            7,
+            4,
+            8
+          ],
+          [
+            1685382481,
+            6,
+            16
+          ]
+        ],
+        "reference": [
+          [
+            1,
+            4,
+            4096
+          ],
+          [
+            1,
+            4,
+            4096
+          ],
+          [
+            1,
+            5,
+            4096
+          ],
+          [
+            1,
+            6,
+            4096
+          ],
+          [
+            7,
+            4,
+            8
+          ],
+          [
+            1685382481,
+            6,
+            16
+          ],
+          [
+            1685382482,
+            4,
+            1
+          ]
+        ]
+      },
+      "current_record_sha256": "0154c11d00d935be7a258b02cd43bd7e704d2ff94625036ebcc120e8429fd0f4",
+      "facts_equal": true,
+      "name": "compiler-overflow/gnu/segments",
+      "status": "retained"
+    },
+    {
+      "baseline_facts": {
+        "candidate_binding_counts": {
+          "0": 571,
+          "1": 2
+        },
+        "candidate_only": 573,
+        "reference_binding_counts": {
+          "0": 141,
+          "1": 160,
+          "2": 45
+        },
+        "reference_only": 346
+      },
+      "baseline_record_sha256": "c7d9609b0ea8d966db5f1eb4eaa967d7eb157b88d2a7f2520f94f984381c64d2",
+      "current_facts": {
+        "candidate_binding_counts": {
+          "0": 579
+        },
+        "candidate_only": 579,
+        "reference_binding_counts": {
+          "0": 140,
+          "1": 170,
+          "2": 45
+        },
+        "reference_only": 355
+      },
+      "current_record_sha256": "0154c11d00d935be7a258b02cd43bd7e704d2ff94625036ebcc120e8429fd0f4",
+      "facts_equal": false,
+      "name": "compiler-overflow/gnu/symbols",
+      "status": "retained"
+    },
+    {
+      "baseline_facts": {
+        "candidate_records": 590208,
+        "cause": "retained per-site relocation records differ in identity, normalization or ordering; every candidate site is independently validated by the corpus gate",
+        "reference_records": 392394
+      },
+      "baseline_record_sha256": "6838f7fe918fbdeadfe697d5e535be5817639d0cc0ff3a4de196ecbe17fd71da",
+      "current_facts": {
+        "candidate_records": 627902,
+        "cause": "retained per-site relocation records differ in identity, normalization or ordering; every candidate site is independently validated by the corpus gate",
+        "reference_records": 416617
+      },
+      "current_record_sha256": "4f6613cb09801a6159525d96b7b508a3d82c2ed829c8b183e2d5958b9e3d4731",
+      "facts_equal": false,
+      "name": "compiler-overflow/lld/relocations",
+      "status": "retained"
+    },
+    {
+      "baseline_facts": {
+        "candidate": [
+          [
+            1,
+            5,
+            4096
+          ],
+          [
+            1,
+            6,
+            4096
+          ],
+          [
+            7,
+            4,
+            8
+          ],
+          [
+            1685382481,
+            6,
+            16
+          ]
+        ],
+        "reference": [
+          [
+            1,
+            4,
+            4096
+          ],
+          [
+            1,
+            5,
+            4096
+          ],
+          [
+            1,
+            6,
+            4096
+          ],
+          [
+            1,
+            6,
+            4096
+          ],
+          [
+            6,
+            4,
+            8
+          ],
+          [
+            7,
+            4,
+            8
+          ],
+          [
+            1685382481,
+            6,
+            0
+          ],
+          [
+            1685382482,
+            4,
+            1
+          ]
+        ]
+      },
+      "baseline_record_sha256": "6838f7fe918fbdeadfe697d5e535be5817639d0cc0ff3a4de196ecbe17fd71da",
+      "current_facts": {
+        "candidate": [
+          [
+            1,
+            5,
+            4096
+          ],
+          [
+            1,
+            6,
+            4096
+          ],
+          [
+            7,
+            4,
+            8
+          ],
+          [
+            1685382481,
+            6,
+            16
+          ]
+        ],
+        "reference": [
+          [
+            1,
+            4,
+            4096
+          ],
+          [
+            1,
+            5,
+            4096
+          ],
+          [
+            1,
+            6,
+            4096
+          ],
+          [
+            1,
+            6,
+            4096
+          ],
+          [
+            6,
+            4,
+            8
+          ],
+          [
+            7,
+            4,
+            8
+          ],
+          [
+            1685382481,
+            6,
+            0
+          ],
+          [
+            1685382482,
+            4,
+            1
+          ]
+        ]
+      },
+      "current_record_sha256": "4f6613cb09801a6159525d96b7b508a3d82c2ed829c8b183e2d5958b9e3d4731",
+      "facts_equal": true,
+      "name": "compiler-overflow/lld/segments",
+      "status": "retained"
+    },
+    {
+      "baseline_facts": {
+        "candidate_binding_counts": {
+          "0": 381
+        },
+        "candidate_only": 381,
+        "reference_binding_counts": {
+          "0": 975
+        },
+        "reference_only": 975
+      },
+      "baseline_record_sha256": "6838f7fe918fbdeadfe697d5e535be5817639d0cc0ff3a4de196ecbe17fd71da",
+      "current_facts": {
+        "candidate_binding_counts": {
+          "0": 381
+        },
+        "candidate_only": 381,
+        "reference_binding_counts": {
+          "0": 1022
+        },
+        "reference_only": 1022
+      },
+      "current_record_sha256": "4f6613cb09801a6159525d96b7b508a3d82c2ed829c8b183e2d5958b9e3d4731",
+      "facts_equal": false,
+      "name": "compiler-overflow/lld/symbols",
+      "status": "retained"
+    },
+    {
+      "baseline_facts": {
+        "candidate_records": 596265,
+        "cause": "retained per-site relocation records differ in identity, normalization or ordering; every candidate site is independently validated by the corpus gate",
+        "reference_records": 435259
+      },
+      "baseline_record_sha256": "e55aa4032b46bd2643dcf3c8f980a168784128d4598605078cb7da23e1764561",
+      "current_facts": {
+        "candidate_records": 634078,
+        "cause": "retained per-site relocation records differ in identity, normalization or ordering; every candidate site is independently validated by the corpus gate",
+        "reference_records": 460372
+      },
+      "current_record_sha256": "602543f330b28b19b4adb97a65fa99d68636e1ad19d1f5f32bf3867867b249eb",
+      "facts_equal": false,
+      "name": "compiler-procs/gnu/relocations",
+      "status": "retained"
+    },
+    {
+      "baseline_facts": {
+        "candidate": [
+          [
+            1,
+            5,
+            4096
+          ],
+          [
+            1,
+            6,
+            4096
+          ],
+          [
+            7,
+            4,
+            8
+          ],
+          [
+            1685382481,
+            6,
+            16
+          ]
+        ],
+        "reference": [
+          [
+            1,
+            4,
+            4096
+          ],
+          [
+            1,
+            4,
+            4096
+          ],
+          [
+            1,
+            5,
+            4096
+          ],
+          [
+            1,
+            6,
+            4096
+          ],
+          [
+            7,
+            4,
+            8
+          ],
+          [
+            1685382481,
+            6,
+            16
+          ],
+          [
+            1685382482,
+            4,
+            1
+          ]
+        ]
+      },
+      "baseline_record_sha256": "e55aa4032b46bd2643dcf3c8f980a168784128d4598605078cb7da23e1764561",
+      "current_facts": {
+        "candidate": [
+          [
+            1,
+            5,
+            4096
+          ],
+          [
+            1,
+            6,
+            4096
+          ],
+          [
+            7,
+            4,
+            8
+          ],
+          [
+            1685382481,
+            6,
+            16
+          ]
+        ],
+        "reference": [
+          [
+            1,
+            4,
+            4096
+          ],
+          [
+            1,
+            4,
+            4096
+          ],
+          [
+            1,
+            5,
+            4096
+          ],
+          [
+            1,
+            6,
+            4096
+          ],
+          [
+            7,
+            4,
+            8
+          ],
+          [
+            1685382481,
+            6,
+            16
+          ],
+          [
+            1685382482,
+            4,
+            1
+          ]
+        ]
+      },
+      "current_record_sha256": "602543f330b28b19b4adb97a65fa99d68636e1ad19d1f5f32bf3867867b249eb",
+      "facts_equal": true,
+      "name": "compiler-procs/gnu/segments",
+      "status": "retained"
+    },
+    {
+      "baseline_facts": {
+        "candidate_binding_counts": {
+          "0": 1125,
+          "1": 6
+        },
+        "candidate_only": 1131,
+        "reference_binding_counts": {
+          "0": 369,
+          "1": 480,
+          "2": 49
+        },
+        "reference_only": 898
+      },
+      "baseline_record_sha256": "e55aa4032b46bd2643dcf3c8f980a168784128d4598605078cb7da23e1764561",
+      "current_facts": {
+        "candidate_binding_counts": {
+          "0": 1131
+        },
+        "candidate_only": 1131,
+        "reference_binding_counts": {
+          "0": 366,
+          "1": 485,
+          "2": 49
+        },
+        "reference_only": 900
+      },
+      "current_record_sha256": "602543f330b28b19b4adb97a65fa99d68636e1ad19d1f5f32bf3867867b249eb",
+      "facts_equal": false,
+      "name": "compiler-procs/gnu/symbols",
+      "status": "retained"
+    },
+    {
+      "baseline_facts": {
+        "candidate_memsz": 552,
+        "candidate_only_variables": [],
+        "classification": "different TLS variable ordering; raw template mismatch remains recorded",
+        "reference_memsz": 552,
+        "reference_only_variables": [],
+        "symbol_bindings_equal": false,
+        "symbol_normalized_initializers_equal": true
+      },
+      "baseline_record_sha256": "e55aa4032b46bd2643dcf3c8f980a168784128d4598605078cb7da23e1764561",
+      "decision": "no tls difference recorded for compiler-procs against gnu at the 0.2.38 pin",
+      "name": "compiler-procs/gnu/tls",
+      "status": "resolved"
+    },
+    {
+      "baseline_facts": {
+        "candidate_records": 596265,
+        "cause": "retained per-site relocation records differ in identity, normalization or ordering; every candidate site is independently validated by the corpus gate",
+        "reference_records": 445768
+      },
+      "baseline_record_sha256": "5d4e4733eaa7bd0db99daa2d921597b7f38fb85657e10c6f4aecd94bfad508a5",
+      "current_facts": {
+        "candidate_records": 634078,
+        "cause": "retained per-site relocation records differ in identity, normalization or ordering; every candidate site is independently validated by the corpus gate",
+        "reference_records": 471208
+      },
+      "current_record_sha256": "d7947fdaebcd988fd8a85e455393059a163046281a8f1f5089afb04b52723b10",
+      "facts_equal": false,
+      "name": "compiler-procs/lld/relocations",
+      "status": "retained"
+    },
+    {
+      "baseline_facts": {
+        "candidate": [
+          [
+            1,
+            5,
+            4096
+          ],
+          [
+            1,
+            6,
+            4096
+          ],
+          [
+            7,
+            4,
+            8
+          ],
+          [
+            1685382481,
+            6,
+            16
+          ]
+        ],
+        "reference": [
+          [
+            1,
+            4,
+            4096
+          ],
+          [
+            1,
+            5,
+            4096
+          ],
+          [
+            1,
+            6,
+            4096
+          ],
+          [
+            1,
+            6,
+            4096
+          ],
+          [
+            6,
+            4,
+            8
+          ],
+          [
+            7,
+            4,
+            8
+          ],
+          [
+            1685382481,
+            6,
+            0
+          ],
+          [
+            1685382482,
+            4,
+            1
+          ]
+        ]
+      },
+      "baseline_record_sha256": "5d4e4733eaa7bd0db99daa2d921597b7f38fb85657e10c6f4aecd94bfad508a5",
+      "current_facts": {
+        "candidate": [
+          [
+            1,
+            5,
+            4096
+          ],
+          [
+            1,
+            6,
+            4096
+          ],
+          [
+            7,
+            4,
+            8
+          ],
+          [
+            1685382481,
+            6,
+            16
+          ]
+        ],
+        "reference": [
+          [
+            1,
+            4,
+            4096
+          ],
+          [
+            1,
+            5,
+            4096
+          ],
+          [
+            1,
+            6,
+            4096
+          ],
+          [
+            1,
+            6,
+            4096
+          ],
+          [
+            6,
+            4,
+            8
+          ],
+          [
+            7,
+            4,
+            8
+          ],
+          [
+            1685382481,
+            6,
+            0
+          ],
+          [
+            1685382482,
+            4,
+            1
+          ]
+        ]
+      },
+      "current_record_sha256": "d7947fdaebcd988fd8a85e455393059a163046281a8f1f5089afb04b52723b10",
+      "facts_equal": true,
+      "name": "compiler-procs/lld/segments",
+      "status": "retained"
+    },
+    {
+      "baseline_facts": {
+        "candidate_binding_counts": {
+          "0": 608
+        },
+        "candidate_only": 608,
+        "reference_binding_counts": {
+          "0": 975
+        },
+        "reference_only": 975
+      },
+      "baseline_record_sha256": "5d4e4733eaa7bd0db99daa2d921597b7f38fb85657e10c6f4aecd94bfad508a5",
+      "current_facts": {
+        "candidate_binding_counts": {
+          "0": 609
+        },
+        "candidate_only": 609,
+        "reference_binding_counts": {
+          "0": 1022
+        },
+        "reference_only": 1022
+      },
+      "current_record_sha256": "d7947fdaebcd988fd8a85e455393059a163046281a8f1f5089afb04b52723b10",
+      "facts_equal": false,
+      "name": "compiler-procs/lld/symbols",
+      "status": "retained"
+    },
+    {
+      "baseline_facts": {
+        "candidate_records": 590615,
+        "cause": "retained per-site relocation records differ in identity, normalization or ordering; every candidate site is independently validated by the corpus gate",
+        "reference_records": 383409
+      },
+      "baseline_record_sha256": "277927cce9a9350a8336635ae665e88e41e9c7150c3590312b5c031642d35c91",
+      "current_facts": {
+        "candidate_records": 628327,
+        "cause": "retained per-site relocation records differ in identity, normalization or ordering; every candidate site is independently validated by the corpus gate",
+        "reference_records": 407126
+      },
+      "current_record_sha256": "4eb4029c2a79d9486f946163b8e62ceb3bd3c2078a1cf3c242ee38b3e95e06df",
+      "facts_equal": false,
+      "name": "compiler-regions/gnu/relocations",
+      "status": "retained"
+    },
+    {
+      "baseline_facts": {
+        "candidate": [
+          [
+            1,
+            5,
+            4096
+          ],
+          [
+            1,
+            6,
+            4096
+          ],
+          [
+            7,
+            4,
+            8
+          ],
+          [
+            1685382481,
+            6,
+            16
+          ]
+        ],
+        "reference": [
+          [
+            1,
+            4,
+            4096
+          ],
+          [
+            1,
+            4,
+            4096
+          ],
+          [
+            1,
+            5,
+            4096
+          ],
+          [
+            1,
+            6,
+            4096
+          ],
+          [
+            7,
+            4,
+            8
+          ],
+          [
+            1685382481,
+            6,
+            16
+          ],
+          [
+            1685382482,
+            4,
+            1
+          ]
+        ]
+      },
+      "baseline_record_sha256": "277927cce9a9350a8336635ae665e88e41e9c7150c3590312b5c031642d35c91",
+      "current_facts": {
+        "candidate": [
+          [
+            1,
+            5,
+            4096
+          ],
+          [
+            1,
+            6,
+            4096
+          ],
+          [
+            7,
+            4,
+            8
+          ],
+          [
+            1685382481,
+            6,
+            16
+          ]
+        ],
+        "reference": [
+          [
+            1,
+            4,
+            4096
+          ],
+          [
+            1,
+            4,
+            4096
+          ],
+          [
+            1,
+            5,
+            4096
+          ],
+          [
+            1,
+            6,
+            4096
+          ],
+          [
+            7,
+            4,
+            8
+          ],
+          [
+            1685382481,
+            6,
+            16
+          ],
+          [
+            1685382482,
+            4,
+            1
+          ]
+        ]
+      },
+      "current_record_sha256": "4eb4029c2a79d9486f946163b8e62ceb3bd3c2078a1cf3c242ee38b3e95e06df",
+      "facts_equal": true,
+      "name": "compiler-regions/gnu/segments",
+      "status": "retained"
+    },
+    {
+      "baseline_facts": {
+        "candidate_binding_counts": {
+          "0": 641,
+          "1": 2
+        },
+        "candidate_only": 643,
+        "reference_binding_counts": {
+          "0": 161,
+          "1": 210,
+          "2": 45
+        },
+        "reference_only": 416
+      },
+      "baseline_record_sha256": "277927cce9a9350a8336635ae665e88e41e9c7150c3590312b5c031642d35c91",
+      "current_facts": {
+        "candidate_binding_counts": {
+          "0": 644
+        },
+        "candidate_only": 644,
+        "reference_binding_counts": {
+          "0": 158,
+          "1": 217,
+          "2": 45
+        },
+        "reference_only": 420
+      },
+      "current_record_sha256": "4eb4029c2a79d9486f946163b8e62ceb3bd3c2078a1cf3c242ee38b3e95e06df",
+      "facts_equal": false,
+      "name": "compiler-regions/gnu/symbols",
+      "status": "retained"
+    },
+    {
+      "baseline_facts": {
+        "candidate_records": 590615,
+        "cause": "retained per-site relocation records differ in identity, normalization or ordering; every candidate site is independently validated by the corpus gate",
+        "reference_records": 395426
+      },
+      "baseline_record_sha256": "4793bd49b12651f98d9af87f0e58a53bea02c608a505ff9b9d828194c92747f1",
+      "current_facts": {
+        "candidate_records": 628327,
+        "cause": "retained per-site relocation records differ in identity, normalization or ordering; every candidate site is independently validated by the corpus gate",
+        "reference_records": 419788
+      },
+      "current_record_sha256": "87e42a6b368d7443072f52449cb7219dc36a3b9876483ce45f0d11d42246844e",
+      "facts_equal": false,
+      "name": "compiler-regions/lld/relocations",
+      "status": "retained"
+    },
+    {
+      "baseline_facts": {
+        "candidate": [
+          [
+            1,
+            5,
+            4096
+          ],
+          [
+            1,
+            6,
+            4096
+          ],
+          [
+            7,
+            4,
+            8
+          ],
+          [
+            1685382481,
+            6,
+            16
+          ]
+        ],
+        "reference": [
+          [
+            1,
+            4,
+            4096
+          ],
+          [
+            1,
+            5,
+            4096
+          ],
+          [
+            1,
+            6,
+            4096
+          ],
+          [
+            1,
+            6,
+            4096
+          ],
+          [
+            6,
+            4,
+            8
+          ],
+          [
+            7,
+            4,
+            8
+          ],
+          [
+            1685382481,
+            6,
+            0
+          ],
+          [
+            1685382482,
+            4,
+            1
+          ]
+        ]
+      },
+      "baseline_record_sha256": "4793bd49b12651f98d9af87f0e58a53bea02c608a505ff9b9d828194c92747f1",
+      "current_facts": {
+        "candidate": [
+          [
+            1,
+            5,
+            4096
+          ],
+          [
+            1,
+            6,
+            4096
+          ],
+          [
+            7,
+            4,
+            8
+          ],
+          [
+            1685382481,
+            6,
+            16
+          ]
+        ],
+        "reference": [
+          [
+            1,
+            4,
+            4096
+          ],
+          [
+            1,
+            5,
+            4096
+          ],
+          [
+            1,
+            6,
+            4096
+          ],
+          [
+            1,
+            6,
+            4096
+          ],
+          [
+            6,
+            4,
+            8
+          ],
+          [
+            7,
+            4,
+            8
+          ],
+          [
+            1685382481,
+            6,
+            0
+          ],
+          [
+            1685382482,
+            4,
+            1
+          ]
+        ]
+      },
+      "current_record_sha256": "87e42a6b368d7443072f52449cb7219dc36a3b9876483ce45f0d11d42246844e",
+      "facts_equal": true,
+      "name": "compiler-regions/lld/segments",
+      "status": "retained"
+    },
+    {
+      "baseline_facts": {
+        "candidate_binding_counts": {
+          "0": 401
+        },
+        "candidate_only": 401,
+        "reference_binding_counts": {
+          "0": 975
+        },
+        "reference_only": 975
+      },
+      "baseline_record_sha256": "4793bd49b12651f98d9af87f0e58a53bea02c608a505ff9b9d828194c92747f1",
+      "current_facts": {
+        "candidate_binding_counts": {
+          "0": 398
+        },
+        "candidate_only": 398,
+        "reference_binding_counts": {
+          "0": 1022
+        },
+        "reference_only": 1022
+      },
+      "current_record_sha256": "87e42a6b368d7443072f52449cb7219dc36a3b9876483ce45f0d11d42246844e",
+      "facts_equal": false,
+      "name": "compiler-regions/lld/symbols",
+      "status": "retained"
+    },
+    {
+      "baseline_facts": {
+        "candidate_records": 590358,
+        "cause": "retained per-site relocation records differ in identity, normalization or ordering; every candidate site is independently validated by the corpus gate",
+        "reference_records": 381190
+      },
+      "baseline_record_sha256": "bc16be0a5185f10ecb320be0dfaeb28264555f1c97b6f08abc528442805345a4",
+      "current_facts": {
+        "candidate_records": 628047,
+        "cause": "retained per-site relocation records differ in identity, normalization or ordering; every candidate site is independently validated by the corpus gate",
+        "reference_records": 404659
+      },
+      "current_record_sha256": "8f44307bd6fef9d1da2168a3c23cd98f28ca76737c39adbc886d6942fcad18bf",
+      "facts_equal": false,
+      "name": "hello-hello/gnu/relocations",
+      "status": "retained"
+    },
+    {
+      "baseline_facts": {
+        "candidate": [
+          [
+            1,
+            5,
+            4096
+          ],
+          [
+            1,
+            6,
+            4096
+          ],
+          [
+            7,
+            4,
+            8
+          ],
+          [
+            1685382481,
+            6,
+            16
+          ]
+        ],
+        "reference": [
+          [
+            1,
+            4,
+            4096
+          ],
+          [
+            1,
+            4,
+            4096
+          ],
+          [
+            1,
+            5,
+            4096
+          ],
+          [
+            1,
+            6,
+            4096
+          ],
+          [
+            7,
+            4,
+            8
+          ],
+          [
+            1685382481,
+            6,
+            16
+          ],
+          [
+            1685382482,
+            4,
+            1
+          ]
+        ]
+      },
+      "baseline_record_sha256": "bc16be0a5185f10ecb320be0dfaeb28264555f1c97b6f08abc528442805345a4",
+      "current_facts": {
+        "candidate": [
+          [
+            1,
+            5,
+            4096
+          ],
+          [
+            1,
+            6,
+            4096
+          ],
+          [
+            7,
+            4,
+            8
+          ],
+          [
+            1685382481,
+            6,
+            16
+          ]
+        ],
+        "reference": [
+          [
+            1,
+            4,
+            4096
+          ],
+          [
+            1,
+            4,
+            4096
+          ],
+          [
+            1,
+            5,
+            4096
+          ],
+          [
+            1,
+            6,
+            4096
+          ],
+          [
+            7,
+            4,
+            8
+          ],
+          [
+            1685382481,
+            6,
+            16
+          ],
+          [
+            1685382482,
+            4,
+            1
+          ]
+        ]
+      },
+      "current_record_sha256": "8f44307bd6fef9d1da2168a3c23cd98f28ca76737c39adbc886d6942fcad18bf",
+      "facts_equal": true,
+      "name": "hello-hello/gnu/segments",
+      "status": "retained"
+    },
+    {
+      "baseline_facts": {
+        "candidate_binding_counts": {
+          "0": 584
+        },
+        "candidate_only": 584,
+        "reference_binding_counts": {
+          "0": 147,
+          "1": 165,
+          "2": 45
+        },
+        "reference_only": 357
+      },
+      "baseline_record_sha256": "bc16be0a5185f10ecb320be0dfaeb28264555f1c97b6f08abc528442805345a4",
+      "current_facts": {
+        "candidate_binding_counts": {
+          "0": 591
+        },
+        "candidate_only": 591,
+        "reference_binding_counts": {
+          "0": 147,
+          "1": 175,
+          "2": 45
+        },
+        "reference_only": 367
+      },
+      "current_record_sha256": "8f44307bd6fef9d1da2168a3c23cd98f28ca76737c39adbc886d6942fcad18bf",
+      "facts_equal": false,
+      "name": "hello-hello/gnu/symbols",
+      "status": "retained"
+    },
+    {
+      "baseline_facts": {
+        "candidate_records": 590358,
+        "cause": "retained per-site relocation records differ in identity, normalization or ordering; every candidate site is independently validated by the corpus gate",
+        "reference_records": 393249
+      },
+      "baseline_record_sha256": "e167268e71a2ec33bd44467cc6e3917f1bc343be148a4ff1a422b0c23a0c078f",
+      "current_facts": {
+        "candidate_records": 628047,
+        "cause": "retained per-site relocation records differ in identity, normalization or ordering; every candidate site is independently validated by the corpus gate",
+        "reference_records": 417364
+      },
+      "current_record_sha256": "b43a523bf0a304975835cd92cc21226a81072b7e3a96077d2035c77cbb980ff9",
+      "facts_equal": false,
+      "name": "hello-hello/lld/relocations",
+      "status": "retained"
+    },
+    {
+      "baseline_facts": {
+        "candidate": [
+          [
+            1,
+            5,
+            4096
+          ],
+          [
+            1,
+            6,
+            4096
+          ],
+          [
+            7,
+            4,
+            8
+          ],
+          [
+            1685382481,
+            6,
+            16
+          ]
+        ],
+        "reference": [
+          [
+            1,
+            4,
+            4096
+          ],
+          [
+            1,
+            5,
+            4096
+          ],
+          [
+            1,
+            6,
+            4096
+          ],
+          [
+            1,
+            6,
+            4096
+          ],
+          [
+            6,
+            4,
+            8
+          ],
+          [
+            7,
+            4,
+            8
+          ],
+          [
+            1685382481,
+            6,
+            0
+          ],
+          [
+            1685382482,
+            4,
+            1
+          ]
+        ]
+      },
+      "baseline_record_sha256": "e167268e71a2ec33bd44467cc6e3917f1bc343be148a4ff1a422b0c23a0c078f",
+      "current_facts": {
+        "candidate": [
+          [
+            1,
+            5,
+            4096
+          ],
+          [
+            1,
+            6,
+            4096
+          ],
+          [
+            7,
+            4,
+            8
+          ],
+          [
+            1685382481,
+            6,
+            16
+          ]
+        ],
+        "reference": [
+          [
+            1,
+            4,
+            4096
+          ],
+          [
+            1,
+            5,
+            4096
+          ],
+          [
+            1,
+            6,
+            4096
+          ],
+          [
+            1,
+            6,
+            4096
+          ],
+          [
+            6,
+            4,
+            8
+          ],
+          [
+            7,
+            4,
+            8
+          ],
+          [
+            1685382481,
+            6,
+            0
+          ],
+          [
+            1685382482,
+            4,
+            1
+          ]
+        ]
+      },
+      "current_record_sha256": "b43a523bf0a304975835cd92cc21226a81072b7e3a96077d2035c77cbb980ff9",
+      "facts_equal": true,
+      "name": "hello-hello/lld/segments",
+      "status": "retained"
+    },
+    {
+      "baseline_facts": {
+        "candidate_binding_counts": {
+          "0": 389
+        },
+        "candidate_only": 389,
+        "reference_binding_counts": {
+          "0": 975
+        },
+        "reference_only": 975
+      },
+      "baseline_record_sha256": "e167268e71a2ec33bd44467cc6e3917f1bc343be148a4ff1a422b0c23a0c078f",
+      "current_facts": {
+        "candidate_binding_counts": {
+          "0": 387
+        },
+        "candidate_only": 387,
+        "reference_binding_counts": {
+          "0": 1022
+        },
+        "reference_only": 1022
+      },
+      "current_record_sha256": "b43a523bf0a304975835cd92cc21226a81072b7e3a96077d2035c77cbb980ff9",
+      "facts_equal": false,
+      "name": "hello-hello/lld/symbols",
+      "status": "retained"
+    },
+    {
+      "baseline_facts": {
+        "candidate_records": 592042,
+        "cause": "retained per-site relocation records differ in identity, normalization or ordering; every candidate site is independently validated by the corpus gate",
+        "reference_records": 395880
+      },
+      "baseline_record_sha256": "ab7f55fa5c33ebcab595126cb2f8daaa5ab97446b2d02a3a2921610fdbc3a623",
+      "current_facts": {
+        "candidate_records": 629955,
+        "cause": "retained per-site relocation records differ in identity, normalization or ordering; every candidate site is independently validated by the corpus gate",
+        "reference_records": 423566
+      },
+      "current_record_sha256": "056dedd1c0d44b5ced95cd9fabc88042f17b75bfcfb79ddb84df8fd0754d0cd5",
+      "facts_equal": false,
+      "name": "pax-exec/gnu/relocations",
+      "status": "retained"
+    },
+    {
+      "baseline_facts": {
+        "candidate": [
+          [
+            1,
+            5,
+            4096
+          ],
+          [
+            1,
+            6,
+            4096
+          ],
+          [
+            7,
+            4,
+            8
+          ],
+          [
+            1685382481,
+            6,
+            16
+          ]
+        ],
+        "reference": [
+          [
+            1,
+            4,
+            4096
+          ],
+          [
+            1,
+            4,
+            4096
+          ],
+          [
+            1,
+            5,
+            4096
+          ],
+          [
+            1,
+            6,
+            4096
+          ],
+          [
+            7,
+            4,
+            8
+          ],
+          [
+            1685382481,
+            6,
+            16
+          ],
+          [
+            1685382482,
+            4,
+            1
+          ]
+        ]
+      },
+      "baseline_record_sha256": "ab7f55fa5c33ebcab595126cb2f8daaa5ab97446b2d02a3a2921610fdbc3a623",
+      "current_facts": {
+        "candidate": [
+          [
+            1,
+            5,
+            4096
+          ],
+          [
+            1,
+            6,
+            4096
+          ],
+          [
+            7,
+            4,
+            8
+          ],
+          [
+            1685382481,
+            6,
+            16
+          ]
+        ],
+        "reference": [
+          [
+            1,
+            4,
+            4096
+          ],
+          [
+            1,
+            4,
+            4096
+          ],
+          [
+            1,
+            5,
+            4096
+          ],
+          [
+            1,
+            6,
+            4096
+          ],
+          [
+            7,
+            4,
+            8
+          ],
+          [
+            1685382481,
+            6,
+            16
+          ],
+          [
+            1685382482,
+            4,
+            1
+          ]
+        ]
+      },
+      "current_record_sha256": "056dedd1c0d44b5ced95cd9fabc88042f17b75bfcfb79ddb84df8fd0754d0cd5",
+      "facts_equal": true,
+      "name": "pax-exec/gnu/segments",
+      "status": "retained"
+    },
+    {
+      "baseline_facts": {
+        "candidate_binding_counts": {
+          "0": 690
+        },
+        "candidate_only": 690,
+        "reference_binding_counts": {
+          "0": 190,
+          "1": 231,
+          "2": 56
+        },
+        "reference_only": 477
+      },
+      "baseline_record_sha256": "ab7f55fa5c33ebcab595126cb2f8daaa5ab97446b2d02a3a2921610fdbc3a623",
+      "current_facts": {
+        "candidate_binding_counts": {
+          "0": 725
+        },
+        "candidate_only": 725,
+        "reference_binding_counts": {
+          "0": 197,
+          "1": 262,
+          "2": 56
+        },
+        "reference_only": 515
+      },
+      "current_record_sha256": "056dedd1c0d44b5ced95cd9fabc88042f17b75bfcfb79ddb84df8fd0754d0cd5",
+      "facts_equal": false,
+      "name": "pax-exec/gnu/symbols",
+      "status": "retained"
+    },
+    {
+      "baseline_facts": {
+        "candidate_records": 592042,
+        "cause": "retained per-site relocation records differ in identity, normalization or ordering; every candidate site is independently validated by the corpus gate",
+        "reference_records": 404577
+      },
+      "baseline_record_sha256": "838717873088828a3d38f4bd6897b7b969625ea7f3d6b354ab667bdb4e09c6d8",
+      "current_facts": {
+        "candidate_records": 629955,
+        "cause": "retained per-site relocation records differ in identity, normalization or ordering; every candidate site is independently validated by the corpus gate",
+        "reference_records": 432872
+      },
+      "current_record_sha256": "6f9ec1a1db3f1aba9c238176f5b58c6c7e6e910196490918f6abf1887a7f6f4a",
+      "facts_equal": false,
+      "name": "pax-exec/lld/relocations",
+      "status": "retained"
+    },
+    {
+      "baseline_facts": {
+        "candidate": [
+          [
+            1,
+            5,
+            4096
+          ],
+          [
+            1,
+            6,
+            4096
+          ],
+          [
+            7,
+            4,
+            8
+          ],
+          [
+            1685382481,
+            6,
+            16
+          ]
+        ],
+        "reference": [
+          [
+            1,
+            4,
+            4096
+          ],
+          [
+            1,
+            5,
+            4096
+          ],
+          [
+            1,
+            6,
+            4096
+          ],
+          [
+            1,
+            6,
+            4096
+          ],
+          [
+            6,
+            4,
+            8
+          ],
+          [
+            7,
+            4,
+            8
+          ],
+          [
+            1685382481,
+            6,
+            0
+          ],
+          [
+            1685382482,
+            4,
+            1
+          ]
+        ]
+      },
+      "baseline_record_sha256": "838717873088828a3d38f4bd6897b7b969625ea7f3d6b354ab667bdb4e09c6d8",
+      "current_facts": {
+        "candidate": [
+          [
+            1,
+            5,
+            4096
+          ],
+          [
+            1,
+            6,
+            4096
+          ],
+          [
+            7,
+            4,
+            8
+          ],
+          [
+            1685382481,
+            6,
+            16
+          ]
+        ],
+        "reference": [
+          [
+            1,
+            4,
+            4096
+          ],
+          [
+            1,
+            5,
+            4096
+          ],
+          [
+            1,
+            6,
+            4096
+          ],
+          [
+            1,
+            6,
+            4096
+          ],
+          [
+            6,
+            4,
+            8
+          ],
+          [
+            7,
+            4,
+            8
+          ],
+          [
+            1685382481,
+            6,
+            0
+          ],
+          [
+            1685382482,
+            4,
+            1
+          ]
+        ]
+      },
+      "current_record_sha256": "6f9ec1a1db3f1aba9c238176f5b58c6c7e6e910196490918f6abf1887a7f6f4a",
+      "facts_equal": true,
+      "name": "pax-exec/lld/segments",
+      "status": "retained"
+    },
+    {
+      "baseline_facts": {
+        "candidate_binding_counts": {
+          "0": 421
+        },
+        "candidate_only": 421,
+        "reference_binding_counts": {
+          "0": 975
+        },
+        "reference_only": 975
+      },
+      "baseline_record_sha256": "838717873088828a3d38f4bd6897b7b969625ea7f3d6b354ab667bdb4e09c6d8",
+      "current_facts": {
+        "candidate_binding_counts": {
+          "0": 423
+        },
+        "candidate_only": 423,
+        "reference_binding_counts": {
+          "0": 1022
+        },
+        "reference_only": 1022
+      },
+      "current_record_sha256": "6f9ec1a1db3f1aba9c238176f5b58c6c7e6e910196490918f6abf1887a7f6f4a",
+      "facts_equal": false,
+      "name": "pax-exec/lld/symbols",
+      "status": "retained"
+    },
+    {
+      "baseline_facts": {
+        "candidate_records": 591524,
+        "cause": "retained per-site relocation records differ in identity, normalization or ordering; every candidate site is independently validated by the corpus gate",
+        "reference_records": 389184
+      },
+      "baseline_record_sha256": "2d35a7558c461ab04facdf91e9dc6233df3ce830678de0dee059daf5b6d8e42d",
+      "current_facts": {
+        "candidate_records": 629233,
+        "cause": "retained per-site relocation records differ in identity, normalization or ordering; every candidate site is independently validated by the corpus gate",
+        "reference_records": 412772
+      },
+      "current_record_sha256": "cb49e9c5a6e1bf935a71dbc6731e76b9bdcba4343a3db7434d53130c026371f6",
+      "facts_equal": false,
+      "name": "pax-fork/gnu/relocations",
+      "status": "retained"
+    },
+    {
+      "baseline_facts": {
+        "candidate": [
+          [
+            1,
+            5,
+            4096
+          ],
+          [
+            1,
+            6,
+            4096
+          ],
+          [
+            7,
+            4,
+            8
+          ],
+          [
+            1685382481,
+            6,
+            16
+          ]
+        ],
+        "reference": [
+          [
+            1,
+            4,
+            4096
+          ],
+          [
+            1,
+            4,
+            4096
+          ],
+          [
+            1,
+            5,
+            4096
+          ],
+          [
+            1,
+            6,
+            4096
+          ],
+          [
+            7,
+            4,
+            8
+          ],
+          [
+            1685382481,
+            6,
+            16
+          ],
+          [
+            1685382482,
+            4,
+            1
+          ]
+        ]
+      },
+      "baseline_record_sha256": "2d35a7558c461ab04facdf91e9dc6233df3ce830678de0dee059daf5b6d8e42d",
+      "current_facts": {
+        "candidate": [
+          [
+            1,
+            5,
+            4096
+          ],
+          [
+            1,
+            6,
+            4096
+          ],
+          [
+            7,
+            4,
+            8
+          ],
+          [
+            1685382481,
+            6,
+            16
+          ]
+        ],
+        "reference": [
+          [
+            1,
+            4,
+            4096
+          ],
+          [
+            1,
+            4,
+            4096
+          ],
+          [
+            1,
+            5,
+            4096
+          ],
+          [
+            1,
+            6,
+            4096
+          ],
+          [
+            7,
+            4,
+            8
+          ],
+          [
+            1685382481,
+            6,
+            16
+          ],
+          [
+            1685382482,
+            4,
+            1
+          ]
+        ]
+      },
+      "current_record_sha256": "cb49e9c5a6e1bf935a71dbc6731e76b9bdcba4343a3db7434d53130c026371f6",
+      "facts_equal": true,
+      "name": "pax-fork/gnu/segments",
+      "status": "retained"
+    },
+    {
+      "baseline_facts": {
+        "candidate_binding_counts": {
+          "0": 754,
+          "1": 3
+        },
+        "candidate_only": 757,
+        "reference_binding_counts": {
+          "0": 185,
+          "1": 292,
+          "2": 56
+        },
+        "reference_only": 533
+      },
+      "baseline_record_sha256": "2d35a7558c461ab04facdf91e9dc6233df3ce830678de0dee059daf5b6d8e42d",
+      "current_facts": {
+        "candidate_binding_counts": {
+          "0": 744
+        },
+        "candidate_only": 744,
+        "reference_binding_counts": {
+          "0": 182,
+          "1": 285,
+          "2": 56
+        },
+        "reference_only": 523
+      },
+      "current_record_sha256": "cb49e9c5a6e1bf935a71dbc6731e76b9bdcba4343a3db7434d53130c026371f6",
+      "facts_equal": false,
+      "name": "pax-fork/gnu/symbols",
+      "status": "retained"
+    },
+    {
+      "baseline_facts": {
+        "candidate_records": 591524,
+        "cause": "retained per-site relocation records differ in identity, normalization or ordering; every candidate site is independently validated by the corpus gate",
+        "reference_records": 400042
+      },
+      "baseline_record_sha256": "95e1ef01ba2f95d9b98cb563633afeb062fa909b4d76769b4bb649379553c7eb",
+      "current_facts": {
+        "candidate_records": 629233,
+        "cause": "retained per-site relocation records differ in identity, normalization or ordering; every candidate site is independently validated by the corpus gate",
+        "reference_records": 424284
+      },
+      "current_record_sha256": "9b56b44fa88e1999b0bb460a10b1fc38f39f5c40dc873a43b2d429fe77b12d76",
+      "facts_equal": false,
+      "name": "pax-fork/lld/relocations",
+      "status": "retained"
+    },
+    {
+      "baseline_facts": {
+        "candidate": [
+          [
+            1,
+            5,
+            4096
+          ],
+          [
+            1,
+            6,
+            4096
+          ],
+          [
+            7,
+            4,
+            8
+          ],
+          [
+            1685382481,
+            6,
+            16
+          ]
+        ],
+        "reference": [
+          [
+            1,
+            4,
+            4096
+          ],
+          [
+            1,
+            5,
+            4096
+          ],
+          [
+            1,
+            6,
+            4096
+          ],
+          [
+            1,
+            6,
+            4096
+          ],
+          [
+            6,
+            4,
+            8
+          ],
+          [
+            7,
+            4,
+            8
+          ],
+          [
+            1685382481,
+            6,
+            0
+          ],
+          [
+            1685382482,
+            4,
+            1
+          ]
+        ]
+      },
+      "baseline_record_sha256": "95e1ef01ba2f95d9b98cb563633afeb062fa909b4d76769b4bb649379553c7eb",
+      "current_facts": {
+        "candidate": [
+          [
+            1,
+            5,
+            4096
+          ],
+          [
+            1,
+            6,
+            4096
+          ],
+          [
+            7,
+            4,
+            8
+          ],
+          [
+            1685382481,
+            6,
+            16
+          ]
+        ],
+        "reference": [
+          [
+            1,
+            4,
+            4096
+          ],
+          [
+            1,
+            5,
+            4096
+          ],
+          [
+            1,
+            6,
+            4096
+          ],
+          [
+            1,
+            6,
+            4096
+          ],
+          [
+            6,
+            4,
+            8
+          ],
+          [
+            7,
+            4,
+            8
+          ],
+          [
+            1685382481,
+            6,
+            0
+          ],
+          [
+            1685382482,
+            4,
+            1
+          ]
+        ]
+      },
+      "current_record_sha256": "9b56b44fa88e1999b0bb460a10b1fc38f39f5c40dc873a43b2d429fe77b12d76",
+      "facts_equal": true,
+      "name": "pax-fork/lld/segments",
+      "status": "retained"
+    },
+    {
+      "baseline_facts": {
+        "candidate_binding_counts": {
+          "0": 423
+        },
+        "candidate_only": 423,
+        "reference_binding_counts": {
+          "0": 975
+        },
+        "reference_only": 975
+      },
+      "baseline_record_sha256": "95e1ef01ba2f95d9b98cb563633afeb062fa909b4d76769b4bb649379553c7eb",
+      "current_facts": {
+        "candidate_binding_counts": {
+          "0": 421
+        },
+        "candidate_only": 421,
+        "reference_binding_counts": {
+          "0": 1022
+        },
+        "reference_only": 1022
+      },
+      "current_record_sha256": "9b56b44fa88e1999b0bb460a10b1fc38f39f5c40dc873a43b2d429fe77b12d76",
+      "facts_equal": false,
+      "name": "pax-fork/lld/symbols",
+      "status": "retained"
+    },
+    {
+      "baseline_facts": {
+        "candidate_records": 590358,
+        "cause": "retained per-site relocation records differ in identity, normalization or ordering; every candidate site is independently validated by the corpus gate",
+        "reference_records": 381190
+      },
+      "baseline_record_sha256": "5fd42783d2b9c11d63e714946a8230f08a1e18edc2448ca0a561cd46b750b353",
+      "current_facts": {
+        "candidate_records": 628047,
+        "cause": "retained per-site relocation records differ in identity, normalization or ordering; every candidate site is independently validated by the corpus gate",
+        "reference_records": 404659
+      },
+      "current_record_sha256": "2900ed8b1e391f986d12d2f66a889d149bd9f1ef554cc591b9efe4623c55b393",
+      "facts_equal": false,
+      "name": "pax-hello/gnu/relocations",
+      "status": "retained"
+    },
+    {
+      "baseline_facts": {
+        "candidate": [
+          [
+            1,
+            5,
+            4096
+          ],
+          [
+            1,
+            6,
+            4096
+          ],
+          [
+            7,
+            4,
+            8
+          ],
+          [
+            1685382481,
+            6,
+            16
+          ]
+        ],
+        "reference": [
+          [
+            1,
+            4,
+            4096
+          ],
+          [
+            1,
+            4,
+            4096
+          ],
+          [
+            1,
+            5,
+            4096
+          ],
+          [
+            1,
+            6,
+            4096
+          ],
+          [
+            7,
+            4,
+            8
+          ],
+          [
+            1685382481,
+            6,
+            16
+          ],
+          [
+            1685382482,
+            4,
+            1
+          ]
+        ]
+      },
+      "baseline_record_sha256": "5fd42783d2b9c11d63e714946a8230f08a1e18edc2448ca0a561cd46b750b353",
+      "current_facts": {
+        "candidate": [
+          [
+            1,
+            5,
+            4096
+          ],
+          [
+            1,
+            6,
+            4096
+          ],
+          [
+            7,
+            4,
+            8
+          ],
+          [
+            1685382481,
+            6,
+            16
+          ]
+        ],
+        "reference": [
+          [
+            1,
+            4,
+            4096
+          ],
+          [
+            1,
+            4,
+            4096
+          ],
+          [
+            1,
+            5,
+            4096
+          ],
+          [
+            1,
+            6,
+            4096
+          ],
+          [
+            7,
+            4,
+            8
+          ],
+          [
+            1685382481,
+            6,
+            16
+          ],
+          [
+            1685382482,
+            4,
+            1
+          ]
+        ]
+      },
+      "current_record_sha256": "2900ed8b1e391f986d12d2f66a889d149bd9f1ef554cc591b9efe4623c55b393",
+      "facts_equal": true,
+      "name": "pax-hello/gnu/segments",
+      "status": "retained"
+    },
+    {
+      "baseline_facts": {
+        "candidate_binding_counts": {
+          "0": 584
+        },
+        "candidate_only": 584,
+        "reference_binding_counts": {
+          "0": 147,
+          "1": 165,
+          "2": 45
+        },
+        "reference_only": 357
+      },
+      "baseline_record_sha256": "5fd42783d2b9c11d63e714946a8230f08a1e18edc2448ca0a561cd46b750b353",
+      "current_facts": {
+        "candidate_binding_counts": {
+          "0": 591
+        },
+        "candidate_only": 591,
+        "reference_binding_counts": {
+          "0": 147,
+          "1": 175,
+          "2": 45
+        },
+        "reference_only": 367
+      },
+      "current_record_sha256": "2900ed8b1e391f986d12d2f66a889d149bd9f1ef554cc591b9efe4623c55b393",
+      "facts_equal": false,
+      "name": "pax-hello/gnu/symbols",
+      "status": "retained"
+    },
+    {
+      "baseline_facts": {
+        "candidate_records": 590358,
+        "cause": "retained per-site relocation records differ in identity, normalization or ordering; every candidate site is independently validated by the corpus gate",
+        "reference_records": 393249
+      },
+      "baseline_record_sha256": "ace39f99b580f2364c62140609c401629fa47069cca9f910fd5adafb8a7faa27",
+      "current_facts": {
+        "candidate_records": 628047,
+        "cause": "retained per-site relocation records differ in identity, normalization or ordering; every candidate site is independently validated by the corpus gate",
+        "reference_records": 417364
+      },
+      "current_record_sha256": "56b0b1229fa66c81172b4bbaca25a8fdb8c41af8b7af09d7ebc4bc36bead7b24",
+      "facts_equal": false,
+      "name": "pax-hello/lld/relocations",
+      "status": "retained"
+    },
+    {
+      "baseline_facts": {
+        "candidate": [
+          [
+            1,
+            5,
+            4096
+          ],
+          [
+            1,
+            6,
+            4096
+          ],
+          [
+            7,
+            4,
+            8
+          ],
+          [
+            1685382481,
+            6,
+            16
+          ]
+        ],
+        "reference": [
+          [
+            1,
+            4,
+            4096
+          ],
+          [
+            1,
+            5,
+            4096
+          ],
+          [
+            1,
+            6,
+            4096
+          ],
+          [
+            1,
+            6,
+            4096
+          ],
+          [
+            6,
+            4,
+            8
+          ],
+          [
+            7,
+            4,
+            8
+          ],
+          [
+            1685382481,
+            6,
+            0
+          ],
+          [
+            1685382482,
+            4,
+            1
+          ]
+        ]
+      },
+      "baseline_record_sha256": "ace39f99b580f2364c62140609c401629fa47069cca9f910fd5adafb8a7faa27",
+      "current_facts": {
+        "candidate": [
+          [
+            1,
+            5,
+            4096
+          ],
+          [
+            1,
+            6,
+            4096
+          ],
+          [
+            7,
+            4,
+            8
+          ],
+          [
+            1685382481,
+            6,
+            16
+          ]
+        ],
+        "reference": [
+          [
+            1,
+            4,
+            4096
+          ],
+          [
+            1,
+            5,
+            4096
+          ],
+          [
+            1,
+            6,
+            4096
+          ],
+          [
+            1,
+            6,
+            4096
+          ],
+          [
+            6,
+            4,
+            8
+          ],
+          [
+            7,
+            4,
+            8
+          ],
+          [
+            1685382481,
+            6,
+            0
+          ],
+          [
+            1685382482,
+            4,
+            1
+          ]
+        ]
+      },
+      "current_record_sha256": "56b0b1229fa66c81172b4bbaca25a8fdb8c41af8b7af09d7ebc4bc36bead7b24",
+      "facts_equal": true,
+      "name": "pax-hello/lld/segments",
+      "status": "retained"
+    },
+    {
+      "baseline_facts": {
+        "candidate_binding_counts": {
+          "0": 389
+        },
+        "candidate_only": 389,
+        "reference_binding_counts": {
+          "0": 975
+        },
+        "reference_only": 975
+      },
+      "baseline_record_sha256": "ace39f99b580f2364c62140609c401629fa47069cca9f910fd5adafb8a7faa27",
+      "current_facts": {
+        "candidate_binding_counts": {
+          "0": 387
+        },
+        "candidate_only": 387,
+        "reference_binding_counts": {
+          "0": 1022
+        },
+        "reference_only": 1022
+      },
+      "current_record_sha256": "56b0b1229fa66c81172b4bbaca25a8fdb8c41af8b7af09d7ebc4bc36bead7b24",
+      "facts_equal": false,
+      "name": "pax-hello/lld/symbols",
+      "status": "retained"
+    },
+    {
+      "baseline_facts": {
+        "candidate_records": 593594,
+        "cause": "retained per-site relocation records differ in identity, normalization or ordering; every candidate site is independently validated by the corpus gate",
+        "reference_records": 406417
+      },
+      "baseline_record_sha256": "6e1fde7fe1f3c47e8a6d37e65c460c1c254a4410b1a8c3586fcd8d644ff91522",
+      "current_facts": {
+        "candidate_records": 631890,
+        "cause": "retained per-site relocation records differ in identity, normalization or ordering; every candidate site is independently validated by the corpus gate",
+        "reference_records": 434729
+      },
+      "current_record_sha256": "14a2e78007aba142e1a99cdf505b453de1791f403f27ea201e1ef1107d04cefe",
+      "facts_equal": false,
+      "name": "pax-host/gnu/relocations",
+      "status": "retained"
+    },
+    {
+      "baseline_facts": {
+        "candidate": [
+          [
+            1,
+            5,
+            4096
+          ],
+          [
+            1,
+            6,
+            4096
+          ],
+          [
+            7,
+            4,
+            8
+          ],
+          [
+            1685382481,
+            6,
+            16
+          ]
+        ],
+        "reference": [
+          [
+            1,
+            4,
+            4096
+          ],
+          [
+            1,
+            4,
+            4096
+          ],
+          [
+            1,
+            5,
+            4096
+          ],
+          [
+            1,
+            6,
+            4096
+          ],
+          [
+            7,
+            4,
+            8
+          ],
+          [
+            1685382481,
+            6,
+            16
+          ],
+          [
+            1685382482,
+            4,
+            1
+          ]
+        ]
+      },
+      "baseline_record_sha256": "6e1fde7fe1f3c47e8a6d37e65c460c1c254a4410b1a8c3586fcd8d644ff91522",
+      "current_facts": {
+        "candidate": [
+          [
+            1,
+            5,
+            4096
+          ],
+          [
+            1,
+            6,
+            4096
+          ],
+          [
+            7,
+            4,
+            8
+          ],
+          [
+            1685382481,
+            6,
+            16
+          ]
+        ],
+        "reference": [
+          [
+            1,
+            4,
+            4096
+          ],
+          [
+            1,
+            4,
+            4096
+          ],
+          [
+            1,
+            5,
+            4096
+          ],
+          [
+            1,
+            6,
+            4096
+          ],
+          [
+            7,
+            4,
+            8
+          ],
+          [
+            1685382481,
+            6,
+            16
+          ],
+          [
+            1685382482,
+            4,
+            1
+          ]
+        ]
+      },
+      "current_record_sha256": "14a2e78007aba142e1a99cdf505b453de1791f403f27ea201e1ef1107d04cefe",
+      "facts_equal": true,
+      "name": "pax-host/gnu/segments",
+      "status": "retained"
+    },
+    {
+      "baseline_facts": {
+        "candidate_binding_counts": {
+          "0": 841,
+          "1": 5
+        },
+        "candidate_only": 846,
+        "reference_binding_counts": {
+          "0": 269,
+          "1": 322,
+          "2": 49
+        },
+        "reference_only": 640
+      },
+      "baseline_record_sha256": "6e1fde7fe1f3c47e8a6d37e65c460c1c254a4410b1a8c3586fcd8d644ff91522",
+      "current_facts": {
+        "candidate_binding_counts": {
+          "0": 935
+        },
+        "candidate_only": 935,
+        "reference_binding_counts": {
+          "0": 282,
+          "1": 371,
+          "2": 49
+        },
+        "reference_only": 702
+      },
+      "current_record_sha256": "14a2e78007aba142e1a99cdf505b453de1791f403f27ea201e1ef1107d04cefe",
+      "facts_equal": false,
+      "name": "pax-host/gnu/symbols",
+      "status": "retained"
+    },
+    {
+      "baseline_facts": {
+        "candidate_memsz": 520,
+        "candidate_only_variables": [],
+        "classification": "different TLS variable ordering; raw template mismatch remains recorded",
+        "reference_memsz": 520,
+        "reference_only_variables": [],
+        "symbol_bindings_equal": false,
+        "symbol_normalized_initializers_equal": true
+      },
+      "baseline_record_sha256": "6e1fde7fe1f3c47e8a6d37e65c460c1c254a4410b1a8c3586fcd8d644ff91522",
+      "decision": "no tls difference recorded for pax-host against gnu at the 0.2.38 pin",
+      "name": "pax-host/gnu/tls",
+      "status": "resolved"
+    },
+    {
+      "baseline_facts": {
+        "candidate_records": 593594,
+        "cause": "retained per-site relocation records differ in identity, normalization or ordering; every candidate site is independently validated by the corpus gate",
+        "reference_records": 416889
+      },
+      "baseline_record_sha256": "c3fe44f26187f536ab0625ef5d42c84138ed88d945ffa1d2f2a0019965ee5667",
+      "current_facts": {
+        "candidate_records": 631890,
+        "cause": "retained per-site relocation records differ in identity, normalization or ordering; every candidate site is independently validated by the corpus gate",
+        "reference_records": 445398
+      },
+      "current_record_sha256": "8cf450474662b925dbda3c452e365c0c11052a21fd796c6540c0f4427e885608",
+      "facts_equal": false,
+      "name": "pax-host/lld/relocations",
+      "status": "retained"
+    },
+    {
+      "baseline_facts": {
+        "candidate": [
+          [
+            1,
+            5,
+            4096
+          ],
+          [
+            1,
+            6,
+            4096
+          ],
+          [
+            7,
+            4,
+            8
+          ],
+          [
+            1685382481,
+            6,
+            16
+          ]
+        ],
+        "reference": [
+          [
+            1,
+            4,
+            4096
+          ],
+          [
+            1,
+            5,
+            4096
+          ],
+          [
+            1,
+            6,
+            4096
+          ],
+          [
+            1,
+            6,
+            4096
+          ],
+          [
+            6,
+            4,
+            8
+          ],
+          [
+            7,
+            4,
+            8
+          ],
+          [
+            1685382481,
+            6,
+            0
+          ],
+          [
+            1685382482,
+            4,
+            1
+          ]
+        ]
+      },
+      "baseline_record_sha256": "c3fe44f26187f536ab0625ef5d42c84138ed88d945ffa1d2f2a0019965ee5667",
+      "current_facts": {
+        "candidate": [
+          [
+            1,
+            5,
+            4096
+          ],
+          [
+            1,
+            6,
+            4096
+          ],
+          [
+            7,
+            4,
+            8
+          ],
+          [
+            1685382481,
+            6,
+            16
+          ]
+        ],
+        "reference": [
+          [
+            1,
+            4,
+            4096
+          ],
+          [
+            1,
+            5,
+            4096
+          ],
+          [
+            1,
+            6,
+            4096
+          ],
+          [
+            1,
+            6,
+            4096
+          ],
+          [
+            6,
+            4,
+            8
+          ],
+          [
+            7,
+            4,
+            8
+          ],
+          [
+            1685382481,
+            6,
+            0
+          ],
+          [
+            1685382482,
+            4,
+            1
+          ]
+        ]
+      },
+      "current_record_sha256": "8cf450474662b925dbda3c452e365c0c11052a21fd796c6540c0f4427e885608",
+      "facts_equal": true,
+      "name": "pax-host/lld/segments",
+      "status": "retained"
+    },
+    {
+      "baseline_facts": {
+        "candidate_binding_counts": {
+          "0": 483
+        },
+        "candidate_only": 483,
+        "reference_binding_counts": {
+          "0": 975
+        },
+        "reference_only": 975
+      },
+      "baseline_record_sha256": "c3fe44f26187f536ab0625ef5d42c84138ed88d945ffa1d2f2a0019965ee5667",
+      "current_facts": {
+        "candidate_binding_counts": {
+          "0": 528
+        },
+        "candidate_only": 528,
+        "reference_binding_counts": {
+          "0": 1022
+        },
+        "reference_only": 1022
+      },
+      "current_record_sha256": "8cf450474662b925dbda3c452e365c0c11052a21fd796c6540c0f4427e885608",
+      "facts_equal": false,
+      "name": "pax-host/lld/symbols",
+      "status": "retained"
+    },
+    {
+      "baseline_facts": {
+        "candidate_records": 590386,
+        "cause": "retained per-site relocation records differ in identity, normalization or ordering; every candidate site is independently validated by the corpus gate",
+        "reference_records": 381390
+      },
+      "baseline_record_sha256": "c03a8148c6ac4a2f1f6c7a5aa423adbe0ea38d69b77c8617ed8ee7b9ac95cd9c",
+      "current_facts": {
+        "candidate_records": 628075,
+        "cause": "retained per-site relocation records differ in identity, normalization or ordering; every candidate site is independently validated by the corpus gate",
+        "reference_records": 404859
+      },
+      "current_record_sha256": "3a8768e8b26c7bbb7f9654b15fc57b0a03e145db8e5576c8d36b3221042d00e5",
+      "facts_equal": false,
+      "name": "pax-loop/gnu/relocations",
+      "status": "retained"
+    },
+    {
+      "baseline_facts": {
+        "candidate": [
+          [
+            1,
+            5,
+            4096
+          ],
+          [
+            1,
+            6,
+            4096
+          ],
+          [
+            7,
+            4,
+            8
+          ],
+          [
+            1685382481,
+            6,
+            16
+          ]
+        ],
+        "reference": [
+          [
+            1,
+            4,
+            4096
+          ],
+          [
+            1,
+            4,
+            4096
+          ],
+          [
+            1,
+            5,
+            4096
+          ],
+          [
+            1,
+            6,
+            4096
+          ],
+          [
+            7,
+            4,
+            8
+          ],
+          [
+            1685382481,
+            6,
+            16
+          ],
+          [
+            1685382482,
+            4,
+            1
+          ]
+        ]
+      },
+      "baseline_record_sha256": "c03a8148c6ac4a2f1f6c7a5aa423adbe0ea38d69b77c8617ed8ee7b9ac95cd9c",
+      "current_facts": {
+        "candidate": [
+          [
+            1,
+            5,
+            4096
+          ],
+          [
+            1,
+            6,
+            4096
+          ],
+          [
+            7,
+            4,
+            8
+          ],
+          [
+            1685382481,
+            6,
+            16
+          ]
+        ],
+        "reference": [
+          [
+            1,
+            4,
+            4096
+          ],
+          [
+            1,
+            4,
+            4096
+          ],
+          [
+            1,
+            5,
+            4096
+          ],
+          [
+            1,
+            6,
+            4096
+          ],
+          [
+            7,
+            4,
+            8
+          ],
+          [
+            1685382481,
+            6,
+            16
+          ],
+          [
+            1685382482,
+            4,
+            1
+          ]
+        ]
+      },
+      "current_record_sha256": "3a8768e8b26c7bbb7f9654b15fc57b0a03e145db8e5576c8d36b3221042d00e5",
+      "facts_equal": true,
+      "name": "pax-loop/gnu/segments",
+      "status": "retained"
+    },
+    {
+      "baseline_facts": {
+        "candidate_binding_counts": {
+          "0": 585
+        },
+        "candidate_only": 585,
+        "reference_binding_counts": {
+          "0": 148,
+          "1": 165,
+          "2": 45
+        },
+        "reference_only": 358
+      },
+      "baseline_record_sha256": "c03a8148c6ac4a2f1f6c7a5aa423adbe0ea38d69b77c8617ed8ee7b9ac95cd9c",
+      "current_facts": {
+        "candidate_binding_counts": {
+          "0": 592
+        },
+        "candidate_only": 592,
+        "reference_binding_counts": {
+          "0": 148,
+          "1": 175,
+          "2": 45
+        },
+        "reference_only": 368
+      },
+      "current_record_sha256": "3a8768e8b26c7bbb7f9654b15fc57b0a03e145db8e5576c8d36b3221042d00e5",
+      "facts_equal": false,
+      "name": "pax-loop/gnu/symbols",
+      "status": "retained"
+    },
+    {
+      "baseline_facts": {
+        "candidate_records": 590386,
+        "cause": "retained per-site relocation records differ in identity, normalization or ordering; every candidate site is independently validated by the corpus gate",
+        "reference_records": 393446
+      },
+      "baseline_record_sha256": "84d3d6345a6fba7821319b14f59de8c617f388b985eb7f3923cff000f191f9b4",
+      "current_facts": {
+        "candidate_records": 628075,
+        "cause": "retained per-site relocation records differ in identity, normalization or ordering; every candidate site is independently validated by the corpus gate",
+        "reference_records": 417561
+      },
+      "current_record_sha256": "5b3020925ad1673cc57197dfbafb7cb8a52990f99547bda488417b1f4add75a2",
+      "facts_equal": false,
+      "name": "pax-loop/lld/relocations",
+      "status": "retained"
+    },
+    {
+      "baseline_facts": {
+        "candidate": [
+          [
+            1,
+            5,
+            4096
+          ],
+          [
+            1,
+            6,
+            4096
+          ],
+          [
+            7,
+            4,
+            8
+          ],
+          [
+            1685382481,
+            6,
+            16
+          ]
+        ],
+        "reference": [
+          [
+            1,
+            4,
+            4096
+          ],
+          [
+            1,
+            5,
+            4096
+          ],
+          [
+            1,
+            6,
+            4096
+          ],
+          [
+            1,
+            6,
+            4096
+          ],
+          [
+            6,
+            4,
+            8
+          ],
+          [
+            7,
+            4,
+            8
+          ],
+          [
+            1685382481,
+            6,
+            0
+          ],
+          [
+            1685382482,
+            4,
+            1
+          ]
+        ]
+      },
+      "baseline_record_sha256": "84d3d6345a6fba7821319b14f59de8c617f388b985eb7f3923cff000f191f9b4",
+      "current_facts": {
+        "candidate": [
+          [
+            1,
+            5,
+            4096
+          ],
+          [
+            1,
+            6,
+            4096
+          ],
+          [
+            7,
+            4,
+            8
+          ],
+          [
+            1685382481,
+            6,
+            16
+          ]
+        ],
+        "reference": [
+          [
+            1,
+            4,
+            4096
+          ],
+          [
+            1,
+            5,
+            4096
+          ],
+          [
+            1,
+            6,
+            4096
+          ],
+          [
+            1,
+            6,
+            4096
+          ],
+          [
+            6,
+            4,
+            8
+          ],
+          [
+            7,
+            4,
+            8
+          ],
+          [
+            1685382481,
+            6,
+            0
+          ],
+          [
+            1685382482,
+            4,
+            1
+          ]
+        ]
+      },
+      "current_record_sha256": "5b3020925ad1673cc57197dfbafb7cb8a52990f99547bda488417b1f4add75a2",
+      "facts_equal": true,
+      "name": "pax-loop/lld/segments",
+      "status": "retained"
+    },
+    {
+      "baseline_facts": {
+        "candidate_binding_counts": {
+          "0": 390
+        },
+        "candidate_only": 390,
+        "reference_binding_counts": {
+          "0": 975
+        },
+        "reference_only": 975
+      },
+      "baseline_record_sha256": "84d3d6345a6fba7821319b14f59de8c617f388b985eb7f3923cff000f191f9b4",
+      "current_facts": {
+        "candidate_binding_counts": {
+          "0": 388
+        },
+        "candidate_only": 388,
+        "reference_binding_counts": {
+          "0": 1022
+        },
+        "reference_only": 1022
+      },
+      "current_record_sha256": "5b3020925ad1673cc57197dfbafb7cb8a52990f99547bda488417b1f4add75a2",
+      "facts_equal": false,
+      "name": "pax-loop/lld/symbols",
+      "status": "retained"
+    },
+    {
+      "baseline_facts": {
+        "candidate_records": 590693,
+        "cause": "retained per-site relocation records differ in identity, normalization or ordering; every candidate site is independently validated by the corpus gate",
+        "reference_records": 383583
+      },
+      "baseline_record_sha256": "c1a9f28666bed0540d01f7e5e89a6ed56069800d3a956167b84feda326bfe324",
+      "current_facts": {
+        "candidate_records": 628374,
+        "cause": "retained per-site relocation records differ in identity, normalization or ordering; every candidate site is independently validated by the corpus gate",
+        "reference_records": 407005
+      },
+      "current_record_sha256": "8ce75c9d46f0a0e3ec53e0fc2361815d6582175abdfb3b118441b2415876fb6b",
+      "facts_equal": false,
+      "name": "pax-signal/gnu/relocations",
+      "status": "retained"
+    },
+    {
+      "baseline_facts": {
+        "candidate": [
+          [
+            1,
+            5,
+            4096
+          ],
+          [
+            1,
+            6,
+            4096
+          ],
+          [
+            7,
+            4,
+            8
+          ],
+          [
+            1685382481,
+            6,
+            16
+          ]
+        ],
+        "reference": [
+          [
+            1,
+            4,
+            4096
+          ],
+          [
+            1,
+            4,
+            4096
+          ],
+          [
+            1,
+            5,
+            4096
+          ],
+          [
+            1,
+            6,
+            4096
+          ],
+          [
+            7,
+            4,
+            8
+          ],
+          [
+            1685382481,
+            6,
+            16
+          ],
+          [
+            1685382482,
+            4,
+            1
+          ]
+        ]
+      },
+      "baseline_record_sha256": "c1a9f28666bed0540d01f7e5e89a6ed56069800d3a956167b84feda326bfe324",
+      "current_facts": {
+        "candidate": [
+          [
+            1,
+            5,
+            4096
+          ],
+          [
+            1,
+            6,
+            4096
+          ],
+          [
+            7,
+            4,
+            8
+          ],
+          [
+            1685382481,
+            6,
+            16
+          ]
+        ],
+        "reference": [
+          [
+            1,
+            4,
+            4096
+          ],
+          [
+            1,
+            4,
+            4096
+          ],
+          [
+            1,
+            5,
+            4096
+          ],
+          [
+            1,
+            6,
+            4096
+          ],
+          [
+            7,
+            4,
+            8
+          ],
+          [
+            1685382481,
+            6,
+            16
+          ],
+          [
+            1685382482,
+            4,
+            1
+          ]
+        ]
+      },
+      "current_record_sha256": "8ce75c9d46f0a0e3ec53e0fc2361815d6582175abdfb3b118441b2415876fb6b",
+      "facts_equal": true,
+      "name": "pax-signal/gnu/segments",
+      "status": "retained"
+    },
+    {
+      "baseline_facts": {
+        "candidate_binding_counts": {
+          "0": 632
+        },
+        "candidate_only": 632,
+        "reference_binding_counts": {
+          "0": 157,
+          "1": 203,
+          "2": 45
+        },
+        "reference_only": 405
+      },
+      "baseline_record_sha256": "c1a9f28666bed0540d01f7e5e89a6ed56069800d3a956167b84feda326bfe324",
+      "current_facts": {
+        "candidate_binding_counts": {
+          "0": 624
+        },
+        "candidate_only": 624,
+        "reference_binding_counts": {
+          "0": 156,
+          "1": 199,
+          "2": 45
+        },
+        "reference_only": 400
+      },
+      "current_record_sha256": "8ce75c9d46f0a0e3ec53e0fc2361815d6582175abdfb3b118441b2415876fb6b",
+      "facts_equal": false,
+      "name": "pax-signal/gnu/symbols",
+      "status": "retained"
+    },
+    {
+      "baseline_facts": {
+        "candidate_records": 590693,
+        "cause": "retained per-site relocation records differ in identity, normalization or ordering; every candidate site is independently validated by the corpus gate",
+        "reference_records": 395199
+      },
+      "baseline_record_sha256": "6fc9802025b94f6d40d4b31387de4702e6345cc2372d138923273e1782070a21",
+      "current_facts": {
+        "candidate_records": 628374,
+        "cause": "retained per-site relocation records differ in identity, normalization or ordering; every candidate site is independently validated by the corpus gate",
+        "reference_records": 419268
+      },
+      "current_record_sha256": "ef336e49564a36f872f059a168560dbfd99b04764372e0772dc29f52f08c3d29",
+      "facts_equal": false,
+      "name": "pax-signal/lld/relocations",
+      "status": "retained"
+    },
+    {
+      "baseline_facts": {
+        "candidate": [
+          [
+            1,
+            5,
+            4096
+          ],
+          [
+            1,
+            6,
+            4096
+          ],
+          [
+            7,
+            4,
+            8
+          ],
+          [
+            1685382481,
+            6,
+            16
+          ]
+        ],
+        "reference": [
+          [
+            1,
+            4,
+            4096
+          ],
+          [
+            1,
+            5,
+            4096
+          ],
+          [
+            1,
+            6,
+            4096
+          ],
+          [
+            1,
+            6,
+            4096
+          ],
+          [
+            6,
+            4,
+            8
+          ],
+          [
+            7,
+            4,
+            8
+          ],
+          [
+            1685382481,
+            6,
+            0
+          ],
+          [
+            1685382482,
+            4,
+            1
+          ]
+        ]
+      },
+      "baseline_record_sha256": "6fc9802025b94f6d40d4b31387de4702e6345cc2372d138923273e1782070a21",
+      "current_facts": {
+        "candidate": [
+          [
+            1,
+            5,
+            4096
+          ],
+          [
+            1,
+            6,
+            4096
+          ],
+          [
+            7,
+            4,
+            8
+          ],
+          [
+            1685382481,
+            6,
+            16
+          ]
+        ],
+        "reference": [
+          [
+            1,
+            4,
+            4096
+          ],
+          [
+            1,
+            5,
+            4096
+          ],
+          [
+            1,
+            6,
+            4096
+          ],
+          [
+            1,
+            6,
+            4096
+          ],
+          [
+            6,
+            4,
+            8
+          ],
+          [
+            7,
+            4,
+            8
+          ],
+          [
+            1685382481,
+            6,
+            0
+          ],
+          [
+            1685382482,
+            4,
+            1
+          ]
+        ]
+      },
+      "current_record_sha256": "ef336e49564a36f872f059a168560dbfd99b04764372e0772dc29f52f08c3d29",
+      "facts_equal": true,
+      "name": "pax-signal/lld/segments",
+      "status": "retained"
+    },
+    {
+      "baseline_facts": {
+        "candidate_binding_counts": {
+          "0": 403
+        },
+        "candidate_only": 403,
+        "reference_binding_counts": {
+          "0": 975
+        },
+        "reference_only": 975
+      },
+      "baseline_record_sha256": "6fc9802025b94f6d40d4b31387de4702e6345cc2372d138923273e1782070a21",
+      "current_facts": {
+        "candidate_binding_counts": {
+          "0": 398
+        },
+        "candidate_only": 398,
+        "reference_binding_counts": {
+          "0": 1022
+        },
+        "reference_only": 1022
+      },
+      "current_record_sha256": "ef336e49564a36f872f059a168560dbfd99b04764372e0772dc29f52f08c3d29",
+      "facts_equal": false,
+      "name": "pax-signal/lld/symbols",
+      "status": "retained"
+    },
+    {
+      "baseline_facts": {
+        "candidate_records": 593994,
+        "cause": "retained per-site relocation records differ in identity, normalization or ordering; every candidate site is independently validated by the corpus gate",
+        "reference_records": 410721
+      },
+      "baseline_record_sha256": "fde3695c8e172152cdb94e8a66a09fae2c43304ddc8758eeec4f7dcbce2ed6c2",
+      "current_facts": {
+        "candidate_records": 631766,
+        "cause": "retained per-site relocation records differ in identity, normalization or ordering; every candidate site is independently validated by the corpus gate",
+        "reference_records": 435361
+      },
+      "current_record_sha256": "dab8fa966489185acc6b5bfb7c327ec7ddfd9e601c36edc43546d7a07d220201",
+      "facts_equal": false,
+      "name": "pax-spawn/gnu/relocations",
+      "status": "retained"
+    },
+    {
+      "baseline_facts": {
+        "candidate": [
+          [
+            1,
+            5,
+            4096
+          ],
+          [
+            1,
+            6,
+            4096
+          ],
+          [
+            7,
+            4,
+            8
+          ],
+          [
+            1685382481,
+            6,
+            16
+          ]
+        ],
+        "reference": [
+          [
+            1,
+            4,
+            4096
+          ],
+          [
+            1,
+            4,
+            4096
+          ],
+          [
+            1,
+            5,
+            4096
+          ],
+          [
+            1,
+            6,
+            4096
+          ],
+          [
+            7,
+            4,
+            8
+          ],
+          [
+            1685382481,
+            6,
+            16
+          ],
+          [
+            1685382482,
+            4,
+            1
+          ]
+        ]
+      },
+      "baseline_record_sha256": "fde3695c8e172152cdb94e8a66a09fae2c43304ddc8758eeec4f7dcbce2ed6c2",
+      "current_facts": {
+        "candidate": [
+          [
+            1,
+            5,
+            4096
+          ],
+          [
+            1,
+            6,
+            4096
+          ],
+          [
+            7,
+            4,
+            8
+          ],
+          [
+            1685382481,
+            6,
+            16
+          ]
+        ],
+        "reference": [
+          [
+            1,
+            4,
+            4096
+          ],
+          [
+            1,
+            4,
+            4096
+          ],
+          [
+            1,
+            5,
+            4096
+          ],
+          [
+            1,
+            6,
+            4096
+          ],
+          [
+            7,
+            4,
+            8
+          ],
+          [
+            1685382481,
+            6,
+            16
+          ],
+          [
+            1685382482,
+            4,
+            1
+          ]
+        ]
+      },
+      "current_record_sha256": "dab8fa966489185acc6b5bfb7c327ec7ddfd9e601c36edc43546d7a07d220201",
+      "facts_equal": true,
+      "name": "pax-spawn/gnu/segments",
+      "status": "retained"
+    },
+    {
+      "baseline_facts": {
+        "candidate_binding_counts": {
+          "0": 952,
+          "1": 6
+        },
+        "candidate_only": 958,
+        "reference_binding_counts": {
+          "0": 295,
+          "1": 367,
+          "2": 49
+        },
+        "reference_only": 711
+      },
+      "baseline_record_sha256": "fde3695c8e172152cdb94e8a66a09fae2c43304ddc8758eeec4f7dcbce2ed6c2",
+      "current_facts": {
+        "candidate_binding_counts": {
+          "0": 942
+        },
+        "candidate_only": 942,
+        "reference_binding_counts": {
+          "0": 292,
+          "1": 369,
+          "2": 49
+        },
+        "reference_only": 710
+      },
+      "current_record_sha256": "dab8fa966489185acc6b5bfb7c327ec7ddfd9e601c36edc43546d7a07d220201",
+      "facts_equal": false,
+      "name": "pax-spawn/gnu/symbols",
+      "status": "retained"
+    },
+    {
+      "baseline_facts": {
+        "candidate_memsz": 448,
+        "candidate_only_variables": [],
+        "classification": "different TLS variable ordering; raw template mismatch remains recorded",
+        "reference_memsz": 448,
+        "reference_only_variables": [],
+        "symbol_bindings_equal": false,
+        "symbol_normalized_initializers_equal": true
+      },
+      "baseline_record_sha256": "fde3695c8e172152cdb94e8a66a09fae2c43304ddc8758eeec4f7dcbce2ed6c2",
+      "decision": "no tls difference recorded for pax-spawn against gnu at the 0.2.38 pin",
+      "name": "pax-spawn/gnu/tls",
+      "status": "resolved"
+    },
+    {
+      "baseline_facts": {
+        "candidate_records": 593994,
+        "cause": "retained per-site relocation records differ in identity, normalization or ordering; every candidate site is independently validated by the corpus gate",
+        "reference_records": 421455
+      },
+      "baseline_record_sha256": "3ee7112b48cde954d013a8d637c5f9f29a17fc4f9b35f588e7e6b3141eccd54b",
+      "current_facts": {
+        "candidate_records": 631766,
+        "cause": "retained per-site relocation records differ in identity, normalization or ordering; every candidate site is independently validated by the corpus gate",
+        "reference_records": 446423
+      },
+      "current_record_sha256": "0bb82f0a8ab4e9a710bb52760c3abace9c8074262302efc81586284cab7d6797",
+      "facts_equal": false,
+      "name": "pax-spawn/lld/relocations",
+      "status": "retained"
+    },
+    {
+      "baseline_facts": {
+        "candidate": [
+          [
+            1,
+            5,
+            4096
+          ],
+          [
+            1,
+            6,
+            4096
+          ],
+          [
+            7,
+            4,
+            8
+          ],
+          [
+            1685382481,
+            6,
+            16
+          ]
+        ],
+        "reference": [
+          [
+            1,
+            4,
+            4096
+          ],
+          [
+            1,
+            5,
+            4096
+          ],
+          [
+            1,
+            6,
+            4096
+          ],
+          [
+            1,
+            6,
+            4096
+          ],
+          [
+            6,
+            4,
+            8
+          ],
+          [
+            7,
+            4,
+            8
+          ],
+          [
+            1685382481,
+            6,
+            0
+          ],
+          [
+            1685382482,
+            4,
+            1
+          ]
+        ]
+      },
+      "baseline_record_sha256": "3ee7112b48cde954d013a8d637c5f9f29a17fc4f9b35f588e7e6b3141eccd54b",
+      "current_facts": {
+        "candidate": [
+          [
+            1,
+            5,
+            4096
+          ],
+          [
+            1,
+            6,
+            4096
+          ],
+          [
+            7,
+            4,
+            8
+          ],
+          [
+            1685382481,
+            6,
+            16
+          ]
+        ],
+        "reference": [
+          [
+            1,
+            4,
+            4096
+          ],
+          [
+            1,
+            5,
+            4096
+          ],
+          [
+            1,
+            6,
+            4096
+          ],
+          [
+            1,
+            6,
+            4096
+          ],
+          [
+            6,
+            4,
+            8
+          ],
+          [
+            7,
+            4,
+            8
+          ],
+          [
+            1685382481,
+            6,
+            0
+          ],
+          [
+            1685382482,
+            4,
+            1
+          ]
+        ]
+      },
+      "current_record_sha256": "0bb82f0a8ab4e9a710bb52760c3abace9c8074262302efc81586284cab7d6797",
+      "facts_equal": true,
+      "name": "pax-spawn/lld/segments",
+      "status": "retained"
+    },
+    {
+      "baseline_facts": {
+        "candidate_binding_counts": {
+          "0": 552
+        },
+        "candidate_only": 552,
+        "reference_binding_counts": {
+          "0": 975
+        },
+        "reference_only": 975
+      },
+      "baseline_record_sha256": "3ee7112b48cde954d013a8d637c5f9f29a17fc4f9b35f588e7e6b3141eccd54b",
+      "current_facts": {
+        "candidate_binding_counts": {
+          "0": 539
+        },
+        "candidate_only": 539,
+        "reference_binding_counts": {
+          "0": 1022
+        },
+        "reference_only": 1022
+      },
+      "current_record_sha256": "0bb82f0a8ab4e9a710bb52760c3abace9c8074262302efc81586284cab7d6797",
+      "facts_equal": false,
+      "name": "pax-spawn/lld/symbols",
+      "status": "retained"
+    },
+    {
+      "baseline_facts": {
+        "candidate_records": 591948,
+        "cause": "retained per-site relocation records differ in identity, normalization or ordering; every candidate site is independently validated by the corpus gate",
+        "reference_records": 393239
+      },
+      "baseline_record_sha256": "0c7f43ddc8b28907ba366c557d58c8d51c1cd12614f8426591e67724e5141694",
+      "current_facts": {
+        "candidate_records": 629709,
+        "cause": "retained per-site relocation records differ in identity, normalization or ordering; every candidate site is independently validated by the corpus gate",
+        "reference_records": 416788
+      },
+      "current_record_sha256": "26cb47e5614a69081328ac7973cda9c98330a60c9232bada4cab86b6110138bc",
+      "facts_equal": false,
+      "name": "pax-std/gnu/relocations",
+      "status": "retained"
+    },
+    {
+      "baseline_facts": {
+        "candidate": [
+          [
+            1,
+            5,
+            4096
+          ],
+          [
+            1,
+            6,
+            4096
+          ],
+          [
+            7,
+            4,
+            8
+          ],
+          [
+            1685382481,
+            6,
+            16
+          ]
+        ],
+        "reference": [
+          [
+            1,
+            4,
+            4096
+          ],
+          [
+            1,
+            4,
+            4096
+          ],
+          [
+            1,
+            5,
+            4096
+          ],
+          [
+            1,
+            6,
+            4096
+          ],
+          [
+            7,
+            4,
+            8
+          ],
+          [
+            1685382481,
+            6,
+            16
+          ],
+          [
+            1685382482,
+            4,
+            1
+          ]
+        ]
+      },
+      "baseline_record_sha256": "0c7f43ddc8b28907ba366c557d58c8d51c1cd12614f8426591e67724e5141694",
+      "current_facts": {
+        "candidate": [
+          [
+            1,
+            5,
+            4096
+          ],
+          [
+            1,
+            6,
+            4096
+          ],
+          [
+            7,
+            4,
+            8
+          ],
+          [
+            1685382481,
+            6,
+            16
+          ]
+        ],
+        "reference": [
+          [
+            1,
+            4,
+            4096
+          ],
+          [
+            1,
+            4,
+            4096
+          ],
+          [
+            1,
+            5,
+            4096
+          ],
+          [
+            1,
+            6,
+            4096
+          ],
+          [
+            7,
+            4,
+            8
+          ],
+          [
+            1685382481,
+            6,
+            16
+          ],
+          [
+            1685382482,
+            4,
+            1
+          ]
+        ]
+      },
+      "current_record_sha256": "26cb47e5614a69081328ac7973cda9c98330a60c9232bada4cab86b6110138bc",
+      "facts_equal": true,
+      "name": "pax-std/gnu/segments",
+      "status": "retained"
+    },
+    {
+      "baseline_facts": {
+        "candidate_binding_counts": {
+          "0": 662
+        },
+        "candidate_only": 662,
+        "reference_binding_counts": {
+          "0": 184,
+          "1": 205,
+          "2": 45
+        },
+        "reference_only": 434
+      },
+      "baseline_record_sha256": "0c7f43ddc8b28907ba366c557d58c8d51c1cd12614f8426591e67724e5141694",
+      "current_facts": {
+        "candidate_binding_counts": {
+          "0": 665
+        },
+        "candidate_only": 665,
+        "reference_binding_counts": {
+          "0": 184,
+          "1": 212,
+          "2": 45
+        },
+        "reference_only": 441
+      },
+      "current_record_sha256": "26cb47e5614a69081328ac7973cda9c98330a60c9232bada4cab86b6110138bc",
+      "facts_equal": false,
+      "name": "pax-std/gnu/symbols",
+      "status": "retained"
+    },
+    {
+      "baseline_facts": {
+        "candidate_records": 591948,
+        "cause": "retained per-site relocation records differ in identity, normalization or ordering; every candidate site is independently validated by the corpus gate",
+        "reference_records": 405217
+      },
+      "baseline_record_sha256": "ae2f0f1361543d07c2db90c470775cde06919ded67ca5780c4362fe924817377",
+      "current_facts": {
+        "candidate_records": 629709,
+        "cause": "retained per-site relocation records differ in identity, normalization or ordering; every candidate site is independently validated by the corpus gate",
+        "reference_records": 429411
+      },
+      "current_record_sha256": "273c02ac96983839454e854c91b6b5d97f8dd94da137d2b84b3beef9fa3274f2",
+      "facts_equal": false,
+      "name": "pax-std/lld/relocations",
+      "status": "retained"
+    },
+    {
+      "baseline_facts": {
+        "candidate": [
+          [
+            1,
+            5,
+            4096
+          ],
+          [
+            1,
+            6,
+            4096
+          ],
+          [
+            7,
+            4,
+            8
+          ],
+          [
+            1685382481,
+            6,
+            16
+          ]
+        ],
+        "reference": [
+          [
+            1,
+            4,
+            4096
+          ],
+          [
+            1,
+            5,
+            4096
+          ],
+          [
+            1,
+            6,
+            4096
+          ],
+          [
+            1,
+            6,
+            4096
+          ],
+          [
+            6,
+            4,
+            8
+          ],
+          [
+            7,
+            4,
+            8
+          ],
+          [
+            1685382481,
+            6,
+            0
+          ],
+          [
+            1685382482,
+            4,
+            1
+          ]
+        ]
+      },
+      "baseline_record_sha256": "ae2f0f1361543d07c2db90c470775cde06919ded67ca5780c4362fe924817377",
+      "current_facts": {
+        "candidate": [
+          [
+            1,
+            5,
+            4096
+          ],
+          [
+            1,
+            6,
+            4096
+          ],
+          [
+            7,
+            4,
+            8
+          ],
+          [
+            1685382481,
+            6,
+            16
+          ]
+        ],
+        "reference": [
+          [
+            1,
+            4,
+            4096
+          ],
+          [
+            1,
+            5,
+            4096
+          ],
+          [
+            1,
+            6,
+            4096
+          ],
+          [
+            1,
+            6,
+            4096
+          ],
+          [
+            6,
+            4,
+            8
+          ],
+          [
+            7,
+            4,
+            8
+          ],
+          [
+            1685382481,
+            6,
+            0
+          ],
+          [
+            1685382482,
+            4,
+            1
+          ]
+        ]
+      },
+      "current_record_sha256": "273c02ac96983839454e854c91b6b5d97f8dd94da137d2b84b3beef9fa3274f2",
+      "facts_equal": true,
+      "name": "pax-std/lld/segments",
+      "status": "retained"
+    },
+    {
+      "baseline_facts": {
+        "candidate_binding_counts": {
+          "0": 431
+        },
+        "candidate_only": 431,
+        "reference_binding_counts": {
+          "0": 975
+        },
+        "reference_only": 975
+      },
+      "baseline_record_sha256": "ae2f0f1361543d07c2db90c470775cde06919ded67ca5780c4362fe924817377",
+      "current_facts": {
+        "candidate_binding_counts": {
+          "0": 426
+        },
+        "candidate_only": 426,
+        "reference_binding_counts": {
+          "0": 1022
+        },
+        "reference_only": 1022
+      },
+      "current_record_sha256": "273c02ac96983839454e854c91b6b5d97f8dd94da137d2b84b3beef9fa3274f2",
+      "facts_equal": false,
+      "name": "pax-std/lld/symbols",
+      "status": "retained"
+    }
+  ],
+  "waivers": []
+}

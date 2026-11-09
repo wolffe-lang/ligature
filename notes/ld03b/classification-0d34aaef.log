@@ -1,0 +1,142 @@
+CLASSIFY START 2026-11-09T21:28:38Z pid 2519234 head 0d34aaefcc154023d0dc0aa7c913b56c6dc58a07 block B
+worktree /home/mfwolffe/lanes/ld03/classify-0d34aaef at 0d34aaefcc154023d0dc0aa7c913b56c6dc58a07
+2026-11-09T21:28:38Z classify: waiting on hasu block B (block lock, then slot lock)
+2026-11-09T22:36:32Z classify: locks held
+START fetch-toolchain
+  wolf-0.2.38-x86_64-unknown-linux-gnu 8447a57944da67ba8e76f5b4e88c2f38a32f39466f44b65e5817dcc276394f39
+  wolf-0.2.38-x86_64-unknown-linux-gnu 8447a57944da67ba8e76f5b4e88c2f38a32f39466f44b65e5817dcc276394f39
+  lupin-0.1.60-x86_64-unknown-linux-gnu e7d4c4f1534736c9262f4ccd01a631f03ff70e3b8122eefe6e9ec1e15c02637e
+  lupin-0.1.60-x86_64-unknown-linux-gnu e7d4c4f1534736c9262f4ccd01a631f03ff70e3b8122eefe6e9ec1e15c02637e
+  wolf-rt-0.2.38-x86_64-unknown-linux-musl sha256 486f54735c18a352ae20eb7a7c2bbc3c7d245ca1be488841727d1e4ca6bfa125
+  wolf-rt-0.2.38-x86_64-unknown-linux-musl sha256 486f54735c18a352ae20eb7a7c2bbc3c7d245ca1be488841727d1e4ca6bfa125
+  wolf-rt-0.2.38-x86_64-unknown-linux-musl/libwolf_rt.a sha256 37252e1d0d97d917bc19e95f27d8304b8da3d31afd7a2120395e0c9a87bbc740
+  wolf-rt-0.2.38-x86_64-unknown-linux-musl/libwolf_rt.a sha256 37252e1d0d97d917bc19e95f27d8304b8da3d31afd7a2120395e0c9a87bbc740
+  musl runtime: archive, runtime and SHA256SUMS verified; .wolf-bin/musl/libwolf_rt.a; distinct from the link bundle
+END fetch-toolchain exit=0 secs=8
+START fetch-bundle
+  link-bundle: reading the staged archive /home/mfwolffe/lanes/ld03/stage-0.2.38/musl-link-bundle-sha256-4cff0af6a27d200def3651bf3caee77f9bd9452be715ce878e2f0197a0516a36.tar.gz (LIGATURE_BUNDLE_ARCHIVE), not the release asset
+  link-bundle sha256 4cff0af6a27d200def3651bf3caee77f9bd9452be715ce878e2f0197a0516a36
+  link-bundle sha256 4cff0af6a27d200def3651bf3caee77f9bd9452be715ce878e2f0197a0516a36
+  link-bundle: licensed archive, MANIFEST and every member verified twice; ligature#13
+END fetch-bundle exit=0 secs=2
+START build
+  17589dca4f2e20439c09cb792df7566813f544894d7b554bfeb8fec63280a7cf  target/ligature
+END build exit=0 secs=3
+START make-corpus
+  EMIT tests/corpus/pax/exec.lu -> target/corpus/pax-exec
+  EMIT tests/corpus/pax/fork.lu -> target/corpus/pax-fork
+  EMIT tests/corpus/pax/hello.lu -> target/corpus/pax-hello
+  EMIT tests/corpus/pax/host.lu -> target/corpus/pax-host
+  warning[E0802]: this arm can never match — the arms above already cover it
+    --> tests/corpus/pax/host.lu:39:13
+     |
+  38 |             invalid => "invalid",
+     |             ------- this arm already matches those values
+  39 |             missing => "missing",
+     |             ^^^^^^^ unreachable arm
+     |
+     = note: delete the arm, or reorder the arms so the more specific pattern comes first.
+  
+  EMIT tests/corpus/pax/loop.lu -> target/corpus/pax-loop
+  EMIT tests/corpus/pax/signal.lu -> target/corpus/pax-signal
+  EMIT tests/corpus/pax/spawn.lu -> target/corpus/pax-spawn
+  EMIT tests/corpus/pax/std.lu -> target/corpus/pax-std
+  EMIT tests/corpus/hello/hello.lu -> target/corpus/hello-hello
+END make-corpus exit=0 secs=0
+START static-pax
+  PINS verified twice
+  BEGIN compiler-comptime
+  LINK1 compiler-comptime 3d3877b9cdd931dd0801881941397befac0ad17c637c9ae7d429a02298cd7ea5
+  END compiler-comptime behavior-verified-structural-recorded functional_failures 0 unexplained 6
+  BEGIN compiler-entry_no_return
+  LINK1 compiler-entry_no_return 0e6af8e1f30e870a40e5324cc2b5d4d810c05193bcbefd0cdac0fb3d68ea98f1
+  END compiler-entry_no_return behavior-verified-structural-recorded functional_failures 0 unexplained 12
+  BEGIN compiler-overflow
+  LINK1 compiler-overflow 55909d3faececf3b01acdb9e326c415c889f191a5684d5a2bb7b8048a6e00210
+  END compiler-overflow behavior-verified-structural-recorded functional_failures 0 unexplained 18
+  BEGIN compiler-procs
+  LINK1 compiler-procs 13192583acf277f41fba57d4a697693f4c3618cd4ea36e7a46c375d6f9aff00b
+  END compiler-procs behavior-verified-structural-recorded functional_failures 0 unexplained 24
+  BEGIN compiler-regions
+  LINK1 compiler-regions 71cbe7566695d6103399e460dfcb2bcb02beb6832918407e83d18ce8d631b101
+  END compiler-regions behavior-verified-structural-recorded functional_failures 0 unexplained 30
+  BEGIN hello-hello
+  LINK1 hello-hello 4ece818c2fb656daf060b6649b43c97dd825bcbdc87823ca776acbc389b116cf
+  END hello-hello behavior-verified-structural-recorded functional_failures 0 unexplained 36
+  BEGIN pax-exec
+  LINK1 pax-exec 722e2213a5d9ef87f6213cb947999fa8b59e8b3b68ad9ae755f80262b3dcb374
+  END pax-exec behavior-verified-structural-recorded functional_failures 0 unexplained 42
+  BEGIN pax-fork
+  LINK1 pax-fork 419d23a24e5ca167cc0e957871fff21688128a6c75d799f79a25701139bfac0d
+  END pax-fork behavior-verified-structural-recorded functional_failures 0 unexplained 48
+  BEGIN pax-hello
+  LINK1 pax-hello cee71303bfc17cd33b7e6373481ad9cdd09695724ab48abf81d4640d69140169
+  END pax-hello behavior-verified-structural-recorded functional_failures 0 unexplained 54
+  BEGIN pax-host
+  LINK1 pax-host 408f35ccfea119b8993afe99faa07f5068ea07e19cc49fc22e777a2c604e9141
+  END pax-host behavior-verified-structural-recorded functional_failures 0 unexplained 60
+  BEGIN pax-loop
+  LINK1 pax-loop 769d67e0536ac74d050de74d47bf88b01d2c953ac3081e7511d2663281000953
+  END pax-loop behavior-verified-structural-recorded functional_failures 0 unexplained 66
+  BEGIN pax-signal
+  LINK1 pax-signal cb7a400e3fc77d02f38671649ec751a977aac8c618bf734c9bfb01dd38a86b4f
+  END pax-signal behavior-verified-structural-recorded functional_failures 0 unexplained 72
+  BEGIN pax-spawn
+  LINK1 pax-spawn b5b4a9df9e358250a91ed16a25dc7c91c3e544eddd0462dbfeea0dbd155e585e
+  END pax-spawn behavior-verified-structural-recorded functional_failures 0 unexplained 78
+  BEGIN pax-std
+  LINK1 pax-std 8b7775025d130b096edf0e84efcaba745aa1c801a35ed0ca12024928af6eb15f
+  END pax-std behavior-verified-structural-recorded functional_failures 0 unexplained 84
+  COMPLETE 14 rows; functional failures 0 unexplained structural differences 84
+END static-pax exit=0 secs=1570
+START classify-static
+  {"counts": {"relocations": 28, "segments": 28, "symbols": 28}, "tls_normalized": [], "total": 84}
+END classify-static exit=0 secs=118
+START compare-findings
+  {
+    "format": "ligature.ld03b.findings-at-pin.v1",
+    "pin": "wolf 0.2.38 (95ae082), wolf-rt 0.2.38 37252e1d",
+    "baseline": "structural-classes-v2.json",
+    "baseline_names": 87,
+    "current_names": 84,
+    "counts": {
+      "retained": 84,
+      "resolved": 3
+    },
+    "retained_by_kind": {
+      "relocations": 28,
+      "segments": 28,
+      "symbols": 28
+    },
+    "waivers": []
+  }
+  RESOLVED compiler-procs/gnu/tls
+  RESOLVED pax-host/gnu/tls
+  RESOLVED pax-spawn/gnu/tls
+  findings-at-pin: 87 baseline names, 84 current; {'retained': 84, 'resolved': 3}; 0 waivers; 0 SKIP
+END compare-findings exit=0 secs=0
+START manifest-measure
+  {
+    "format": "ligature.ld03b.manifest-measure.v1",
+    "sites": 628047,
+    "discard_records": 18171,
+    "table_bytes_section": 12984320,
+    "table_bytes_used": 12983656,
+    "table_bytes_per_site": 20.674121522752277,
+    "legacy_json_bytes_derived": 159268864,
+    "legacy_json_bytes_per_site_derived": 253.59386160589892,
+    "ratio_derived": 12.266246056782334,
+    "baseline_0_2_35": {
+      "sites": 590358,
+      "json_bytes": 147136512,
+      "table_bytes": 12414976,
+      "ratio": 11.851534147146156
+    },
+    "independent_encoder_equal": true
+  }
+  manifest-measure: 628047 sites; table 12984320 B (20.67 B/site); legacy JSON derived 159268864 B; ratio 12.27x; 0 SKIP
+END manifest-measure exit=0 secs=8
+5.7G	target/static-pax
+16M	target
+2026-11-09T23:05:07Z classify: container finished rc=0
+CLASSIFY EXIT 0 2026-11-09T23:05:07Z

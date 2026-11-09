@@ -1,0 +1,98 @@
+CLASSIFY START 2026-11-09T19:15:06Z pid 2094782 head be8bd0524328e269b06f95f3d3f729d8d0beda1e block B
+worktree /home/mfwolffe/lanes/ld03/classify-be8bd052 at be8bd0524328e269b06f95f3d3f729d8d0beda1e
+2026-11-09T19:15:06Z classify: waiting on hasu block B (block lock, then slot lock)
+2026-11-09T19:37:23Z classify: locks held
+START fetch-toolchain
+  wolf-0.2.38-x86_64-unknown-linux-gnu 8447a57944da67ba8e76f5b4e88c2f38a32f39466f44b65e5817dcc276394f39
+  wolf-0.2.38-x86_64-unknown-linux-gnu 8447a57944da67ba8e76f5b4e88c2f38a32f39466f44b65e5817dcc276394f39
+  lupin-0.1.60-x86_64-unknown-linux-gnu e7d4c4f1534736c9262f4ccd01a631f03ff70e3b8122eefe6e9ec1e15c02637e
+  lupin-0.1.60-x86_64-unknown-linux-gnu e7d4c4f1534736c9262f4ccd01a631f03ff70e3b8122eefe6e9ec1e15c02637e
+  wolf-rt-0.2.38-x86_64-unknown-linux-musl sha256 486f54735c18a352ae20eb7a7c2bbc3c7d245ca1be488841727d1e4ca6bfa125
+  wolf-rt-0.2.38-x86_64-unknown-linux-musl sha256 486f54735c18a352ae20eb7a7c2bbc3c7d245ca1be488841727d1e4ca6bfa125
+  wolf-rt-0.2.38-x86_64-unknown-linux-musl/libwolf_rt.a sha256 37252e1d0d97d917bc19e95f27d8304b8da3d31afd7a2120395e0c9a87bbc740
+  wolf-rt-0.2.38-x86_64-unknown-linux-musl/libwolf_rt.a sha256 37252e1d0d97d917bc19e95f27d8304b8da3d31afd7a2120395e0c9a87bbc740
+  musl runtime: archive, runtime and SHA256SUMS verified; .wolf-bin/musl/libwolf_rt.a; distinct from the link bundle
+END fetch-toolchain exit=0 secs=14
+START fetch-bundle
+  link-bundle: reading the staged archive /home/mfwolffe/lanes/ld03/stage-0.2.38/musl-link-bundle-sha256-4cff0af6a27d200def3651bf3caee77f9bd9452be715ce878e2f0197a0516a36.tar.gz (LIGATURE_BUNDLE_ARCHIVE), not the release asset
+  link-bundle sha256 4cff0af6a27d200def3651bf3caee77f9bd9452be715ce878e2f0197a0516a36
+  link-bundle sha256 4cff0af6a27d200def3651bf3caee77f9bd9452be715ce878e2f0197a0516a36
+  link-bundle: licensed archive, MANIFEST and every member verified twice; ligature#13
+END fetch-bundle exit=0 secs=1
+START build
+  f5cab72ccc6c74da586699d76ffa6485b126763389fb960a53be46f1c1377c6b  target/ligature
+END build exit=0 secs=2
+START make-corpus
+  EMIT tests/corpus/pax/exec.lu -> target/corpus/pax-exec
+  EMIT tests/corpus/pax/fork.lu -> target/corpus/pax-fork
+  EMIT tests/corpus/pax/hello.lu -> target/corpus/pax-hello
+  EMIT tests/corpus/pax/host.lu -> target/corpus/pax-host
+  warning[E0802]: this arm can never match — the arms above already cover it
+    --> tests/corpus/pax/host.lu:39:13
+     |
+  38 |             invalid => "invalid",
+     |             ------- this arm already matches those values
+  39 |             missing => "missing",
+     |             ^^^^^^^ unreachable arm
+     |
+     = note: delete the arm, or reorder the arms so the more specific pattern comes first.
+  
+  EMIT tests/corpus/pax/loop.lu -> target/corpus/pax-loop
+  EMIT tests/corpus/pax/signal.lu -> target/corpus/pax-signal
+  EMIT tests/corpus/pax/spawn.lu -> target/corpus/pax-spawn
+  EMIT tests/corpus/pax/std.lu -> target/corpus/pax-std
+  EMIT tests/corpus/hello/hello.lu -> target/corpus/hello-hello
+END make-corpus exit=0 secs=0
+START static-pax
+  PINS verified twice
+  BEGIN compiler-comptime
+  LINK1 compiler-comptime eb863a0ed4bf6eabf62dfe9261196600724fc6dc41d3de7dc1e33a4553a07765
+  END compiler-comptime behavior-verified-structural-recorded functional_failures 0 unexplained 6
+  BEGIN compiler-entry_no_return
+  LINK1 compiler-entry_no_return 69b5ffc76bd874cb58b65136bd15b48f45cf2ee96ee464e06f65ef1cb959c92d
+  END compiler-entry_no_return behavior-verified-structural-recorded functional_failures 0 unexplained 12
+  BEGIN compiler-overflow
+  LINK1 compiler-overflow bd21fe101aaa4815b46a1eff7af56b9d80f6099579ff1e53bc85c89d4dd4d022
+  END compiler-overflow behavior-verified-structural-recorded functional_failures 0 unexplained 18
+  BEGIN compiler-procs
+  LINK1 compiler-procs 69a74c65554778512305e91e9da71d91c93457b42a78f3e135dc4ad98e2cfa55
+  END compiler-procs behavior-verified-structural-recorded functional_failures 0 unexplained 24
+  BEGIN compiler-regions
+  LINK1 compiler-regions da726598a016730e7f5e9143cee11bb97f45dc9cbd0b63a065c465095848203d
+  END compiler-regions behavior-verified-structural-recorded functional_failures 0 unexplained 30
+  BEGIN hello-hello
+  LINK1 hello-hello 3f429ba556f1396419189e38a66886abafc0ac7771e59ea5c7b3af491a0c0ea8
+  Traceback (most recent call last):
+    File "/home/mfwolffe/lanes/ld03/classify-be8bd052/tests/static-pax.py", line 75, in main
+      assert counts=={'libwolf_rt.a':32,'libc.a':322,'libunwind.a':5},counts
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  AssertionError: Counter({'libc.a': 328, 'libwolf_rt.a': 32, 'libunwind.a': 5})
+  END hello-hello failed functional_failures 1 unexplained 30
+  BEGIN pax-exec
+  LINK1 pax-exec 077e8d7459e94e696661cc69249b5642808a615d4891df0a06bf2faadba5f191
+  END pax-exec behavior-verified-structural-recorded functional_failures 1 unexplained 36
+  BEGIN pax-fork
+  LINK1 pax-fork 438ae74e7597adc877a65d0b1c4b59ff559bd3707186000cea72daa13f6d8cee
+  END pax-fork behavior-verified-structural-recorded functional_failures 1 unexplained 42
+  BEGIN pax-hello
+  LINK1 pax-hello edcfbb08a5701efdf043bd70570dd78c8f9a599cb9e7f7eb40f0cb421009e7f6
+  END pax-hello behavior-verified-structural-recorded functional_failures 1 unexplained 48
+  BEGIN pax-host
+  LINK1 pax-host 5c0e621ab01f7c04b68d8c8f9a61a0d4b93c6d42a7b22bc61a2196941f30cb48
+  END pax-host behavior-verified-structural-recorded functional_failures 1 unexplained 54
+  BEGIN pax-loop
+  LINK1 pax-loop 09af3bd2343c226ca06c6a2014d1c1490b4de7eee07b33c0abd9eb90522e7d93
+  END pax-loop behavior-verified-structural-recorded functional_failures 1 unexplained 60
+  BEGIN pax-signal
+  LINK1 pax-signal c213f05b6aa78d830f0e126d5b679e0f2e04a55e0271ee4cde80d03392e25e60
+  END pax-signal behavior-verified-structural-recorded functional_failures 1 unexplained 66
+  BEGIN pax-spawn
+  LINK1 pax-spawn 8b2c2fb7ea0725f922d22aa7856b8695b3dd21c31df7152f3cdd049d45102a91
+  END pax-spawn behavior-verified-structural-recorded functional_failures 1 unexplained 72
+  BEGIN pax-std
+  LINK1 pax-std 22fdaec540058f646151dcb3749a882e58a1c76a2c6cd6893fb7862fdd254daa
+  END pax-std behavior-verified-structural-recorded functional_failures 1 unexplained 78
+  COMPLETE 14 rows; functional failures 1 unexplained structural differences 78
+END static-pax exit=1 secs=1441
+2026-11-09T20:01:41Z classify: container finished rc=1
+CLASSIFY EXIT 1 2026-11-09T20:01:41Z

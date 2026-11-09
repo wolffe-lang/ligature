@@ -1,0 +1,29 @@
+{
+  "format": "ligature.ld03b.manifest-measure.v1",
+  "executable": "target/static-pax/hello-hello/program",
+  "sha256_read_twice": [
+    {
+      "file": "4ece818c2fb656daf060b6649b43c97dd825bcbdc87823ca776acbc389b116cf",
+      "table": "b6f74583a51add3ad809d1d5b9e563c88894b4055283243275c4c4c305e8ea9e"
+    },
+    {
+      "file": "4ece818c2fb656daf060b6649b43c97dd825bcbdc87823ca776acbc389b116cf",
+      "table": "b6f74583a51add3ad809d1d5b9e563c88894b4055283243275c4c4c305e8ea9e"
+    }
+  ],
+  "sites": 628047,
+  "discard_records": 18171,
+  "table_bytes_section": 12984320,
+  "table_bytes_used": 12983656,
+  "table_bytes_per_site": 20.674121522752277,
+  "legacy_json_bytes_derived": 159268864,
+  "legacy_json_bytes_per_site_derived": 253.59386160589892,
+  "ratio_derived": 12.266246056782334,
+  "baseline_0_2_35": {
+    "sites": 590358,
+    "json_bytes": 147136512,
+    "table_bytes": 12414976,
+    "ratio": 11.851534147146156
+  },
+  "independent_encoder_equal": true
+}
