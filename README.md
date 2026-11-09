@@ -70,7 +70,10 @@ archive is supplied by the compiler, not silently replaced. `-fuse-ld=lld` is
 accepted and ignored. Use `-nostdlib` for explicit CRT/archive order. Static
 non-PIE is the only output mode; no external linker is executed. Archive entries
 are discovered lazily, including backward references to earlier archives. Strong
-demands extract immediately; weak references do not pull members. The historical hello census matches all 359 LLD-selected members in order.
+demands extract immediately; weak references do not pull members. Hello's archive pulls and
+defined names match LLD's at each measured runtime pin (`tests/fixtures/hello-identity.json`:
+359 members and 401 names at the 0.2.35 runtime, 365 and 396 at 0.2.38); an unmeasured runtime is
+refused by name, not compared with a stale census.
 
 ## Tests and reference tools
 

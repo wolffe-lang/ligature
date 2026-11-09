@@ -119,6 +119,12 @@ libc.a libunwind.a --end-group crtn.o`. Force
 archive member. LLD selects **359 members** for compiler-corpus hello:
 32 runtime, 322 libc and 5 libunwind. Each reason and demanded symbol is
 recorded in `oracle_observations.hello-hello.lld_extraction_reasons`.
+Those are the 0.2.35 runtime's numbers. Hello's identity is held per runtime
+pin in `tests/fixtures/hello-identity.json`, keyed by the runtime's SHA-256:
+at the 0.2.38 pin LLD selects **365 members** (32 runtime, 328 libc, 5
+libunwind; `getpriority`, `mkdirat`, `rewinddir`, `setpriority`, `statvfs` and
+`symlinkat` are the six libc members the newer runtime demands) and defines
+**396** global or weak names, and ligature's hello matches both exactly.
 GNU archives preserve member order, permit duplicate names, use a big-endian
 32-bit symbol-index offset table and a `//` long-name table. Libunwind's index
 includes one trailing NUL padding byte in its member size.
@@ -190,7 +196,8 @@ and recognized static TLS transitions. `src/writer` emits ELF tables and symbols
 The writer emits two LOAD segments (RX and RW), PT_TLS when needed and a
 non-executable GNU_STACK. It does not emit PT_PHDR or GNU_RELRO for this static
 non-PIE mode. Segment differences are explicit, not reduced to a base-address
-waiver. Hello reproduces all 359 archive pulls and the 401 public definitions;
+waiver. Hello reproduces all of LLD's archive pulls and public definitions at
+each measured pin (359 and 401 at the 0.2.35 runtime; 365 and 396 at 0.2.38);
 its TLS is 80 initialized bytes, 272 memory bytes, alignment 8.
 
 GOTPCREL uses reserved GOT entries. Recognized REX_GOTPCRELX loads relax only
