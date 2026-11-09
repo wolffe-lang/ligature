@@ -26,6 +26,15 @@ def checked(argv,log,timeout=1200,allowed=(0,),cwd=ROOT,env=None):
     assert p.returncode in allowed,(list(map(str,argv)),p.returncode,p.stderr[-2000:])
     return p
 
+def hello_identity(root,runtime_sha256):
+    """Hello's expected link identity for the runtime it linked: LLD's extracted members by archive and
+    its defined global names, recorded per pin in tests/fixtures/hello-identity.json from the oracle's own
+    trace and nm. A runtime with no entry is a named refusal, never a pass."""
+    fixture=json.loads((pathlib.Path(root)/'tests/fixtures/hello-identity.json').read_text())
+    for entry in fixture['entries']:
+        if entry['runtime_sha256']==runtime_sha256:return entry
+    raise AssertionError(f'FAIL hello-identity: not measured for runtime libwolf_rt.a {runtime_sha256}; add the entry from LLD\'s trace and nm')
+
 def main():
     ap=argparse.ArgumentParser();ap.add_argument('inputs',type=pathlib.Path);a=ap.parse_args()
     BASE=a.inputs.resolve();LIB=BASE/'sysroot';BIN=pathlib.Path(os.environ.get('LIGATURE_LINKER',str(ROOT/'target/ligature')));OUT=ROOT/'target/static-pax';OUT.mkdir(parents=True,exist_ok=True)
@@ -68,17 +77,17 @@ def main():
             assert behavior==oracle['lld']['run']==oracle['gnu']['run'],('behavior',behavior,oracle)
             row.update({'behavior':'equal','run':behavior,'sha256':sha,'deterministic':True,'verified':True})
             if case.name=='hello-hello':
+                identity=hello_identity(ROOT,digest(BASE/'libwolf_rt.a'))
                 resolved=checked([*args,'--resolve'],dest/'resolution')
                 records=[json.loads(x) for x in resolved.stdout.splitlines()]
                 pulls=[r['edge'] for r in records if r['row']=='pull']
                 counts=collections.Counter(pathlib.Path(r['archive']).name for r in pulls)
-                assert counts=={'libwolf_rt.a':32,'libc.a':322,'libunwind.a':5},counts
+                assert dict(counts)==identity['members'],('FAIL hello-identity: members',dict(counts),identity['members'],identity['runtime'])
                 symbols=checked(['nm','-g','--defined-only',exe],dest/'globals').stdout.decode()
                 names={line.split()[-1] for line in symbols.splitlines()}
-                census=json.loads((ROOT/'census/pax-link-set.json').read_text())['oracle_observations']['hello-hello']
-                expected={s['name'] for s in census['lld_defined_symbols']}
-                assert len(names)==401 and names==expected,('symbols',sorted(names-expected),sorted(expected-names))
-                row['hello_identity']={'members':dict(counts),'definitions':len(names),'equal_names':True}
+                expected=set(identity['defined_globals'])
+                assert names==expected,('FAIL hello-identity: symbols',identity['runtime'],sorted(names-expected),sorted(expected-names))
+                row['hello_identity']={'runtime':identity['runtime'],'runtime_sha256':identity['runtime_sha256'],'members':dict(counts),'definitions':len(names),'equal_names':True}
             differences=[]
             for oracle_name in ('lld','gnu'):
                 result=dest/(oracle_name+'-differ.json')
