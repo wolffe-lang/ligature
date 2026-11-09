@@ -1,16 +1,22 @@
 #!/usr/bin/env python3
 """Fetch and verify the licensed, content-addressed musl link bundle."""
 import hashlib
+import os
 import pathlib
 import re
+import shutil
 import tarfile
 import tempfile
 import urllib.request
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
-SHA = '8210ac2223d969ab8f0845cc74950a1c68226b58b10dd083cd2e2113acd3e37a'
-MANIFEST_SHA = '8bcea75770a47a23f619ad778d05c84a028f2e840964302d164195ea74e73886'
-URL = f'https://github.com/wolffe-lang/ligature/releases/download/link-bundle-wolf-0.2.36/musl-link-bundle-sha256-{SHA}.tar.gz'
+SHA = '4cff0af6a27d200def3651bf3caee77f9bd9452be715ce878e2f0197a0516a36'
+MANIFEST_SHA = 'ef3261a0f7c05082c949945d259d7896ab9ce340c083ef76a0be834f40c69950'
+URL = f'https://github.com/wolffe-lang/ligature/releases/download/link-bundle-wolf-0.2.38/musl-link-bundle-sha256-{SHA}.tar.gz'
+# A staged archive read in place of the release asset (LIGATURE_BUNDLE_ARCHIVE): the same digest,
+# MANIFEST and member checks, and no network. A lane's record runs on the staged bundle before the
+# release exists; the published asset must be byte-identical to pass the same pins.
+LOCAL = 'LIGATURE_BUNDLE_ARCHIVE'
 
 
 def digest(stream):
@@ -82,7 +88,15 @@ def main():
         download = temp / 'download'
         download.mkdir()
         archive = download / 'bundle.tar.gz'
-        urllib.request.urlretrieve(URL, archive)
+        local = os.environ.get(LOCAL)
+        if local:
+            source = pathlib.Path(local)
+            if source.is_symlink() or not source.is_file():
+                raise SystemExit(f'REFUSED link bundle archive {LOCAL}={local}: not a regular file')
+            shutil.copyfile(source, archive)
+            print(f'link-bundle: reading the staged archive {source} ({LOCAL}), not the release asset', flush=True)
+        else:
+            urllib.request.urlretrieve(URL, archive)
         expected = verify_bundle(archive)
         unpacked = temp / 'unpacked'
         unpacked.mkdir()

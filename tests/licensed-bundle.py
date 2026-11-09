@@ -9,8 +9,8 @@ import tempfile
 import urllib.request
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
-ARCHIVE = '8210ac2223d969ab8f0845cc74950a1c68226b58b10dd083cd2e2113acd3e37a'
-MANIFEST = '8bcea75770a47a23f619ad778d05c84a028f2e840964302d164195ea74e73886'
+ARCHIVE = '4cff0af6a27d200def3651bf3caee77f9bd9452be715ce878e2f0197a0516a36'
+MANIFEST = 'ef3261a0f7c05082c949945d259d7896ab9ce340c083ef76a0be834f40c69950'
 rows = []
 
 
@@ -39,7 +39,7 @@ finally:
 def pin():
     assert module.get('SHA') == ARCHIVE, 'licensed archive digest not pinned'
     assert module.get('MANIFEST_SHA') == MANIFEST, 'licensed MANIFEST digest not pinned'
-    assert module['URL'].endswith('/link-bundle-wolf-0.2.36/musl-link-bundle-sha256-' + ARCHIVE + '.tar.gz')
+    assert module['URL'].endswith('/link-bundle-wolf-0.2.38/musl-link-bundle-sha256-' + ARCHIVE + '.tar.gz')
 
 
 row('licensed-bundle-pin', pin)
