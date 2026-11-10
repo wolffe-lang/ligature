@@ -106,9 +106,17 @@ admission that once let the 0.2.35 bundle runtime report BLOCKED was retired
 with the 0.2.38 pin, and no runtime digest is admitted.
 The Linux gate also invokes the released compiler's `--linker` route on hello.
 `tests/link-cost.py` builds a frozen pre-optimization relocation control against
-the current sources and compares hello and self-link using identical objects.
-Both outputs must be byte-identical and the candidate must take at most half
-the same run's baseline time. No absolute host-speed bound is used.
+the current sources and links hello and the linker's own objects with both. The
+two outputs must be byte-identical; both link times are recorded, unbounded. The
+row once demanded the candidate take at most half the control's time, and it did
+at the 0.2.36 pin (hello: control 216.3 and 216.6 s against 7.61 and 7.69 s on
+one Linux host). That ratio rested on the runtime's `Map`, which the control's
+lookup leans on, scanning linearly; wolf 0.2.38's runtime finds Map keys through
+a hashed index, so at this pin the control links as fast as the candidate (8.58,
+8.68 and 8.70 s against 8.39, 8.42 and 8.65 s on the same host, every pair
+byte-identical) and the ratio stopped measuring the linker. Time complexity is
+guarded by `link-memory-scaling`'s seconds bound instead (below). No absolute
+host-speed bound is used.
 `tests/link-memory.py` bounds memory: it links hello and `str` against the
 46.7 MB musl runtime and verifies hello, each as a direct child under a 2 GiB
 address-space cap, and requires each resident peak (the child's own

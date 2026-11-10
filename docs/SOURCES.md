@@ -100,10 +100,20 @@ licensed bundle's runtime. The 0.2.36 pin's runtime was
 Historical census evidence retains the earlier runtime identity.
 
 The relocation-index optimization consults only this project's own code and
-wolf-lang's `crates/wolf_rt/src/map.rs` (`find`, `__wolf_rt_map_set`): the pinned
-native map performs linear scans. The frozen baseline in
+wolf-lang's `crates/wolf_rt/src/map.rs` (`find`, `__wolf_rt_map_set`): the
+0.2.36 pin's native map performed linear scans. The frozen baseline in
 `tests/fixtures/ld06-relocate.baseline` is ligature's own original implementation,
-not external linker code.
+not external linker code. From wolf 0.2.38 the runtime's Map finds its keys
+through a hashed index (its release note, s280), so the frozen baseline no
+longer scans linearly and `tests/link-cost.py`'s ratio bound was retired in
+favour of byte identity with recorded times. Measured on one Linux host and CPU
+block with the same baseline file (SHA-256 `950485ee…`): at wolf 0.2.36 the
+control linked hello in 216.337 and 216.583 s against the candidate's 7.612 and
+7.693 s (ratios 0.0352, 0.0355); at wolf 0.2.38, 8.575, 8.676 and 8.701 s
+against 8.386, 8.418 and 8.646 s (ratios 0.978, 0.970, 0.994); every pair of
+outputs byte-identical. Time complexity of the relocation lookup is guarded by
+`tests/link-memory.py`'s N/10N/100N scaling row, whose per-step bound covers
+seconds as well as resident memory.
 
 The public glibc runtime additionally contains empty, excluded
 `SHT_LLVM_ADDRSIG` sections: LLVM 17 Language Reference Extensions,
