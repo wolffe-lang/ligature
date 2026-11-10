@@ -418,7 +418,7 @@
   {
    "runtime": "wolf-rt 0.2.38",
    "runtime_sha256": "37252e1d0d97d917bc19e95f27d8304b8da3d31afd7a2120395e0c9a87bbc740",
-   "source": "LLD 17.0.6 --trace and nm -g --defined-only of its hello on hasu, record classify-be8bd052 (2026-11-09T19:37Z, lane ld03b); the six libc members new since 0.2.35 are getpriority, mkdirat, rewinddir, setpriority, statvfs and symlinkat, demanded by the 0.2.38 runtime",
+   "source": "LLD 17.0.6 --trace and nm -g --defined-only of its hello, linked on x86-64 Linux at the 0.2.38 pin on 2026-11-09 (the take recorded in notes/ld03b/classification-red-hello-identity-be8bd052.log); the six libc members new since 0.2.35 are getpriority, mkdirat, rewinddir, setpriority, statvfs and symlinkat, demanded by the 0.2.38 runtime",
    "members": {
     "libwolf_rt.a": 32,
     "libc.a": 328,

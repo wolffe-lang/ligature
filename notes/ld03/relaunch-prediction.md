@@ -1,7 +1,7 @@
 # ld03, relaunched 2026-11-09: the prediction
 
 Written before any change, from trunk `6cec81a741fed8c25ad7178a5c295b3eb338aa26` and a read-only
-build probe of that commit on macOS arm64 (`~/lanes/ld03/mac-build-probe.log`).
+build probe of that commit on macOS arm64 (the probe's log is quoted in "The probe" below).
 
 ## What the tree already holds (facts at trunk, not predictions)
 
@@ -13,7 +13,7 @@ At trunk, M3's items stand as follows:
   sealed by the unchanged 116-byte `.note.wolf.link`: 12,414,976 bytes, 21.0 bytes per site, 11.85x,
   every patch record equal field by field, 17,765 discard records made explicit, an independent
   encoder reproducing the bytes (`notes/ld03/measurement-before.json`, `measurement-after.json`).
-  R-ld03-1 was recommended as option A on those sizes and is still unruled in the campaign index.
+  The manifest's form was recommended on those sizes (the interned table) and is restated below.
 - `explain --symbol | --address | --why | --dependencies | --discarded` (`src/explain/explain.lu`),
   reading both manifest forms; the gate's "explanation queries" row.
 - Determinism as a test: byte-identical relinks in the self-link row (first = second = bootstrap
@@ -33,7 +33,7 @@ at that pin, the plants, and the note. The ld02a inputs this contract names are 
 
 ## The pin, read twice
 
-Every digest below was read twice on the Mac (`~/lanes/ld03/rel-0.2.38/sums.twice.txt`) and equals
+Every digest below was read twice on macOS arm64 and equals
 the release page where the page states it.
 
 | pin | value |
@@ -57,7 +57,7 @@ requires the bundle's `libwolf_rt.a` to equal `[wolf-rt].libwolf_rt`, and `link-
 against the bundle's copy of the runtime, while `self-link` and `musl-argv` link against the
 `[wolf-rt]` copy. Moving `[wolf]` and `[wolf-rt]` to 0.2.38 under the 0.2.36 bundle therefore puts
 0.2.38 objects against a 0.2.36 runtime in six rows, the mismatch #962/#963 taught (one release for
-objects and runtime), and `bundle-smoke` goes red by digest. That is R-ld03-2 below.
+objects and runtime), and `bundle-smoke` goes red by digest. That is the second decision below.
 
 ## The probe (read-only, trunk, macOS arm64)
 
@@ -87,7 +87,7 @@ pin move needs no source change for the compiler.
    the same flags, so the 13 encodings and the section classes of `docs/MAP.md` hold. A refusal
    here is a finding to name, not a guess to patch.
 4. **The bundle rows** (`stage-bundle`, `licensed-bundle`, `bundle-smoke`, `real-ligature`,
-   `link-cost`, `link-memory`): under the recommended R-ld03-2 A, a 0.2.38 bundle staged by
+   `link-cost`, `link-memory`): with the recommended staging of a 0.2.38 bundle by
    `tools/stage-bundle` from the 0.2.36 bundle's seven unchanged binaries plus the 0.2.38 runtime and
    the notices with the runtime's source row updated, pinned by its digest and MANIFEST digest in
    `tools/fetch-bundle` and `tests/pax-link.sums`: all green, `bundle-smoke` executing hello under
@@ -105,7 +105,7 @@ pin move needs no source change for the compiler.
    the N/10N/100N archives stay linear.
 7. **The findings gate:** `tools/check-findings` and `tests/findings.py` unchanged and green: the
    87 are held to ld02a's baseline identities, which the pin does not touch. A fresh classification
-   of the 0.2.38 corpus is R-ld03-4; predicted, if run: the same four kinds with different counts,
+   of the 0.2.38 corpus is the fourth decision; predicted, if run: the same four kinds with different counts,
    every name present in the baseline's 87 (the same fourteen cases against the same two oracles),
    none resolved, since ligature's layout freedom and retained-relocation policy did not change.
 8. **The manifest at 0.2.38:** hello's retained sites move with the runtime, predicted within ±5 %
@@ -116,31 +116,31 @@ pin move needs no source change for the compiler.
    one input (the runtime 0.2.36 → 0.2.38 at the same objects) moves bytes only in ranges the
    manifest attributes to runtime members; the blast-radius row is read from the manifest, not asserted
    by hand.
-10. **The vestigial BLOCKED admission** (R-ld03-3): retiring it leaves `tests/self-link.py` with one
+10. **The vestigial BLOCKED admission** (the third decision): retiring it leaves `tests/self-link.py` with one
     outcome, PASS or a named failure; `tests/self-link-blocker.py` becomes the witness that no digest
     is admitted; CI unchanged (it already demanded PASS).
-11. **Plants, three, red by name in a plant record on hasu, off the line:** a provenance record
+11. **Plants, three, red by name in a plant record on the Linux build host, off the line:** a provenance record
     dropped (`lazy-order: provenance retained patch count mismatch`), a finding's record reclassified
     (`check-findings: … retained finding silently reclassified`), a nondeterministic relink
     (`writer: strong-weak ligature nondeterministic`).
 12. **README:** the 0.2.36 sentences (lines 17, 94–98, 132–152, 207 at trunk) refreshed in a
     README-only commit; `docs/SOURCES.md`'s bundle and runtime rows likewise.
 
-## Rulings asked (recommendations, implemented as recommended unless ruled otherwise)
+## Decisions asked (recommendations, implemented as recommended unless decided otherwise)
 
-- **R-ld03-1, the manifest's form** (unchanged from the first pass, with the sizes above): (A) the
+- **The manifest's form** (unchanged from the first pass, with the sizes above): (A) the
   interned binary table inside the existing note envelope, recommended, 11.85x measured; (B)
   compressed JSON; (C) a sidecar file.
-- **R-ld03-2, the 0.2.38 bundle:** (A) stage `link-bundle-wolf-0.2.38` with `tools/stage-bundle`
+- **The 0.2.38 bundle:** (A) stage `link-bundle-wolf-0.2.38` with `tools/stage-bundle`
   (the seven 0.2.36 binaries unchanged, the 0.2.38 runtime, the notices' runtime row updated), hand
   the archive and its digest to the orchestrator for publication, pin by digest; recommended, the
   path ld06 took for 0.2.36. (B) decouple the six rows from the bundle's runtime copy and keep the
   0.2.36 bundle; no public step, but the bundle stops being the whole PAX link set. (C) the
   contract's fallback: everything stays at 0.2.36 and this lane reports the missing bundle.
-- **R-ld03-3, the BLOCKED admission:** (A) retire it now that the self-link is live, recommended;
+- **The BLOCKED admission:** (A) retire it now that the self-link is live, recommended;
   (B) keep it.
-- **R-ld03-4, the findings at the new pin:** (A) a fresh classification run on hasu, recorded as
+- **The findings at the new pin:** (A) a fresh classification run on the Linux build host, recorded as
   evidence with each name resolved or retained against the baseline's 87, the baseline gate
   unchanged, recommended; (B) the baseline only; (C) replace the baseline with the 0.2.38 table.
-- **R-ld03-5, the branch:** `ld03` and `ld03-plant-*` already exist on origin from ligature#22,
+- **The branch:** `ld03` and `ld03-plant-*` already exist on origin from ligature#22,
   all in trunk. (A) branch `ld03b` and `ld03b-plant-*`, recommended; (B) force-push `ld03`.

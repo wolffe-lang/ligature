@@ -1,5 +1,5 @@
 DIAGNOSE START 2026-11-10T02:55:34Z pid 3373615 head a5909ac0816050f09fbc39dca85dca4d7fc84579 trunk 6cec81a741fed8c25ad7178a5c295b3eb338aa26 block B
-2026-11-10T02:55:34Z diagnose: waiting on hasu block B (block lock, slot lock, light lock)
+2026-11-10T02:55:34Z diagnose: waiting on HOST block B (block lock, slot lock, light lock)
 2026-11-10T04:02:27Z diagnose: locks held
  04:02:27 up 24 days, 12:01,  0 user,  load average: 4.61, 4.06, 4.50
 START new-fetch-toolchain
@@ -32,9 +32,9 @@ START new-link-cost-hello-1
   link-cost-hello baseline 8.575415s 02ef3385ca58fdad0cbc0c3ee497c9d02f2ce5ef07d7bfbe6d24db858e2cb975
   link-cost-hello candidate 8.385748s 02ef3385ca58fdad0cbc0c3ee497c9d02f2ce5ef07d7bfbe6d24db858e2cb975
   Traceback (most recent call last):
-    File "/home/mfwolffe/lanes/ld03/diag-new-a5909ac0/tests/link-cost.py", line 79, in <module>
+    File "LANE/diag-new-a5909ac0/tests/link-cost.py", line 79, in <module>
       main()
-    File "/home/mfwolffe/lanes/ld03/diag-new-a5909ac0/tests/link-cost.py", line 74, in main
+    File "LANE/diag-new-a5909ac0/tests/link-cost.py", line 74, in main
       raise AssertionError(f'FAIL {row}: ratio={ratio:.6f} bound=0.50')
   AssertionError: FAIL link-cost-hello: ratio=0.977882 bound=0.50
 END new-link-cost-hello-1 exit=1 secs=18
@@ -43,9 +43,9 @@ START new-link-cost-hello-2
   link-cost-hello baseline 8.676005s 02ef3385ca58fdad0cbc0c3ee497c9d02f2ce5ef07d7bfbe6d24db858e2cb975
   link-cost-hello candidate 8.418052s 02ef3385ca58fdad0cbc0c3ee497c9d02f2ce5ef07d7bfbe6d24db858e2cb975
   Traceback (most recent call last):
-    File "/home/mfwolffe/lanes/ld03/diag-new-a5909ac0/tests/link-cost.py", line 79, in <module>
+    File "LANE/diag-new-a5909ac0/tests/link-cost.py", line 79, in <module>
       main()
-    File "/home/mfwolffe/lanes/ld03/diag-new-a5909ac0/tests/link-cost.py", line 74, in main
+    File "LANE/diag-new-a5909ac0/tests/link-cost.py", line 74, in main
       raise AssertionError(f'FAIL {row}: ratio={ratio:.6f} bound=0.50')
   AssertionError: FAIL link-cost-hello: ratio=0.970268 bound=0.50
 END new-link-cost-hello-2 exit=1 secs=18
@@ -54,9 +54,9 @@ START new-link-cost-hello-3
   link-cost-hello baseline 8.700671s 02ef3385ca58fdad0cbc0c3ee497c9d02f2ce5ef07d7bfbe6d24db858e2cb975
   link-cost-hello candidate 8.645545s 02ef3385ca58fdad0cbc0c3ee497c9d02f2ce5ef07d7bfbe6d24db858e2cb975
   Traceback (most recent call last):
-    File "/home/mfwolffe/lanes/ld03/diag-new-a5909ac0/tests/link-cost.py", line 79, in <module>
+    File "LANE/diag-new-a5909ac0/tests/link-cost.py", line 79, in <module>
       main()
-    File "/home/mfwolffe/lanes/ld03/diag-new-a5909ac0/tests/link-cost.py", line 74, in main
+    File "LANE/diag-new-a5909ac0/tests/link-cost.py", line 74, in main
       raise AssertionError(f'FAIL {row}: ratio={ratio:.6f} bound=0.50')
   AssertionError: FAIL link-cost-hello: ratio=0.993664 bound=0.50
 END new-link-cost-hello-3 exit=1 secs=18
