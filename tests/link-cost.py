@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
-"""Same-run baseline ratios and byte identity for hello and linker objects."""
+"""Byte identity between the frozen original relocation lookup and the current index, for hello and the
+linker's own objects, with both link times recorded (unbounded since the 0.2.38 pin)."""
 import argparse
 import hashlib
 import json
@@ -67,12 +68,16 @@ def main():
         assert result.stderr == b''
         assert result.stdout.startswith(b'ligature ') if case == 'self-link' else result.stdout == b'hello, wolf\n'
         ratio = times['candidate'] / times['baseline']
-        record = {'row': row, 'seconds': times, 'ratio': ratio, 'bound': 0.50, 'sha256_read_twice': hashes}
+        # Both times are recorded; neither bounds the row. The 0.5 ratio bound that held at the 0.2.36
+        # pin (control 269 s, candidate 7.9 s) rested on the runtime's Map scanning linearly; wolf 0.2.38's
+        # runtime hashes its Map, so the frozen control links as fast as the candidate (8.8 s against 8.6 s
+        # at the pin) and the ratio no longer measures ligature. The row's assertion is byte identity:
+        # the original lookup and the current index must write the same executable. Time complexity is
+        # guarded by link-memory's N/10N/100N scaling row, whose per-step bound covers seconds as well.
+        record = {'row': row, 'seconds': times, 'ratio': ratio, 'bound': None, 'assertion': 'byte-identity', 'sha256_read_twice': hashes}
         rows.append(record)
         (OUT / 'results.json').write_text(json.dumps(rows, indent=2) + '\n')
-        if ratio > 0.50:
-            raise AssertionError(f'FAIL {row}: ratio={ratio:.6f} bound=0.50')
-        print(f'PASS {row}: ratio={ratio:.6f} bound=0.50 byte-identical; 0 SKIP', flush=True)
+        print(f"PASS {row}: byte-identical; control {times['baseline']:.3f}s candidate {times['candidate']:.3f}s ratio={ratio:.6f} recorded, unbounded; 0 SKIP", flush=True)
 
 
 if __name__ == '__main__':
