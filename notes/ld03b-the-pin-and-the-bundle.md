@@ -17,8 +17,8 @@ rows 1, 7, 8, 9 (the pin, the findings gate, the manifest, determinism) from the
 record in this directory; rows 2–6 and 10 (check-core, self-link, the bundle rows, link-cost,
 link-memory, the retired admission) by the lane's green record at the final head, quoted in the
 hand-back and the PR; row 11 by the plant records; row 12 by the README and SOURCES commits.
-Two rows moved: hello's retained sites grew 6.4 % (predicted within ±5 %), and the pin needed one
-test change the prediction did not name (hello's census identity, below).
+Two rows moved: hello's retained sites grew 6.4 % (predicted within ±5 %), and the pin needed two
+test changes the prediction did not name (hello's census identity and link-cost's ratio, below).
 
 ## Forbidden
 
@@ -125,6 +125,36 @@ rules since the writer no longer emits it, would be 159,268,864 bytes (253.6 per
   archive, the pins, check-core, real-ligature, self-link, link-cost, link-memory and bundle-smoke; its
   path and lines are in the hand-back and the PR. The plant records hold the three named reds.
 
+### link-cost at the pin: the ratio's premise went with the runtime
+
+- The first green take at `a5909ac0` (`green-red-link-cost-a5909ac0.log`) was green through self-link and
+  red at `link-cost`: `FAIL link-cost-hello: ratio=0.976342 bound=0.50`, the frozen control linking hello
+  in 8.83 s against the candidate's 8.62 s, byte-identical. ld07's record at trunk `6cec81a7` (wolf
+  0.2.36, the same block, 2026-11-04) had 269.05 s against 7.86 s, ratio 0.029.
+- Five measurements on one host and block, the same frozen control file (`950485ee…`), block, slot and
+  light locks held, differing only in the pin (`diagnose-link-cost/`): at wolf 0.2.38 with its runtime
+  and bundle, control 8.575 / 8.676 / 8.701 s, candidate 8.386 / 8.418 / 8.646 s, ratios 0.978 /
+  0.970 / 0.994; at trunk `6cec81a7` with wolf 0.2.36 and its runtime and bundle, control 216.337 /
+  216.583 s, candidate 7.612 / 7.693 s, ratios 0.0352 / 0.0355; every pair byte-identical. The
+  candidate's time is the same at both pins; the control's fell 25×.
+- Why: the frozen control is ligature's original relocation lookup, which leaned on the runtime's `Map`,
+  and `docs/SOURCES.md` recorded that its slowness was the pinned runtime's Map scanning linearly. wolf
+  0.2.38's runtime (s280) finds Map keys through a hashed index behind the same entry points, so at this
+  pin the control no longer scans and the ratio tends to 1 by construction. The row was not measuring
+  a loaded host (both linkers would slow alike) and ligature's index did not slow down.
+- R-ld03-7 A: the row keeps byte identity as its assertion (the original lookup and the current index
+  must write the same executable, for hello and for the linker's own objects) and records both times
+  without a bound; no straw-man control, no loosened bound. Red first is the record above at the
+  unchanged row.
+- **What guards time complexity now, by reading:** `link-memory-scaling` (`tests/link-memory.py`) bounds
+  `seconds` as well as `resident_peak` at each 10× step of N/10N/100N synthetic archive members (≤ 15×,
+  best of two runs). Each synthetic member carries relocations that grow with N (`lea d{i}(%rip)`,
+  `.quad f{i}`, a `call f{i}`, plus one `call` per member in the entry object), and
+  `src/provenance/attribution.lu` performs one `layout.site_lookup` per live relocation, so a lookup
+  regressed to a linear scan makes the link quadratic in its relocations and the 400 → 4000 step costs
+  about 100× against the 15× bound: `link-memory-scaling` is the row that fails. The unit test
+  `src/relocation_index_test.lu` guards the index's answers and capacity, not its time.
+
 ## Done-when
 
 - [x] Prediction committed before the change (`2fd5b29`).
@@ -156,3 +186,5 @@ rules since the writer no longer emits it, would be 159,268,864 bytes (253.6 per
 - R-ld03-4 A: one fresh classification at the pin as evidence; the baseline gate unchanged.
 - R-ld03-5 A: branch `ld03b`, plants `ld03b-plant-*`.
 - R-ld03-6 C: the records on hasu once its disk read above the floor.
+- R-ld03-7 A: link-cost keeps byte identity and records both times unbounded; time complexity is
+  `link-memory-scaling`'s seconds bound.

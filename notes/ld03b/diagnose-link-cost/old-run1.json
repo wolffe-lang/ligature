@@ -1,0 +1,21 @@
+[
+  {
+    "row": "link-cost-hello",
+    "seconds": {
+      "baseline": 216.33669726690277,
+      "candidate": 7.6123992539942265
+    },
+    "ratio": 0.03518773906676832,
+    "bound": 0.5,
+    "sha256_read_twice": {
+      "baseline": [
+        "225b184431eaea549499132fa1381b005c9cecec0f0417cc61678006cbc7b103",
+        "225b184431eaea549499132fa1381b005c9cecec0f0417cc61678006cbc7b103"
+      ],
+      "candidate": [
+        "225b184431eaea549499132fa1381b005c9cecec0f0417cc61678006cbc7b103",
+        "225b184431eaea549499132fa1381b005c9cecec0f0417cc61678006cbc7b103"
+      ]
+    }
+  }
+]

@@ -1,0 +1,191 @@
+RECORD repo=ligature head=a5909ac0816050f09fbc39dca85dca4d7fc84579 tree=441d194431d3943b8242279704b64c5f4c74685b host=hasu boot=5a951da2-4c76-46c7-b075-3d5320625c71 start=2026-11-10T02:49:54Z
+START fetch-toolchain
+  wolf-0.2.38-x86_64-unknown-linux-gnu 8447a57944da67ba8e76f5b4e88c2f38a32f39466f44b65e5817dcc276394f39
+  wolf-0.2.38-x86_64-unknown-linux-gnu 8447a57944da67ba8e76f5b4e88c2f38a32f39466f44b65e5817dcc276394f39
+  lupin-0.1.60-x86_64-unknown-linux-gnu e7d4c4f1534736c9262f4ccd01a631f03ff70e3b8122eefe6e9ec1e15c02637e
+  lupin-0.1.60-x86_64-unknown-linux-gnu e7d4c4f1534736c9262f4ccd01a631f03ff70e3b8122eefe6e9ec1e15c02637e
+  wolf-rt-0.2.38-x86_64-unknown-linux-musl sha256 486f54735c18a352ae20eb7a7c2bbc3c7d245ca1be488841727d1e4ca6bfa125
+  wolf-rt-0.2.38-x86_64-unknown-linux-musl sha256 486f54735c18a352ae20eb7a7c2bbc3c7d245ca1be488841727d1e4ca6bfa125
+  wolf-rt-0.2.38-x86_64-unknown-linux-musl/libwolf_rt.a sha256 37252e1d0d97d917bc19e95f27d8304b8da3d31afd7a2120395e0c9a87bbc740
+  wolf-rt-0.2.38-x86_64-unknown-linux-musl/libwolf_rt.a sha256 37252e1d0d97d917bc19e95f27d8304b8da3d31afd7a2120395e0c9a87bbc740
+  musl runtime: archive, runtime and SHA256SUMS verified; .wolf-bin/musl/libwolf_rt.a; distinct from the link bundle
+END fetch-toolchain exit=0 secs=28
+START fetch-bundle-release
+  link-bundle sha256 4cff0af6a27d200def3651bf3caee77f9bd9452be715ce878e2f0197a0516a36
+  link-bundle sha256 4cff0af6a27d200def3651bf3caee77f9bd9452be715ce878e2f0197a0516a36
+  link-bundle: licensed archive, MANIFEST and every member verified twice; ligature#13
+  37252e1d0d97d917bc19e95f27d8304b8da3d31afd7a2120395e0c9a87bbc740  .link-inputs/libwolf_rt.a
+  ef3261a0f7c05082c949945d259d7896ab9ce340c083ef76a0be834f40c69950  .link-inputs/MANIFEST
+END fetch-bundle-release exit=0 secs=5
+START fetch-bundle-staged
+  link-bundle: reading the staged archive /home/mfwolffe/lanes/ld03/stage-0.2.38/musl-link-bundle-sha256-4cff0af6a27d200def3651bf3caee77f9bd9452be715ce878e2f0197a0516a36.tar.gz (LIGATURE_BUNDLE_ARCHIVE), not the release asset
+  link-bundle sha256 4cff0af6a27d200def3651bf3caee77f9bd9452be715ce878e2f0197a0516a36
+  link-bundle sha256 4cff0af6a27d200def3651bf3caee77f9bd9452be715ce878e2f0197a0516a36
+  link-bundle: licensed archive, MANIFEST and every member verified twice; ligature#13
+  ef3261a0f7c05082c949945d259d7896ab9ce340c083ef76a0be834f40c69950  .link-inputs/MANIFEST
+END fetch-bundle-staged exit=0 secs=2
+START pins
+  37252e1d0d97d917bc19e95f27d8304b8da3d31afd7a2120395e0c9a87bbc740  .wolf-bin/musl/libwolf_rt.a
+  37252e1d0d97d917bc19e95f27d8304b8da3d31afd7a2120395e0c9a87bbc740  .link-inputs/libwolf_rt.a
+  wolf 0.2.38 (wolfgang, pin 95ae082)
+  paired with lupin 0.1.60 (reference interpreter), pin 5f1f1c949582f53121e4047bc83c86f23ff72240
+  lupin 0.1.60 (wolf-interp, reference interpreter at pin 5f1f1c9)
+END pins exit=0 secs=1
+START check-core
+  tier pr: 2 of 2 job(s) chosen
+    plan-test          success   ok
+    linux              success   ok
+  tier pr: 2 of 2 job(s) chosen
+    plan-test          failure   WANTED success
+    linux              success   ok
+  tier full: 2 of 2 job(s) chosen
+    plan-test          success   ok
+    linux              success   ok
+  tier full: 2 of 2 job(s) chosen
+    plan-test          failure   WANTED success
+    linux              success   ok
+  tier noop: 0 of 2 job(s) chosen
+    plan-test          skipped   ok
+    linux              skipped   ok
+  tiers: selected failures rejected; 0 SKIP
+  test_cross_cutting_push_runs_full_set (__main__.Gate.test_cross_cutting_push_runs_full_set) ... ok
+  test_deploy_not_selected_for_pull_requests (__main__.Gate.test_deploy_not_selected_for_pull_requests) ... ok
+  test_labelled_means_full_set (__main__.Gate.test_labelled_means_full_set) ... ok
+  test_off_cross_cutting_push_runs_nothing (__main__.Gate.test_off_cross_cutting_push_runs_nothing) ... ok
+  test_original_commands_and_nightlies_preserved (__main__.Gate.test_original_commands_and_nightlies_preserved) ... ok
+  test_unlabelled_is_cheap_only (__main__.Gate.test_unlabelled_is_cheap_only) ... ok
+  
+  ----------------------------------------------------------------------
+  Ran 6 tests in 0.047s
+  
+  OK
+  {"event":"suite","file":"src/address_test.lu","schema":"wolf-test/0","tests":1}
+  {"detail":"exit(0)","event":"test","file":"src/address_test.lu","name":"main","schema":"wolf-test/0","status":"pass"}
+  {"event":"suite","file":"src/digest_test.lu","schema":"wolf-test/0","tests":1}
+  {"detail":"exit(0) [native]","event":"test","file":"src/digest_test.lu","name":"main","native":"step budget exhausted","schema":"wolf-test/0","status":"pass"}
+  {"event":"suite","file":"src/kernel_relocation_test.lu","schema":"wolf-test/0","tests":1}
+  {"detail":"exit(0)","event":"test","file":"src/kernel_relocation_test.lu","name":"main","schema":"wolf-test/0","status":"pass"}
+  {"event":"suite","file":"src/nameidx_test.lu","schema":"wolf-test/0","tests":1}
+  {"detail":"exit(0)","event":"test","file":"src/nameidx_test.lu","name":"main","schema":"wolf-test/0","status":"pass"}
+  {"event":"suite","file":"src/reader_test.lu","schema":"wolf-test/0","tests":1}
+  {"detail":"exit(0)","event":"test","file":"src/reader_test.lu","name":"main","schema":"wolf-test/0","status":"pass"}
+  {"event":"suite","file":"src/relocation_index_test.lu","schema":"wolf-test/0","tests":1}
+  {"detail":"exit(0) [native]","event":"test","file":"src/relocation_index_test.lu","name":"main","native":"step budget exhausted","schema":"wolf-test/0","status":"pass"}
+  {"event":"suite","file":"src/script_profile_test.lu","schema":"wolf-test/0","tests":1}
+  {"detail":"exit(0)","event":"test","file":"src/script_profile_test.lu","name":"main","schema":"wolf-test/0","status":"pass"}
+  {"event":"summary","failed":0,"filtered_out":0,"native":2,"passed":7,"rejected":0,"schema":"wolf-test/0","stopped_early":false,"unsupported":0}
+  pc32-equation: three linker equations and executed outputs; 0 SKIP
+  stage-bundle: deterministic licensed bytes, complete manifest, replacement runtime, seven refusals; 0 SKIP
+  link-bundle: reading the staged archive /home/mfwolffe/lanes/ld03/green-a5909ac0/target/fetch-bundle-test-v7xa_ag_/local.tar.gz (LIGATURE_BUNDLE_ARCHIVE), not the release asset
+  fetch-bundle: mismatched archive refused before extraction, from the release and from a local archive; the override never reaches the network; 0 SKIP
+  PASS licensed-bundle-pin
+  link-bundle sha256 3bd71d54033e436d8ca31892a34eebe298e0d81ec97f9018a624110daff023fd
+  link-bundle sha256 3bd71d54033e436d8ca31892a34eebe298e0d81ec97f9018a624110daff023fd
+  PASS licensed-bundle-valid
+  PASS licensed-bundle-archive-digest
+  link-bundle sha256 5a846ed76f723500a09bf6932691023b86e001ab9d04ba8d4325ec0a5208ce81
+  link-bundle sha256 5a846ed76f723500a09bf6932691023b86e001ab9d04ba8d4325ec0a5208ce81
+  PASS licensed-bundle-manifest-digest
+  link-bundle sha256 aa475cc773459d3c6ef27e83a1c055bf3011c6c8e8c4c852ba57c47dc2b7284c
+  link-bundle sha256 aa475cc773459d3c6ef27e83a1c055bf3011c6c8e8c4c852ba57c47dc2b7284c
+  PASS licensed-bundle-member-digest
+  link-bundle sha256 10d0fe3e35fc526e07460d94db316247514dd86968dc573d8825a6f7f03e548d
+  link-bundle sha256 10d0fe3e35fc526e07460d94db316247514dd86968dc573d8825a6f7f03e548d
+  PASS licensed-bundle-missing-member
+  link-bundle sha256 2d4784907cf7c9bbc6573cd54844debd882bae7ae713f3689d91b14a60d188ad
+  link-bundle sha256 2d4784907cf7c9bbc6573cd54844debd882bae7ae713f3689d91b14a60d188ad
+  PASS licensed-bundle-extra-member
+  link-bundle sha256 04b2edfd87d4b532f87d5532f1dde45fd72f8d6bd9da37d4f1a902e441828955
+  link-bundle sha256 04b2edfd87d4b532f87d5532f1dde45fd72f8d6bd9da37d4f1a902e441828955
+  PASS licensed-bundle-duplicate-member
+  link-bundle sha256 7248401a276b18ba26fb0f7e3bb41133f18987d3452a58298765c285e6d16944
+  link-bundle sha256 7248401a276b18ba26fb0f7e3bb41133f18987d3452a58298765c285e6d16944
+  PASS licensed-bundle-symlink
+  link-bundle sha256 bb3cb1eb6c389d52db62893a28354989893516866f63560babd8a74ebeea5eab
+  link-bundle sha256 bb3cb1eb6c389d52db62893a28354989893516866f63560babd8a74ebeea5eab
+  PASS licensed-bundle-traversal
+  link-bundle sha256 d42a73f6d6d5746c69fa9de02eed5406045ee4e0bce79893bc1cc7bcadd6f939
+  link-bundle sha256 d42a73f6d6d5746c69fa9de02eed5406045ee4e0bce79893bc1cc7bcadd6f939
+  PASS licensed-bundle-manifest-format
+  PASS licensed-bundle-ci-rows
+  licensed-bundle: exact pins, ten offline archive boundaries and strict CI wiring; 0 SKIP
+  fetch-musl-runtime: mismatched archive refused before extraction; 0 SKIP
+  self-link admission: no digest admitted; the argv preflight and every assertion are unconditional; 0 SKIP
+  script-profile: 31 rows, 0 SKIP; preflight only; executable kernel links require explicit -T
+  archive-write: 35 process rows, deterministic bytes and independent index; three executed links, 0 SKIP
+  kernel-script: three executable links, u64 provenance, bounds, permissions, ordering, discards, independent sites, deterministic bytes and refusals; 0 SKIP
+  aarch64: 51 independent ELF/range/alignment/mask/pair/GOT/refusal rows; no fixture execution claimed, 0 SKIP
+  addrsig: valid symbol index consumed without folding; four malformed forms refused; 0 SKIP
+  integration: 43 process rows, 0 SKIP
+  oracle: 2 musl links, 2 deterministic relinks, 2 differ plants, 4 verify plants, 0 SKIP
+  resolution: 16 oracle rows, 0 SKIP
+  resolve: strong/weak/common, indexed archives, groups, duplicate names, COMDAT; 0 SKIP
+  lazy-order: forward/backward discovery matches LLD, four-member cyclic graph selected once; 0 SKIP
+  writer: 10 three-linker behavior rows, determinism, named refusals and TLS-negative rows; 0 SKIP
+  relocation-witness: three linkers, retained sites, unused data/debug corruption red, local/entry normalization; 0 SKIP
+  relocation-witness: all writer cases independently decoded, including four TLS models; 0 SKIP
+  cc frontend: exact compiler-style option subset links and runs; 0 SKIP
+  provenance: canonical manifest, independent SHA256 checks, four negative rows; 0 SKIP
+  attribution: complete disjoint coverage, explain, deterministic relink, delta locality, five resealed negative rows; 0 SKIP
+  attribution: aliases, archive path, TLS/NOBITS, ambiguous locals and explicit member selection; 0 SKIP
+  compact-manifest: legacy JSON explain parity and dropped provenance record refused; 0 SKIP
+  explain: dependency sites and distinct discarded-section causes; 0 SKIP
+  compact-manifest: five resealed decoder corruptions rejected, signed addend endpoints preserved; 0 SKIP
+  compact-manifest: arbitrary-byte symbol text matches legacy JSON origins; 0 SKIP
+  PAX transcript validator: one genuine capture, four rejected mutations; replay only, 0 SKIP
+  PAX staging: gzip evidence preserves exact program bytes and identical initramfs; 0 SKIP
+  static-pax runner: report preserved, nonzero differ status preserved, 0 SKIP
+  hello-identity: two pins by digest, the 0.2.35 entry equal to the census, the 0.2.38 entry measured, unknown runtimes refused by name; 0 SKIP
+  TLS classification: same named payload despite ordering/binding changes; changed payload remains unequal; no findings waived; 0 SKIP
+  named-findings: 87 individually retained; 0 waivers; 0 SKIP
+  named-findings: five mutation witnesses rejected; 0 SKIP
+  kernel edge: lld17 refuses -2147483652; GNU default refuses, GNU --no-relax keeps GOT load; LLD18 control is separate in tests/ld04-controls.py
+  layout-controls: three-linker merge/unwind measurements and two-oracle kernel.ld scope; no high-half ELF executed; 0 SKIP
+  roundtrip: PASS .wolf-bin/libwolf_rt.a
+END check-core exit=0 secs=14
+START real-ligature
+  verify: PASS /home/mfwolffe/lanes/ld03/green-a5909ac0/target/evidence/real-ligature/hello
+  real-ligature: released compiler --linker route, licensed musl runtime, verified executed hello; 0 SKIP
+END real-ligature exit=0 secs=11
+START self-link
+  musl-argv glibc 0 b'argc=3\n[--version]\n[space word]\n[]\n' b''
+  musl-argv lld 0 b'argc=3\n[--version]\n[space word]\n[]\n' b''
+  musl-argv gnu 0 b'argc=3\n[--version]\n[space word]\n[]\n' b''
+  musl-argv c-musl 0 b'argc=3\n[--version]\n[space word]\n[]\n' b''
+  musl-argv: all three Wolf links and pinned C/musl control preserve argv; 0 SKIP
+  SELF-LINK objects START
+  SELF-LINK objects PASS
+  SELF-LINK first START
+  SELF-LINK first PASS
+  SELF-LINK second START
+  SELF-LINK second PASS
+  SELF-LINK verify START
+  SELF-LINK verify PASS
+  SELF-LINK execute START
+  SELF-LINK execute PASS
+  SELF-LINK third START
+  SELF-LINK third PASS
+  SELF-LINK hello-objects START
+  SELF-LINK hello-objects PASS
+  SELF-LINK hello-link START
+  SELF-LINK hello-link PASS
+  SELF-LINK hello-execute START
+  SELF-LINK hello-execute PASS
+  SELF-LINK hello-verify START
+  SELF-LINK hello-verify PASS
+  self-link: own objects, two seed links, executable bootstrap link, byte identity, executed hello; 0 SKIP
+END self-link exit=0 secs=42
+START link-cost
+  START link-cost-hello
+  link-cost-hello baseline 8.833324s 7e66fcf40a440d47d980ffee1ba562f68a9b576197c8a1a424d45a6e8b8e1281
+  link-cost-hello candidate 8.624347s 7e66fcf40a440d47d980ffee1ba562f68a9b576197c8a1a424d45a6e8b8e1281
+  Traceback (most recent call last):
+    File "/home/mfwolffe/lanes/ld03/green-a5909ac0/tests/link-cost.py", line 79, in <module>
+      main()
+    File "/home/mfwolffe/lanes/ld03/green-a5909ac0/tests/link-cost.py", line 74, in main
+      raise AssertionError(f'FAIL {row}: ratio={ratio:.6f} bound=0.50')
+  AssertionError: FAIL link-cost-hello: ratio=0.976342 bound=0.50
+END link-cost exit=1 secs=19
+START record-wrapper
+END record-wrapper exit=1 secs=0
+RECORD-END worst=1 steps=9 end=2026-11-10T02:51:56Z

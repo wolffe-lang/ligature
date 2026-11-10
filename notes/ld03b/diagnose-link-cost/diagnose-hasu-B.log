@@ -1,0 +1,108 @@
+DIAGNOSE START 2026-11-10T02:55:34Z pid 3373615 head a5909ac0816050f09fbc39dca85dca4d7fc84579 trunk 6cec81a741fed8c25ad7178a5c295b3eb338aa26 block B
+2026-11-10T02:55:34Z diagnose: waiting on hasu block B (block lock, slot lock, light lock)
+2026-11-10T04:02:27Z diagnose: locks held
+ 04:02:27 up 24 days, 12:01,  0 user,  load average: 4.61, 4.06, 4.50
+START new-fetch-toolchain
+  wolf-0.2.38-x86_64-unknown-linux-gnu 8447a57944da67ba8e76f5b4e88c2f38a32f39466f44b65e5817dcc276394f39
+  wolf-0.2.38-x86_64-unknown-linux-gnu 8447a57944da67ba8e76f5b4e88c2f38a32f39466f44b65e5817dcc276394f39
+  lupin-0.1.60-x86_64-unknown-linux-gnu e7d4c4f1534736c9262f4ccd01a631f03ff70e3b8122eefe6e9ec1e15c02637e
+  lupin-0.1.60-x86_64-unknown-linux-gnu e7d4c4f1534736c9262f4ccd01a631f03ff70e3b8122eefe6e9ec1e15c02637e
+  wolf-rt-0.2.38-x86_64-unknown-linux-musl sha256 486f54735c18a352ae20eb7a7c2bbc3c7d245ca1be488841727d1e4ca6bfa125
+  wolf-rt-0.2.38-x86_64-unknown-linux-musl sha256 486f54735c18a352ae20eb7a7c2bbc3c7d245ca1be488841727d1e4ca6bfa125
+  wolf-rt-0.2.38-x86_64-unknown-linux-musl/libwolf_rt.a sha256 37252e1d0d97d917bc19e95f27d8304b8da3d31afd7a2120395e0c9a87bbc740
+  wolf-rt-0.2.38-x86_64-unknown-linux-musl/libwolf_rt.a sha256 37252e1d0d97d917bc19e95f27d8304b8da3d31afd7a2120395e0c9a87bbc740
+  musl runtime: archive, runtime and SHA256SUMS verified; .wolf-bin/musl/libwolf_rt.a; distinct from the link bundle
+END new-fetch-toolchain exit=0 secs=28
+START new-fetch-bundle
+  link-bundle sha256 4cff0af6a27d200def3651bf3caee77f9bd9452be715ce878e2f0197a0516a36
+  link-bundle sha256 4cff0af6a27d200def3651bf3caee77f9bd9452be715ce878e2f0197a0516a36
+  link-bundle: licensed archive, MANIFEST and every member verified twice; ligature#13
+END new-fetch-bundle exit=0 secs=9
+START new-pins
+  wolf 0.2.38 (wolfgang, pin 95ae082)
+  37252e1d0d97d917bc19e95f27d8304b8da3d31afd7a2120395e0c9a87bbc740  .link-inputs/libwolf_rt.a
+  37252e1d0d97d917bc19e95f27d8304b8da3d31afd7a2120395e0c9a87bbc740  .wolf-bin/musl/libwolf_rt.a
+  950485ee8728e685b7311495797f3b961dc306d1368314b8fed578510eb40c00  tests/fixtures/ld06-relocate.baseline
+END new-pins exit=0 secs=0
+START new-build
+  dd9f7001faa477b2ac02d46d6028015b1bd3ce3cf055cd6712cb4c7c0354f6b4  target/ligature
+END new-build exit=0 secs=1
+START new-link-cost-hello-1
+  START link-cost-hello
+  link-cost-hello baseline 8.575415s 02ef3385ca58fdad0cbc0c3ee497c9d02f2ce5ef07d7bfbe6d24db858e2cb975
+  link-cost-hello candidate 8.385748s 02ef3385ca58fdad0cbc0c3ee497c9d02f2ce5ef07d7bfbe6d24db858e2cb975
+  Traceback (most recent call last):
+    File "/home/mfwolffe/lanes/ld03/diag-new-a5909ac0/tests/link-cost.py", line 79, in <module>
+      main()
+    File "/home/mfwolffe/lanes/ld03/diag-new-a5909ac0/tests/link-cost.py", line 74, in main
+      raise AssertionError(f'FAIL {row}: ratio={ratio:.6f} bound=0.50')
+  AssertionError: FAIL link-cost-hello: ratio=0.977882 bound=0.50
+END new-link-cost-hello-1 exit=1 secs=18
+START new-link-cost-hello-2
+  START link-cost-hello
+  link-cost-hello baseline 8.676005s 02ef3385ca58fdad0cbc0c3ee497c9d02f2ce5ef07d7bfbe6d24db858e2cb975
+  link-cost-hello candidate 8.418052s 02ef3385ca58fdad0cbc0c3ee497c9d02f2ce5ef07d7bfbe6d24db858e2cb975
+  Traceback (most recent call last):
+    File "/home/mfwolffe/lanes/ld03/diag-new-a5909ac0/tests/link-cost.py", line 79, in <module>
+      main()
+    File "/home/mfwolffe/lanes/ld03/diag-new-a5909ac0/tests/link-cost.py", line 74, in main
+      raise AssertionError(f'FAIL {row}: ratio={ratio:.6f} bound=0.50')
+  AssertionError: FAIL link-cost-hello: ratio=0.970268 bound=0.50
+END new-link-cost-hello-2 exit=1 secs=18
+START new-link-cost-hello-3
+  START link-cost-hello
+  link-cost-hello baseline 8.700671s 02ef3385ca58fdad0cbc0c3ee497c9d02f2ce5ef07d7bfbe6d24db858e2cb975
+  link-cost-hello candidate 8.645545s 02ef3385ca58fdad0cbc0c3ee497c9d02f2ce5ef07d7bfbe6d24db858e2cb975
+  Traceback (most recent call last):
+    File "/home/mfwolffe/lanes/ld03/diag-new-a5909ac0/tests/link-cost.py", line 79, in <module>
+      main()
+    File "/home/mfwolffe/lanes/ld03/diag-new-a5909ac0/tests/link-cost.py", line 74, in main
+      raise AssertionError(f'FAIL {row}: ratio={ratio:.6f} bound=0.50')
+  AssertionError: FAIL link-cost-hello: ratio=0.993664 bound=0.50
+END new-link-cost-hello-3 exit=1 secs=18
+START old-fetch-toolchain
+  wolf-0.2.36-x86_64-unknown-linux-gnu d383c74c8cd123b9d9dfaa268271d4f004294f85c2b230237d0ef07027d9500d
+  wolf-0.2.36-x86_64-unknown-linux-gnu d383c74c8cd123b9d9dfaa268271d4f004294f85c2b230237d0ef07027d9500d
+  lupin-0.1.58-x86_64-unknown-linux-gnu 34f52792bb59bc7565e0edc1235cd47d9a6ad13d5e6528993627f2e699b62193
+  lupin-0.1.58-x86_64-unknown-linux-gnu 34f52792bb59bc7565e0edc1235cd47d9a6ad13d5e6528993627f2e699b62193
+  wolf-rt-0.2.36-x86_64-unknown-linux-musl sha256 3aba9c8b4e5c51f2094242946fae0e6f1cd64bc7837b7484e1085ce63373aa57
+  wolf-rt-0.2.36-x86_64-unknown-linux-musl sha256 3aba9c8b4e5c51f2094242946fae0e6f1cd64bc7837b7484e1085ce63373aa57
+  wolf-rt-0.2.36-x86_64-unknown-linux-musl/libwolf_rt.a sha256 6892dac8a6e211f12c6823c0f19497d820a47fdbfe7fb569cd967acf86461aad
+  wolf-rt-0.2.36-x86_64-unknown-linux-musl/libwolf_rt.a sha256 6892dac8a6e211f12c6823c0f19497d820a47fdbfe7fb569cd967acf86461aad
+  musl runtime: archive, runtime and SHA256SUMS verified; .wolf-bin/musl/libwolf_rt.a; distinct from the link bundle
+END old-fetch-toolchain exit=0 secs=18
+START old-fetch-bundle
+  link-bundle sha256 8210ac2223d969ab8f0845cc74950a1c68226b58b10dd083cd2e2113acd3e37a
+  link-bundle sha256 8210ac2223d969ab8f0845cc74950a1c68226b58b10dd083cd2e2113acd3e37a
+  link-bundle: licensed archive, MANIFEST and every member verified twice; ligature#13
+END old-fetch-bundle exit=0 secs=4
+START old-pins
+  wolf 0.2.36 (wolfgang, pin 5adf3d9)
+  6892dac8a6e211f12c6823c0f19497d820a47fdbfe7fb569cd967acf86461aad  .link-inputs/libwolf_rt.a
+  6892dac8a6e211f12c6823c0f19497d820a47fdbfe7fb569cd967acf86461aad  .wolf-bin/musl/libwolf_rt.a
+  950485ee8728e685b7311495797f3b961dc306d1368314b8fed578510eb40c00  tests/fixtures/ld06-relocate.baseline
+END old-pins exit=0 secs=0
+START old-build
+  0369674bd616e0fa2097b1250a236c93306eb6d254168205b8dde0f447384264  target/ligature
+END old-build exit=0 secs=1
+START old-link-cost-hello-1
+  START link-cost-hello
+  link-cost-hello baseline 216.336697s 225b184431eaea549499132fa1381b005c9cecec0f0417cc61678006cbc7b103
+  link-cost-hello candidate 7.612399s 225b184431eaea549499132fa1381b005c9cecec0f0417cc61678006cbc7b103
+  PASS link-cost-hello: ratio=0.035188 bound=0.50 byte-identical; 0 SKIP
+END old-link-cost-hello-1 exit=0 secs=226
+START old-link-cost-hello-2
+  START link-cost-hello
+  link-cost-hello baseline 216.583048s 225b184431eaea549499132fa1381b005c9cecec0f0417cc61678006cbc7b103
+  link-cost-hello candidate 7.692656s 225b184431eaea549499132fa1381b005c9cecec0f0417cc61678006cbc7b103
+  PASS link-cost-hello: ratio=0.035518 bound=0.50 byte-identical; 0 SKIP
+END old-link-cost-hello-2 exit=0 secs=225
+--- summary
+new-run1.json baseline 8.575s candidate 8.386s ratio 0.9779
+new-run2.json baseline 8.676s candidate 8.418s ratio 0.9703
+new-run3.json baseline 8.701s candidate 8.646s ratio 0.9937
+old-run1.json baseline 216.337s candidate 7.612s ratio 0.0352
+old-run2.json baseline 216.583s candidate 7.693s ratio 0.0355
+2026-11-10T04:11:53Z diagnose: container finished rc=0; pruning
+/dev/sda2          3615G 3378G       54G  99% /
+DIAGNOSE EXIT 0 2026-11-10T04:11:53Z
