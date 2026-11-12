@@ -176,18 +176,22 @@ fn define(mut s: State, id: int) -> () ! {Bad(str)} {
     )
 }
 
-fn object(mut s: State, f: binary.Input, label: str) -> () ! {Bad(str)} {
+// One object's parse: what its link keeps, built in a region and copied out once. groups holds
+// each SHT_GROUP's flag, signature symbol id, member count and members, in section order.
+struct Parsed { object: Object, symbols: List[Symbol], groups: List[int] }
+
+// Parse and validate an object, refusing in the order resolution always has. machine is the
+// first object's e_machine, or -1 for the first object.
+fn parse(f: binary.Input, label: str, obj: int, first: int, machine: int) -> Parsed ! {Bad(str)} {
     let image = elf.parse(f)?
     if image.kind != 1 { return Bad("{label}: static writer requires ET_REL") }
-    if s.objects.len != 0 && image.machine != s.objects[0].image.machine {
-        return Bad("mixed ELF machines refused")
-    }
-    let obj = s.objects.len
+    if machine >= 0 && image.machine != machine { return Bad("mixed ELF machines refused") }
     var names = List[str]()
     var discarded = List[bool]()
     var symbol_base = List[int]()
+    (mut names).reserve(image.sections.len)
+    (mut discarded).reserve(image.sections.len)
     (mut symbol_base).reserve(image.sections.len)
-    let first = s.symbols.len
     for sec in image.sections {
         (mut symbol_base).push(-1)
         let raw = elf.name(f, image, sec)?
@@ -196,6 +200,10 @@ fn object(mut s: State, f: binary.Input, label: str) -> () ! {Bad(str)} {
         (mut names).push(key(terminated, 0)?)
         (mut discarded).push(sec.flags & 2147483648 != 0)
     }
+    var count: int = 0
+    for sec in image.sections { if sec.kind == 2 { count += sec.size / 24 } }
+    var symbols = List[Symbol]()
+    (mut symbols).reserve(count)
     for t in 0..image.sections.len {
         let sec = copy image.sections[t]
         if sec.kind != 2 { continue }
@@ -206,7 +214,7 @@ fn object(mut s: State, f: binary.Input, label: str) -> () ! {Bad(str)} {
         if strings.kind != 3 { return Bad("symbol sh_link is not STRTAB") }
         let text = binary.read(f, strings.off, strings.size)?
         let bytes = binary.read(f, sec.off, sec.size)?
-        symbol_base[t] = s.symbols.len
+        symbol_base[t] = first + symbols.len
         for i in 0..sec.size / 24 {
             let at = i * 24
             let ni = binary.decode(bytes, at, 4)? as int
@@ -215,7 +223,7 @@ fn object(mut s: State, f: binary.Input, label: str) -> () ! {Bad(str)} {
             if sh >= image.sections.len && sh != 65521 && sh != 65522 {
                 return Bad("{label}: unsupported symbol section {sh} (gABI Symbol Table)")
             }
-            let sy = Symbol {
+            (mut symbols).push(Symbol {
                 name: key(text, ni)?,
                 object: obj,
                 table: t,
@@ -226,11 +234,10 @@ fn object(mut s: State, f: binary.Input, label: str) -> () ! {Bad(str)} {
                 other: binary.decode(bytes, at + 5, 1)? as int,
                 value: binary.decode(bytes, at + 8, 8)?,
                 size: binary.decode(bytes, at + 16, 8)?,
-            }
-            (mut s.symbols).push(sy)
+            })
         }
     }
-    // Group selection precedes symbol resolution: duplicate COMDAT definitions are not errors.
+    var groups = List[int]()
     for sec in image.sections {
         if sec.kind != 17 { continue }
         if sec.size < 4 || sec.size % 4 != 0 { return Bad("invalid SHT_GROUP") }
@@ -239,23 +246,51 @@ fn object(mut s: State, f: binary.Input, label: str) -> () ! {Bad(str)} {
         if flag > 1 { return Bad("unknown SHT_GROUP flags") }
         let sig = group_signature(symbol_base, image, sec.link, sec.info)
         if sig < 0 { return Bad("missing COMDAT signature") }
-        let name = s.symbols[sig].name
-        let loser = flag == 1 && nameidx.has(s.groups, name)
-        if flag == 1 { nameidx.set(mut s.groups, name, 1) }
+        (mut groups).push(flag as int)
+        (mut groups).push(sig)
+        (mut groups).push(sec.size / 4 - 1)
         for j in 1..sec.size / 4 {
             let member = binary.decode(raw, j * 4, 4)? as int
             if member <= 0 || member >= discarded.len { return Bad("invalid COMDAT member") }
-            if loser { discarded[member] = true }
+            (mut groups).push(member)
         }
     }
-    (mut s.objects).push(Object {
-        label: label,
-        file: copy f,
-        image: image,
-        names: names,
-        symbol_base: symbol_base,
-        discarded: discarded,
-    })
+    Parsed {
+        object: Object {
+            label: label,
+            file: copy f,
+            image: image,
+            names: names,
+            symbol_base: symbol_base,
+            discarded: discarded,
+        },
+        symbols: symbols,
+        groups: groups,
+    }
+}
+
+fn object(mut s: State, f: binary.Input, label: str) -> () ! {Bad(str)} {
+    let obj = s.objects.len
+    let first = s.symbols.len
+    let machine = if s.objects.len == 0 then -1 else s.objects[0].image.machine
+    // The parse's reads and temporaries are freed with its region; what the link keeps leaves
+    // it in one copy.
+    var parsed = copy region parsing { parse(f, label, obj, first, machine)? }
+    for i in 0..parsed.symbols.len { (mut s.symbols).push(copy parsed.symbols[i]) }
+    // Group selection precedes symbol resolution: duplicate COMDAT definitions are not errors.
+    var at: int = 0
+    while at < parsed.groups.len {
+        let flag = parsed.groups[at]
+        let name = s.symbols[parsed.groups[at + 1]].name
+        let members = parsed.groups[at + 2]
+        let loser = flag == 1 && nameidx.has(s.groups, name)
+        if flag == 1 { nameidx.set(mut s.groups, name, 1) }
+        for j in 0..members {
+            if loser { parsed.object.discarded[parsed.groups[at + 3 + j]] = true }
+        }
+        at += 3 + members
+    }
+    (mut s.objects).push(take parsed.object)
     for id in first..s.symbols.len { define(mut s, id)? }
 }
 
@@ -279,6 +314,15 @@ fn member_at(archive: ar.Archive, header: int) -> int {
 }
 
 fn library(mut s: State, f: binary.Input, path: str) -> int ! {Bad(str)} {
+    // The member headers and the symbol index are read in a region; the library leaves it in
+    // one copy.
+    let parsed = copy region archive { library_index(f, path)? }
+    let id = s.libraries.len
+    (mut s.libraries).push(parsed)
+    id
+}
+
+fn library_index(f: binary.Input, path: str) -> Library ! {Bad(str)} {
     let archive = ar.parse(f)?
     if archive.index_off == 0 { return Bad("{path}: missing archive symbol index (SysV ar)") }
     let raw = binary.read(f, archive.index_off, archive.index_size)?
@@ -307,16 +351,14 @@ fn library(mut s: State, f: binary.Input, path: str) -> int ! {Bad(str)} {
     if at != raw.len && !(at % 2 == 1 && at + 1 == raw.len && raw[at] == 0 as byte) {
         return Bad("trailing archive index bytes")
     }
-    let id = s.libraries.len
-    (mut s.libraries).push(Library {
+    Library {
         path: path,
         file: copy f,
         archive: archive,
         names: names,
         members: members,
         selected: selected,
-    })
-    id
+    }
 }
 
 fn unresolved(s: State, name: str) -> bool {
