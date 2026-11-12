@@ -183,6 +183,70 @@ fn linked(image: Image, s: Section, expected: int) -> Section ! {Bad(str)} {
     copy t
 }
 
+// One Elf64_Sym at raw[at..at + 24], entry j of symbol table `table`; names is its string table.
+fn symbol(
+    image: Image,
+    s: Section,
+    table: int,
+    j: int,
+    raw: List[byte],
+    at: int,
+    names: List[byte],
+    emit: bool,
+) -> () ! {Bad(str)} {
+    let name = binary.decode(raw, at, 4)? as int
+    let info = binary.decode(raw, at + 4, 1)?
+    let other = binary.decode(raw, at + 5, 1)?
+    let section = binary.decode(raw, at + 6, 2)?
+    let value = binary.decode(raw, at + 8, 8)?
+    let size = binary.decode(raw, at + 16, 8)?
+    let end = binary.cstring_end(names, name)?
+    let binding = info >> 4
+    let stype = info & 15
+    let visibility = other & 3
+    if section == 65535 { return Bad("SHN_XINDEX refused (gABI Symbol Table)") }
+    if section >= image.sections.len as u64 && section < 65280 {
+        return Bad("symbol section index outside section table")
+    }
+    if j < s.info && binding != 0 || j >= s.info && binding == 0 {
+        return Bad("symbol local partition contradicts sh_info")
+    }
+    if emit {
+        let text = binary.quote(names[name..end])
+        print(
+            "{{\"row\":\"symbol\",\"table\":{table},\"index\":{j},\"name\":{text},\"binding\":{binding},\"type\":{stype},\"visibility\":{visibility},\"other\":{other},\"section\":{section},\"value\":{value},\"size\":{size}}}",
+        )
+    }
+}
+
+// One Elf64_Rela at raw[at..at + 24], entry j of RELA table `table`, against symbol table syms.
+fn relocation(
+    image: Image,
+    s: Section,
+    syms: Section,
+    table: int,
+    j: int,
+    raw: List[byte],
+    at: int,
+    emit: bool,
+) -> () ! {Bad(str)} {
+    let offset = binary.decode(raw, at, 8)?
+    let info = binary.decode(raw, at + 8, 8)?
+    let addend = binary.decode(raw, at + 16, 8)?
+    let sym = info >> 32
+    let rt = info & 4294967295
+    let relocation_name = oracle.relocation(image.machine, rt)?
+    if sym >= (syms.size / 24) as u64 { return Bad("RELA symbol index outside symbol table") }
+    if image.kind == 1 && (s.info == 0 || offset > image.sections[s.info].size as u64) {
+        return Bad("RELA offset outside target section")
+    }
+    if emit {
+        print(
+            "{{\"row\":\"rela\",\"table\":{table},\"index\":{j},\"target\":{s.info},\"offset\":{offset},\"symbol\":{sym},\"type\":{rt},\"name\":\"{relocation_name}\",\"addend_bits\":{addend}}}",
+        )
+    }
+}
+
 // Values stay unsigned, including RELA's two's-complement addend bits.
 // The symbol value's meaning (section-relative, TLS, ABS) is preserved.
 /// Validate and roundtrip structured payloads; optionally emit JSONL. Bad names invalid metadata.
@@ -221,28 +285,17 @@ pub fn walk(f: binary.Input, image: Image, emit: bool) -> () ! {Bad(str)} {
                 if s.entsize != 24 { return Bad("symbol table entry is not Elf64_Sym") }
                 let count = s.size / 24
                 if s.info > count { return Bad("symbol sh_info exceeds entry count") }
-                for j in 0..count {
-                    region symbol {
-                        let v = binary.table(f, s.off + j * 24, [4, 1, 1, 2, 8, 8])?
-                        let text = binary.quote(
-                            binary.cstring(f, strings.off, strings.size, v[0] as int)?,
-                        )
-                        let binding = v[1] >> 4
-                        let stype = v[1] & 15
-                        let visibility = v[2] & 3
-                        if v[3] == 65535 { return Bad("SHN_XINDEX refused (gABI Symbol Table)") }
-                        if v[3] >= image.sections.len as u64 && v[3] < 65280 {
-                            return Bad("symbol section index outside section table")
-                        }
-                        if j < s.info && binding != 0 || j >= s.info && binding == 0 {
-                            return Bad("symbol local partition contradicts sh_info")
-                        }
-                        if emit {
-                            print(
-                                "{{\"row\":\"symbol\",\"table\":{i},\"index\":{j},\"name\":{text},\"binding\":{binding},\"type\":{stype},\"visibility\":{visibility},\"other\":{v[2]},\"section\":{v[3]},\"value\":{v[4]},\"size\":{v[5]}}}",
-                            )
-                        }
+                // The string table is read once and the entries a window at a time, each window
+                // freed with its region; every entry is checked exactly as when read alone.
+                let names = binary.read(f, strings.off, strings.size)?
+                var first: int = 0
+                while first < count {
+                    let n = if count - first > 43690 then 43690 else count - first
+                    region symbols {
+                        let raw = binary.read(f, s.off + first * 24, n * 24)?
+                        for k in 0..n { symbol(image, s, i, first + k, raw, k * 24, names, emit)? }
                     }
+                    first += n
                 }
             } else if s.kind == 4 {
                 if s.entsize != 24 { return Bad("SHT_RELA entry is not Elf64_Rela") }
@@ -254,25 +307,17 @@ pub fn walk(f: binary.Input, image: Image, emit: bool) -> () ! {Bad(str)} {
                     return Bad("RELA sh_link is not a symbol table")
                 }
                 if s.info >= image.sections.len { return Bad("RELA sh_info outside section table") }
-                for j in 0..s.size / 24 {
-                    region relocation {
-                        let v = binary.table(f, s.off + j * 24, [8, 8, 8])?
-                        let sym = v[1] >> 32
-                        let rt = v[1] & 4294967295
-                        let relocation_name = oracle.relocation(image.machine, rt)?
-                        if sym >= (syms.size / 24) as u64 {
-                            return Bad("RELA symbol index outside symbol table")
-                        }
-                        if image.kind == 1 &&
-                            (s.info == 0 || v[0] > image.sections[s.info].size as u64) {
-                            return Bad("RELA offset outside target section")
-                        }
-                        if emit {
-                            print(
-                                "{{\"row\":\"rela\",\"table\":{i},\"index\":{j},\"target\":{s.info},\"offset\":{v[0]},\"symbol\":{sym},\"type\":{rt},\"name\":\"{relocation_name}\",\"addend_bits\":{v[2]}}}",
-                            )
+                let count = s.size / 24
+                var first: int = 0
+                while first < count {
+                    let n = if count - first > 43690 then 43690 else count - first
+                    region relocations {
+                        let raw = binary.read(f, s.off + first * 24, n * 24)?
+                        for k in 0..n {
+                            relocation(image, s, syms, i, first + k, raw, k * 24, emit)?
                         }
                     }
+                    first += n
                 }
             } else if s.kind == 17 {
                 let syms = linked(image, s, 2)?

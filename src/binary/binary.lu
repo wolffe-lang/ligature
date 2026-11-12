@@ -151,3 +151,12 @@ pub fn cstring(f: Input, off: int, size: int, index: int) -> List[byte] ! {Bad(s
     }
     Bad("unterminated string table entry (gABI ch.4)")
 }
+
+/// The end of the NUL-terminated string at bytes[index..], a string table held in memory; Bad
+/// names the same index and termination failures `cstring` names.
+pub fn cstring_end(bytes: List[byte], index: int) -> int ! {Bad(str)} {
+    if index < 0 || index >= bytes.len { return Bad("string index outside SHT_STRTAB (gABI ch.4)") }
+    bytes_find(bytes, 0 as byte, index) else |_| {
+        return Bad("unterminated string table entry (gABI ch.4)")
+    }
+}
