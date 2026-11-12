@@ -456,6 +456,13 @@ pub fn collect(mut l: Layout, s: resolve.State, p: front.Plan) -> () ! {Bad(str)
             fdes[r.atom * 4294967296 + start] = target(s, r.symbol)?
         }
     }
+    if s.alias_names.len == 0 {
+        // Without --defsym aliases no target can be refused, so the order relocations are
+        // followed in cannot change the outcome: a worklist reaches the same live set in one
+        // visit per live atom, its working lists freed with the region.
+        region reaching { reach(mut l, s, p, fdes)? }
+        return
+    }
     loop {
         var changed = false
         for ri in 0..l.relocs.len {
@@ -493,6 +500,97 @@ pub fn collect(mut l: Layout, s: resolve.State, p: front.Plan) -> () ! {Bad(str)
             }
         }
         if !changed { break }
+    }
+}
+
+fn filled(n: int, v: int) -> List[int] {
+    var out = List[int]()
+    (mut out).reserve(n)
+    for _ in 0..n { (mut out).push(v) }
+    out
+}
+
+// The least set of live atoms collect's passes reach, by a worklist: every live atom is visited
+// once; its relocations (if allocated) mark their targets live, an .eh_frame relocation inside an
+// FDE waits until the FDE's function is live, and a live member of an ELF group makes the whole
+// group live. Each step only adds atoms, so the set is the passes' fixed point.
+fn reach(mut l: Layout, s: resolve.State, p: front.Plan, fdes: Map[int, int]) -> () ! {Bad(str)} {
+    // Each atom's relocations, in order, as a chain.
+    var head = filled(l.atoms.len, -1)
+    var tail = filled(l.atoms.len, -1)
+    var next = filled(l.relocs.len, -1)
+    for ri in 0..l.relocs.len {
+        let a = l.relocs[ri].atom
+        if head[a] < 0 { head[a] = ri } else { next[tail[a]] = ri }
+        tail[a] = ri
+    }
+    // Each atom's groups: (group, next) pairs chained per atom; each group's member atoms.
+    var group_members = List[List[int]]()
+    var member_head = filled(l.atoms.len, -1)
+    var member_group = List[int]()
+    var member_next = List[int]()
+    for oi in 0..s.objects.len {
+        for sec in s.objects[oi].image.sections {
+            if sec.kind != 17 { continue }
+            let raw = binary.read(s.objects[oi].file, sec.off, sec.size)?
+            let g = group_members.len
+            var members = List[int]()
+            for j in 1..sec.size / 4 {
+                let a = location(l, oi, binary.decode(raw, j * 4, 4)? as int)
+                if a == 0 { continue }
+                (mut members).push(a)
+                (mut member_group).push(g)
+                (mut member_next).push(member_head[a])
+                member_head[a] = member_group.len - 1
+            }
+            (mut group_members).push(members)
+        }
+    }
+    // Relocations waiting on an FDE's function atom, chained per atom.
+    var waiting_head = filled(l.atoms.len, -1)
+    var waiting_next = filled(l.relocs.len, -1)
+    var queue = List[int]()
+    (mut queue).reserve(l.atoms.len)
+    for a in 1..l.atoms.len { if l.atoms[a].live { (mut queue).push(a) } }
+    var q: int = 0
+    while q < queue.len {
+        let a = queue[q]
+        q += 1
+        var m = member_head[a]
+        while m >= 0 {
+            for b in group_members[member_group[m]] {
+                if !l.atoms[b].live { l.atoms[b].live = true; (mut queue).push(b) }
+            }
+            m = member_next[m]
+        }
+        var w = waiting_head[a]
+        while w >= 0 {
+            let t = atom_for(l, s, target(s, l.relocs[w].symbol)?)
+            if t != 0 && !l.atoms[t].live { l.atoms[t].live = true; (mut queue).push(t) }
+            w = waiting_next[w]
+        }
+        if l.atoms[a].flags & 2 == 0 { continue }
+        let frames = p.gc && l.atoms[a].name == ".eh_frame"
+        var ri = head[a]
+        while ri >= 0 {
+            let current = ri
+            ri = next[ri]
+            if frames {
+                let start = fde_start(l.atoms[a], l.relocs[current].offset)?
+                if start != 0 {
+                    let id = fdes[a * 4294967296 + start] else { continue }
+                    let f = atom_for(l, s, id)
+                    if f == 0 { continue }
+                    if !l.atoms[f].live {
+                        waiting_next[current] = waiting_head[f]
+                        waiting_head[f] = current
+                        continue
+                    }
+                }
+            }
+            let t = atom_for(l, s, target(s, l.relocs[current].symbol)?)
+            if t != 0 && !l.atoms[t].live { l.atoms[t].live = true; (mut queue).push(t) }
+        }
     }
 }
 
