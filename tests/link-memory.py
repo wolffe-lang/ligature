@@ -4,19 +4,23 @@
 Each row runs ligature as a direct child under its own address-space cap (RLIMIT_AS on Linux;
 on macOS, where RLIMIT_AS is not enforced, a resident-set watchdog kills the child at the cap).
 The resident peak is the child's own ru_maxrss from wait4, never the harness's (VmHWM on Linux).
-The cap sits below the peak the unbounded linker reached (7.2-7.4 GiB of address space for hello
-against the 46.7 MB musl runtime), so a linker that keeps that footprint aborts under it.
+The cap, 512 MiB, sits below the peak a hello link reached before the memory was bounded (640 MiB
+resident, more address space), so a linker that keeps that footprint aborts under it.
 
 Rows, each reported as PASS or FAIL <row>:
-  link-memory-hello    hello's link: exit 0 under the cap, resident peak under the bound
+  link-memory-hello    hello's link: exit 0 under the cap, resident peak under 192 MiB
   link-memory-str      the str program's link, likewise
-  link-memory-verify   `ligature verify` of hello's output, likewise
+  link-memory-self     the linker's own objects linked as a program: under 256 MiB
+  link-memory-verify   `ligature verify` of hello's output: under 192 MiB
   link-memory-scaling  synthetic archives of N, 10N and 100N members: each 10x step within 15x
                        in peak and in time (a linear cost over a fixed floor grows at most 10x;
                        a quadratic one approaches 100x)
+  link-memory-captured-NAME  with --captured NAME:MIB:DIR, a captured link (DIR/link.json, the
+                       argv a compiler handed its cc-shaped linker, and the files it named):
+                       exit 0 under the cap, resident peak under MIB
 With --baseline PATH, every output is also linked by that linker under the same inputs and
 compared byte for byte (link-identity-<case>). Objects come from LIGATURE_MEMORY_OBJECTS
-(DIR/hello/main.o, DIR/str/main.o) or are compiled by the pinned compiler.
+(DIR/hello/main.o, DIR/str/main.o, DIR/self/*.o) or are compiled by the pinned compiler.
 """
 import argparse
 import hashlib
@@ -40,10 +44,14 @@ GIB = 1 << 30
 MIB = 1 << 20
 LINUX = platform.system() == 'Linux'
 # The bound each row's resident peak must stay under, and the cap the run is held to.
-BOUND = {'hello': 1 * GIB, 'str': 1 * GIB, 'verify': 1 * GIB}
-CAP = 2 * GIB
-SOURCES = {'hello': ROOT / 'tests/corpus/hello/hello.lu', 'str': ROOT / 'tests/corpus/str/str.lu'}
+BOUND = {'hello': 192 * MIB, 'str': 192 * MIB, 'self': 256 * MIB, 'verify': 192 * MIB}
+CAP = 512 * MIB
+# The synthetic scaling row measures growth, not a bound; its links keep the wider cap.
+SCALING_CAP = 2 * GIB
+SOURCES = {'hello': ROOT / 'tests/corpus/hello/hello.lu', 'str': ROOT / 'tests/corpus/str/str.lu',
+           'self': ROOT / 'src/ligature.lu'}
 EXPECTED = {'hello': b'hello, wolf\n', 'str': b'hello, wolfhello, wolf\n'}
+RUN_ARGS = {'self': ['--version']}
 failures = []
 
 
@@ -119,24 +127,42 @@ def measured(argv, cap, env=None, timeout=1800):
             'stderr_tail': out['stderr'][-600:].decode(errors='replace'), 'stdout': out['stdout']}
 
 
-def objects():
+def objects(cases):
+    """Each case's objects, in the order the compiler names them."""
     given = os.environ.get('LIGATURE_MEMORY_OBJECTS')
     found = {}
-    for case, source in SOURCES.items():
+    for case in cases:
+        source = SOURCES[case]
         if given:
-            found[case] = pathlib.Path(given) / case / 'main.o'
+            found[case] = sorted((pathlib.Path(given) / case).glob('*.o'))
         else:
-            target = OUT / case / 'main.o'
-            target.parent.mkdir(parents=True, exist_ok=True)
-            subprocess.run([str(WOLF), 'build', '--no-cache', '--emit=obj', str(source), '-o', str(target)], check=True, timeout=600)
-            found[case] = target
-        assert found[case].is_file(), f'missing object {found[case]}'
+            target = OUT / case / 'objects'
+            if target.exists():
+                shutil.rmtree(target)
+            target.mkdir(parents=True)
+            subprocess.run([str(WOLF), 'build', '--no-cache', '--emit=obj', str(source), '-o', str(target / 'main.o')], check=True, timeout=600)
+            found[case] = sorted(target.glob('*.o'))
+        assert found[case], f'missing objects for {case}'
     return found
 
 
-def link_argv(linker, obj, output):
+def link_argv(linker, objs, output):
     # The released compiler's cc-shaped --linker line (the line in ligature#32).
-    return [linker, '-o', output, obj, BUNDLE / 'libwolf_rt.a', '-lpthread', '-ldl', '-lm', '-Wl,--gc-sections']
+    return [linker, '-o', output, *objs, BUNDLE / 'libwolf_rt.a', '-lpthread', '-ldl', '-lm', '-Wl,--gc-sections']
+
+
+def captured_argv(linker, capture, output):
+    """A captured cc-shaped line: link.json's `stashed` argv, `@`-paths relative to the capture."""
+    stashed = json.loads((capture / 'link.json').read_text())['stashed']
+    argv, i = [linker], 0
+    while i < len(stashed):
+        if stashed[i] == '-o':
+            argv += ['-o', output]
+            i += 2
+            continue
+        argv.append(capture / stashed[i][1:] if stashed[i].startswith('@') else stashed[i])
+        i += 1
+    return argv
 
 
 def record(row, result, bound=None):
@@ -167,23 +193,31 @@ def check_peak(row, result, bound):
     return True
 
 
-def program(case, linker, obj, env):
+def program(case, linker, argv_for, env, bound):
     exe = OUT / case / 'program'
     exe.parent.mkdir(parents=True, exist_ok=True)
     if exe.exists():
         exe.unlink()
     row = 'link-memory-' + case
-    result = measured(link_argv(linker, obj, exe), CAP, env)
-    record(row, result, BOUND[case])
-    within = check_peak(row, result, BOUND[case])
+    result = measured(argv_for(linker, exe), CAP, env)
+    record(row, result, bound)
+    within = check_peak(row, result, bound)
     if result['status'] != 0:
         return None
-    if LINUX:
+    if LINUX and case in EXPECTED:
         ran = subprocess.run([str(exe)], capture_output=True, timeout=60)
         if (ran.returncode, ran.stdout, ran.stderr) != (0, EXPECTED[case], b''):
             fail(row, f'linked program output {ran.returncode} {ran.stdout!r} {ran.stderr!r}')
             return None
         print(f'  {case}: executed, stdout {EXPECTED[case]!r}', flush=True)
+    elif LINUX and case in RUN_ARGS:
+        ran = subprocess.run([str(exe), *RUN_ARGS[case]], capture_output=True, timeout=60)
+        if ran.returncode != 0 or not ran.stdout.startswith(b'ligature '):
+            fail(row, f'linked program output {ran.returncode} {ran.stdout!r} {ran.stderr!r}')
+            return None
+        print(f'  {case}: executed, stdout {ran.stdout.strip()!r}', flush=True)
+    elif LINUX:
+        print(f'  {case}: a captured program, not executed by this row', flush=True)
     else:
         print(f'  {case}: not executed on {platform.system()} (x86-64 Linux ELF)', flush=True)
     # A linked output over the bound is still verified and compared: its row has already failed.
@@ -234,7 +268,7 @@ def scaling(linker, base):
         exe = OUT / 'scaling' / str(members) / 'program'
         best = None
         for _ in range(2):
-            result = measured([linker, '-static', '-nostdlib', '--gc-sections', '-o', exe, entry, archive], CAP)
+            result = measured([linker, '-static', '-nostdlib', '--gc-sections', '-o', exe, entry, archive], SCALING_CAP)
             if result['status'] != 0:
                 record(row, result)
                 fail(row, f'synthetic link of {members} members failed: {result["stderr_tail"].strip()[-200:]}')
@@ -259,10 +293,10 @@ def scaling(linker, base):
         print(f'PASS {row}: {detail}', flush=True)
 
 
-def identity(case, candidate_exe, baseline, obj, env):
+def identity(case, candidate_exe, baseline, argv_for, env):
     row = 'link-identity-' + case
     exe = OUT / case / 'baseline-program'
-    result = measured(link_argv(baseline, obj, exe), 12 * GIB if LINUX else CAP, env)
+    result = measured(argv_for(baseline, exe), 12 * GIB if LINUX else 2 * GIB, env)
     record(row, result)
     if result['status'] != 0:
         fail(row, f'baseline link failed: status {result["status"]}')
@@ -280,18 +314,30 @@ def main():
     parser.add_argument('--linker', default=str(ROOT / 'target/ligature'))
     parser.add_argument('--baseline', help='a second linker whose outputs must be byte-identical')
     parser.add_argument('--scale', type=int, default=40, help='N for the N/10N/100N scaling row')
-    parser.add_argument('--rows', default='hello,str,verify,scaling')
+    parser.add_argument('--rows', default='hello,str,self,verify,scaling')
     parser.add_argument('--verify-input', help='verify this executable instead of the hello row output')
+    parser.add_argument('--captured', action='append', default=[], metavar='NAME:MIB:DIR',
+                        help='also link a captured cc-shaped line; its peak must stay under MIB')
+    parser.add_argument('--sysroot', help='LIGATURE_SYSROOT for the captured rows (default: the bundle)')
     args = parser.parse_args()
     OUT.mkdir(parents=True, exist_ok=True)
-    wanted = args.rows.split(',')
+    wanted = args.rows.split(',') if args.rows else []
     linker = pathlib.Path(args.linker).resolve()
     env = dict(os.environ, LIGATURE_SYSROOT=str(BUNDLE / 'sysroot'))
-    found = objects() if {'hello', 'str', 'verify'} & set(wanted) else {}
-    outputs = {}
-    for case in ('hello', 'str'):
-        if case in wanted or (case == 'hello' and 'verify' in wanted):
-            outputs[case] = program(case, linker, found[case], env)
+    cases = [c for c in ('hello', 'str', 'self') if c in wanted or (c == 'hello' and 'verify' in wanted)]
+    found = objects(cases)
+    outputs, argvs, envs = {}, {}, {}
+    for case in cases:
+        argvs[case] = (lambda objs: lambda l, o: link_argv(l, objs, o))(found[case])
+        envs[case] = env
+        outputs[case] = program(case, linker, argvs[case], env, BOUND[case])
+    for spec in args.captured:
+        name, mib, path = spec.split(':', 2)
+        case = 'captured-' + name
+        capture = pathlib.Path(path).resolve()
+        argvs[case] = (lambda c: lambda l, o: captured_argv(l, c, o))(capture)
+        envs[case] = dict(os.environ, LIGATURE_SYSROOT=args.sysroot) if args.sysroot else env
+        outputs[case] = program(case, linker, argvs[case], envs[case], int(mib) * MIB)
     if 'verify' in wanted:
         row = 'link-memory-verify'
         target = pathlib.Path(args.verify_input) if args.verify_input else outputs.get('hello')
@@ -306,7 +352,7 @@ def main():
     if args.baseline:
         for case, exe in outputs.items():
             if exe is not None:
-                identity(case, exe, pathlib.Path(args.baseline).resolve(), found[case], env)
+                identity(case, exe, pathlib.Path(args.baseline).resolve(), argvs[case], envs[case])
     if failures:
         print(f'link-memory: {len(failures)} row(s) failed: {" ".join(failures)}', flush=True)
         sys.exit(1)
