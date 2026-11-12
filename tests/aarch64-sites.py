@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 """Independent AAELF64 equations over actual output RELA sites, never the manifest."""
-import pathlib,struct
+import pathlib,runpy,struct
 MASK=(1<<64)-1
+files=runpy.run_path(str(pathlib.Path(__file__).resolve().parent/'provenance-files.py'))
 def signed(n,bits):return n-(1<<bits) if n&(1<<(bits-1)) else n
 
 def decode(path):
@@ -15,15 +16,17 @@ def decode(path):
    if s[1]!=8 and s[2]&2 and s[3]<=address and address+width<=s[3]+s[5]:return int.from_bytes(b[s[4]+address-s[3]:s[4]+address-s[3]+width],'little')
   raise AssertionError(('unmapped address',hex(address),width))
  rows=[]
- for table in sh:
-  if table[1]!=4:continue
-  symtab=sh[table[6]];target=sh[table[7]]
-  for at in range(table[4],table[4]+table[5],24):
-   p,info,a=struct.unpack_from('<QQq',b,at);k=info&0xffffffff
+ # The retained RELA sites are wherever the output's provenance note says: the sidecar by default.
+ if '.note.wolf.link' in names:tables=[(t['link'],t['info'],t['entries']) for t in files['load'](path)['tables']]
+ else:tables=[(t[6],t[7],b[t[4]:t[4]+t[5]]) for t in sh if t[1]==4]
+ for link,index,entries in tables:
+  symtab=sh[link];target=sh[index]
+  for at in range(0,len(entries),24):
+   p,info,a=struct.unpack_from('<QQq',entries,at);k=info&0xffffffff
    sym=struct.unpack_from('<IBBHQQ',b,symtab[4]+24*(info>>32));s=sym[4];width=8 if k==257 else 4
    off=target[4]+p-target[3];assert 0<=p-target[3]<=target[5]-width
    word=int.from_bytes(b[off:off+width],'little')
-   rows.append({'place':p,'symbol':s,'addend':a,'type':k,'word':word,'section':names[table[7]]})
+   rows.append({'place':p,'symbol':s,'addend':a,'type':k,'word':word,'section':names[index]})
  return b,sh,names,read,rows
 
 def validate(path,allow_veneers=False):
