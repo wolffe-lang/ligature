@@ -5,6 +5,7 @@ ROOT=pathlib.Path(__file__).resolve().parent.parent
 codec=runpy.run_path(str(ROOT/'tests/manifest-codec.py'));decode_manifest=codec['decode'];encode_manifest=codec['encode']
 BIN=ROOT/'target/ligature';OUT=ROOT/'target/evidence/relocation-witness';OUT.mkdir(parents=True,exist_ok=True)
 differ=runpy.run_path(str(ROOT/'tools/differ'));snapshot=differ['snapshot']
+files=runpy.run_path(str(ROOT/'tests/provenance-files.py'))
 def call(args):
     p=subprocess.run(list(map(str,args)),capture_output=True,timeout=120)
     assert p.returncode==0,(args,p.returncode,p.stderr)
@@ -42,21 +43,21 @@ for label,linker in [('ligature',BIN),('lld','ld.lld-17'),('gnu','ld.bfd')]:
     for section in ('.data','.debug_probe'):
         mutated=bytearray(data);mutated[sections[section][4]]^=1
         # Re-seal so the relocation gate, rather than the digest gate, must fail.
+        bad=OUT/(label+'-'+section[1:]+'-bad')
         if '.note.wolf.link' in sections:
-            no=sections['.note.wolf.link'][4];mo=sections['.wolf.link.manifest']
-            document=decode_manifest(mutated[mo[4]:mo[4]+mo[5]])
+            # The manifest is wherever the note says: the sidecar by default, written beside bad.
+            prov=files['load'](path)
+            document=decode_manifest(prov['manifest'])
             # Forge matching patch claims too: independent relocation equations
             # must reject this even when the manifest and both digests agree.
             for patch in document.get('patches',[]):
                 patch['after']=mutated[patch['start']:patch['end']].hex()
-            manifest=encode_manifest(document,mo[5])
-            assert len(manifest)==mo[5]
-            mutated[mo[4]:mo[4]+mo[5]]=manifest
-            mutated[no+44:no+108]=bytes(64)
-            whole=hashlib.sha256(mutated).digest()
-            mutated[no+44:no+76]=hashlib.sha256(mutated[mo[4]:mo[4]+mo[5]]).digest()
-            mutated[no+76:no+108]=whole
-        bad=OUT/(label+'-'+section[1:]+'-bad');bad.write_bytes(mutated);bad.chmod(0o755)
+            manifest=encode_manifest(document,prov['manifest_size'])
+            assert len(manifest)==prov['manifest_size']
+            files['write'](prov,bad,data=mutated,manifest=manifest)
+        else:
+            bad.write_bytes(mutated)
+        bad.chmod(0o755)
         assert call([bad]).stdout==b'' # no behavioral witness can catch this byte
         broken=snapshot(bad)
         assert any(r['reason']=='resolved relocation bytes differ' for r in broken['refused']),(label,section,broken['refused'])
