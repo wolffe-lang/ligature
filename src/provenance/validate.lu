@@ -112,7 +112,7 @@ fn patch_row_shape(f: binary.Input, values: List[int], p: PatchCursor, previous_
 pub fn validate(f: binary.Input, image: elf.Image) -> () ! {Bad(str)} {
     let raw = manifest_bytes(f, image)?
     if !is_table(raw) { return validate_document(f, image, decode_document(raw)?) }
-    let (doc, opened) = patch_open(take raw)?
+    let (doc, opened) = patch_open(take raw, checked_keys())?
     var cursor = opened
     var values = patch_values()
     for _ in 0..cursor.rows { patch_next(mut cursor, mut values)? }
@@ -219,6 +219,11 @@ fn validate_document(f: binary.Input, image: elf.Image, doc: json.Value) -> () !
         }
         if problem.len != 0 { return Bad(problem) }
     }
+}
+
+// The metadata members validate reads: patch_open builds only these.
+fn checked_keys() -> List[str] {
+    ["coverage", "format", "members", "output", "patches", "pulls", "ranges", "sections"]
 }
 
 // Everything but the patches: format, coverage, sections, byte ranges and extraction edges.

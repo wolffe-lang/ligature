@@ -398,8 +398,156 @@ pub fn is_table(raw: List[byte]) -> bool {
     raw.len >= 8 && (str_from_utf8(raw[0..8]) else "") == "WLPATCH2"
 }
 
+// The metadata as the link writes it (no whitespace, no escapes, integers of at most eighteen
+// digits) read straight from bytes[at..end]. A value is built only where `build` says, and then
+// as json.parse builds it, with the same map insertions in the same order; the rest is only
+// scanned. Anything else clears ok, and json.parse reads the text instead.
+struct Quick { at: int, end: int, ok: bool }
+
+fn quick_byte(bytes: List[byte], q: Quick) -> int {
+    if q.at < q.end then bytes[q.at] as int else -1
+}
+
+fn quick_word(bytes: List[byte], mut q: Quick, word: str) -> bool {
+    let w = word.bytes()
+    if q.end - q.at < w.len { return false }
+    for i in 0..w.len { if bytes[q.at + i] != w[i] { return false } }
+    q.at += w.len
+    true
+}
+
+fn quick_string(bytes: List[byte], mut q: Quick, build: bool) -> str {
+    q.at += 1
+    let start = q.at
+    while q.at < q.end {
+        let b = bytes[q.at] as int
+        if b == 34 { break }
+        if b == 92 || b < 32 {
+            q.ok = false
+            return ""
+        }
+        q.at += 1
+    }
+    if q.at >= q.end {
+        q.ok = false
+        return ""
+    }
+    q.at += 1
+    if !build { return "" }
+    str_from_utf8(bytes[start..q.at - 1]) else {
+        q.ok = false
+        ""
+    }
+}
+
+fn quick_int(bytes: List[byte], mut q: Quick) -> json.Value {
+    let negative = bytes[q.at] as int == 45
+    if negative { q.at += 1 }
+    let start = q.at
+    var n: int = 0
+    loop {
+        let d = quick_byte(bytes, q) - 48
+        if d < 0 || d > 9 { break }
+        if q.at - start == 18 {
+            q.ok = false
+            return json.null()
+        }
+        n = n * 10 + d
+        q.at += 1
+    }
+    let digits = q.at - start
+    let next = quick_byte(bytes, q)
+    if digits == 0 ||
+        digits > 1 && bytes[start] as int == 48 ||
+        next == 46 ||
+        next == 101 ||
+        next == 69 {
+        q.ok = false
+        return json.null()
+    }
+    json.from_int(if negative then 0 - n else n)
+}
+
+// One value at q.at. At depth 0 an object member is built only when `keep` names its key.
+fn quick_value(
+    bytes: List[byte],
+    mut q: Quick,
+    depth: int,
+    build: bool,
+    keep: List[str],
+) -> json.Value {
+    let b = quick_byte(bytes, q)
+    if depth > 16 || b < 0 {
+        q.ok = false
+        return json.null()
+    }
+    if b == 123 {
+        q.at += 1
+        var m = Map[str, json.Value]()
+        if quick_byte(bytes, q) == 125 {
+            q.at += 1
+            return if build then json.from_map(m) else json.null()
+        }
+        while q.ok {
+            if quick_byte(bytes, q) != 34 {
+                q.ok = false
+                break
+            }
+            let key = quick_string(bytes, mut q, build)
+            if !q.ok || quick_byte(bytes, q) != 58 {
+                q.ok = false
+                break
+            }
+            q.at += 1
+            var wanted = build
+            if build && depth == 0 {
+                wanted = false
+                for k in keep { if k == key { wanted = true } }
+            }
+            let v = quick_value(bytes, mut q, depth + 1, wanted, keep)
+            if !q.ok { break }
+            if wanted { m[key] = v }
+            let c = quick_byte(bytes, q)
+            q.at += 1
+            if c == 125 { break }
+            if c != 44 { q.ok = false }
+        }
+        return if build then json.from_map(m) else json.null()
+    }
+    if b == 91 {
+        q.at += 1
+        var out = List[json.Value]()
+        if quick_byte(bytes, q) == 93 {
+            q.at += 1
+            return if build then json.from_list(out) else json.null()
+        }
+        while q.ok {
+            let v = quick_value(bytes, mut q, depth + 1, build, keep)
+            if !q.ok { break }
+            if build { (mut out).push(take v) }
+            let c = quick_byte(bytes, q)
+            q.at += 1
+            if c == 93 { break }
+            if c != 44 { q.ok = false }
+        }
+        return if build then json.from_list(out) else json.null()
+    }
+    if b == 34 {
+        let text = quick_string(bytes, mut q, build)
+        return if build then json.from_str(text) else json.null()
+    }
+    if b == 45 || b >= 48 && b <= 57 { return quick_int(bytes, mut q) }
+    if quick_word(bytes, mut q, "true") { return json.from_bool(true) }
+    if quick_word(bytes, mut q, "false") { return json.from_bool(false) }
+    if quick_word(bytes, mut q, "null") { return json.null() }
+    q.ok = false
+    json.null()
+}
+
 /// Check the table header, parse its metadata and pooled strings, and position at the first row.
-pub fn patch_open(take raw: List[byte]) -> (json.Value, PatchCursor) ! {Bad(str)} {
+/// With `keep` empty the metadata is the whole document; otherwise it holds only the top-level
+/// members `keep` names, each as the whole document would have it (the rest is checked as JSON).
+pub fn patch_open(take raw: List[byte], keep: List[str]) -> (json.Value, PatchCursor) ! {Bad(str)} {
     if raw.len < 40 { return Bad("truncated provenance table header") }
     let m = binary.bounded(binary.decode(raw, 8, 8)?, raw.len - 40)?
     let strings = binary.bounded(binary.decode(raw, 16, 8)?, raw.len)?
@@ -408,7 +556,11 @@ pub fn patch_open(take raw: List[byte]) -> (json.Value, PatchCursor) ! {Bad(str)
     let text = str_from_utf8(raw[40..40 + m]) else {
         return Bad("invalid provenance metadata UTF-8")
     }
-    let doc = json.parse(text) else |_| { return Bad("invalid provenance metadata JSON") }
+    var q = Quick { at: 40, end: 40 + m, ok: keep.len != 0 }
+    var doc = if q.ok then quick_value(raw, mut q, 0, true, keep) else json.null()
+    if !q.ok || q.at != q.end {
+        doc = json.parse(text) else |_| { return Bad("invalid provenance metadata JSON") }
+    }
     let _object = json.as_obj(doc) else |_| { return Bad("invalid provenance metadata object") }
     if array(doc, "patches")?.len != 0 { return Bad("duplicate provenance patches") }
     var c = Cursor { bytes: raw, at: 40 + m }
@@ -545,7 +697,7 @@ pub fn decode_document(raw: List[byte]) -> json.Value ! {Bad(str)} {
         let text = str_from_utf8(raw) else { return Bad("provenance is not UTF-8") }
         return json.parse(text) else |_| { return Bad("invalid provenance JSON") }
     }
-    let (doc, cursor) = patch_open(take copy raw)?
+    let (doc, cursor) = patch_open(take copy raw, List[str]())?
     var p = cursor
     var object = json.as_obj(doc) else |_| { return Bad("invalid provenance metadata object") }
     let keys = patch_keys()
