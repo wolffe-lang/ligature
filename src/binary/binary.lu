@@ -22,11 +22,12 @@ pub fn range(f: Input, off: int, size: int) -> () ! {Bad(str)} {
 }
 
 /// Read exactly a bounded range with positional IO; Bad names IO or truncation.
-/// The result is one list at exact capacity: a single positional read is returned as it came,
-/// and a longer range is gathered into a list reserved once, never grown by doubling.
+/// The result is one list at exact capacity: a single positional read (up to the host's 1 MiB)
+/// is returned as it came, and a longer range is gathered into a list reserved once, never grown
+/// by doubling, each part freed with its own region.
 pub fn read(f: Input, off: int, size: int) -> List[byte] ! {Bad(str)} {
     range(f, off, size)?
-    if size > 0 && size <= 65536 {
+    if size > 0 && size <= 1048576 {
         let part = fs_read_at(f.fd, f.base + off, size) else |_| {
             return Bad("positional read failed")
         }
@@ -37,15 +38,20 @@ pub fn read(f: Input, off: int, size: int) -> List[byte] ! {Bad(str)} {
     (mut out).reserve(size)
     var done: int = 0
     while done < size {
-        {
-            let want = if size - done > 65536 then 65536 else size - done
-            let part = fs_read_at(f.fd, f.base + off + done, want) else |_| {
-                return Bad("positional read failed")
+        let want = if size - done > 1048576 then 1048576 else size - done
+        // The part's region may not carry a refusal out: it answers -1 for a failed read.
+        let got = region part {
+            var failed = false
+            let piece = fs_read_at(f.fd, f.base + off + done, want) else |_| {
+                failed = true
+                List[byte]()
             }
-            if part.len == 0 { return Bad("short positional read") }
-            for b in part { (mut out).push(b) }
-            done += part.len
+            for b in piece { (mut out).push(b) }
+            if failed then -1 else piece.len
         }
+        if got < 0 { return Bad("positional read failed") }
+        if got == 0 { return Bad("short positional read") }
+        done += got
     }
     out
 }
