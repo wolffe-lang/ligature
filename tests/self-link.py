@@ -8,8 +8,9 @@ tools/fetch-musl-runtime): one release for objects and runtime (#962/#963).
 The bundle supplies the sysroot, cc and lld, and its pins stay checked. The row
 has one outcome: PASS, or a named failure; no runtime digest is admitted.
 """
-import hashlib,json,os,pathlib,subprocess,sys,tempfile,time
+import hashlib,json,os,pathlib,runpy,subprocess,sys,tempfile,time
 ROOT=pathlib.Path(__file__).resolve().parent.parent
+files=runpy.run_path(str(ROOT/'tests/provenance-files.py'))
 OUT=ROOT/'target/evidence/self-link';OUT.mkdir(parents=True,exist_ok=True)
 inputs=os.environ.get('LIGATURE_LINK_INPUTS') or (str(ROOT/'.link-inputs') if (ROOT/'.link-inputs/libwolf_rt.a').exists() else None)
 if not inputs:
@@ -50,11 +51,22 @@ def link_args(inputs):
     return ['-static','-nostdlib','--gc-sections','--undefined=__wolf_rt_trap_at','--defsym=wolf_trap=__wolf_rt_trap_at',LIB/'crt1.o',LIB/'crti.o','--start-group',*inputs,RUNTIME,LIB/'libc.a',LIB/'libunwind.a','--end-group',LIB/'crtn.o']
 args=link_args(objects)
 first=OUT/'ligature-first';second=OUT/'ligature-second';third=OUT/'ligature-third'
+def same(a,b):
+    # One output and, where the link writes one, one provenance sidecar.
+    sa,sb=pathlib.Path(str(a)+'.provenance'),pathlib.Path(str(b)+'.provenance')
+    return a.read_bytes()==b.read_bytes() and sa.exists()==sb.exists() and (not sa.exists() or sa.read_bytes()==sb.read_bytes())
+def sidecar_form(p):
+    # The provenance note's flags word: 1 when the manifest is in the sidecar.
+    return files['load'](p)['mode']=='sidecar'
 call('first',[BIN,*args,'-o',first]);call('second',[BIN,*args,'-o',second])
-assert first.read_bytes()==second.read_bytes(),'self-link-determinism'
+assert same(first,second),'self-link-determinism'
 call('verify',[BIN,'verify',first])
 version=call('execute',[first,'--version']);assert version.stdout.startswith(b'ligature '),'self-link-execute-version'
-call('third',[first,*args,'-o',third]);assert first.read_bytes()==third.read_bytes(),'self-link-bootstrap-identity'
+call('third',[first,*args,'-o',third])
+# A seed from a linker of the other default form (trunk's binary in a comparison run) is embedded
+# while this tree's linker writes a sidecar: the bootstrap link then writes the seed's form.
+if not sidecar_form(first) and sidecar_form(third):call('third-embedded',[first,*args,'--provenance=embed','-o',third])
+assert same(first,third),'self-link-bootstrap-identity'
 # Run the self-linked linker on an independently compiled executed fixture.
 hello=ROOT/'tests/corpus/hello/hello.lu';hello_obj=OUT/'hello.o';hello_exe=OUT/'hello'
 call('hello-objects',[wolf,'build','--no-cache','--emit=obj',hello,'-o',hello_obj])
