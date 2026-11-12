@@ -75,6 +75,22 @@ fn patch_hex(
     ""
 }
 
+// Whether pool[at..at + n] is all lowercase hex digits.
+fn all_hex(pool: List[byte], at: int, n: int) -> bool {
+    for i in at..at + n { if hex_value(pool[i]) < 0 { return false } }
+    true
+}
+
+// patch_hex for a row whose after and before are both known to be all hex: only the bytes can
+// differ.
+fn patch_same(bytes: List[byte], at: int, width: int, pool: List[byte], after: int) -> str {
+    for i in 0..width {
+        let v = hex_value(pool[after + 2 * i]) * 16 + hex_value(pool[after + 2 * i + 1])
+        if v != bytes[at + i] as int { return "provenance patch bytes differ" }
+    }
+    ""
+}
+
 // One retained patch's recorded bytes against the file's, at bytes[at..at + width]. Returns ""
 // or the refusal.
 fn patch_bytes(bytes: List[byte], at: int, width: int, after: str, before: str) -> str {
@@ -122,6 +138,12 @@ pub fn validate(f: binary.Input, image: elf.Image) -> () ! {Bad(str)} {
         return Bad("provenance retained patch count mismatch")
     }
     patch_rewind(mut cursor)
+    // Each pooled string's digits are checked once: 1 when all hex, 2 when not, 0 not yet seen.
+    // A row whose strings are both all hex needs only its bytes compared; any other row takes
+    // the byte-by-byte path, which reports the first fault in the order it always has.
+    var hex = List[int]()
+    (mut hex).reserve(cursor.starts.len)
+    for _ in 0..cursor.starts.len { (mut hex).push(0) }
     var previous_index: int = -1
     var row: int = 0
     // A row decoded and checked but for its bytes, which wait for the next window.
@@ -163,14 +185,34 @@ pub fn validate(f: binary.Input, image: elf.Image) -> () ! {Bad(str)} {
                 } else if start < base || end > base + bytes.len {
                     break
                 }
-                message = patch_hex(
-                    bytes,
-                    start - base,
-                    end - start,
-                    cursor.c.bytes,
-                    cursor.starts[values[1]],
-                    cursor.starts[values[2]],
-                )
+                let a = values[1]
+                let b = values[2]
+                if hex[a] == 0 {
+                    hex[a] = if all_hex(cursor.c.bytes, cursor.starts[a], cursor.lengths[a]) {
+                        1
+                    } else {
+                        2
+                    }
+                }
+                if hex[b] == 0 {
+                    hex[b] = if all_hex(cursor.c.bytes, cursor.starts[b], cursor.lengths[b]) {
+                        1
+                    } else {
+                        2
+                    }
+                }
+                message = if hex[a] == 1 && hex[b] == 1 {
+                    patch_same(bytes, start - base, end - start, cursor.c.bytes, cursor.starts[a])
+                } else {
+                    patch_hex(
+                        bytes,
+                        start - base,
+                        end - start,
+                        cursor.c.bytes,
+                        cursor.starts[a],
+                        cursor.starts[b],
+                    )
+                }
                 if message.len != 0 { break }
                 previous_index = values[5]
                 pending = false
