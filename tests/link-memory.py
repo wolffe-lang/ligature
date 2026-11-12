@@ -19,7 +19,9 @@ Rows, each reported as PASS or FAIL <row>:
                        argv a compiler handed its cc-shaped linker, and the files it named):
                        exit 0 under the cap, resident peak under MIB
 With --baseline PATH, every output is also linked by that linker under the same inputs and
-compared byte for byte (link-identity-<case>). Objects come from LIGATURE_MEMORY_OBJECTS
+compared byte for byte (link-identity-<case>), in the baseline's form: against a baseline that
+embeds its provenance, the candidate links again with --provenance=embed; against one that writes
+a sidecar, the outputs and the sidecars are compared. Objects come from LIGATURE_MEMORY_OBJECTS
 (DIR/hello/main.o, DIR/str/main.o, DIR/self/*.o) or are compiled by the pinned compiler.
 """
 import argparse
@@ -31,6 +33,7 @@ import platform
 import resource
 import shutil
 import signal
+import struct
 import subprocess
 import sys
 import threading
@@ -293,7 +296,23 @@ def scaling(linker, base):
         print(f'PASS {row}: {detail}', flush=True)
 
 
-def identity(case, candidate_exe, baseline, argv_for, env):
+def sidecar_form(path):
+    """Whether the output's provenance note puts its manifest in the sidecar (note flags 1)."""
+    data = pathlib.Path(path).read_bytes()
+    shoff = struct.unpack_from('<Q', data, 40)[0]
+    count, names = struct.unpack_from('<HH', data, 60)
+    headers = [struct.unpack_from('<IIQQQQIIQQ', data, shoff + 64 * i) for i in range(count)]
+    table = data[headers[names][4]:headers[names][4] + headers[names][5]]
+    for h in headers:
+        if table[h[0]:].split(b'\0', 1)[0] == b'.note.wolf.link':
+            return struct.unpack_from('<I', data, h[4] + 24)[0] == 1
+    return False
+
+
+def identity(case, candidate_exe, linker, baseline, argv_for, env):
+    """The candidate's output against the baseline linker's, in the baseline's form: a baseline
+    that embeds its provenance is compared with the candidate's `--provenance=embed` link, one that
+    writes a sidecar with the candidate's default link, sidecar and all."""
     row = 'link-identity-' + case
     exe = OUT / case / 'baseline-program'
     result = measured(argv_for(baseline, exe), 12 * GIB if LINUX else 2 * GIB, env)
@@ -301,12 +320,24 @@ def identity(case, candidate_exe, baseline, argv_for, env):
     if result['status'] != 0:
         fail(row, f'baseline link failed: status {result["status"]}')
         return
-    a = [digest(candidate_exe), digest(candidate_exe)]
-    b = [digest(exe), digest(exe)]
-    if len(set(a + b)) != 1:
-        fail(row, f'candidate {a[0]} differs from baseline {b[0]}')
-        return
-    print(f'PASS {row}: byte-identical to the baseline linker, sha256 {a[0]} (read twice each)', flush=True)
+    form = 'sidecar' if sidecar_form(exe) else 'embedded'
+    pairs = [(candidate_exe, exe)]
+    if form == 'embedded':
+        candidate_exe = OUT / case / 'candidate-embedded'
+        result = measured(argv_for(linker, candidate_exe) + ['-Wl,--provenance=embed'], CAP, env)
+        if result['status'] != 0:
+            fail(row, f'embedded candidate link failed: status {result["status"]}')
+            return
+        pairs = [(candidate_exe, exe)]
+    else:
+        pairs.append((pathlib.Path(str(candidate_exe) + '.provenance'), pathlib.Path(str(exe) + '.provenance')))
+    for mine, theirs in pairs:
+        a = [digest(mine), digest(mine)]
+        b = [digest(theirs), digest(theirs)]
+        if len(set(a + b)) != 1:
+            fail(row, f'candidate {mine.name} {a[0]} differs from baseline {b[0]} ({form})')
+            return
+    print(f'PASS {row}: byte-identical to the baseline linker ({form}), sha256 {a[0]} (read twice each)', flush=True)
 
 
 def main():
@@ -352,7 +383,7 @@ def main():
     if args.baseline:
         for case, exe in outputs.items():
             if exe is not None:
-                identity(case, exe, pathlib.Path(args.baseline).resolve(), argvs[case], envs[case])
+                identity(case, exe, linker, pathlib.Path(args.baseline).resolve(), argvs[case], envs[case])
     if failures:
         print(f'link-memory: {len(failures)} row(s) failed: {" ".join(failures)}', flush=True)
         sys.exit(1)
