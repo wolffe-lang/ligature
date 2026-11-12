@@ -4,6 +4,7 @@ use binary
 use elf
 use layout
 use resolve
+use sha256
 use std.x.crypto.sha2
 use std.json
 
@@ -14,97 +15,36 @@ fn logical(path: str) -> str {
     pieces[pieces.len - 1]
 }
 
-/// The running SHA-256 state between bounded steps: eight words and the byte count.
-struct Step { words: List[int], digest: List[byte] }
+fn step_size(size: int, at: int) -> int { if size - at > 1048576 then 1048576 else size - at }
 
-fn initial() -> List[int] {
-    let iv = sha2.new256()
-    [
-        iv.h0 as int,
-        iv.h1 as int,
-        iv.h2 as int,
-        iv.h3 as int,
-        iv.h4 as int,
-        iv.h5 as int,
-        iv.h6 as int,
-        iv.h7 as int,
-        0,
-    ]
-}
-
-// The pinned hash allocates a fresh schedule and buffer for every 64-byte block. Resuming its
-// state for each step, inside a region the step's caller frees, keeps a digest's working set to
-// one step whatever the input's size. Steps are whole blocks, so the buffer is empty between them.
-fn absorb(words: List[int], bytes: List[byte], last: bool) -> Step {
-    var st = sha2.new256()
-    st.h0 = words[0] as wrapping[u64]
-    st.h1 = words[1] as wrapping[u64]
-    st.h2 = words[2] as wrapping[u64]
-    st.h3 = words[3] as wrapping[u64]
-    st.h4 = words[4] as wrapping[u64]
-    st.h5 = words[5] as wrapping[u64]
-    st.h6 = words[6] as wrapping[u64]
-    st.h7 = words[7] as wrapping[u64]
-    st.total = words[8]
-    sha2.update256(mut st, bytes)
-    let next = [
-        st.h0 as int,
-        st.h1 as int,
-        st.h2 as int,
-        st.h3 as int,
-        st.h4 as int,
-        st.h5 as int,
-        st.h6 as int,
-        st.h7 as int,
-        st.total,
-    ]
-    if last { return Step { words: next, digest: sha2.final256(take st) } }
-    Step { words: next, digest: List[byte]() }
-}
-
-fn step_size(size: int, at: int) -> int { if size - at > 65536 then 65536 else size - at }
-
-/// SHA-256 over a bounded positional input, one 64 KiB step at a time, each step's
-/// temporary state reclaimed before the next.
+/// SHA-256 over a bounded positional input, one 1 MiB read at a time, each read freed before
+/// the next; the running state is eight words and a partial block.
 pub fn digest(input: binary.Input) -> List[byte] ! {Bad(str)} { digest_zeroed(input, 0, 0)? }
 
 /// SHA-256 over a positional input with the bytes at [zero_start, zero_end) read as zero.
 pub fn digest_zeroed(input: binary.Input, zero_start: int, zero_end: int) -> List[byte] ! {
     Bad(str),
 } {
-    var words = initial()
+    var st = sha256.start()
     var at: int = 0
-    loop {
+    while at < input.size {
         let count = step_size(input.size, at)
-        let last = at + count == input.size
-        let step = copy region hashing {
+        region hashing {
             var bytes = binary.read(input, at, count)?
-            for i in 0..bytes.len {
-                if at + i >= zero_start && at + i < zero_end { bytes[i] = 0 as byte }
+            if at < zero_end && at + count > zero_start {
+                for i in 0..bytes.len {
+                    if at + i >= zero_start && at + i < zero_end { bytes[i] = 0 as byte }
+                }
             }
-            absorb(words, bytes, last)
+            sha256.absorb(mut st, bytes, 0, bytes.len)
         }
-        if last { return step.digest }
-        words = step.words
         at += count
     }
-    List[byte]()
+    sha256.finish(mut st)
 }
 
-/// SHA-256 over bytes in memory, by the same bounded steps.
-pub fn digest_bytes(data: List[byte]) -> List[byte] {
-    var words = initial()
-    var at: int = 0
-    loop {
-        let count = step_size(data.len, at)
-        let last = at + count == data.len
-        let step = copy region hashing { absorb(words, data[at..at + count], last) }
-        if last { return step.digest }
-        words = step.words
-        at += count
-    }
-    List[byte]()
-}
+/// SHA-256 over bytes in memory, absorbed in place.
+pub fn digest_bytes(data: List[byte]) -> List[byte] { sha256.of(data) }
 
 /// Hash each original input once and each selected member independently.
 pub fn inputs(s: resolve.State) -> List[byte] ! {Bad(str)} {
