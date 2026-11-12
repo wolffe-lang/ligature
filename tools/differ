@@ -65,7 +65,8 @@ def snapshot(path, execute=True):
         # --emit-relocs output r_offset is virtual for allocated sections,
         # section-relative for nonallocated debugging sections.
         relative=r['offset']-sec['address'] if alloc else r['offset']
-        sym=syms[(sections[r['table']]['link'],r['symbol'])]
+        # A sidecar's table is not a section of the output: its row names its symbol table.
+        sym=syms[(r['symbols'] if 'symbols' in r else sections[r['table']]['link'],r['symbol'])]
         a=r['addend_bits'];a=a-(1<<64) if a>>63 else a
         t=r['type'];S=sym['value'];P=r['offset'];n=8 if t in (1,17,18,24) else 4
         if t==0:continue
