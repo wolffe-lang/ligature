@@ -44,6 +44,37 @@ fn hex_digit(c: byte) -> int ! {Bad(str)} {
     Bad("invalid provenance hex bytes")
 }
 
+// The value of a lowercase hex digit, or -1.
+fn hex_value(c: byte) -> int {
+    let n = c as int
+    if n >= 48 && n <= 57 { return n - 48 }
+    if n >= 97 && n <= 102 { return n - 87 }
+    -1
+}
+
+// One retained patch's recorded bytes against the file's, at bytes[at..at + width]: after's
+// hex at pool[after..], before's at pool[before..]. Returns "" or the refusal, checking each
+// byte's digits in patch_bytes' order.
+fn patch_hex(
+    bytes: List[byte],
+    at: int,
+    width: int,
+    pool: List[byte],
+    after: int,
+    before: int,
+) -> str {
+    for i in 0..width {
+        let hi = hex_value(pool[after + 2 * i])
+        if hi < 0 { return "invalid provenance hex bytes" }
+        let lo = hex_value(pool[after + 2 * i + 1])
+        if lo < 0 { return "invalid provenance hex bytes" }
+        if hi * 16 + lo != bytes[at + i] as int { return "provenance patch bytes differ" }
+        if hex_value(pool[before + 2 * i]) < 0 { return "invalid provenance hex bytes" }
+        if hex_value(pool[before + 2 * i + 1]) < 0 { return "invalid provenance hex bytes" }
+    }
+    ""
+}
+
 // One retained patch's recorded bytes against the file's, at bytes[at..at + width]. Returns ""
 // or the refusal.
 fn patch_bytes(bytes: List[byte], at: int, width: int, after: str, before: str) -> str {
@@ -64,21 +95,14 @@ fn patch_bytes(bytes: List[byte], at: int, width: int, after: str, before: str) 
 }
 
 // A patch row's order, range and length checks, before its bytes. Returns "" or the refusal.
-fn patch_row_shape(
-    f: binary.Input,
-    values: List[int],
-    strings: List[str],
-    previous_index: int,
-) -> str {
+fn patch_row_shape(f: binary.Input, values: List[int], p: PatchCursor, previous_index: int) -> str {
     if values[5] <= previous_index { return "provenance patch index order or duplicate" }
     let start = values[10]
     let end = values[4]
     if start < 0 || end <= start || end > f.size { return "provenance patch range" }
-    let after = strings[values[1]]
-    let before = strings[values[2]]
-    if after.len != 2 * (end - start) || before.len != after.len {
-        return "provenance patch length"
-    }
+    let after = p.lengths[values[1]]
+    let before = p.lengths[values[2]]
+    if after != 2 * (end - start) || before != after { return "provenance patch length" }
     ""
 }
 
@@ -120,7 +144,7 @@ pub fn validate(f: binary.Input, image: elf.Image) -> () ! {Bad(str)} {
                         },
                     }
                     row += 1
-                    message = patch_row_shape(f, values, cursor.strings, previous_index)
+                    message = patch_row_shape(f, values, cursor, previous_index)
                     if message.len != 0 { break }
                     pending = true
                 }
@@ -139,12 +163,13 @@ pub fn validate(f: binary.Input, image: elf.Image) -> () ! {Bad(str)} {
                 } else if start < base || end > base + bytes.len {
                     break
                 }
-                message = patch_bytes(
+                message = patch_hex(
                     bytes,
                     start - base,
                     end - start,
-                    cursor.strings[values[1]],
-                    cursor.strings[values[2]],
+                    cursor.c.bytes,
+                    cursor.starts[values[1]],
+                    cursor.starts[values[2]],
                 )
                 if message.len != 0 { break }
                 previous_index = values[5]

@@ -4,39 +4,6 @@ use binary
 use layout
 use std.json
 
-/// Stable first-use interning; hash buckets never determine output order.
-pub struct PatchTable {
-    buckets: List[List[int]],
-    strings: List[str],
-    data: List[byte],
-    previous: List[int],
-    count: int,
-}
-
-/// Construct an empty deterministic patch table.
-pub fn patch_table() -> PatchTable {
-    var buckets = List[List[int]]()
-    for _ in 0..16381 { (mut buckets).push(List[int]()) }
-    PatchTable {
-        buckets: buckets,
-        strings: List[str](),
-        data: List[byte](),
-        previous: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        count: 0,
-    }
-}
-
-/// Return the stable first-use id of a string.
-pub fn intern(mut table: PatchTable, value: str) -> int {
-    var hash: int = 0
-    for b in value.bytes() { hash = (hash * 31 + b as int) % 16381 }
-    for id in table.buckets[hash] { if table.strings[id] == value { return id } }
-    let id = table.strings.len
-    (mut table.buckets[hash]).push(id)
-    (mut table.strings).push(value)
-    id
-}
-
 fn put_uint(mut bytes: List[byte], value: u64) {
     var n = value
     while n >= 128 { (mut bytes).push((n & 127 | 128) as int as byte); n >>= 7 }
@@ -261,14 +228,38 @@ fn varint(mut c: Cursor) -> u64 ! {Bad(str)} {
 }
 
 /// A versioned patch table opened for streaming: rows decode one at a time into a caller's list.
+/// Pooled string id k is the bytes c.bytes[starts[k]..starts[k] + lengths[k]] (valid UTF-8).
 pub struct PatchCursor {
     c: Cursor,
     first: int,
     end: int,
     rows: int,
     done: int,
-    strings: List[str],
+    starts: List[int],
+    lengths: List[int],
     previous: List[int],
+}
+
+/// Pooled string id as text.
+pub fn pooled_string(p: PatchCursor, id: int) -> str {
+    str_from_utf8(p.c.bytes[p.starts[id]..p.starts[id] + p.lengths[id]]) else ""
+}
+
+// True when bytes[at..at + n] is valid UTF-8, as str_from_utf8 decides; ASCII is checked in
+// place, anything else through a copy.
+fn utf8(bytes: List[byte], at: int, n: int) -> bool {
+    var ascii = true
+    for i in at..at + n { if bytes[i] as int >= 128 { ascii = false; break } }
+    if ascii { return true }
+    let _text = str_from_utf8(bytes[at..at + n]) else { return false }
+    true
+}
+
+// True when pooled strings a and b (offsets into bytes) hold the same bytes.
+fn same_pooled(bytes: List[byte], a: int, an: int, b: int, bn: int) -> bool {
+    if an != bn { return false }
+    for i in 0..an { if bytes[a + i] != bytes[b + i] { return false } }
+    true
 }
 
 /// The fifteen row columns in table order; `end` is decoded as a width and reported as start + width.
@@ -311,14 +302,34 @@ pub fn patch_open(take raw: List[byte]) -> (json.Value, PatchCursor) ! {Bad(str)
     let _object = json.as_obj(doc) else |_| { return Bad("invalid provenance metadata object") }
     if array(doc, "patches")?.len != 0 { return Bad("duplicate provenance patches") }
     var c = Cursor { bytes: raw, at: 40 + m }
-    var pool = patch_table()
+    var starts = List[int]()
+    var lengths = List[int]()
+    (mut starts).reserve(strings)
+    (mut lengths).reserve(strings)
+    // Duplicates are found through an open-addressing index (string id + 1 per slot) over the
+    // strings' bytes in place; no string is copied out of the table.
+    var capacity: int = 16
+    while capacity < strings * 2 { capacity *= 2 }
+    var slots = List[int]()
+    (mut slots).reserve(capacity)
+    for _ in 0..capacity { (mut slots).push(0) }
     for _ in 0..strings {
         let n = binary.bounded(varint(mut c)?, c.bytes.len - c.at)?
-        let s = str_from_utf8(c.bytes[c.at..c.at + n]) else {
-            return Bad("invalid provenance string UTF-8")
+        if !utf8(c.bytes, c.at, n) { return Bad("invalid provenance string UTF-8") }
+        var h: wrapping[u64] = 14695981039346656037
+        for i in c.at..c.at + n { h = (h ^ c.bytes[i] as int as wrapping[u64]) * 1099511628211 }
+        var at = (h >> 33) as int % capacity
+        loop {
+            let slot = slots[at]
+            if slot == 0 { break }
+            if same_pooled(c.bytes, starts[slot - 1], lengths[slot - 1], c.at, n) {
+                return Bad("duplicate provenance pooled string")
+            }
+            at = (at + 1) % capacity
         }
-        let next = pool.strings.len
-        if intern(mut pool, s) != next { return Bad("duplicate provenance pooled string") }
+        (mut starts).push(c.at)
+        (mut lengths).push(n)
+        slots[at] = starts.len
         c.at += n
     }
     if size > c.bytes.len - c.at { return Bad("truncated provenance patch table") }
@@ -332,21 +343,41 @@ pub fn patch_open(take raw: List[byte]) -> (json.Value, PatchCursor) ! {Bad(str)
             end: end,
             rows: rows,
             done: 0,
-            strings: pool.strings,
+            starts: starts,
+            lengths: lengths,
             previous: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
         },
     )
 }
 
 /// Decode the next row into values (15 columns, `end` already start + width). Allocates nothing.
+/// Each column's ULEB128 is read in place, with varint's refusals in varint's order.
 pub fn patch_next(mut p: PatchCursor, mut values: List[int]) -> () ! {Bad(str)} {
-    if p.c.at > p.end - 2 { return Bad("truncated provenance patch row") }
-    let mask = binary.decode(p.c.bytes, p.c.at, 2)? as int
-    p.c.at += 2
+    var at = p.c.at
+    if at > p.end - 2 { return Bad("truncated provenance patch row") }
+    let mask = p.c.bytes[at] as int | p.c.bytes[at + 1] as int << 8
+    at += 2
     if mask >= 32768 { return Bad("unknown provenance patch column") }
+    let size = p.c.bytes.len
     for i in 0..15 {
-        let z = if mask & 1 << i != 0 then varint(mut p.c)? else 0 as u64
-        if mask & 1 << i != 0 && z == 0 { return Bad("noncanonical zero provenance delta") }
+        var z: u64 = 0
+        if mask & 1 << i != 0 {
+            var read = false
+            for k in 0..10 {
+                if at >= size { return Bad("truncated provenance table integer") }
+                let b = p.c.bytes[at] as int as u64
+                at += 1
+                if k == 9 && b > 1 { return Bad("overflow provenance table integer") }
+                z |= (b & 127) << k * 7
+                if b < 128 {
+                    if k != 0 && b == 0 { return Bad("noncanonical provenance table integer") }
+                    read = true
+                    break
+                }
+            }
+            if !read { return Bad("overlong provenance table integer") }
+            if z == 0 { return Bad("noncanonical zero provenance delta") }
+        }
         let d = if z & 1 == 0 then (z >> 1) as int else -1 - (z >> 1) as int
         let previous = p.previous[i]
         if i != 0 &&
@@ -358,9 +389,10 @@ pub fn patch_next(mut p: PatchCursor, mut values: List[int]) -> () ! {Bad(str)} 
         }
         values[i] = if i == 0 then d else previous + d
     }
-    if p.c.at > p.end { return Bad("provenance patch table overrun") }
+    p.c.at = at
+    if at > p.end { return Bad("provenance patch table overrun") }
     // The four pooled columns (after, before, rule, symbol), checked without a list per row.
-    let pooled = p.strings.len
+    let pooled = p.starts.len
     if values[1] < 0 ||
         values[1] >= pooled ||
         values[2] < 0 ||
@@ -415,7 +447,7 @@ pub fn decode_document(raw: List[byte]) -> json.Value ! {Bad(str)} {
         for i in 0..15 {
             let v = values[i]
             if i == 1 || i == 2 || i == 8 || i == 11 {
-                row[keys[i]] = json.from_str(p.strings[v])
+                row[keys[i]] = json.from_str(pooled_string(p, v))
             } else {
                 row[keys[i]] = json.from_int(v)
             }
