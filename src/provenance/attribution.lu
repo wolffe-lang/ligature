@@ -159,9 +159,6 @@ pub fn attribute(
         let at = layout.site_lookup_range(l.relocs, lo, sites, r.atom, call)
         if at >= 0 { consumer[at - lo] = i }
     }
-    var values = List[int]()
-    (mut values).reserve(15)
-    for _ in 0..15 { (mut values).push(0) }
     for i in lo..hi {
         let r = copy l.relocs[i]
         let ai = r.atom
@@ -204,22 +201,24 @@ pub fn attribute(
             table.symbol_ids[id] = pool_text(mut table, quoted_name(s.symbols[id].name))
         }
         let symbol_id = table.symbol_ids[id]
-        values[0] = r.addend
-        values[1] = after_id
-        values[2] = before_id
-        values[3] = owner
-        values[4] = width
-        values[5] = i
-        values[6] = l.atoms[ai].object
-        values[7] = r.offset
-        values[8] = rule_id
-        values[9] = l.atoms[ai].index
-        values[10] = start
-        values[11] = symbol_id
-        values[12] = s.symbols[id].object
-        values[13] = s.symbols[id].index
-        values[14] = r.kind
-        patches_row(mut table, values)
+        patches_row(
+            mut table,
+            r.addend,
+            after_id,
+            before_id,
+            owner,
+            width,
+            i,
+            l.atoms[ai].object,
+            r.offset,
+            rule_id,
+            l.atoms[ai].index,
+            start,
+            symbol_id,
+            s.symbols[id].object,
+            s.symbols[id].index,
+            r.kind,
+        )
     }
 }
 

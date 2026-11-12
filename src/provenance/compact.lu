@@ -22,12 +22,24 @@ pub struct Patches {
     lengths: List[int],
     slots: List[int],
     rows: List[byte],
-    previous: List[int],
+    p1: int,
+    p2: int,
+    p3: int,
+    p4: int,
+    p5: int,
+    p6: int,
+    p7: int,
+    p8: int,
+    p9: int,
+    p10: int,
+    p11: int,
+    p12: int,
+    p13: int,
+    p14: int,
     count: int,
     failed: bool,
     symbol_ids: List[int],
     rule_ids: List[int],
-    deltas: List[int],
 }
 
 /// An empty patch table, sized for about `expected` rows (a measured 10 row bytes, 4 pooled
@@ -56,12 +68,24 @@ pub fn patches_start(expected: int, symbols: int) -> Patches {
         lengths: lengths,
         slots: slots,
         rows: rows,
-        previous: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        p1: 0,
+        p2: 0,
+        p3: 0,
+        p4: 0,
+        p5: 0,
+        p6: 0,
+        p7: 0,
+        p8: 0,
+        p9: 0,
+        p10: 0,
+        p11: 0,
+        p12: 0,
+        p13: 0,
+        p14: 0,
         count: 0,
         failed: false,
         symbol_ids: symbol_ids,
         rule_ids: [-1, -1, -1, -1, -1],
-        deltas: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
     }
 }
 
@@ -138,12 +162,12 @@ fn seat(mut t: Patches, at: int) -> int {
 /// The stable first-use id of the lowercase hex text of data[from..from + width], pooling it
 /// when it is new.
 pub fn pool_hex(mut t: Patches, data: List[byte], from: int, width: int) -> int {
-    var at = hash_hex(data, from, width) % t.slots.len
+    var at = hash_hex(data, from, width) & t.slots.len - 1
     loop {
         let slot = t.slots[at]
         if slot == 0 { break }
         if same_hex(t, slot - 1, data, from, width) { return slot - 1 }
-        at = (at + 1) % t.slots.len
+        at = at + 1 & t.slots.len - 1
     }
     put_uint(mut t.pool, (2 * width) as u64)
     (mut t.starts).push(t.pool.len)
@@ -158,12 +182,12 @@ pub fn pool_hex(mut t: Patches, data: List[byte], from: int, width: int) -> int 
 
 /// The stable first-use id of a text, pooling it when it is new.
 pub fn pool_text(mut t: Patches, text: str) -> int {
-    var at = hash_text(text) % t.slots.len
+    var at = hash_text(text) & t.slots.len - 1
     loop {
         let slot = t.slots[at]
         if slot == 0 { break }
         if same_text(t, slot - 1, text) { return slot - 1 }
-        at = (at + 1) % t.slots.len
+        at = at + 1 & t.slots.len - 1
     }
     put_uint(mut t.pool, text.len as u64)
     (mut t.starts).push(t.pool.len)
@@ -179,31 +203,102 @@ fn rehash(mut t: Patches) {
     for _ in 0..old { (mut t.slots).push(0) }
     for id in 0..t.starts.len {
         let text = str_from_utf8(t.pool[t.starts[id]..t.starts[id] + t.lengths[id]]) else ""
-        var at = hash_text(text) % t.slots.len
-        while t.slots[at] != 0 { at = (at + 1) % t.slots.len }
+        var at = hash_text(text) & t.slots.len - 1
+        while t.slots[at] != 0 { at = at + 1 & t.slots.len - 1 }
         t.slots[at] = id + 1
     }
 }
 
+// One column's zigzag ULEB128.
+fn put_zigzag(mut rows: List[byte], d: int) {
+    var z = if d < 0 then -(d + 1) as u64 * 2 + 1 else d as u64 * 2
+    while z >= 128 { (mut rows).push((z & 127 | 128) as int as byte); z >>= 7 }
+    (mut rows).push(z as int as byte)
+}
+
 /// Encode one row: a 15-bit column mask, then each nonzero column as a zigzag ULEB128 delta from
-/// the previous row (the addend absolute, `end` as a width). Each delta is computed once.
-pub fn patches_row(mut t: Patches, values: List[int]) {
+/// the previous row (the addend absolute, `end` as a width), in patch_keys order. The columns
+/// are spelled out as values and fields, so no list is read or written per column.
+pub fn patches_row(
+    mut t: Patches,
+    addend: int,
+    after: int,
+    before: int,
+    consumed_by: int,
+    width: int,
+    index: int,
+    member: int,
+    offset: int,
+    rule: int,
+    section_index: int,
+    start: int,
+    symbol: int,
+    target_member: int,
+    target_symbol: int,
+    kind: int,
+) {
+    let d0 = addend
+    let d1 = after - t.p1
+    let d2 = before - t.p2
+    let d3 = consumed_by - t.p3
+    let d4 = width - t.p4
+    let d5 = index - t.p5
+    let d6 = member - t.p6
+    let d7 = offset - t.p7
+    let d8 = rule - t.p8
+    let d9 = section_index - t.p9
+    let d10 = start - t.p10
+    let d11 = symbol - t.p11
+    let d12 = target_member - t.p12
+    let d13 = target_symbol - t.p13
+    let d14 = kind - t.p14
     var mask: int = 0
-    for i in 0..15 {
-        let d = if i == 0 then values[0] else values[i] - t.previous[i]
-        t.deltas[i] = d
-        t.previous[i] = values[i]
-        if d != 0 { mask |= 1 << i }
-    }
+    if d0 != 0 { mask |= 1 }
+    if d1 != 0 { mask |= 2 }
+    if d2 != 0 { mask |= 4 }
+    if d3 != 0 { mask |= 8 }
+    if d4 != 0 { mask |= 16 }
+    if d5 != 0 { mask |= 32 }
+    if d6 != 0 { mask |= 64 }
+    if d7 != 0 { mask |= 128 }
+    if d8 != 0 { mask |= 256 }
+    if d9 != 0 { mask |= 512 }
+    if d10 != 0 { mask |= 1024 }
+    if d11 != 0 { mask |= 2048 }
+    if d12 != 0 { mask |= 4096 }
+    if d13 != 0 { mask |= 8192 }
+    if d14 != 0 { mask |= 16384 }
     (mut t.rows).push((mask & 255) as byte)
     (mut t.rows).push((mask >> 8) as byte)
-    for i in 0..15 {
-        let d = t.deltas[i]
-        if d == 0 { continue }
-        var z = if d < 0 then -(d + 1) as u64 * 2 + 1 else d as u64 * 2
-        while z >= 128 { (mut t.rows).push((z & 127 | 128) as int as byte); z >>= 7 }
-        (mut t.rows).push(z as int as byte)
-    }
+    if d0 != 0 { put_zigzag(mut t.rows, d0) }
+    if d1 != 0 { put_zigzag(mut t.rows, d1) }
+    if d2 != 0 { put_zigzag(mut t.rows, d2) }
+    if d3 != 0 { put_zigzag(mut t.rows, d3) }
+    if d4 != 0 { put_zigzag(mut t.rows, d4) }
+    if d5 != 0 { put_zigzag(mut t.rows, d5) }
+    if d6 != 0 { put_zigzag(mut t.rows, d6) }
+    if d7 != 0 { put_zigzag(mut t.rows, d7) }
+    if d8 != 0 { put_zigzag(mut t.rows, d8) }
+    if d9 != 0 { put_zigzag(mut t.rows, d9) }
+    if d10 != 0 { put_zigzag(mut t.rows, d10) }
+    if d11 != 0 { put_zigzag(mut t.rows, d11) }
+    if d12 != 0 { put_zigzag(mut t.rows, d12) }
+    if d13 != 0 { put_zigzag(mut t.rows, d13) }
+    if d14 != 0 { put_zigzag(mut t.rows, d14) }
+    t.p1 = after
+    t.p2 = before
+    t.p3 = consumed_by
+    t.p4 = width
+    t.p5 = index
+    t.p6 = member
+    t.p7 = offset
+    t.p8 = rule
+    t.p9 = section_index
+    t.p10 = start
+    t.p11 = symbol
+    t.p12 = target_member
+    t.p13 = target_symbol
+    t.p14 = kind
     t.count += 1
 }
 
@@ -333,14 +428,14 @@ pub fn patch_open(take raw: List[byte]) -> (json.Value, PatchCursor) ! {Bad(str)
         if !utf8(c.bytes, c.at, n) { return Bad("invalid provenance string UTF-8") }
         var h: wrapping[u64] = 14695981039346656037
         for i in c.at..c.at + n { h = (h ^ c.bytes[i] as int as wrapping[u64]) * 1099511628211 }
-        var at = (h >> 33) as int % capacity
+        var at = (h >> 33) as int & capacity - 1
         loop {
             let slot = slots[at]
             if slot == 0 { break }
             if same_pooled(c.bytes, starts[slot - 1], lengths[slot - 1], c.at, n) {
                 return Bad("duplicate provenance pooled string")
             }
-            at = (at + 1) % capacity
+            at = at + 1 & capacity - 1
         }
         (mut starts).push(c.at)
         (mut lengths).push(n)
