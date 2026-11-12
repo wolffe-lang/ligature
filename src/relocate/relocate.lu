@@ -87,7 +87,12 @@ pub fn apply(mut l: layout.Layout, s: resolve.State) -> () ! {Bad(str)} {
     for oi in 0..l.object_relocs.len - 1 {
         region relocating {
             let original = pristine(l, oi)
-            object(mut l, s, oi, original)?
+            let sites = layout.site_index_range(
+                l.relocs,
+                l.object_relocs[oi],
+                l.object_relocs[oi + 1],
+            )
+            object(mut l, s, oi, original, sites)?
         }
     }
     got(mut l, s)?
@@ -136,16 +141,20 @@ pub fn got(mut l: layout.Layout, s: resolve.State) -> () ! {Bad(str)} {
 }
 
 /// Relocate object oi's live atoms in place, in relocation order; checks read `original`, the
-/// object's pristine bytes from `pristine`.
-pub fn object(mut l: layout.Layout, s: resolve.State, oi: int, original: List[List[byte]]) -> () ! {
-    Bad(str),
-} {
+/// object's pristine bytes from `pristine`, and `relocation_at` is the object's site index
+/// (layout.site_index_range).
+pub fn object(
+    mut l: layout.Layout,
+    s: resolve.State,
+    oi: int,
+    original: List[List[byte]],
+    relocation_at: List[int],
+) -> () ! {Bad(str)} {
     if l.machine == 183 { object_aarch64(mut l, s, oi, original)?; return }
     let lo = l.object_relocs[oi]
     let hi = l.object_relocs[oi + 1]
     if lo == hi { return }
     let first = l.object_atoms[oi]
-    let relocation_at = layout.site_index_range(l.relocs, lo, hi)
     // A TLS call consumed by its transition is skipped by site: the last relocation recorded
     // at a site stands for every relocation there, as the index's last-write-wins lookup does.
     var skipped = List[bool]()

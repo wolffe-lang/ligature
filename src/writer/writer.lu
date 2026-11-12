@@ -392,8 +392,13 @@ pub fn link(s: resolve.State, p: front.Plan) -> () ! {Bad(str)} {
     for oi in 0..l.object_relocs.len - 1 {
         region relocating {
             let original = relocate.pristine(l, oi)
-            relocate.object(mut l, s, oi, original)?
-            provenance.attribute(mut table, l, s, oi, original)?
+            let sites = layout.site_index_range(
+                l.relocs,
+                l.object_relocs[oi],
+                l.object_relocs[oi + 1],
+            )
+            relocate.object(mut l, s, oi, original, sites)?
+            provenance.attribute(mut table, l, s, oi, original, sites)?
         }
     }
     relocate.got(mut l, s)?

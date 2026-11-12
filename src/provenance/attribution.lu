@@ -126,7 +126,7 @@ fn rule_name(rule: int) -> str {
 
 /// Attribute object oi's retained relocations, including TLS call sites consumed by a
 /// transition, after its atoms are relocated: `original` holds the bytes each patched atom had
-/// before (from relocate.pristine). Bytes are evidence, not an independent proof: the
+/// before (from relocate.pristine) and `sites` the object's site index. Bytes are evidence, not an independent proof: the
 /// differential decoder checks them. Rows go out in relocation order, object by object, as
 /// they always have; a row that cannot be attributed marks the table failed.
 pub fn attribute(
@@ -135,6 +135,7 @@ pub fn attribute(
     s: resolve.State,
     oi: int,
     original: List[List[byte]],
+    sites: List[int],
 ) -> () ! {Bad(str)} {
     if table.failed { return }
     let lo = l.object_relocs[oi]
@@ -142,7 +143,6 @@ pub fn attribute(
     if lo == hi { return }
     let first = l.object_atoms[oi]
     // The consumer of each TLS call site, by the site's last relocation (last write wins).
-    let sites = layout.site_index_range(l.relocs, lo, hi)
     var consumer = List[int]()
     (mut consumer).reserve(hi - lo)
     for _ in lo..hi { (mut consumer).push(-1) }
