@@ -114,6 +114,16 @@ pub fn members_by_offset(l: layout.Layout) -> List[List[int]] {
     members
 }
 
+// The patch rules, by number: a relocated field, a TLS call its transition consumed, the two TLS
+// transitions to local exec, and a GOT-relative instruction.
+fn rule_name(rule: int) -> str {
+    if rule == 1 { return "TLS-call-consumed" }
+    if rule == 2 { return "TLSGD-local-exec" }
+    if rule == 3 { return "TLSLD-local-exec" }
+    if rule == 4 { return "GOT-instruction" }
+    "field"
+}
+
 /// Attribute object oi's retained relocations, including TLS call sites consumed by a
 /// transition, after its atoms are relocated: `original` holds the bytes each patched atom had
 /// before (from relocate.pristine). Bytes are evidence, not an independent proof: the
@@ -162,21 +172,21 @@ pub fn attribute(
         let owner = if here >= 0 then consumer[here - lo] else -1
         var begin = r.offset
         var width = if r.kind == 1 || r.kind == 17 || r.kind == 257 then 8 else 4
-        var rule = "field"
+        var rule: int = 0
         if owner >= 0 {
-            rule = "TLS-call-consumed"
+            rule = 1
         } else if r.kind == 19 {
             begin -= 4
             width = 16
-            rule = "TLSGD-local-exec"
+            rule = 2
         } else if r.kind == 20 {
             begin -= 3
             width = if original[k][r.offset + 4] == 255 as byte then 13 else 12
-            rule = "TLSLD-local-exec"
+            rule = 3
         } else if r.kind == 42 || r.kind == 22 {
             begin -= 3
             width = 7
-            rule = "GOT-instruction"
+            rule = 4
         }
         if begin < 0 || begin + width > original[k].len {
             table.failed = true
@@ -186,8 +196,14 @@ pub fn attribute(
         let start = l.outputs[oo].fileoff + l.atoms[ai].offset + begin
         let after_id = pool_hex(mut table, l.atoms[ai].data, begin, width)
         let before_id = pool_hex(mut table, original[k], begin, width)
-        let rule_id = pool_text(mut table, rule)
-        let symbol_id = pool_text(mut table, quoted_name(s.symbols[id].name))
+        if table.rule_ids[rule] < 0 {
+            table.rule_ids[rule] = pool_text(mut table, rule_name(rule))
+        }
+        let rule_id = table.rule_ids[rule]
+        if table.symbol_ids[id] < 0 {
+            table.symbol_ids[id] = pool_text(mut table, quoted_name(s.symbols[id].name))
+        }
+        let symbol_id = table.symbol_ids[id]
         values[0] = r.addend
         values[1] = after_id
         values[2] = before_id

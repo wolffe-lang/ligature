@@ -388,7 +388,7 @@ pub fn link(s: resolve.State, p: front.Plan) -> () ! {Bad(str)} {
     relocate.prepare(l, s)?
     var live: int = 0
     for r in l.relocs { if l.atoms[r.atom].live { live += 1 } }
-    var table = provenance.patches_start(live)
+    var table = provenance.patches_start(live, s.symbols.len)
     for oi in 0..l.object_relocs.len - 1 {
         region relocating {
             let original = relocate.pristine(l, oi)

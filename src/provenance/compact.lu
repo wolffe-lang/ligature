@@ -58,11 +58,14 @@ pub struct Patches {
     previous: List[int],
     count: int,
     failed: bool,
+    symbol_ids: List[int],
+    rule_ids: List[int],
 }
 
 /// An empty patch table, sized for about `expected` rows (a measured 10 row bytes, 4 pooled
-/// bytes and 0.4 pooled strings a row at the 0.2.39 runtime, with headroom).
-pub fn patches_start(expected: int) -> Patches {
+/// bytes and 0.4 pooled strings a row at the 0.2.39 runtime, with headroom), over `symbols`
+/// symbols: each symbol's and each rule's pooled id is remembered once it is first pooled.
+pub fn patches_start(expected: int, symbols: int) -> Patches {
     var pool = List[byte]()
     (mut pool).reserve(expected * 4)
     var starts = List[int]()
@@ -71,11 +74,14 @@ pub fn patches_start(expected: int) -> Patches {
     (mut lengths).reserve(expected / 2)
     var slots = List[int]()
     var capacity: int = 1024
-    while capacity < expected { capacity *= 2 }
+    while capacity * 2 < expected { capacity *= 2 }
     (mut slots).reserve(capacity)
     for _ in 0..capacity { (mut slots).push(0) }
     var rows = List[byte]()
     (mut rows).reserve(expected * 12)
+    var symbol_ids = List[int]()
+    (mut symbol_ids).reserve(symbols)
+    for _ in 0..symbols { (mut symbol_ids).push(-1) }
     Patches {
         pool: pool,
         starts: starts,
@@ -85,6 +91,8 @@ pub fn patches_start(expected: int) -> Patches {
         previous: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
         count: 0,
         failed: false,
+        symbol_ids: symbol_ids,
+        rule_ids: [-1, -1, -1, -1, -1],
     }
 }
 
@@ -93,45 +101,91 @@ pub fn pooled(t: Patches) -> int { t.starts.len }
 
 fn hex_digit_of(v: int) -> byte { if v < 10 then (48 + v) as byte else (87 + v) as byte }
 
-// Byte i of a candidate string: the text's own byte, or, for an empty text, byte i of the
-// lowercase hex of data[from..] (the text sha2.to_hex gives).
-fn candidate(text: str, data: List[byte], from: int, i: int) -> byte {
-    if text.len != 0 { return text.bytes()[i] }
-    let v = data[from + i / 2] as int
-    hex_digit_of(if i % 2 == 0 then v >> 4 else v & 15)
+// The index's hash of a string's bytes (FNV-1a in wrapping 64-bit arithmetic, its top bits):
+// a function of the bytes alone, so a hex text and an equal plain text meet in one slot.
+fn hash_text(text: str) -> int {
+    var h: wrapping[u64] = 14695981039346656037
+    for i in 0..text.len { h = (h ^ text.bytes()[i] as int as wrapping[u64]) * 1099511628211 }
+    (h >> 33) as int
 }
 
-fn string_hash(text: str, data: List[byte], from: int, n: int) -> int {
-    var h: int = 0
-    for i in 0..n { h = (h * 131 + candidate(text, data, from, i) as int + 1) % 2147483647 }
-    h
+// hash_text of the lowercase hex of data[from..from + width], without building it.
+fn hash_hex(data: List[byte], from: int, width: int) -> int {
+    var h: wrapping[u64] = 14695981039346656037
+    for k in from..from + width {
+        let v = data[k] as int
+        let hi = v >> 4
+        let lo = v & 15
+        h = (h ^ (if hi < 10 then 48 + hi else 87 + hi) as wrapping[u64]) * 1099511628211
+        h = (h ^ (if lo < 10 then 48 + lo else 87 + lo) as wrapping[u64]) * 1099511628211
+    }
+    (h >> 33) as int
 }
 
-fn same(t: Patches, id: int, text: str, data: List[byte], from: int, n: int) -> bool {
-    if t.lengths[id] != n { return false }
+fn same_text(t: Patches, id: int, text: str) -> bool {
+    if t.lengths[id] != text.len { return false }
     let start = t.starts[id]
-    for i in 0..n { if t.pool[start + i] != candidate(text, data, from, i) { return false } }
+    for i in 0..text.len { if t.pool[start + i] != text.bytes()[i] { return false } }
     true
 }
 
-// The stable first-use id of a candidate string, pooling it when it is new.
-fn pool(mut t: Patches, text: str, data: List[byte], from: int, n: int) -> int {
-    let h = string_hash(text, data, from, n)
-    var at = h % t.slots.len
-    loop {
-        let slot = t.slots[at]
-        if slot == 0 { break }
-        if same(t, slot - 1, text, data, from, n) { return slot - 1 }
-        at = (at + 1) % t.slots.len
+fn same_hex(t: Patches, id: int, data: List[byte], from: int, width: int) -> bool {
+    if t.lengths[id] != 2 * width { return false }
+    var at = t.starts[id]
+    for k in from..from + width {
+        let v = data[k] as int
+        let hi = v >> 4
+        let lo = v & 15
+        if t.pool[at] as int != (if hi < 10 then 48 + hi else 87 + hi) { return false }
+        if t.pool[at + 1] as int != (if lo < 10 then 48 + lo else 87 + lo) { return false }
+        at += 2
     }
-    let id = t.starts.len
-    put_uint(mut t.pool, n as u64)
-    (mut t.starts).push(t.pool.len)
-    (mut t.lengths).push(n)
-    for i in 0..n { (mut t.pool).push(candidate(text, data, from, i)) }
+    true
+}
+
+// Seat a new string's id at slot `at`, growing the index past half full.
+fn seat(mut t: Patches, at: int) -> int {
+    let id = t.starts.len - 1
     t.slots[at] = id + 1
     if (t.starts.len + 1) * 2 > t.slots.len { rehash(mut t) }
     id
+}
+
+/// The stable first-use id of the lowercase hex text of data[from..from + width], pooling it
+/// when it is new.
+pub fn pool_hex(mut t: Patches, data: List[byte], from: int, width: int) -> int {
+    var at = hash_hex(data, from, width) % t.slots.len
+    loop {
+        let slot = t.slots[at]
+        if slot == 0 { break }
+        if same_hex(t, slot - 1, data, from, width) { return slot - 1 }
+        at = (at + 1) % t.slots.len
+    }
+    put_uint(mut t.pool, (2 * width) as u64)
+    (mut t.starts).push(t.pool.len)
+    (mut t.lengths).push(2 * width)
+    for k in from..from + width {
+        let v = data[k] as int
+        (mut t.pool).push(hex_digit_of(v >> 4))
+        (mut t.pool).push(hex_digit_of(v & 15))
+    }
+    seat(mut t, at)
+}
+
+/// The stable first-use id of a text, pooling it when it is new.
+pub fn pool_text(mut t: Patches, text: str) -> int {
+    var at = hash_text(text) % t.slots.len
+    loop {
+        let slot = t.slots[at]
+        if slot == 0 { break }
+        if same_text(t, slot - 1, text) { return slot - 1 }
+        at = (at + 1) % t.slots.len
+    }
+    put_uint(mut t.pool, text.len as u64)
+    (mut t.starts).push(t.pool.len)
+    (mut t.lengths).push(text.len)
+    for i in 0..text.len { (mut t.pool).push(text.bytes()[i]) }
+    seat(mut t, at)
 }
 
 // Double the index in place (its list grows in its own region) and re-seat every string.
@@ -140,22 +194,16 @@ fn rehash(mut t: Patches) {
     for i in 0..old { t.slots[i] = 0 }
     for _ in 0..old { (mut t.slots).push(0) }
     for id in 0..t.starts.len {
-        var h: int = 0
+        var h: wrapping[u64] = 14695981039346656037
         let start = t.starts[id]
-        for i in 0..t.lengths[id] { h = (h * 131 + t.pool[start + i] as int + 1) % 2147483647 }
-        var at = h % t.slots.len
+        for i in 0..t.lengths[id] {
+            h = (h ^ t.pool[start + i] as int as wrapping[u64]) * 1099511628211
+        }
+        var at = (h >> 33) as int % t.slots.len
         while t.slots[at] != 0 { at = (at + 1) % t.slots.len }
         t.slots[at] = id + 1
     }
 }
-
-/// The id of the lowercase hex text of data[from..from + width].
-pub fn pool_hex(mut t: Patches, data: List[byte], from: int, width: int) -> int {
-    pool(mut t, "", data, from, 2 * width)
-}
-
-/// The id of a nonempty text.
-pub fn pool_text(mut t: Patches, text: str) -> int { pool(mut t, text, List[byte](), 0, text.len) }
 
 /// Encode one row as `patch_row` does: a 15-bit column mask, then each nonzero column as a
 /// zigzag ULEB128 delta from the previous row (the addend absolute, `end` as a width).
