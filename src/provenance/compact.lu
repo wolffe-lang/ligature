@@ -27,6 +27,7 @@ pub struct Patches {
     failed: bool,
     symbol_ids: List[int],
     rule_ids: List[int],
+    deltas: List[int],
 }
 
 /// An empty patch table, sized for about `expected` rows (a measured 10 row bytes, 4 pooled
@@ -60,6 +61,7 @@ pub fn patches_start(expected: int, symbols: int) -> Patches {
         failed: false,
         symbol_ids: symbol_ids,
         rule_ids: [-1, -1, -1, -1, -1],
+        deltas: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
     }
 }
 
@@ -172,23 +174,25 @@ fn rehash(mut t: Patches) {
     }
 }
 
-/// Encode one row as `patch_row` does: a 15-bit column mask, then each nonzero column as a
-/// zigzag ULEB128 delta from the previous row (the addend absolute, `end` as a width).
+/// Encode one row: a 15-bit column mask, then each nonzero column as a zigzag ULEB128 delta from
+/// the previous row (the addend absolute, `end` as a width). Each delta is computed once.
 pub fn patches_row(mut t: Patches, values: List[int]) {
     var mask: int = 0
     for i in 0..15 {
-        let d = if i == 0 then values[i] else values[i] - t.previous[i]
+        let d = if i == 0 then values[0] else values[i] - t.previous[i]
+        t.deltas[i] = d
+        t.previous[i] = values[i]
         if d != 0 { mask |= 1 << i }
     }
     (mut t.rows).push((mask & 255) as byte)
     (mut t.rows).push((mask >> 8) as byte)
     for i in 0..15 {
-        let d = if i == 0 then values[i] else values[i] - t.previous[i]
+        let d = t.deltas[i]
         if d == 0 { continue }
-        let z = if d < 0 then -(d + 1) as u64 * 2 + 1 else d as u64 * 2
-        put_uint(mut t.rows, z)
+        var z = if d < 0 then -(d + 1) as u64 * 2 + 1 else d as u64 * 2
+        while z >= 128 { (mut t.rows).push((z & 127 | 128) as int as byte); z >>= 7 }
+        (mut t.rows).push(z as int as byte)
     }
-    for i in 0..15 { t.previous[i] = values[i] }
     t.count += 1
 }
 
