@@ -7,7 +7,10 @@ a measured AArch64 static-link subset.
 kernels that boot under BIOS and UEFI.** It reads GNU
 archives, resolves symbols, collects sections, applies the measured relocation
 set and writes an executable with retained relocations and a verifiable
-byte-and-patch provenance manifest.
+byte-and-patch provenance manifest. By default the manifest and the retained
+relocations go to a sidecar file beside the executable, `OUTPUT.provenance`;
+`--provenance=embed` (or `-Wl,--provenance=embed`) keeps them in the executable
+instead, byte for byte as before the sidecar existed.
 
 ## Build and use
 
@@ -243,6 +246,26 @@ tests preserve legacy JSON name semantics for non-ASCII inputs as well.
 The nonallocated 116-byte `.note.wolf.link` seals input hashes, disjoint file
 ranges and relocation patches with SHA-256. It is integrity, not a signature
 or proof of authorship. `explain` validates the manifest before answering.
+
+**Where the provenance lives.** The note is always in the executable. Its flags
+word (at note offset 24) says where the rest is. With flags 0 (the embedded
+form) the manifest is the executable's own `.wolf.link.manifest` section, the
+retained relocations are its `SHT_RELA` sections, the note's sizes name the
+manifest section, and its first digest is the manifest's. With flags 1 (the
+default) the executable keeps no manifest and no `SHT_RELA` section; the note's
+size field is the sidecar's size, its offset field is 0, and its first digest is
+the whole sidecar's. Either way the second digest is the executable's own, with
+both digest slots zero. The sidecar, `OUTPUT.provenance`, is: a 40-byte head
+(`WLPROV01`, then the executable's size, the number of retained tables, and the
+manifest's offset and size, each a little-endian u64); a 32-byte record per
+table (its target section, its symbol table, its entries' offset and count); the
+tables' `Elf64_Rela` entries, exactly as the embedded form's sections hold them;
+then the manifest, exactly as the embedded form would hold it, with metadata
+that describes the executable it sits beside. `verify` and `explain` read the
+sidecar beside the file they are given, and refuse by name when it is missing,
+altered, or another output's; `inspect` lists the sidecar's retained
+relocations after the executable's own sections. The executable runs without
+its sidecar; only its provenance is lost.
 The recorded compact-format hello retained all 590,358 relocation records. Its interned binary patch table
 reduces the embedded manifest from 147,136,512 to 12,414,976 bytes (11.85×),
 including 17,765 newly explicit discard/consumed-metadata records. Legacy JSON
