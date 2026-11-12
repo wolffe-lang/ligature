@@ -1,0 +1,64 @@
+//! member: false
+
+use sha256
+use std.x.crypto.sha2
+
+fn hex(data: List[byte]) -> str { sha2.to_hex(data) }
+
+fn text(s: str) -> List[byte] {
+    var out = List[byte]()
+    for b in s.bytes() { (mut out).push(b) }
+    out
+}
+
+fn main() -> int {
+    // FIPS 180-4's published examples (NIST CSRC SHA256.pdf) and the million-a vector.
+    assert(
+        hex(sha256.of(List[byte]())) ==
+            "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    )
+    assert(
+        hex(sha256.of(text("abc"))) ==
+            "ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad",
+    )
+    assert(
+        hex(sha256.of(text("abcdbcdecdefdefgefghfghighijhijkijkljklmklmnlmnomnopnopq"))) ==
+            "248d6a61d20638b8e5c026930c3e6039a33ce45964ff2167f6ecedd419db06c1",
+    )
+    var million = List[byte]()
+    (mut million).reserve(1000000)
+    for _ in 0..1000000 { (mut million).push(97 as byte) }
+    assert(
+        hex(sha256.of(million)) ==
+            "cdc76e5c9914fb9281a1c7e284d73e67f1809a48a497200e046d39ccc7112cd0",
+    )
+    var checked: int = 4
+    // Agreement with the pinned std digest at every length to 200 and across the block edges.
+    var data = List[byte]()
+    for i in 0..70000 { (mut data).push((i * 13 + i / 251) as byte) }
+    for n in 0..201 {
+        assert(hex(sha256.of(data[0..n])) == hex(sha2.sum256(data[0..n])))
+        checked += 1
+    }
+    for n in [255, 256, 257, 4095, 4096, 4097, 65535, 65536, 65537, 70000] {
+        assert(hex(sha256.of(data[0..n])) == hex(sha2.sum256(data[0..n])))
+        checked += 1
+    }
+    // Absorbing in two and in three pieces equals one call, at every split of 200 bytes.
+    let whole = hex(sha256.of(data[0..200]))
+    for k in 0..201 {
+        var st = sha256.start()
+        sha256.absorb(mut st, data, 0, k)
+        sha256.absorb(mut st, data, k, 200)
+        assert(hex(sha256.finish(mut st)) == whole)
+        var three = sha256.start()
+        let j = k / 3
+        sha256.absorb(mut three, data, 0, j)
+        sha256.absorb(mut three, data, j, k)
+        sha256.absorb(mut three, data, k, 200)
+        assert(hex(sha256.finish(mut three)) == whole)
+        checked += 2
+    }
+    print("sha256: {checked} digests equal the published vectors and the pinned std digest, 0 SKIP")
+    0
+}
