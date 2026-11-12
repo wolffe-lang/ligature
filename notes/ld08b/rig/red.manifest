@@ -1,0 +1,13 @@
+# notes/ld08b/rig/red.manifest: the sidecar rows seen red first. The recorder runs it from a clean
+# checkout of the commit that adds the sidecar rows and the embedded-form identity rows, before any
+# change to the linker, with this rig from the head's checkout: every sidecar row and every
+# identity row must fail there by name.
+floor 35
+rig lib.sh committed=../../..:HEAD:notes/ld08b/rig/lib.sh
+rig red.manifest committed=../../..:HEAD:notes/ld08b/rig/red.manifest
+step fetch-toolchain image=localhost/ld08-oracle:1 tools=python3 script=step.sh -- fetch-toolchain
+step fetch-bundle needs=fetch-toolchain image=localhost/ld08-oracle:1 tools=python3 script=step.sh -- fetch-bundle
+step trunk-build needs=fetch-toolchain image=localhost/ld08-oracle:1 tools=bash,sha256sum,taskset script=step.sh -- trunk-build
+step build needs=fetch-bundle image=localhost/ld08-oracle:1 tools=bash,sha256sum script=step.sh -- build
+step sidecar needs=build image=localhost/ld08-oracle:1 tools=python3,musl-gcc script=step.sh -- sidecar
+step link-memory needs=build,trunk-build image=localhost/ld08-oracle:1 tools=python3,as script=step.sh -- link-memory

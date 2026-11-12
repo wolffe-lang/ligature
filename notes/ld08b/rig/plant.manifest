@@ -1,0 +1,10 @@
+# notes/ld08b/rig/plant.manifest: the plant's take. The recorder runs it from a clean checkout of
+# the plant branch (one commit, one hunk, on the green head) with this rig from the head's
+# checkout: the planted break must fail the sidecar rows by name.
+floor 35
+rig lib.sh committed=../../..:HEAD:notes/ld08b/rig/lib.sh
+rig plant.manifest committed=../../..:HEAD:notes/ld08b/rig/plant.manifest
+step fetch-toolchain image=localhost/ld08-oracle:1 tools=python3 script=step.sh -- fetch-toolchain
+step fetch-bundle needs=fetch-toolchain image=localhost/ld08-oracle:1 tools=python3 script=step.sh -- fetch-bundle
+step build needs=fetch-bundle image=localhost/ld08-oracle:1 tools=bash,sha256sum script=step.sh -- build
+step sidecar needs=build image=localhost/ld08-oracle:1 tools=python3,musl-gcc script=step.sh -- sidecar
