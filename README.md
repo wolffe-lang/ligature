@@ -118,13 +118,21 @@ byte-identical) and the ratio stopped measuring the linker. Time complexity is
 guarded by `link-memory-scaling`'s seconds bound instead (below). No absolute
 host-speed bound is used.
 `tests/link-memory.py` bounds memory: it links hello and `str` against the
-46.7 MB musl runtime and verifies hello, each as a direct child under a 2 GiB
+46.7 MB musl runtime and verifies hello, each as a direct child under a 512 MiB
 address-space cap, and requires each resident peak (the child's own
-`ru_maxrss`) to stay under 1 GiB. Synthetic archives of N, 10N and 100N members
-must grow at most linearly in peak and in time. Allocation is region-scoped:
-digests are taken in bounded steps, each manifest iteration and each verified
-patch row frees its working set, and only the sections `--gc-sections` keeps
-are read.
+`ru_maxrss`) to stay under 192 MiB; the linker's own objects, linked as a
+program, stay under 256 MiB. With `--captured NAME:MIB:DIR` it also links a
+captured cc-shaped command (a compiler's `link.json` and the files it names)
+under the same cap and the bound given. Synthetic archives of N, 10N and 100N
+members must grow at most linearly in peak and in time. Allocation is
+region-scoped: the link runs in one region and its output is verified after
+that region is freed; each object is parsed, and each relocation table decoded,
+in its own region; each live section is read once and relocated in place, its
+pristine bytes re-read only while that object's patch rows are attributed; the
+patch table is built once and only the metadata is rebuilt per fixed-point
+round; the file is sealed and written from its pieces, with no image of it in
+memory; digests are taken in 1 MiB steps by an unrolled SHA-256 core that
+allocates nothing per block; and verify reads the file a window at a time.
 `tools/check-core` runs the independent linker/provenance gates.
 The gate fetches binary inputs only; no external linker or libc implementation
 source is read or built. Bundle licence texts are copied unchanged from upstream
