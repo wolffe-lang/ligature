@@ -27,6 +27,7 @@ python3 -I tests/cc.py
 python3 -I tests/provenance.py
 python3 -I tests/attribution.py
 python3 -I tests/compact.py
+python3 -I tests/sidecar.py
 python3 -I tests/pax-validator.py
 python3 -I tests/pax-stage.py
 python3 -I tests/static-pax-runner.py
