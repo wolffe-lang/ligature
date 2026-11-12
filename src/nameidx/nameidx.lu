@@ -10,10 +10,12 @@ pub struct Names {
     values: List[int],
 }
 
+// FNV-1a over the key's bytes in wrapping 64-bit arithmetic, reduced once at the end: no division
+// per byte. Only lookup speed depends on it; no order is derived from the index.
 fn hash(key: str) -> int {
-    var h: int = 0
-    for i in 0..key.len { h = (h * 131 + key.bytes()[i] as int + 1) % 2147483647 }
-    h
+    var h: wrapping[u64] = 14695981039346656037
+    for i in 0..key.len { h = (h ^ key.bytes()[i] as int as wrapping[u64]) * 1099511628211 }
+    (h >> 33) as int
 }
 
 fn table(capacity: int) -> List[int] {
