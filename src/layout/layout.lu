@@ -75,9 +75,8 @@ pub struct Layout {
 }
 
 // The relocation-site index (ld06), here so relocation and provenance share one implementation.
-fn site_slot(atom: int, offset: int, capacity: int) -> int {
-    (atom % capacity * 65599 + offset % capacity) % capacity
-}
+// A site's first slot; capacity is a power of two, so the slot is a mask, not a division.
+fn site_slot(atom: int, offset: int, capacity: int) -> int { atom * 65599 + offset & capacity - 1 }
 
 /// Index validated (atom, offset) pairs without the runtime Map's linear insertion.
 /// Slots store relocation ordinal + 1; zero is empty. Keep at most half full.
@@ -104,7 +103,7 @@ pub fn site_index_range(relocs: List[Reloc], lo: int, hi: int) -> List[int] {
                 index[at] = i + 1
                 break
             }
-            at = (at + 1) % capacity
+            at = at + 1 & capacity - 1
         }
     }
     index
@@ -129,7 +128,7 @@ pub fn site_lookup_range(
         let previous = index[at] - 1
         if previous < 0 { return -1 }
         if relocs[previous].atom == atom && relocs[previous].offset == offset { return previous }
-        at = (at + 1) % index.len
+        at = at + 1 & index.len - 1
     }
     -1
 }
