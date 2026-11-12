@@ -173,9 +173,10 @@ fn retained(mut l: layout.Layout, s: resolve.State, indices: List[int], symtab: 
             out.link = symtab
             out.info = target
             out.entsize = 24
-            (mut out.data).reserve(entries[target] * 24)
             tables[target] = l.outputs.len
             (mut l.outputs).push(out)
+            // Reserved once it is in place: a reservation made before the push does not travel.
+            (mut l.outputs[tables[target]].data).reserve(entries[target] * 24)
         }
         let table = tables[target]
         let id = layout.target(s, r.symbol)?
