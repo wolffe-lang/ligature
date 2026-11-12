@@ -70,25 +70,40 @@ pub fn pooled(t: Patches) -> int { t.starts.len }
 
 fn hex_digit_of(v: int) -> byte { if v < 10 then (48 + v) as byte else (87 + v) as byte }
 
-// The index's hash of a string's bytes (FNV-1a in wrapping 64-bit arithmetic, its top bits):
-// a function of the bytes alone, so a hex text and an equal plain text meet in one slot.
+// The index's hash of a string (FNV-1a in wrapping 64-bit arithmetic, its top bits), a function
+// of the string's bytes alone: an even-length lowercase hex text hashes as the bytes it spells,
+// any other text as its own bytes. A hex string pooled from raw bytes and an equal plain text
+// therefore meet in one slot, and the common case hashes half as many steps.
+fn finish_hash(h: wrapping[u64]) -> int { (h >> 33) as int }
+
 fn hash_text(text: str) -> int {
+    var hex = text.len % 2 == 0
+    for i in 0..text.len {
+        let n = text.bytes()[i] as int
+        if !(n >= 48 && n <= 57 || n >= 97 && n <= 102) { hex = false; break }
+    }
     var h: wrapping[u64] = 14695981039346656037
-    for i in 0..text.len { h = (h ^ text.bytes()[i] as int as wrapping[u64]) * 1099511628211 }
-    (h >> 33) as int
+    if hex {
+        var i: int = 0
+        while i < text.len {
+            let hi = text.bytes()[i] as int
+            let lo = text.bytes()[i + 1] as int
+            let v = (if hi <= 57 then hi - 48 else hi - 87) * 16 +
+                (if lo <= 57 then lo - 48 else lo - 87)
+            h = (h ^ v as wrapping[u64]) * 1099511628211
+            i += 2
+        }
+    } else {
+        for i in 0..text.len { h = (h ^ text.bytes()[i] as int as wrapping[u64]) * 1099511628211 }
+    }
+    finish_hash(h)
 }
 
 // hash_text of the lowercase hex of data[from..from + width], without building it.
 fn hash_hex(data: List[byte], from: int, width: int) -> int {
     var h: wrapping[u64] = 14695981039346656037
-    for k in from..from + width {
-        let v = data[k] as int
-        let hi = v >> 4
-        let lo = v & 15
-        h = (h ^ (if hi < 10 then 48 + hi else 87 + hi) as wrapping[u64]) * 1099511628211
-        h = (h ^ (if lo < 10 then 48 + lo else 87 + lo) as wrapping[u64]) * 1099511628211
-    }
-    (h >> 33) as int
+    for k in from..from + width { h = (h ^ data[k] as int as wrapping[u64]) * 1099511628211 }
+    finish_hash(h)
 }
 
 fn same_text(t: Patches, id: int, text: str) -> bool {
@@ -163,12 +178,8 @@ fn rehash(mut t: Patches) {
     for i in 0..old { t.slots[i] = 0 }
     for _ in 0..old { (mut t.slots).push(0) }
     for id in 0..t.starts.len {
-        var h: wrapping[u64] = 14695981039346656037
-        let start = t.starts[id]
-        for i in 0..t.lengths[id] {
-            h = (h ^ t.pool[start + i] as int as wrapping[u64]) * 1099511628211
-        }
-        var at = (h >> 33) as int % t.slots.len
+        let text = str_from_utf8(t.pool[t.starts[id]..t.starts[id] + t.lengths[id]]) else ""
+        var at = hash_text(text) % t.slots.len
         while t.slots[at] != 0 { at = (at + 1) % t.slots.len }
         t.slots[at] = id + 1
     }
