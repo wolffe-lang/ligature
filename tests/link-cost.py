@@ -1,6 +1,10 @@
 #!/usr/bin/env python3
 """Byte identity between the frozen original relocation lookup and the current index, for hello and the
-linker's own objects, with both link times recorded (unbounded since the 0.2.38 pin)."""
+linker's own objects, with both link times recorded (unbounded since the 0.2.38 pin).
+
+The control is src/relocate/relocate.lu frozen with the original lookup (sites as "atom:offset" text
+in a Map) in place of the site index. It was refrozen when relocation moved into the atoms, object
+by object, so that it builds against the rest of the current source; the lookup is all it changes."""
 import argparse
 import hashlib
 import json
@@ -16,7 +20,7 @@ OUT.mkdir(parents=True, exist_ok=True)
 WOLF = pathlib.Path(os.environ.get('WOLF', str(ROOT / '.wolf-bin/wolf'))).resolve()
 BUNDLE = ROOT / '.link-inputs'
 LIB = BUNDLE / 'sysroot'
-BASELINE_SHA = '950485ee8728e685b7311495797f3b961dc306d1368314b8fed578510eb40c00'
+BASELINE_SHA = 'a1821d78aa5088ecd27c5a28d6e667d633434b1bc11e150f95209e3766c275c9'
 
 
 def digest(path):
@@ -35,7 +39,7 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('--case', choices=['hello', 'self-link', 'all'], default='all')
     args = parser.parse_args()
-    control = ROOT / 'tests/fixtures/ld06-relocate.baseline'
+    control = ROOT / 'tests/fixtures/ld08-relocate.baseline'
     assert digest(control) == BASELINE_SHA, 'unreviewed relocation baseline'
     source = OUT / 'baseline-src'
     shutil.copytree(ROOT / 'src', source, dirs_exist_ok=True)
