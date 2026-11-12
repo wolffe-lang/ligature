@@ -13,8 +13,8 @@ fn load(path: str) -> json.Value ! {Bad(str)} {
     let input = binary.Input { fd: fd, base: 0, size: size }
     let image = elf.parse(input)?
     verify.check(image)?
-    provenance.check(input, image)?
-    let doc = provenance.document(input, image)?
+    provenance.check(input, image, path)?
+    let doc = provenance.document(input, image, path)?
     if provenance.text(doc, "coverage")? != "bytes-and-patches" {
         return Bad("explain requires byte-and-patch provenance")
     }

@@ -457,6 +457,7 @@ pub fn link(s: resolve.State, p: front.Plan) -> () ! {Bad(str)} {
         total,
         l.outputs[manifest_index].size,
         l.outputs[manifest_index].fileoff,
+        0,
     )?
     var phdrs = List[byte]()
     if l.kernel {
@@ -607,5 +608,5 @@ pub fn verify_output(path: str) -> () ! {Bad(str)} {
     let image = elf.parse(input)?
     elf.walk(input, image, false)?
     verify.check(image)?
-    provenance.check(input, image)?
+    provenance.check(input, image, path)?
 }

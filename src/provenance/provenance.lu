@@ -165,11 +165,17 @@ pub fn metadata(
     out
 }
 
-/// Write the fixed note fields with both digest slots zero, ready for hashing.
-pub fn note(total: int, manifest_size: int, manifest_offset: int) -> List[byte] ! {Bad(str)} {
+/// Write the fixed note fields with both digest slots zero, ready for hashing. Flags 0: the
+/// manifest is the output's own section, `manifest_size` bytes at `manifest_offset`, and the
+/// first digest is the manifest's. Flags 1: the manifest and the retained relocations are in the
+/// sidecar file, `manifest_size` is the sidecar's size, the offset is 0, and the first digest is
+/// the whole sidecar's. The second digest is always the output's, with both digest slots zero.
+pub fn note(total: int, manifest_size: int, manifest_offset: int, flags: int) -> List[byte] ! {
+    Bad(str),
+} {
     var out = binary.encode([5, 96, 1], [4, 4, 4])?
     for b in "WOLF\0\0\0\0".bytes() { (mut out).push(b) }
-    let fields = binary.encode([1, 0, total as u64, manifest_size as u64], [4, 4, 8, 8])?
+    let fields = binary.encode([1, flags as u64, total as u64, manifest_size as u64], [4, 4, 8, 8])?
     for b in fields { (mut out).push(b) }
     for _ in 0..64 { (mut out).push(0 as byte) }
     let end = binary.encode([manifest_offset as u64], [8])?
@@ -178,7 +184,7 @@ pub fn note(total: int, manifest_size: int, manifest_offset: int) -> List[byte] 
 }
 
 /// Verify note format, manifest digest and whole-file digest. Ordinary oracle ELFs have no note.
-pub fn check(f: binary.Input, image: elf.Image) -> () ! {Bad(str)} {
+pub fn check(f: binary.Input, image: elf.Image, path: str) -> () ! {Bad(str)} {
     var note_index: int = 0
     var manifest_index: int = 0
     for i in 1..image.sections.len {
@@ -193,6 +199,11 @@ pub fn check(f: binary.Input, image: elf.Image) -> () ! {Bad(str)} {
         }
     }
     if note_index == 0 && manifest_index == 0 { return }
+    if note_index != 0 && manifest_index == 0 {
+        let form = note_form(f, image.sections[note_index])
+        if form == 1 { return check_sidecar(f, image, copy image.sections[note_index], path) }
+        if form == 2 { return Bad("unsupported provenance note version/flags") }
+    }
     if note_index == 0 || manifest_index == 0 {
         return Bad("provenance note/manifest pair incomplete")
     }
@@ -228,4 +239,58 @@ pub fn check(f: binary.Input, image: elf.Image) -> () ! {Bad(str)} {
         if whole[i] != raw[76 + i] { return Bad("provenance output digest mismatch") }
     }
     validate(f, image)?
+}
+
+/// The sidecar file beside an output at `path`.
+pub fn sidecar_path(path: str) -> str { "{path}.provenance" }
+
+// A note seen without a manifest section beside it: 1 when it is well formed (shape, header,
+// owner) with version 1 and flags 1, the manifest in a sidecar; 2 when it is well formed with
+// any other version or flags; 0 when it is not well formed, an incomplete pair as it always was.
+fn note_form(f: binary.Input, n: elf.Section) -> int {
+    if n.kind != 7 || n.size != 116 || n.flags != 0 || n.align != 4 { return 0 }
+    let raw = binary.read(f, n.off, n.size) else |_| { return 0 }
+    let words = [0, 4, 8, 20, 24]
+    let want: List[u64] = [5, 96, 1, 1, 1]
+    var form: int = 1
+    for i in 0..5 {
+        let v = binary.decode(raw, words[i], 4) else |_| { return 0 }
+        if v != want[i] {
+            if i < 3 { return 0 }
+            form = 2
+        }
+    }
+    let owner = "WOLF\0\0\0\0"
+    for i in 0..8 { if raw[12 + i] != owner.bytes()[i] { return 0 } }
+    form
+}
+
+// Whether n is a sidecar note (note_form 1).
+fn sidecar_note(f: binary.Input, n: elf.Section) -> bool { note_form(f, n) == 1 }
+
+// An output whose note names a sidecar: the note's sizes, no retained table left in the output,
+// the sidecar's size and digest, the output's digest, then the sidecar's tables and manifest.
+fn check_sidecar(f: binary.Input, image: elf.Image, n: elf.Section, path: str) -> () ! {Bad(str)} {
+    let raw = binary.read(f, n.off, n.size)?
+    if binary.decode(raw, 28, 8)? != f.size as u64 || binary.decode(raw, 108, 8)? != 0 {
+        return Bad("provenance size/offset mismatch")
+    }
+    for sec in image.sections {
+        if sec.kind == 4 { return Bad("retained relocations outside the provenance sidecar") }
+    }
+    let spath = sidecar_path(path)
+    let sfd = fs_open(spath) else |_| { return Bad("missing provenance sidecar {spath}") }
+    defer fs_close(sfd) else |_| {}
+    let ssize = fs_size(spath) else |_| { return Bad("missing provenance sidecar {spath}") }
+    if binary.decode(raw, 36, 8)? != ssize as u64 { return Bad("provenance sidecar size mismatch") }
+    let side = binary.Input { fd: sfd, base: 0, size: ssize }
+    let content = digest(side)?
+    for i in 0..32 {
+        if content[i] != raw[44 + i] { return Bad("provenance sidecar digest mismatch") }
+    }
+    let whole = digest_zeroed(f, n.off + 44, n.off + 108)?
+    for i in 0..32 {
+        if whole[i] != raw[76 + i] { return Bad("provenance output digest mismatch") }
+    }
+    validate_sidecar(f, image, side)?
 }

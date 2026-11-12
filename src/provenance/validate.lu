@@ -32,9 +32,109 @@ fn manifest_bytes(f: binary.Input, image: elf.Image) -> List[byte] ! {Bad(str)} 
     Bad("missing provenance manifest")
 }
 
-/// Read the embedded document. Call check first; parsing is not authentication.
-pub fn document(f: binary.Input, image: elf.Image) -> json.Value ! {Bad(str)} {
-    decode_document(manifest_bytes(f, image)?)
+/// Read the document, embedded or from the sidecar beside the output at `path`. Call check
+/// first; parsing is not authentication.
+pub fn document(f: binary.Input, image: elf.Image, path: str) -> json.Value ! {Bad(str)} {
+    for sec in image.sections {
+        if (str_from_utf8(elf.name(f, image, sec)?) else "") == ".wolf.link.manifest" {
+            return decode_document(binary.read(f, sec.off, sec.size)?)
+        }
+    }
+    let spath = sidecar_path(path)
+    let sfd = fs_open(spath) else |_| { return Bad("missing provenance manifest") }
+    defer fs_close(sfd) else |_| {}
+    let ssize = fs_size(spath) else |_| { return Bad("missing provenance manifest") }
+    let side = binary.Input { fd: sfd, base: 0, size: ssize }
+    let head = sidecar_head(f, side)?
+    decode_document(binary.read(side, head[3], head[4])?)
+}
+
+// A sidecar's head, checked: [the output's size, the table count, the tables' first entry, the
+// manifest's offset, its size].
+fn sidecar_head(f: binary.Input, side: binary.Input) -> List[int] ! {Bad(str)} {
+    if side.size < 40 { return Bad("truncated provenance sidecar") }
+    let head = binary.read(side, 0, 40)?
+    if (str_from_utf8(head[0..8]) else "") != "WLPROV01" {
+        return Bad("invalid provenance sidecar")
+    }
+    if binary.decode(head, 8, 8)? != f.size as u64 {
+        return Bad("provenance sidecar names another output")
+    }
+    let tables = binary.bounded(binary.decode(head, 16, 8)?, (side.size - 40) / 32)?
+    let offset = binary.bounded(binary.decode(head, 24, 8)?, side.size)?
+    let size = binary.bounded(binary.decode(head, 32, 8)?, side.size - offset)?
+    if offset + size != side.size || offset < 40 + tables * 32 {
+        return Bad("provenance sidecar layout")
+    }
+    [f.size, tables, 40 + tables * 32, offset, size]
+}
+
+// The sidecar's retained tables, each checked as the output's own RELA sections are checked
+// (against the output's section and symbol tables), laid end to end up to the manifest, which is
+// then validated against the output exactly as an embedded one.
+fn validate_sidecar(f: binary.Input, image: elf.Image, side: binary.Input) -> () ! {Bad(str)} {
+    let head = sidecar_head(f, side)?
+    let retained = sidecar_tables(f, image, side, head, false)?
+    validate_manifest(f, image, take binary.read(side, head[3], head[4])?, retained)?
+}
+
+// The sidecar's retained tables checked (and, with emit, written as inspect's rela rows, numbered
+// after the output's own sections); answers how many relocations they hold.
+fn sidecar_tables(
+    f: binary.Input,
+    image: elf.Image,
+    side: binary.Input,
+    head: List[int],
+    emit: bool,
+) -> int ! {Bad(str)} {
+    let tables = head[1]
+    let records = binary.read(side, 40, tables * 32)?
+    var at = head[2]
+    var retained: int = 0
+    for t in 0..tables {
+        let info = binary.bounded(binary.decode(records, t * 32, 8)?, image.sections.len)?
+        let link = binary.bounded(binary.decode(records, t * 32 + 8, 8)?, image.sections.len)?
+        let offset = binary.decode(records, t * 32 + 16, 8)?
+        let count = binary.bounded(binary.decode(records, t * 32 + 24, 8)?, (head[3] - at) / 24)?
+        if offset != at as u64 { return Bad("provenance sidecar layout") }
+        let table = elf.Section {
+            name_index: 0,
+            kind: 4,
+            flags: 0,
+            addr: 0,
+            off: at,
+            size: count * 24,
+            link: link,
+            info: info,
+            align: 8,
+            entsize: 24,
+        }
+        elf.rela(side, image, table, image.sections.len + t, emit)?
+        retained += count
+        at += count * 24
+    }
+    if at != head[3] { return Bad("provenance sidecar layout") }
+    retained
+}
+
+/// inspect's view of the retained relocations an output keeps in its sidecar: when the output's
+/// note names a sidecar and the sidecar is beside it, each table's rela rows, numbered after the
+/// output's own sections. verify, not inspect, refuses a missing or altered sidecar.
+pub fn inspect_sidecar(f: binary.Input, image: elf.Image, path: str) -> () ! {Bad(str)} {
+    var named = false
+    for sec in image.sections {
+        if (str_from_utf8(elf.name(f, image, sec)?) else "") == ".note.wolf.link" {
+            named = sidecar_note(f, sec)
+        }
+    }
+    if !named { return }
+    let spath = sidecar_path(path)
+    let sfd = fs_open(spath) else |_| { return }
+    defer fs_close(sfd) else |_| {}
+    let ssize = fs_size(spath) else |_| { return }
+    let side = binary.Input { fd: sfd, base: 0, size: ssize }
+    let head = sidecar_head(f, side)?
+    let _count = sidecar_tables(f, image, side, head, true)?
 }
 
 fn hex_digit(c: byte) -> int ! {Bad(str)} {
@@ -126,15 +226,25 @@ fn patch_row_shape(f: binary.Input, values: List[int], p: PatchCursor, previous_
 /// The versioned patch table is validated in two streaming passes (format, then content), so no
 /// row is ever materialized as JSON; the legacy JSON form is checked as one document.
 pub fn validate(f: binary.Input, image: elf.Image) -> () ! {Bad(str)} {
-    let raw = manifest_bytes(f, image)?
-    if !is_table(raw) { return validate_document(f, image, decode_document(raw)?) }
+    validate_manifest(f, image, take manifest_bytes(f, image)?, retained_count(image))?
+}
+
+// The manifest's checks against the output, whichever file holds it: `retained` is the number of
+// retained relocations, one per patch row.
+fn validate_manifest(
+    f: binary.Input,
+    image: elf.Image,
+    take raw: List[byte],
+    retained: int,
+) -> () ! {Bad(str)} {
+    if !is_table(raw) { return validate_document(f, image, decode_document(raw)?, retained) }
     let (doc, opened) = patch_open(take raw, checked_keys())?
     var cursor = opened
     var values = patch_values()
     for _ in 0..cursor.rows { patch_next(mut cursor, mut values)? }
     patch_close(cursor)?
     if !validate_metadata(f, image, doc)? { return }
-    if cursor.rows != retained_count(image) {
+    if cursor.rows != retained {
         return Bad("provenance retained patch count mismatch")
     }
     patch_rewind(mut cursor)
@@ -229,10 +339,12 @@ fn retained_count(image: elf.Image) -> int {
     retained
 }
 
-fn validate_document(f: binary.Input, image: elf.Image, doc: json.Value) -> () ! {Bad(str)} {
+fn validate_document(f: binary.Input, image: elf.Image, doc: json.Value, retained: int) -> () ! {
+    Bad(str),
+} {
     if !validate_metadata(f, image, doc)? { return }
     let changes = array(doc, "patches")?
-    if changes.len != retained_count(image) {
+    if changes.len != retained {
         return Bad("provenance retained patch count mismatch")
     }
     var previous_index: int = -1
