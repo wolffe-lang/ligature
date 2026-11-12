@@ -421,11 +421,12 @@ pub fn link(s: resolve.State, p: front.Plan) -> () ! {Bad(str)} {
     l.outputs[shstr].data = names
     l.outputs[shstr].size = l.outputs[shstr].data.len
     let members = provenance.members_by_offset(l)
-    // The manifest's size settles in a fixed point: only the metadata moves with the layout,
-    // so each round measures it in a freed region; the patch table is built once.
+    // The manifest's size settles in a fixed point: only the metadata moves with the layout, so
+    // each round builds just the metadata, in a freed region, and the patch table is built once.
+    // The stable round's metadata is the manifest's.
     var shoff: int = 0
     var fixed = false
-    var measured: int = 0
+    var metadata = List[byte]()
     for _ in 0..16 {
         var cursor = l.data_file_end
         for j in 1..l.outputs.len {
@@ -436,19 +437,17 @@ pub fn link(s: resolve.State, p: front.Plan) -> () ! {Bad(str)} {
         }
         shoff = layout.align(cursor, 8)
         let total = shoff + l.outputs.len * 64
-        measured = copy region manifesting {
-            provenance.metadata(l, s, inputs, total, members, measured)?.len
+        let hint = metadata.len
+        metadata = copy region manifesting {
+            provenance.metadata(l, s, inputs, total, members, hint)?
         }
-        let size = provenance.patches_size(measured, table)
+        let size = provenance.patches_size(metadata.len, table)
         let stable = size == l.outputs[manifest_index].size
         l.outputs[manifest_index].size = size
         if stable { fixed = true; break }
     }
     if !fixed { return Bad("provenance layout failed to reach a fixed point") }
     let total = shoff + l.outputs.len * 64
-    let metadata = copy region manifesting {
-        provenance.metadata(l, s, inputs, total, members, measured)?
-    }
     let m = Manifest {
         index: manifest_index,
         head: provenance.patches_head(metadata.len, table)?,
