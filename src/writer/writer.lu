@@ -420,6 +420,7 @@ pub fn link(s: resolve.State, p: front.Plan) -> () ! {Bad(str)} {
     // so each round measures it in a freed region; the patch table is built once.
     var shoff: int = 0
     var fixed = false
+    var measured: int = 0
     for _ in 0..16 {
         var cursor = l.data_file_end
         for j in 1..l.outputs.len {
@@ -430,8 +431,8 @@ pub fn link(s: resolve.State, p: front.Plan) -> () ! {Bad(str)} {
         }
         shoff = layout.align(cursor, 8)
         let total = shoff + l.outputs.len * 64
-        let measured = copy region manifesting {
-            provenance.metadata(l, s, inputs, total, members)?.len
+        measured = copy region manifesting {
+            provenance.metadata(l, s, inputs, total, members, measured)?.len
         }
         let size = provenance.patches_size(measured, table)
         let stable = size == l.outputs[manifest_index].size
@@ -440,7 +441,9 @@ pub fn link(s: resolve.State, p: front.Plan) -> () ! {Bad(str)} {
     }
     if !fixed { return Bad("provenance layout failed to reach a fixed point") }
     let total = shoff + l.outputs.len * 64
-    let metadata = copy region manifesting { provenance.metadata(l, s, inputs, total, members)? }
+    let metadata = copy region manifesting {
+        provenance.metadata(l, s, inputs, total, members, measured)?
+    }
     let m = Manifest {
         index: manifest_index,
         head: provenance.patches_head(metadata.len, table)?,

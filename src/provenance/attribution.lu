@@ -7,6 +7,7 @@ use script
 
 fn span(
     mut bytes: List[byte],
+    mark: int,
     start: int,
     end: int,
     reason: str,
@@ -15,7 +16,7 @@ fn span(
     offset: int,
 ) {
     if start == end { return }
-    if bytes.len != 0 { emit(mut bytes, ",") }
+    if bytes.len != mark { emit(mut bytes, ",") }
     emit(
         mut bytes,
         "{{\"end\":{end},\"input_offset\":{offset},\"member\":{member},\"origin\":{binary.quote(reason.bytes())},\"section_index\":{section},\"start\":{start}}}",
@@ -25,15 +26,16 @@ fn span(
 /// Cover every file byte exactly once, including generated metadata and alignment. `members`
 /// is each output's atoms in offset order (members_by_offset).
 pub fn ranges(
+    mut bytes: List[byte],
     l: layout.Layout,
     s: resolve.State,
     total: int,
     members: List[List[int]],
-) -> List[byte] ! {Bad(str)} {
-    var bytes = List[byte]()
-    span(mut bytes, 0, 64, "elf-header", -1, 0, 0)
+) -> () ! {Bad(str)} {
+    let mark = bytes.len
+    span(mut bytes, mark, 0, 64, "elf-header", -1, 0, 0)
     let phend = 64 + (if l.kernel || l.tls_address != 0 then 4 else 3) * 56
-    span(mut bytes, 64, phend, "program-headers", -1, 0, 0)
+    span(mut bytes, mark, 64, phend, "program-headers", -1, 0, 0)
     var cursor = phend
     var seen = List[bool]()
     for _ in 0..l.outputs.len { (mut seen).push(false) }
@@ -47,17 +49,18 @@ pub fn ranges(
         seen[next] = true
         let fileoff = l.outputs[next].fileoff
         if fileoff < cursor { return Bad("provenance output sections overlap") }
-        span(mut bytes, cursor, fileoff, "padding", -1, 0, 0)
+        span(mut bytes, mark, cursor, fileoff, "padding", -1, 0, 0)
         cursor = fileoff
         for ai in members[next] {
             if l.atoms[ai].kind == 8 || l.atoms[ai].size == 0 { continue }
             let begin = fileoff + l.atoms[ai].offset
             if begin < cursor { return Bad("provenance input sections overlap") }
-            span(mut bytes, cursor, begin, "padding", -1, 0, 0)
+            span(mut bytes, mark, cursor, begin, "padding", -1, 0, 0)
             let o = l.atoms[ai].object
             let input_offset = s.objects[o].image.sections[l.atoms[ai].index].off
             span(
                 mut bytes,
+                mark,
                 begin,
                 begin + l.atoms[ai].size,
                 "input",
@@ -67,14 +70,22 @@ pub fn ranges(
             )
             cursor = begin + l.atoms[ai].size
         }
-        span(mut bytes, cursor, fileoff + l.outputs[next].size, l.outputs[next].name, -1, next, 0)
+        span(
+            mut bytes,
+            mark,
+            cursor,
+            fileoff + l.outputs[next].size,
+            l.outputs[next].name,
+            -1,
+            next,
+            0,
+        )
         cursor = fileoff + l.outputs[next].size
     }
     let shoff = total - l.outputs.len * 64
     if cursor > shoff { return Bad("provenance section table overlaps content") }
-    span(mut bytes, cursor, shoff, "padding", -1, 0, 0)
-    span(mut bytes, shoff, total, "section-headers", -1, 0, 0)
-    bytes
+    span(mut bytes, mark, cursor, shoff, "padding", -1, 0, 0)
+    span(mut bytes, mark, shoff, total, "section-headers", -1, 0, 0)
 }
 
 /// Each output's live atoms in offset order (stable: equal offsets keep atom order). Output
@@ -196,9 +207,14 @@ pub fn attribute(
     }
 }
 
-fn origin(mut bytes: List[byte], l: layout.Layout, s: resolve.State, id: int, name: str) -> () ! {
-    Bad(str),
-} {
+fn origin(
+    mut bytes: List[byte],
+    mark: int,
+    l: layout.Layout,
+    s: resolve.State,
+    id: int,
+    name: str,
+) -> () ! {Bad(str)} {
     let sym = copy s.symbols[id]
     let ai = layout.atom_for(l, s, id)
     if ai == 0 && sym.section != 65521 && sym.section != 65522 { return }
@@ -212,7 +228,7 @@ fn origin(mut bytes: List[byte], l: layout.Layout, s: resolve.State, id: int, na
     }
     let address = layout.address(l, s, id, false)?
     let alias = if name != sym.name then binary.quote(sym.name.bytes()) else "null"
-    if bytes.len != 0 { emit(mut bytes, ",") }
+    if bytes.len != mark { emit(mut bytes, ",") }
     emit(
         mut bytes,
         "{{\"address\":{address_json(address)},\"alias_of\":{alias},\"binding\":{sym.binding},\"file_end\":{end},\"file_start\":{start},\"member\":{sym.object},\"name\":{binary.quote(name.bytes())},\"nobits\":{nobits},\"section_index\":{sym.section},\"size\":{sym.size},\"symbol_index\":{sym.index},\"tls\":{sym.kind == 6}}}",
@@ -220,17 +236,17 @@ fn origin(mut bytes: List[byte], l: layout.Layout, s: resolve.State, id: int, na
 }
 
 /// Retained definitions and aliases, with file and TLS/NOBITS spaces explicit.
-pub fn origins(l: layout.Layout, s: resolve.State) -> List[byte] ! {Bad(str)} {
-    var bytes = List[byte]()
+pub fn origins(mut bytes: List[byte], l: layout.Layout, s: resolve.State) -> () ! {Bad(str)} {
+    let mark = bytes.len
     for id in 0..s.symbols.len {
         let sym = copy s.symbols[id]
         if sym.index == 0 || sym.section == 0 || sym.name.len == 0 { continue }
         if sym.binding != 0 && resolve.global(s, sym.name) != id { continue }
-        origin(mut bytes, l, s, id, sym.name)?
+        origin(mut bytes, mark, l, s, id, sym.name)?
     }
     if l.kernel {
         for name in layout.kernel_symbols() {
-            if bytes.len != 0 { emit(mut bytes, ",") }
+            if bytes.len != mark { emit(mut bytes, ",") }
             let address = l.synthetics[name] else 0
             emit(
                 mut bytes,
@@ -242,29 +258,27 @@ pub fn origins(l: layout.Layout, s: resolve.State) -> List[byte] ! {Bad(str)} {
         let target = s.aliases[name] else { return Bad("missing provenance alias") }
         let id = resolve.global(s, target)
         if id < 0 { return Bad("missing provenance alias target") }
-        origin(mut bytes, l, s, id, name)?
+        origin(mut bytes, mark, l, s, id, name)?
     }
-    bytes
 }
 
 /// NOBITS address ranges never claim file bytes; TLS has its own address space.
-pub fn memory_ranges(l: layout.Layout) -> List[byte] {
-    var bytes = List[byte]()
+pub fn memory_ranges(mut bytes: List[byte], l: layout.Layout) {
+    let mark = bytes.len
     for i in 1..l.outputs.len {
         if l.outputs[i].kind != 8 || l.outputs[i].size == 0 { continue }
         let address = l.outputs[i].address
-        if bytes.len != 0 { emit(mut bytes, ",") }
+        if bytes.len != mark { emit(mut bytes, ",") }
         emit(
             mut bytes,
             "{{\"end\":{address_json(address + l.outputs[i].size as u64)},\"section_index\":{i},\"start\":{address_json(address)},\"tls\":{l.outputs[i].flags & 1024 != 0}}}",
         )
     }
-    bytes
 }
 
 /// Explain absent selected-input sections, without claiming unselected archive members were read.
-pub fn discards(l: layout.Layout, s: resolve.State) -> List[byte] {
-    var out = List[byte]()
+pub fn discards(mut out: List[byte], l: layout.Layout, s: resolve.State) {
+    let mark = out.len
     for oi in 0..s.objects.len {
         for si in 1..s.objects[oi].image.sections.len {
             let sec = copy s.objects[oi].image.sections[si]
@@ -287,12 +301,11 @@ pub fn discards(l: layout.Layout, s: resolve.State) -> List[byte] {
                 reason = "consumed-stack-policy"
             }
             if reason.len == 0 { continue }
-            if out.len != 0 { emit(mut out, ",") }
+            if out.len != mark { emit(mut out, ",") }
             emit(
                 mut out,
                 "{{\"member\":{oi},\"reason\":\"{reason}\",\"section_index\":{si},\"section_name\":{binary.quote(name.bytes())},\"size\":{sec.size}}}",
             )
         }
     }
-    out
 }
