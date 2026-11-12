@@ -199,8 +199,17 @@ pub fn patch_next(mut p: PatchCursor, mut values: List[int]) -> () ! {Bad(str)} 
         values[i] = if i == 0 then d else previous + d
     }
     if p.c.at > p.end { return Bad("provenance patch table overrun") }
-    for i in [1, 2, 8, 11] {
-        if values[i] < 0 || values[i] >= p.strings.len { return Bad("provenance string index") }
+    // The four pooled columns (after, before, rule, symbol), checked without a list per row.
+    let pooled = p.strings.len
+    if values[1] < 0 ||
+        values[1] >= pooled ||
+        values[2] < 0 ||
+        values[2] >= pooled ||
+        values[8] < 0 ||
+        values[8] >= pooled ||
+        values[11] < 0 ||
+        values[11] >= pooled {
+        return Bad("provenance string index")
     }
     if values[4] < 0 || values[10] < 0 || values[4] > 9223372036854775807 - values[10] {
         return Bad("provenance patch width overflow")
