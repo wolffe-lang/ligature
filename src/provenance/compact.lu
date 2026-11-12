@@ -622,8 +622,19 @@ pub fn patch_next(mut p: PatchCursor, mut values: List[int]) -> () ! {Bad(str)} 
     if mask >= 32768 { return Bad("unknown provenance patch column") }
     let size = p.c.bytes.len
     for i in 0..15 {
-        var z: u64 = 0
-        if mask & 1 << i != 0 {
+        // An absent column repeats the previous row's value (the addend's is zero).
+        if mask & 1 << i == 0 {
+            values[i] = if i == 0 then 0 else p.previous[i]
+            continue
+        }
+        if at >= size { return Bad("truncated provenance table integer") }
+        var z = p.c.bytes[at] as int as u64
+        if z < 128 {
+            // A one-byte delta: zero is the only refusal it can earn.
+            at += 1
+            if z == 0 { return Bad("noncanonical zero provenance delta") }
+        } else {
+            z = 0
             var read = false
             for k in 0..10 {
                 if at >= size { return Bad("truncated provenance table integer") }
