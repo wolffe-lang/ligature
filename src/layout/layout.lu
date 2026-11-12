@@ -170,6 +170,7 @@ pub fn bits(n: int) -> u64 {
 pub fn target(s: resolve.State, id: int) -> int ! {Bad(str)} {
     let sym = copy s.symbols[id]
     if sym.binding == 0 { return id }
+    if s.alias_names.len == 0 { return resolve.winner(s, id) }
     var name = sym.name
     for _ in 0..s.alias_names.len + 1 {
         let next = s.aliases[name] else { return resolve.global_or(s, name, id) }

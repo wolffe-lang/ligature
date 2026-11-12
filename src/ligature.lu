@@ -62,6 +62,7 @@ fn linked(plan: front.Plan) -> () ! {Bad(str)} {
     defer resolve.finish(state)
     resolve.run(mut state, plan)?
     resolve.visibility(mut state)
+    resolve.settle(mut state)
     writer.link(state, plan)?
 }
 

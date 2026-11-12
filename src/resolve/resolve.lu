@@ -70,6 +70,7 @@ pub struct State {
     pulls: List[str],
     aliases: Map[str, str],
     alias_names: List[str],
+    winners: List[int],
 }
 
 /// Construct an empty symbol graph.
@@ -90,6 +91,7 @@ pub fn empty() -> State {
         pulls: List[str](),
         aliases: Map[str, str](),
         alias_names: List[str](),
+        winners: List[int](),
     }
 }
 
@@ -458,6 +460,23 @@ fn visibility_rank(v: int) -> int {
     if v == 2 { return 2 }
     if v == 3 { return 1 }
     0
+}
+
+/// Once resolution is complete, record each global symbol's winning definition (itself when its
+/// name has none), so a relocation finds its target by index instead of by name.
+pub fn settle(mut s: State) {
+    (mut s.winners).reserve(s.symbols.len)
+    for i in 0..s.symbols.len {
+        (mut s.winners).push(
+            if s.symbols[i].binding == 0 then i else global_or(s, s.symbols[i].name, i),
+        )
+    }
+}
+
+/// The winning definition of symbol id's name, or id itself (settle's record when present).
+pub fn winner(s: State, id: int) -> int {
+    if s.winners.len == s.symbols.len { return s.winners[id] }
+    global_or(s, s.symbols[id].name, id)
 }
 
 /// Propagate the most constraining visibility from declarations and definitions.
