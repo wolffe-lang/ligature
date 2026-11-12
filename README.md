@@ -246,6 +246,11 @@ tests preserve legacy JSON name semantics for non-ASCII inputs as well.
 The nonallocated 116-byte `.note.wolf.link` seals input hashes, disjoint file
 ranges and relocation patches with SHA-256. It is integrity, not a signature
 or proof of authorship. `explain` validates the manifest before answering.
+The recorded compact-format hello retained all 590,358 relocation records. Its interned binary patch table
+reduces the embedded manifest from 147,136,512 to 12,414,976 bytes (11.85×),
+including 17,765 newly explicit discard/consumed-metadata records. Legacy JSON
+manifests remain readable by `verify` and `explain`; no debug sites are omitted. Unwind data has no generated unwind header, strings are not merged,
+and general linker scripts and Mach-O remain future work.
 
 **Where the provenance lives.** The note is always in the executable. Its flags
 word (at note offset 24) says where the rest is. With flags 0 (the embedded
@@ -266,11 +271,6 @@ sidecar beside the file they are given, and refuse by name when it is missing,
 altered, or another output's; `inspect` lists the sidecar's retained
 relocations after the executable's own sections. The executable runs without
 its sidecar; only its provenance is lost.
-The recorded compact-format hello retained all 590,358 relocation records. Its interned binary patch table
-reduces the embedded manifest from 147,136,512 to 12,414,976 bytes (11.85×),
-including 17,765 newly explicit discard/consumed-metadata records. Legacy JSON
-manifests remain readable by `verify` and `explain`; no debug sites are omitted. Unwind data has no generated unwind header, strings are not merged,
-and general linker scripts and Mach-O remain future work.
 
 The exact PAX profile is qualified against real native and release paging-kernel
 inputs: 66,882 and 60,768 retained relocation sites independently validated,
