@@ -133,16 +133,17 @@ def compress():
             o(f'        (({x} >> 7 | {x} << 25) ^ ({x} >> 18 | {x} << 14) ^ {x} >> 3) +')
             o(f'        {z} +')
             o(f'        (({y} >> 17 | {y} << 15) ^ ({y} >> 19 | {y} << 13) ^ {y} >> 10)')
-        # (step 3) T1 = h + Sigma1(e) + Ch(e, f, g) + K_t + W_t; T2 = Sigma0(a) + Maj(a, b, c)
+        # (step 3) T1 = h + Sigma1(e) + Ch(e, f, g) + K_t + W_t; T2 = Sigma0(a) + Maj(a, b, c),
+        # with Ch as g ^ (e & (f ^ g)) and Maj as (a & (b | c)) | (b & c): equal bit for bit.
         o(f'    let t{t} = {h} +')
         o(f'        (({e} >> 6 | {e} << 26) ^ ({e} >> 11 | {e} << 21) ^ ({e} >> 25 | {e} << 7)) +')
-        o(f'        ({e} & {f} ^ ({e} ^ 0xffffffff) & {g}) +')
+        o(f'        ({g} ^ {e} & ({f} ^ {g})) +')
         o(f'        {hex(K[t])} +')
         o(f'        {w}')
         o(f'    {d} = {d} + t{t}')
         o(f'    {h} = t{t} +')
         o(f'        (({a} >> 2 | {a} << 30) ^ ({a} >> 13 | {a} << 19) ^ ({a} >> 22 | {a} << 10)) +')
-        o(f'        ({a} & {b} ^ {a} & {c} ^ {b} & {c})')
+        o(f'        ({a} & ({b} | {c}) | {b} & {c})')
     # (step 4) the intermediate hash value
     for i, n in enumerate(names):
         o(f'    state[{i}] = state[{i}] + {n}')
