@@ -12,9 +12,9 @@ fn put_uint(mut bytes: List[byte], value: u64) {
 
 /// The patch table a link encodes, built once: its pooled strings in first-use order, already
 /// in the manifest's encoding (a ULEB128 length, then the bytes), each string's start and
-/// length, an open-addressing index over them (string id + 1 per slot, at most half full), and
-/// the encoded rows. Every list lives where the table was made and grows in place, so rows can
-/// be added from inside a freed region. `failed` records a row that could not be attributed;
+/// length, an open-addressing index over them (each slot a string's id + 1 and its hash, at
+/// most half full), and the encoded rows. Every list lives where the table was made and grows in
+/// place, so rows can be added from inside a freed region. `failed` records a row that could not be attributed;
 /// the link refuses it when the manifest is built, where that refusal has always been made.
 pub struct Patches {
     pool: List[byte],
@@ -151,10 +151,14 @@ fn same_hex(t: Patches, id: int, data: List[byte], from: int, width: int) -> boo
     true
 }
 
-// Seat a new string's id at slot `at`, growing the index past half full.
-fn seat(mut t: Patches, at: int) -> int {
+// A slot holds a string's id + 1 in its low 32 bits and its hash above them, so a probe that
+// meets another string's slot is passed over without reading that string unless the hashes agree.
+fn slot_of(id: int, h: int) -> int { id + 1 | h << 32 }
+
+// Seat a new string (hash h) at slot `at`, growing the index past half full.
+fn seat(mut t: Patches, at: int, h: int) -> int {
     let id = t.starts.len - 1
-    t.slots[at] = id + 1
+    t.slots[at] = slot_of(id, h)
     if (t.starts.len + 1) * 2 > t.slots.len { rehash(mut t) }
     id
 }
@@ -162,11 +166,13 @@ fn seat(mut t: Patches, at: int) -> int {
 /// The stable first-use id of the lowercase hex text of data[from..from + width], pooling it
 /// when it is new.
 pub fn pool_hex(mut t: Patches, data: List[byte], from: int, width: int) -> int {
-    var at = hash_hex(data, from, width) & t.slots.len - 1
+    let h = hash_hex(data, from, width)
+    var at = h & t.slots.len - 1
     loop {
         let slot = t.slots[at]
         if slot == 0 { break }
-        if same_hex(t, slot - 1, data, from, width) { return slot - 1 }
+        let id = (slot & 4294967295) - 1
+        if slot >> 32 == h && same_hex(t, id, data, from, width) { return id }
         at = at + 1 & t.slots.len - 1
     }
     put_uint(mut t.pool, (2 * width) as u64)
@@ -177,23 +183,25 @@ pub fn pool_hex(mut t: Patches, data: List[byte], from: int, width: int) -> int 
         (mut t.pool).push(hex_digit_of(v >> 4))
         (mut t.pool).push(hex_digit_of(v & 15))
     }
-    seat(mut t, at)
+    seat(mut t, at, h)
 }
 
 /// The stable first-use id of a text, pooling it when it is new.
 pub fn pool_text(mut t: Patches, text: str) -> int {
-    var at = hash_text(text) & t.slots.len - 1
+    let h = hash_text(text)
+    var at = h & t.slots.len - 1
     loop {
         let slot = t.slots[at]
         if slot == 0 { break }
-        if same_text(t, slot - 1, text) { return slot - 1 }
+        let id = (slot & 4294967295) - 1
+        if slot >> 32 == h && same_text(t, id, text) { return id }
         at = at + 1 & t.slots.len - 1
     }
     put_uint(mut t.pool, text.len as u64)
     (mut t.starts).push(t.pool.len)
     (mut t.lengths).push(text.len)
     for i in 0..text.len { (mut t.pool).push(text.bytes()[i]) }
-    seat(mut t, at)
+    seat(mut t, at, h)
 }
 
 // Double the index in place (its list grows in its own region) and re-seat every string.
@@ -203,9 +211,10 @@ fn rehash(mut t: Patches) {
     for _ in 0..old { (mut t.slots).push(0) }
     for id in 0..t.starts.len {
         let text = str_from_utf8(t.pool[t.starts[id]..t.starts[id] + t.lengths[id]]) else ""
-        var at = hash_text(text) & t.slots.len - 1
+        let h = hash_text(text)
+        var at = h & t.slots.len - 1
         while t.slots[at] != 0 { at = at + 1 & t.slots.len - 1 }
-        t.slots[at] = id + 1
+        t.slots[at] = slot_of(id, h)
     }
 }
 
