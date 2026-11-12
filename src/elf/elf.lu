@@ -242,8 +242,33 @@ fn relocation(
     }
     if emit {
         print(
-            "{{\"row\":\"rela\",\"table\":{table},\"index\":{j},\"target\":{s.info},\"offset\":{offset},\"symbol\":{sym},\"type\":{rt},\"name\":\"{relocation_name}\",\"addend_bits\":{addend}}}",
+            "{{\"row\":\"rela\",\"table\":{table},\"index\":{j},\"target\":{s.info},\"symbols\":{s.link},\"offset\":{offset},\"symbol\":{sym},\"type\":{rt},\"name\":\"{relocation_name}\",\"addend_bits\":{addend}}}",
         )
+    }
+}
+
+/// Check RELA table `table`, whose entries are s.size bytes at s.off in f, against the image's
+/// section and symbol tables, a window of entries at a time. walk checks the image's own tables
+/// this way; a provenance sidecar's tables, read from the sidecar, are checked the same way.
+pub fn rela(f: binary.Input, image: Image, s: Section, table: int, emit: bool) -> () ! {Bad(str)} {
+    if s.entsize != 24 { return Bad("SHT_RELA entry is not Elf64_Rela") }
+    if s.link <= 0 || s.link >= image.sections.len {
+        return Bad("RELA sh_link outside section table")
+    }
+    let syms = copy image.sections[s.link]
+    if syms.kind != 2 && syms.kind != 11 || syms.entsize != 24 {
+        return Bad("RELA sh_link is not a symbol table")
+    }
+    if s.info >= image.sections.len { return Bad("RELA sh_info outside section table") }
+    let count = s.size / 24
+    var first: int = 0
+    while first < count {
+        let n = if count - first > 43690 then 43690 else count - first
+        region relocations {
+            let raw = binary.read(f, s.off + first * 24, n * 24)?
+            for k in 0..n { relocation(image, s, syms, table, first + k, raw, k * 24, emit)? }
+        }
+        first += n
     }
 }
 
@@ -298,27 +323,7 @@ pub fn walk(f: binary.Input, image: Image, emit: bool) -> () ! {Bad(str)} {
                     first += n
                 }
             } else if s.kind == 4 {
-                if s.entsize != 24 { return Bad("SHT_RELA entry is not Elf64_Rela") }
-                if s.link <= 0 || s.link >= image.sections.len {
-                    return Bad("RELA sh_link outside section table")
-                }
-                let syms = copy image.sections[s.link]
-                if syms.kind != 2 && syms.kind != 11 || syms.entsize != 24 {
-                    return Bad("RELA sh_link is not a symbol table")
-                }
-                if s.info >= image.sections.len { return Bad("RELA sh_info outside section table") }
-                let count = s.size / 24
-                var first: int = 0
-                while first < count {
-                    let n = if count - first > 43690 then 43690 else count - first
-                    region relocations {
-                        let raw = binary.read(f, s.off + first * 24, n * 24)?
-                        for k in 0..n {
-                            relocation(image, s, syms, i, first + k, raw, k * 24, emit)?
-                        }
-                    }
-                    first += n
-                }
+                rela(f, image, s, i, emit)?
             } else if s.kind == 17 {
                 let syms = linked(image, s, 2)?
                 if s.entsize != 4 || s.size < 4 || syms.entsize != 24 || s.info >= syms.size / 24 {
