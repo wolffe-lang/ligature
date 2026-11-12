@@ -447,12 +447,15 @@ pub fn collect(mut l: Layout, s: resolve.State, p: front.Plan) -> () ! {Bad(str)
             l.atoms[i].live = true
         }
     }
-    var fdes = Map[str, int]()
+    // Each FDE's function, keyed by its .eh_frame atom and record (atom * 2^32 + offset).
+    var fdes = Map[int, int]()
     for ri in 0..l.relocs.len {
         let r = copy l.relocs[ri]
         if l.atoms[r.atom].name != ".eh_frame" { continue }
         let start = fde_start(l.atoms[r.atom], r.offset)?
-        if start != 0 && start == r.offset { fdes["{r.atom}:{start}"] = target(s, r.symbol)? }
+        if start != 0 && start == r.offset {
+            fdes[r.atom * 4294967296 + start] = target(s, r.symbol)?
+        }
     }
     loop {
         var changed = false
@@ -462,7 +465,7 @@ pub fn collect(mut l: Layout, s: resolve.State, p: front.Plan) -> () ! {Bad(str)
             if p.gc && l.atoms[r.atom].name == ".eh_frame" {
                 let start = fde_start(l.atoms[r.atom], r.offset)?
                 if start != 0 {
-                    let id = fdes["{r.atom}:{start}"] else { continue }
+                    let id = fdes[r.atom * 4294967296 + start] else { continue }
                     let a = atom_for(l, s, id)
                     if a == 0 || !l.atoms[a].live { continue }
                 }
