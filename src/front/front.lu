@@ -2,7 +2,9 @@
 
 use binary
 
-/// The accepted cc-argument subset, without opening inputs or executing a linker.
+/// The accepted cc-argument subset, without opening inputs or executing a linker. `provenance`
+/// says where the provenance manifest and the retained relocations go: "sidecar" (the default, a
+/// file beside the output) or "embed" (sections of the output itself).
 pub struct Plan {
     script: str,
     argv: List[str],
@@ -18,6 +20,7 @@ pub struct Plan {
     print_plan: bool,
     resolve_only: bool,
     ordered: List[str],
+    provenance: str,
 }
 
 fn value(s: str, option: str) -> str ! {Bad(str)} {
@@ -30,6 +33,12 @@ fn link_option(mut p: Plan, arg: str) -> () ! {Bad(str)} {
         (mut p.ordered).push(arg)
     } else if arg == "--gc-sections" {
         p.gc = true
+    } else if arg.starts_with("--provenance=") {
+        let mode = arg[13..]
+        if mode != "sidecar" && mode != "embed" {
+            return Bad("--provenance must be sidecar or embed, not {mode}")
+        }
+        p.provenance = mode
     } else if arg.starts_with("--undefined=") {
         (mut p.undefined).push(value(arg[12..], "--undefined")?)
     } else if arg.starts_with("--defsym=") {
@@ -61,6 +70,7 @@ pub fn parse(args: List[str]) -> Plan ! {Bad(str)} {
         print_plan: false,
         resolve_only: false,
         ordered: List[str](),
+        provenance: "sidecar",
     }
     var i: int = 0
     var operands = false
@@ -107,6 +117,7 @@ pub fn parse(args: List[str]) -> Plan ! {Bad(str)} {
             for opt in a[4..].split(",") { link_option(mut p, opt)? }
         } else if a.starts_with("--undefined=") ||
             a.starts_with("--defsym=") ||
+            a.starts_with("--provenance=") ||
             a == "--gc-sections" ||
             a == "--start-group" ||
             a == "--end-group" {
@@ -156,7 +167,9 @@ pub fn emit(p: Plan) {
     print_raw(",\"definitions\":")
     strings(p.definitions)
     if p.script.len != 0 { print_raw(",\"script\":{binary.quote(p.script.bytes())}") }
-    print(",\"static\":{p.static_link},\"nostdlib\":{p.nostdlib},\"gc_sections\":{p.gc}}}")
+    print(
+        ",\"static\":{p.static_link},\"nostdlib\":{p.nostdlib},\"gc_sections\":{p.gc},\"provenance\":{binary.quote(p.provenance.bytes())}}}",
+    )
 }
 
 /// Expand the Linux cc subset into a static musl CRT/group order.
