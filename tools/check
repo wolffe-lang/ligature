@@ -11,6 +11,7 @@ python3 -I tests/real-ligature.py
 # Historical local replay may still diagnose the exact old runtime; CI may not.
 python3 -I tests/self-link.py
 python3 -I tests/link-cost.py
-# One link of the musl runtime in a bounded footprint: hello, str and verify under 1 GiB resident
-# with a 2 GiB address-space cap, and N/10N/100N synthetic archives linear in memory and time.
+# Links of the musl runtime in a bounded footprint: hello, str and verify under 192 MiB resident
+# and the linker's own link under 256 MiB, under a 512 MiB address-space cap, and N/10N/100N
+# synthetic archives linear in memory and time.
 python3 -I tests/link-memory.py
