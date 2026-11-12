@@ -157,9 +157,16 @@ fn symbols(mut l: layout.Layout, s: resolve.State) -> List[int] ! {Bad(str)} {
 
 // Keep original RELA types/addends even when their instruction has been relaxed.
 // This is the gABI --emit-relocs convention used by both black-box oracles.
-fn retained(mut l: layout.Layout, s: resolve.State, indices: List[int], symtab: int) -> () ! {
-    Bad(str),
-} {
+// The retained relocation tables, one per target output, as Elf64_Rela: appended to the output's
+// sections when `embed`, otherwise to `side`, the sidecar's tables, in the same order and bytes.
+fn retained(
+    mut l: layout.Layout,
+    mut side: List[layout.Output],
+    embed: bool,
+    s: resolve.State,
+    indices: List[int],
+    symtab: int,
+) -> () ! {Bad(str)} {
     // The retained table of each target output (-1: not yet made) and its entry count.
     let targets = l.outputs.len
     var tables = List[int]()
@@ -180,10 +187,16 @@ fn retained(mut l: layout.Layout, s: resolve.State, indices: List[int], symtab: 
             out.link = symtab
             out.info = target
             out.entsize = 24
-            tables[target] = l.outputs.len
-            (mut l.outputs).push(out)
             // Reserved once it is in place: a reservation made before the push does not travel.
-            (mut l.outputs[tables[target]].data).reserve(entries[target] * 24)
+            if embed {
+                tables[target] = l.outputs.len
+                (mut l.outputs).push(out)
+                (mut l.outputs[tables[target]].data).reserve(entries[target] * 24)
+            } else {
+                tables[target] = side.len
+                (mut side).push(out)
+                (mut side[tables[target]].data).reserve(entries[target] * 24)
+            }
         }
         let table = tables[target]
         let id = layout.target(s, r.symbol)?
@@ -191,10 +204,18 @@ fn retained(mut l: layout.Layout, s: resolve.State, indices: List[int], symtab: 
         if index < 0 { return Bad("missing retained relocation symbol") }
         let offset = layout.vadd(l.outputs[target].address, l.atoms[r.atom].offset + r.offset)?
         // Elf64_Rela: r_offset, r_info (symbol << 32 | type), r_addend, each little-endian.
-        word(mut l.outputs[table].data, offset)
-        word(mut l.outputs[table].data, index as u64 << 32 | r.kind as u64)
-        word(mut l.outputs[table].data, layout.bits(r.addend))
-        l.outputs[table].size = l.outputs[table].data.len
+        let info = index as u64 << 32 | r.kind as u64
+        if embed {
+            word(mut l.outputs[table].data, offset)
+            word(mut l.outputs[table].data, info)
+            word(mut l.outputs[table].data, layout.bits(r.addend))
+            l.outputs[table].size = l.outputs[table].data.len
+        } else {
+            word(mut side[table].data, offset)
+            word(mut side[table].data, info)
+            word(mut side[table].data, layout.bits(r.addend))
+            side[table].size = side[table].data.len
+        }
     }
 }
 
@@ -227,9 +248,9 @@ fn ph(
     )?
 }
 
-// Where the output's bytes go: hashed (the seal, with both note digest slots zero) or written.
-// Small pieces are staged so that a write is at least a block; the manifest's bytes also feed
-// the manifest's own digest.
+// Where a file's bytes go: hashed (the seal, with both note digest slots zero), written (to fd,
+// when it is not -1), or both. Small pieces are staged so that a write is at least a block; the
+// manifest's bytes also feed the manifest's own digest.
 struct Sink {
     hashing: bool,
     fd: int,
@@ -275,11 +296,14 @@ fn put(mut k: Sink, data: List[byte], manifest: bool) {
     if k.hashing {
         sha256.absorb(mut k.whole, data, 0, data.len)
         if manifest { sha256.absorb(mut k.content, data, 0, data.len) }
-    } else if data.len >= 4096 {
-        flush(mut k)
-        fs_write_chunk(k.fd, data) else |_| { k.failed = true }
-    } else {
-        for b in data { stage(mut k, b) }
+    }
+    if k.fd >= 0 {
+        if data.len >= 4096 {
+            flush(mut k)
+            fs_write_chunk(k.fd, data) else |_| { k.failed = true }
+        } else {
+            for b in data { stage(mut k, b) }
+        }
     }
     k.at += data.len
 }
@@ -292,9 +316,8 @@ fn zeros(mut k: Sink, n: int, manifest: bool) {
         if k.hashing {
             sha256.absorb(mut k.whole, k.zeros, 0, step)
             if manifest { sha256.absorb(mut k.content, k.zeros, 0, step) }
-        } else {
-            for _ in 0..step { stage(mut k, 0 as byte) }
         }
+        if k.fd >= 0 { for _ in 0..step { stage(mut k, 0 as byte) } }
         left -= step
     }
     k.at += n
@@ -373,8 +396,51 @@ fn file(
     if shoff < k.at { return Bad("output file write outside reserved span") }
     zeros(mut k, shoff - k.at, false)
     put(mut k, shdrs, false)
-    if !k.hashing { flush(mut k) }
+    if k.fd >= 0 { flush(mut k) }
 }
+
+// The sidecar file, hashed and written in one pass: a 40-byte head ("WLPROV01", then the output's
+// size, the number of retained tables, and the manifest's offset and size, each a little-endian
+// u64), a 32-byte record per table (its target section, its symbol table, and its entries'
+// offset and count), the tables' Elf64_Rela entries in that order, then the manifest exactly as
+// the embedded section would hold it, padded with zeros to its size.
+fn sidecar(
+    mut k: Sink,
+    total: int,
+    side: List[layout.Output],
+    m: Manifest,
+    table: provenance.Patches,
+) -> () ! {Bad(str)} {
+    var entries = 40 + side.len * 32
+    var head = List[byte]()
+    emit_text(mut head, "WLPROV01")
+    var records = List[byte]()
+    for t in side {
+        field(mut records, t.info as u64, 8)?
+        field(mut records, t.link as u64, 8)?
+        field(mut records, entries as u64, 8)?
+        field(mut records, (t.data.len / 24) as u64, 8)?
+        entries += t.data.len
+    }
+    let size = provenance.patches_size(m.metadata.len, table)
+    field(mut head, total as u64, 8)?
+    field(mut head, side.len as u64, 8)?
+    field(mut head, entries as u64, 8)?
+    field(mut head, size as u64, 8)?
+    put(mut k, head, false)
+    put(mut k, records, false)
+    for t in side { put(mut k, t.data, false) }
+    let start = k.at
+    put(mut k, m.head, false)
+    put(mut k, m.metadata, false)
+    put(mut k, table.pool, false)
+    put(mut k, table.rows, false)
+    if k.at > start + size { return Bad("provenance sidecar manifest outside its size") }
+    zeros(mut k, start + size - k.at, false)
+    if k.fd >= 0 { flush(mut k) }
+}
+
+fn emit_text(mut out: List[byte], text: str) { for b in text.bytes() { (mut out).push(b) } }
 
 /// Build and write a static ET_EXEC; `verify_output` re-reads it before success is reported.
 pub fn link(s: resolve.State, p: front.Plan) -> () ! {Bad(str)} {
@@ -404,13 +470,20 @@ pub fn link(s: resolve.State, p: front.Plan) -> () ! {Bad(str)} {
     relocate.got(mut l, s)?
     let symtab = l.outputs.len
     let indices = symbols(mut l, s)?
-    retained(mut l, s, indices, symtab)?
+    // By default the retained relocations and the manifest go to the sidecar file; embedded,
+    // they are the output's own sections, as before the sidecar existed.
+    let embed = p.provenance == "embed"
+    var side = List[layout.Output]()
+    retained(mut l, mut side, embed, s, indices, symtab)?
     let note_index = l.outputs.len
     var note = layout.output(".note.wolf.link", 7, 0, 4)
     note.size = 116
     (mut l.outputs).push(note)
-    let manifest_index = l.outputs.len
-    (mut l.outputs).push(layout.output(".wolf.link.manifest", 1, 0, 1))
+    var manifest_index: int = -1
+    if embed {
+        manifest_index = l.outputs.len
+        (mut l.outputs).push(layout.output(".wolf.link.manifest", 1, 0, 1))
+    }
     let inputs = provenance.inputs(s)?
     if table.failed { return Bad("provenance patch outside input") }
     let shstr = l.outputs.len
@@ -421,9 +494,10 @@ pub fn link(s: resolve.State, p: front.Plan) -> () ! {Bad(str)} {
     l.outputs[shstr].data = names
     l.outputs[shstr].size = l.outputs[shstr].data.len
     let members = provenance.members_by_offset(l)
-    // The manifest's size settles in a fixed point: only the metadata moves with the layout, so
-    // each round builds just the metadata, in a freed region, and the patch table is built once.
-    // The stable round's metadata is the manifest's.
+    // An embedded manifest's size settles in a fixed point: only the metadata moves with the
+    // layout, so each round builds just the metadata, in a freed region, and the patch table is
+    // built once. The stable round's metadata is the manifest's. A sidecar's manifest takes no
+    // room in the output, so one round settles it.
     var shoff: int = 0
     var fixed = false
     var metadata = List[byte]()
@@ -441,6 +515,10 @@ pub fn link(s: resolve.State, p: front.Plan) -> () ! {Bad(str)} {
         metadata = copy region manifesting {
             provenance.metadata(l, s, inputs, total, members, hint)?
         }
+        if !embed {
+            fixed = true
+            break
+        }
         let size = provenance.patches_size(metadata.len, table)
         let stable = size == l.outputs[manifest_index].size
         l.outputs[manifest_index].size = size
@@ -453,12 +531,32 @@ pub fn link(s: resolve.State, p: front.Plan) -> () ! {Bad(str)} {
         head: provenance.patches_head(metadata.len, table)?,
         metadata: metadata,
     }
-    l.outputs[note_index].data = provenance.note(
-        total,
-        l.outputs[manifest_index].size,
-        l.outputs[manifest_index].fileoff,
-        0,
-    )?
+    // The sidecar is written first, so that its digest is known when the note is filled.
+    var side_digest = List[byte]()
+    if embed {
+        l.outputs[note_index].data = provenance.note(
+            total,
+            l.outputs[manifest_index].size,
+            l.outputs[manifest_index].fileoff,
+            0,
+        )?
+        // A sidecar left beside the output by an earlier link no longer describes it.
+        fs_remove("{p.output}.provenance") else |_| {}
+    } else {
+        let path = "{p.output}.provenance"
+        let sfd = fs_create(path) else |_| { return Bad("cannot write {path}") }
+        var both = sink(true, sfd)
+        sidecar(mut both, total, side, m, table) else |e| match e {
+            Bad(message) => {
+                fs_close(sfd) else |_| {}
+                return Bad(message)
+            },
+        }
+        fs_close(sfd) else |_| { return Bad("cannot write {path}") }
+        if both.failed { return Bad("cannot write {path}") }
+        side_digest = sha256.finish(mut both.whole)
+        l.outputs[note_index].data = provenance.note(total, both.at, 0, 1)?
+    }
     var phdrs = List[byte]()
     if l.kernel {
         for group in 1..4 {
@@ -579,7 +677,7 @@ pub fn link(s: resolve.State, p: front.Plan) -> () ! {Bad(str)} {
     var hashed = sink(true, -1)
     file(mut hashed, l, header, phdrs, shdrs, shoff, members, m, table)?
     if hashed.at != total { return Bad("output file write outside reserved span") }
-    let content_digest = sha256.finish(mut hashed.content)
+    let content_digest = if embed then sha256.finish(mut hashed.content) else side_digest
     let whole_digest = sha256.finish(mut hashed.whole)
     for i in 0..32 {
         l.outputs[note_index].data[44 + i] = content_digest[i]
