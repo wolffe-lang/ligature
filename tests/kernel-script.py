@@ -3,7 +3,7 @@
 import hashlib,json,pathlib,runpy,struct,subprocess
 R=pathlib.Path(__file__).resolve().parent.parent; O=R/'target/evidence/kernel-script';O.mkdir(parents=True,exist_ok=True)
 B=R/'target/ligature'; SCRIPT=R/'tests/fixtures/pax-kernel.ld'
-codec=runpy.run_path(str(R/'tests/manifest-codec.py'));snapshot=runpy.run_path(str(R/'tests/kernel-snapshot.py'))['snapshot'];rows=[]
+codec=runpy.run_path(str(R/'tests/manifest-codec.py'));files=runpy.run_path(str(R/'tests/provenance-files.py'));snapshot=runpy.run_path(str(R/'tests/kernel-snapshot.py'))['snapshot'];rows=[]
 def call(args,status=0,reason=None):
  p=subprocess.run(list(map(str,args)),capture_output=True,timeout=120)
  assert p.returncode==status,(args,p.returncode,p.stderr)
@@ -69,7 +69,7 @@ for label,ld in [('candidate',B),('lld17','ld.lld-17'),('gnu','ld.bfd')]:
   try: snapshot(out,execute=True)
   except AssertionError as error: assert str(error)=='high-half ELF execution forbidden'
   else: raise AssertionError('kernel execution guard did not refuse')
-  m=secs['.wolf.link.manifest'];doc=codec['decode'](b[m[4]:m[4]+m[5]])
+  doc=codec['decode'](files['load'](out)['manifest'])
   assert doc['address_encoding']=='u64-decimal-text-if-high'
   assert any(row['sha256']==hashlib.sha256(SCRIPT.read_bytes()).hexdigest() and row['path']==SCRIPT.name for row in doc['inputs'])
   for name in names:
@@ -80,32 +80,28 @@ for label,ld in [('candidate',B),('lld17','ld.lld-17'),('gnu','ld.bfd')]:
    records=json.loads(call([B,'explain',out,'--discarded',name]).stdout)
    assert all(r['reason']=='script-DISCARD' for r in records)
 assert bounds['candidate']==bounds['lld17']==bounds['gnu'],bounds
-again=O/'repeat';call([B,'-nostdlib','-T',SCRIPT,'-o',again,first,second]);assert again.read_bytes()==outputs['candidate'].read_bytes()
+again=O/'repeat';call([B,'-nostdlib','-T',SCRIPT,'-o',again,first,second]);assert files['same_files'](again,outputs['candidate'])
 for name,source,reason in [('orphan','.section .orphan,"a",@progbits\n.quad 0','allocated orphan'),('tls','.section .tdata,"awT",@progbits\n.quad 0','allocated orphan'),('conflict','.global __pax_image_end\n.set __pax_image_end,1','conflicts')]:
  bad=obj(name,source);sentinel=O/'sentinel';sentinel.write_bytes(b'unchanged');call([B,'-nostdlib','-T',SCRIPT,'-o',sentinel,first,bad],1,reason);assert sentinel.read_bytes()==b'unchanged'
 call([B,'-T',SCRIPT,first],1,'requires -nostdlib');call([B,'-nostdlib','-T',SCRIPT,'-T',SCRIPT,first],1,'duplicate -T')
 # Forge the high-half metadata after rounding it, and re-seal both hashes.
-b,secs,_=elf(outputs['candidate']);b=bytearray(b);m=secs['.wolf.link.manifest'];no=secs['.note.wolf.link'][4]
-doc=codec['decode'](b[m[4]:m[4]+m[5]]);doc['sections'][0]['address']=str(0xffffffff80000001)
-raw=codec['encode'](doc,m[5]);b[m[4]:m[4]+m[5]]=raw;b[no+44:no+108]=bytes(64);whole=hashlib.sha256(b).digest();b[no+44:no+76]=hashlib.sha256(raw).digest();b[no+76:no+108]=whole
-bad=O/'rounded-metadata';bad.write_bytes(b);call([B,'verify',bad],1,'address differs')
+prov=files['load'](outputs['candidate'])
+doc=codec['decode'](prov['manifest']);doc['sections'][0]['address']=str(0xffffffff80000001)
+bad=files['write'](prov,O/'rounded-metadata',manifest=codec['encode'](doc,prov['manifest_size']));call([B,'verify',bad],1,'address differs')
 # Nonallocated section addresses are not covered by LOAD checks; they must
 # still refuse u64 range overflow rather than trap during provenance validation.
-b,secs,_=elf(outputs['candidate']);b=bytearray(b);m=secs['.wolf.link.manifest'];no=secs['.note.wolf.link'][4]
+b,secs,_=elf(outputs['candidate']);b=bytearray(b);prov=files['load'](outputs['candidate'])
 shoff=struct.unpack_from('<Q',b,40)[0];count=struct.unpack_from('<H',b,60)[0]
 index=next(i for i in range(1,count) if struct.unpack_from('<IIQQQQIIQQ',b,shoff+64*i)==secs['.debug_probe'])
 struct.pack_into('<Q',b,shoff+64*index+16,2**64-1)
-doc=codec['decode'](b[m[4]:m[4]+m[5]])
+doc=codec['decode'](prov['manifest'])
 for row in doc['sections']:
  if row['index']==index:row['address']=str(2**64-1);row['memory_end']='7'
-raw=codec['encode'](doc,m[5]);b[m[4]:m[4]+m[5]]=raw;b[no+44:no+108]=bytes(64);whole=hashlib.sha256(b).digest();b[no+44:no+76]=hashlib.sha256(raw).digest();b[no+76:no+108]=whole
-bad=O/'nonallocated-overflow';bad.write_bytes(b);call([B,'verify',bad],1,'section virtual range overflows')
+bad=files['write'](prov,O/'nonallocated-overflow',data=b,manifest=codec['encode'](doc,prov['manifest_size']));call([B,'verify',bad],1,'section virtual range overflows')
 # A signed metadata size must be refused before conversion to the u64 query domain.
-b,secs,_=elf(outputs['candidate']);b=bytearray(b);m=secs['.wolf.link.manifest'];no=secs['.note.wolf.link'][4]
-doc=codec['decode'](b[m[4]:m[4]+m[5]])
+prov=files['load'](outputs['candidate']);doc=codec['decode'](prov['manifest'])
 next(row for row in doc['symbols'] if row['name']=='_start')['size']=-1
-raw=codec['encode'](doc,m[5]);b[m[4]:m[4]+m[5]]=raw;b[no+44:no+108]=bytes(64);whole=hashlib.sha256(b).digest();b[no+44:no+76]=hashlib.sha256(raw).digest();b[no+76:no+108]=whole
-bad=O/'negative-symbol-size';bad.write_bytes(b);call([B,'explain',bad,'--address','0xffffffff80000000'],1,'negative symbol size')
+bad=files['write'](prov,O/'negative-symbol-size',manifest=codec['encode'](doc,prov['manifest_size']));call([B,'explain',bad,'--address','0xffffffff80000000'],1,'negative symbol size')
 # An STT_TLS symbol in ordinary rodata must not underflow the unsigned TLS base.
 b=bytearray(first.read_bytes());shoff=struct.unpack_from('<Q',b,40)[0];count=struct.unpack_from('<H',b,60)[0]
 headers=[struct.unpack_from('<IIQQQQIIQQ',b,shoff+64*i) for i in range(count)];symtab=next(s for s in headers if s[1]==2);strings=headers[symtab[6]];pool=b[strings[4]:strings[4]+strings[5]]
