@@ -50,11 +50,27 @@ fn execute(args: List[str]) -> () ! {Bad(str)} {
         resolve.emit(state)
         return
     }
+    // The whole link lives in one region; only its refusal, if any, leaves it. The output is
+    // then re-read and verified with the link's memory already freed.
+    let problem = copy region linking { attempt(plan) }
+    if problem.len != 0 { return Bad(problem) }
+    writer.verify_output(plan.output)?
+}
+
+fn linked(plan: front.Plan) -> () ! {Bad(str)} {
     var state = resolve.empty()
     defer resolve.finish(state)
     resolve.run(mut state, plan)?
     resolve.visibility(mut state)
     writer.link(state, plan)?
+}
+
+// The link's refusal as a value, or "" when it wrote its output.
+fn attempt(plan: front.Plan) -> str {
+    linked(plan) else |e| match e {
+        Bad(message) => { return message },
+    }
+    ""
 }
 
 fn main() -> int {

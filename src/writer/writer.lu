@@ -225,7 +225,7 @@ fn insert(mut file: List[byte], off: int, data: List[byte]) -> () ! {Bad(str)} {
     for i in 0..data.len { file[off + i] = data[i] }
 }
 
-/// Build a static ET_EXEC, re-read and verify it before reporting success.
+/// Build and write a static ET_EXEC; `verify_output` re-reads it before success is reported.
 pub fn link(s: resolve.State, p: front.Plan) -> () ! {Bad(str)} {
     var l = layout.read_for(s, p.script.len != 0)?
     if l.kernel && l.machine != 62 { return Bad("PAX kernel profile requires EM_X86_64") }
@@ -397,9 +397,15 @@ pub fn link(s: resolve.State, p: front.Plan) -> () ! {Bad(str)} {
     provenance.seal(mut file, l.outputs[note_index].fileoff, l.outputs[manifest_index].data)
     fs_write_bytes(p.output, file) else |_| { return Bad("cannot write {p.output}") }
     fs_set_mode(p.output, 493) else |_| { return Bad("cannot mark {p.output} executable") }
-    let fd = fs_open(p.output) else |_| { return Bad("cannot reopen output for verify") }
+}
+
+/// Re-read a written executable with ligature's own reader and verify it: headers, tables,
+/// segments and the provenance seal. The link calls it after its own state is freed.
+pub fn verify_output(path: str) -> () ! {Bad(str)} {
+    let fd = fs_open(path) else |_| { return Bad("cannot reopen output for verify") }
     defer fs_close(fd) else |_| {}
-    let input = binary.Input { fd: fd, base: 0, size: file.len }
+    let size = fs_size(path) else |_| { return Bad("cannot reopen output for verify") }
+    let input = binary.Input { fd: fd, base: 0, size: size }
     let image = elf.parse(input)?
     elf.walk(input, image, false)?
     verify.check(image)?
