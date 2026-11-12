@@ -44,17 +44,15 @@ fn hex_digit(c: byte) -> int ! {Bad(str)} {
     Bad("invalid provenance hex bytes")
 }
 
-// One retained patch's recorded bytes against the file. Returns "" or the refusal.
-fn patch_bytes(f: binary.Input, start: int, end: int, after: str, before: str) -> str {
-    let bytes = binary.read(f, start, end - start) else |e| match e {
-        Bad(message) => { return message },
-    }
-    for i in 0..bytes.len {
+// One retained patch's recorded bytes against the file's, at bytes[at..at + width]. Returns ""
+// or the refusal.
+fn patch_bytes(bytes: List[byte], at: int, width: int, after: str, before: str) -> str {
+    for i in 0..width {
         let hi = hex_digit(after.bytes()[2 * i]) else |_| { return "invalid provenance hex bytes" }
         let lo = hex_digit(after.bytes()[2 * i + 1]) else |_| {
             return "invalid provenance hex bytes"
         }
-        if hi * 16 + lo != bytes[i] as int { return "provenance patch bytes differ" }
+        if hi * 16 + lo != bytes[at + i] as int { return "provenance patch bytes differ" }
         let _hi = hex_digit(before.bytes()[2 * i]) else |_| {
             return "invalid provenance hex bytes"
         }
@@ -65,24 +63,23 @@ fn patch_bytes(f: binary.Input, start: int, end: int, after: str, before: str) -
     ""
 }
 
-// The patch checks, one row at a time; each row's file read is freed before the next.
-fn patch_row_checks(
+// A patch row's order, range and length checks, before its bytes. Returns "" or the refusal.
+fn patch_row_shape(
     f: binary.Input,
     values: List[int],
     strings: List[str],
     previous_index: int,
-) -> () ! {Bad(str)} {
-    if values[5] <= previous_index { return Bad("provenance patch index order or duplicate") }
+) -> str {
+    if values[5] <= previous_index { return "provenance patch index order or duplicate" }
     let start = values[10]
     let end = values[4]
-    if start < 0 || end <= start || end > f.size { return Bad("provenance patch range") }
+    if start < 0 || end <= start || end > f.size { return "provenance patch range" }
     let after = strings[values[1]]
     let before = strings[values[2]]
     if after.len != 2 * (end - start) || before.len != after.len {
-        return Bad("provenance patch length")
+        return "provenance patch length"
     }
-    let problem = copy region row { patch_bytes(f, start, end, after, before) }
-    if problem.len != 0 { return Bad(problem) }
+    ""
 }
 
 /// Digest validation precedes these semantic checks: signed garbage is still garbage.
@@ -102,10 +99,60 @@ pub fn validate(f: binary.Input, image: elf.Image) -> () ! {Bad(str)} {
     }
     patch_rewind(mut cursor)
     var previous_index: int = -1
-    for _ in 0..cursor.rows {
-        patch_next(mut cursor, mut values)?
-        patch_row_checks(f, values, cursor.strings, previous_index)?
-        previous_index = values[5]
+    var row: int = 0
+    // A row decoded and checked but for its bytes, which wait for the next window.
+    var pending = false
+    while row < cursor.rows || pending {
+        // The file's bytes are read a window at a time, each window in its own region; a row
+        // outside the current window ends it. Every row passes the same checks, in the same
+        // order, as a row read alone.
+        let problem = copy region window {
+            var message = ""
+            var base: int = -1
+            var bytes = List[byte]()
+            loop {
+                if !pending {
+                    if row >= cursor.rows { break }
+                    patch_next(mut cursor, mut values) else |e| match e {
+                        Bad(m) => {
+                            message = m
+                            break
+                        },
+                    }
+                    row += 1
+                    message = patch_row_shape(f, values, cursor.strings, previous_index)
+                    if message.len != 0 { break }
+                    pending = true
+                }
+                let start = values[10]
+                let end = values[4]
+                if base < 0 {
+                    let want = if end - start > 16384 then end - start else 16384
+                    let size = if want > f.size - start then f.size - start else want
+                    bytes = binary.read(f, start, size) else |e| match e {
+                        Bad(m) => {
+                            message = m
+                            break
+                        },
+                    }
+                    base = start
+                } else if start < base || end > base + bytes.len {
+                    break
+                }
+                message = patch_bytes(
+                    bytes,
+                    start - base,
+                    end - start,
+                    cursor.strings[values[1]],
+                    cursor.strings[values[2]],
+                )
+                if message.len != 0 { break }
+                previous_index = values[5]
+                pending = false
+            }
+            message
+        }
+        if problem.len != 0 { return Bad(problem) }
     }
 }
 
@@ -134,7 +181,17 @@ fn validate_document(f: binary.Input, image: elf.Image, doc: json.Value) -> () !
         if after.len != 2 * (end - start) || before.len != after.len {
             return Bad("provenance patch length")
         }
-        let problem = copy region row { patch_bytes(f, start, end, after, before) }
+        let problem = copy region row {
+            var message = ""
+            let bytes = binary.read(f, start, end - start) else |e| match e {
+                Bad(m) => {
+                    message = m
+                    List[byte]()
+                },
+            }
+            if message.len == 0 { message = patch_bytes(bytes, 0, end - start, after, before) }
+            message
+        }
         if problem.len != 0 { return Bad(problem) }
     }
 }
