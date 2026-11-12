@@ -613,7 +613,8 @@ pub fn patch_open(take raw: List[byte], keep: List[str]) -> (json.Value, PatchCu
 }
 
 /// Decode the next row into values (15 columns, `end` already start + width). Allocates nothing.
-/// Each column's ULEB128 is read in place, with varint's refusals in varint's order.
+/// Each column's ULEB128 is read in place, with varint's refusals in varint's order. After a
+/// refusal the cursor is spent: the previous row it holds may be partly overwritten.
 pub fn patch_next(mut p: PatchCursor, mut values: List[int]) -> () ! {Bad(str)} {
     var at = p.c.at
     if at > p.end - 2 { return Bad("truncated provenance patch row") }
@@ -661,6 +662,7 @@ pub fn patch_next(mut p: PatchCursor, mut values: List[int]) -> () ! {Bad(str)} 
             return Bad("overflow provenance delta")
         }
         values[i] = if i == 0 then d else previous + d
+        p.previous[i] = values[i]
     }
     p.c.at = at
     if at > p.end { return Bad("provenance patch table overrun") }
@@ -679,7 +681,6 @@ pub fn patch_next(mut p: PatchCursor, mut values: List[int]) -> () ! {Bad(str)} 
     if values[4] < 0 || values[10] < 0 || values[4] > 9223372036854775807 - values[10] {
         return Bad("provenance patch width overflow")
     }
-    for i in 0..15 { p.previous[i] = values[i] }
     values[4] = values[4] + values[10]
     p.done += 1
 }
