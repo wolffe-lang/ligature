@@ -64,7 +64,9 @@ def main():
         for name, linker in [('baseline', baseline), ('candidate', ROOT / 'target/ligature')]:
             target = OUT / (case + '-' + name)
             times[name], _ = call([linker, *link_args, '-o', target])
-            hashes[name] = [digest(target), digest(target)]
+            # The output and, where the link writes one, its provenance sidecar.
+            side = pathlib.Path(str(target) + '.provenance')
+            hashes[name] = [digest(target) + (digest(side) if side.exists() else ''), digest(target) + (digest(side) if side.exists() else '')]
             print(row, name, f'{times[name]:.6f}s', hashes[name][0], flush=True)
         assert len(set(hashes['baseline'] + hashes['candidate'])) == 1, 'FAIL ' + row + '-identity'
         target = OUT / (case + '-candidate')

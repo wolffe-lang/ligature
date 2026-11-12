@@ -23,7 +23,9 @@ def run_case(name,objects,expected,options=()):
         p=call([exe],expected[2]);answer=(p.stdout,p.stderr,p.returncode)
         assert answer==expected,(name,label,answer,expected)
         answers[label]={'stdout_hex':p.stdout.hex(),'stderr_hex':p.stderr.hex(),'status':p.returncode,'sha256':hashlib.sha256(exe.read_bytes()).hexdigest()}
-        first=exe.read_bytes();call(cmd);assert exe.read_bytes()==first,(name,label,'nondeterministic')
+        # Determinism covers the provenance sidecar too, where the link writes one.
+        side=pathlib.Path(str(exe)+'.provenance');before=(exe.read_bytes(),side.read_bytes() if side.exists() else None)
+        call(cmd);assert (exe.read_bytes(),side.read_bytes() if side.exists() else None)==before,(name,label,'nondeterministic')
     rows.append({'case':name,'outputs':answers})
     return OUT/(name+'-ligature')
 start=asm('start','.text\n.global _start\n_start:\n mov choice(%rip),%edi\n mov $60,%eax\n syscall')
