@@ -1,0 +1,13 @@
+# notes/ld08/rig/red.manifest: the rows seen red first. The recorder runs it from a clean
+# checkout of the commit that adds the memory bounds, before any change to the linker, with this
+# rig from the head's checkout: the memory and time rows must fail there by name.
+floor 35
+rig lib.sh committed=../../..:HEAD:notes/ld08/rig/lib.sh
+rig time-rows.py committed=../../..:HEAD:notes/ld08/rig/time-rows.py
+rig red.manifest committed=../../..:HEAD:notes/ld08/rig/red.manifest
+step fetch-toolchain image=localhost/ld08-oracle:1 tools=python3 script=step.sh -- fetch-toolchain
+step fetch-bundle needs=fetch-toolchain image=localhost/ld08-oracle:1 tools=python3 script=step.sh -- fetch-bundle
+step trunk-build needs=fetch-toolchain image=localhost/ld08-oracle:1 tools=bash,sha256sum,taskset script=step.sh -- trunk-build
+step build needs=fetch-bundle image=localhost/ld08-oracle:1 tools=bash,sha256sum script=step.sh -- build
+step link-memory needs=build,trunk-build image=localhost/ld08-oracle:1 tools=python3,as script=step.sh -- link-memory
+step time-rows needs=build,trunk-build image=localhost/ld08-oracle:1 tools=python3,taskset script=step.sh -- time-rows

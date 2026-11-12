@@ -1,0 +1,18 @@
+# notes/ld08/rig/gauntlet.manifest: the lane's green take at a head. The recorder runs it from a
+# clean checkout of the head (steps mode, keep-going, preflight); LD08_HOST names the host file
+# lib.sh reads. Every step runs step.sh, which runs its work in the repository's oracle image.
+floor 35
+rig lib.sh committed=../../..:HEAD:notes/ld08/rig/lib.sh
+rig time-rows.py committed=../../..:HEAD:notes/ld08/rig/time-rows.py
+rig identity-suite.py committed=../../..:HEAD:notes/ld08/rig/identity-suite.py
+rig gauntlet.manifest committed=../../..:HEAD:notes/ld08/rig/gauntlet.manifest
+step fetch-toolchain image=localhost/ld08-oracle:1 tools=python3 script=step.sh -- fetch-toolchain
+step fetch-bundle needs=fetch-toolchain image=localhost/ld08-oracle:1 tools=python3 script=step.sh -- fetch-bundle
+step trunk-build needs=fetch-toolchain image=localhost/ld08-oracle:1 tools=bash,sha256sum,taskset script=step.sh -- trunk-build
+step core needs=fetch-bundle image=localhost/ld08-oracle:1 tools=bash,python3,cc,as,taskset script=step.sh -- core
+step real-ligature needs=core image=localhost/ld08-oracle:1 tools=python3 script=step.sh -- real-ligature
+step self-link needs=core image=localhost/ld08-oracle:1 tools=python3 script=step.sh -- self-link
+step link-cost needs=core image=localhost/ld08-oracle:1 tools=python3 script=step.sh -- link-cost
+step link-memory needs=core,trunk-build image=localhost/ld08-oracle:1 tools=python3,as script=step.sh -- link-memory
+step time-rows needs=core,trunk-build image=localhost/ld08-oracle:1 tools=python3,taskset script=step.sh -- time-rows
+step identity-suite needs=core,trunk-build image=localhost/ld08-oracle:1 tools=python3 script=step.sh -- identity-suite
