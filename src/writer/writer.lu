@@ -8,6 +8,7 @@ use relocate
 use resolve
 use verify
 use provenance
+use sha256
 
 fn append(mut dst: List[byte], bytes: List[byte]) {
     for b in bytes { (mut dst).push(b) }
@@ -218,11 +219,153 @@ fn ph(
     )?
 }
 
-fn insert(mut file: List[byte], off: int, data: List[byte]) -> () ! {Bad(str)} {
-    if off < 0 || off > file.len || data.len > file.len - off {
-        return Bad("output file write outside reserved span")
+// Where the output's bytes go: hashed (the seal, with both note digest slots zero) or written.
+// Small pieces are staged so that a write is at least a block; the manifest's bytes also feed
+// the manifest's own digest.
+struct Sink {
+    hashing: bool,
+    fd: int,
+    whole: sha256.State,
+    content: sha256.State,
+    zeros: List[byte],
+    staged: List[byte],
+    at: int,
+    failed: bool,
+}
+
+fn sink(hashing: bool, fd: int) -> Sink {
+    var zeros = List[byte]()
+    (mut zeros).reserve(4096)
+    for _ in 0..4096 { (mut zeros).push(0 as byte) }
+    var staged = List[byte]()
+    (mut staged).reserve(65536)
+    Sink {
+        hashing: hashing,
+        fd: fd,
+        whole: sha256.start(),
+        content: sha256.start(),
+        zeros: zeros,
+        staged: staged,
+        at: 0,
+        failed: false,
     }
-    for i in 0..data.len { file[off + i] = data[i] }
+}
+
+fn flush(mut k: Sink) {
+    if k.staged.len == 0 { return }
+    fs_write_chunk(k.fd, k.staged) else |_| { k.failed = true }
+    (mut k.staged).reset()
+}
+
+fn stage(mut k: Sink, b: byte) {
+    (mut k.staged).push(b)
+    if k.staged.len == 65536 { flush(mut k) }
+}
+
+// All of data, next in the file.
+fn put(mut k: Sink, data: List[byte], manifest: bool) {
+    if k.hashing {
+        sha256.absorb(mut k.whole, data, 0, data.len)
+        if manifest { sha256.absorb(mut k.content, data, 0, data.len) }
+    } else if data.len >= 4096 {
+        flush(mut k)
+        fs_write_chunk(k.fd, data) else |_| { k.failed = true }
+    } else {
+        for b in data { stage(mut k, b) }
+    }
+    k.at += data.len
+}
+
+// n zero bytes, next in the file.
+fn zeros(mut k: Sink, n: int, manifest: bool) {
+    var left = n
+    while left > 0 {
+        let step = if left > 4096 then 4096 else left
+        if k.hashing {
+            sha256.absorb(mut k.whole, k.zeros, 0, step)
+            if manifest { sha256.absorb(mut k.content, k.zeros, 0, step) }
+        } else {
+            for _ in 0..step { stage(mut k, 0 as byte) }
+        }
+        left -= step
+    }
+    k.at += n
+}
+
+// What an output's file range holds, beyond its generated data: the manifest's pieces.
+struct Manifest { index: int, head: List[byte], metadata: List[byte] }
+
+// Output j's bytes: its live atoms' relocated bytes in offset order, the GOT's bytes where it
+// lives, generated data, or the manifest's pieces; zeros everywhere else in its range.
+fn content(
+    mut k: Sink,
+    l: layout.Layout,
+    j: int,
+    members: List[List[int]],
+    m: Manifest,
+    table: provenance.Patches,
+) -> () ! {Bad(str)} {
+    let base = k.at
+    let size = l.outputs[j].size
+    if j == m.index {
+        put(mut k, m.head, true)
+        put(mut k, m.metadata, true)
+        put(mut k, table.pool, true)
+        put(mut k, table.rows, true)
+    } else if l.outputs[j].data.len != 0 {
+        put(mut k, l.outputs[j].data, false)
+    } else {
+        for ai in members[j] {
+            if l.atoms[ai].kind == 8 || l.atoms[ai].data.len == 0 { continue }
+            let at = base + l.atoms[ai].offset
+            if at < k.at { return Bad("output file write outside reserved span") }
+            zeros(mut k, at - k.at, false)
+            put(mut k, l.atoms[ai].data, false)
+        }
+        if j == l.got_output && l.got_data.len != 0 {
+            let at = base + l.got_offset
+            if at < k.at { return Bad("output file write outside reserved span") }
+            zeros(mut k, at - k.at, false)
+            put(mut k, l.got_data, false)
+        }
+    }
+    if k.at > base + size { return Bad("output file write outside reserved span") }
+    zeros(mut k, base + size - k.at, j == m.index)
+}
+
+// The whole file in order: ELF header, program headers, each output's range by file offset,
+// the section headers. The same walk feeds the seal and the write.
+fn file(
+    mut k: Sink,
+    l: layout.Layout,
+    header: List[byte],
+    phdrs: List[byte],
+    shdrs: List[byte],
+    shoff: int,
+    members: List[List[int]],
+    m: Manifest,
+    table: provenance.Patches,
+) -> () ! {Bad(str)} {
+    put(mut k, header, false)
+    put(mut k, phdrs, false)
+    var done = List[bool]()
+    for _ in 0..l.outputs.len { (mut done).push(false) }
+    loop {
+        var next: int = 0
+        for j in 1..l.outputs.len {
+            if l.outputs[j].kind == 8 || l.outputs[j].size == 0 || done[j] { continue }
+            if next == 0 || l.outputs[j].fileoff < l.outputs[next].fileoff { next = j }
+        }
+        if next == 0 { break }
+        done[next] = true
+        if l.outputs[next].fileoff < k.at { return Bad("output file write outside reserved span") }
+        zeros(mut k, l.outputs[next].fileoff - k.at, false)
+        content(mut k, l, next, members, m, table)?
+    }
+    if shoff < k.at { return Bad("output file write outside reserved span") }
+    zeros(mut k, shoff - k.at, false)
+    put(mut k, shdrs, false)
+    if !k.hashing { flush(mut k) }
 }
 
 /// Build and write a static ET_EXEC; `verify_output` re-reads it before success is reported.
@@ -232,7 +375,20 @@ pub fn link(s: resolve.State, p: front.Plan) -> () ! {Bad(str)} {
     layout.collect(mut l, s, p)?
     layout.load(mut l, s)?
     if l.kernel { layout.kernel_place(mut l, s)? } else { layout.place(mut l, s)? }
-    relocate.apply(mut l, s)?
+    // Relocate object by object, attributing each object's patch rows from its pristine bytes;
+    // those copies are freed with the object's region.
+    relocate.prepare(l, s)?
+    var live: int = 0
+    for r in l.relocs { if l.atoms[r.atom].live { live += 1 } }
+    var table = provenance.patches_start(live)
+    for oi in 0..l.object_relocs.len - 1 {
+        region relocating {
+            let original = relocate.pristine(l, oi)
+            relocate.object(mut l, s, oi, original)?
+            provenance.attribute(mut table, l, s, oi, original)?
+        }
+    }
+    relocate.got(mut l, s)?
     let symtab = l.outputs.len
     let indices = symbols(mut l, s)?
     retained(mut l, s, indices, symtab)?
@@ -243,6 +399,7 @@ pub fn link(s: resolve.State, p: front.Plan) -> () ! {Bad(str)} {
     let manifest_index = l.outputs.len
     (mut l.outputs).push(layout.output(".wolf.link.manifest", 1, 0, 1))
     let inputs = provenance.inputs(s)?
+    if table.failed { return Bad("provenance patch outside input") }
     let shstr = l.outputs.len
     (mut l.outputs).push(layout.output(".shstrtab", 3, 0, 1))
     var names: List[byte] = [0 as byte]
@@ -250,6 +407,9 @@ pub fn link(s: resolve.State, p: front.Plan) -> () ! {Bad(str)} {
     for o in l.outputs { (mut name_offsets).push(cstring(mut names, o.name)) }
     l.outputs[shstr].data = names
     l.outputs[shstr].size = l.outputs[shstr].data.len
+    let members = provenance.members_by_offset(l)
+    // The manifest's size settles in a fixed point: only the metadata moves with the layout,
+    // so each round measures it in a freed region; the patch table is built once.
     var shoff: int = 0
     var fixed = false
     for _ in 0..16 {
@@ -262,37 +422,43 @@ pub fn link(s: resolve.State, p: front.Plan) -> () ! {Bad(str)} {
         }
         shoff = layout.align(cursor, 8)
         let total = shoff + l.outputs.len * 64
-        // Each iteration's working set is freed with its region; only the manifest bytes leave.
-        let manifest = copy region manifesting { provenance.manifest(l, s, inputs, total)? }
-        let stable = manifest.len == l.outputs[manifest_index].size
-        l.outputs[manifest_index].size = manifest.len
-        l.outputs[manifest_index].data = manifest
+        let measured = copy region manifesting {
+            provenance.metadata(l, s, inputs, total, members)?.len
+        }
+        let size = provenance.patches_size(measured, table)
+        let stable = size == l.outputs[manifest_index].size
+        l.outputs[manifest_index].size = size
         if stable { fixed = true; break }
     }
     if !fixed { return Bad("provenance layout failed to reach a fixed point") }
+    let total = shoff + l.outputs.len * 64
+    let metadata = copy region manifesting { provenance.metadata(l, s, inputs, total, members)? }
+    let m = Manifest {
+        index: manifest_index,
+        head: provenance.patches_head(metadata.len, table)?,
+        metadata: metadata,
+    }
     l.outputs[note_index].data = provenance.note(
-        shoff + l.outputs.len * 64,
+        total,
         l.outputs[manifest_index].size,
         l.outputs[manifest_index].fileoff,
     )?
-    var file = List[byte]()
-    (mut file).reserve(shoff + l.outputs.len * 64)
-    for _ in 0..shoff + l.outputs.len * 64 { (mut file).push(0 as byte) }
     var phdrs = List[byte]()
     if l.kernel {
         for group in 1..4 {
-            let o = copy l.outputs[group]
-            let end = if group == 3 then l.data_mem_end else layout.align(o.fileoff + o.size, 4096)
-            let fileend = if group == 3 then l.data_file_end else o.fileoff + o.size
+            let fileoff = l.outputs[group].fileoff
+            let size = l.outputs[group].size
+            let end = if group == 3 then l.data_mem_end else layout.align(fileoff + size, 4096)
+            let fileend = if group == 3 then l.data_file_end else fileoff + size
             append(
                 mut phdrs,
                 ph(
                     1,
                     if group == 1 then 5 else if group == 2 then 4 else 6,
-                    o.fileoff,
-                    o.address,
-                    fileend - o.fileoff,
-                    end - o.fileoff,
+                    fileoff,
+                    l.outputs[group].address,
+                    fileend - fileoff,
+                    end - fileoff,
                     4096,
                 )?,
             )
@@ -330,7 +496,7 @@ pub fn link(s: resolve.State, p: front.Plan) -> () ! {Bad(str)} {
     let entryid = resolve.global(s, "_start")
     if entryid < 0 { return Bad("undefined entry _start") }
     let entry = layout.address(l, s, entryid, false)?
-    let ident: List[byte] = [
+    var header: List[byte] = [
         127 as byte,
         69 as byte,
         76 as byte,
@@ -348,10 +514,8 @@ pub fn link(s: resolve.State, p: front.Plan) -> () ! {Bad(str)} {
         0 as byte,
         0 as byte,
     ]
-    insert(mut file, 0, ident)?
-    insert(
-        mut file,
-        16,
+    append(
+        mut header,
         binary.encode(
             [
                 2,
@@ -370,13 +534,13 @@ pub fn link(s: resolve.State, p: front.Plan) -> () ! {Bad(str)} {
             ],
             [2, 2, 4, 8, 8, 8, 4, 2, 2, 2, 2, 2, 2],
         )?,
-    )?
-    insert(mut file, 64, phdrs)?
+    )
+    var shdrs = List[byte]()
+    (mut shdrs).reserve(l.outputs.len * 64)
+    for _ in 0..64 { (mut shdrs).push(0 as byte) }
     for j in 1..l.outputs.len {
-        if l.outputs[j].kind != 8 { insert(mut file, l.outputs[j].fileoff, l.outputs[j].data)? }
-        insert(
-            mut file,
-            shoff + j * 64,
+        append(
+            mut shdrs,
             binary.encode(
                 [
                     name_offsets[j] as u64,
@@ -392,10 +556,29 @@ pub fn link(s: resolve.State, p: front.Plan) -> () ! {Bad(str)} {
                 ],
                 [4, 4, 8, 8, 8, 8, 4, 4, 8, 8],
             )?,
-        )?
+        )
     }
-    provenance.seal(mut file, l.outputs[note_index].fileoff, l.outputs[manifest_index].data)
-    fs_write_bytes(p.output, file) else |_| { return Bad("cannot write {p.output}") }
+    // The seal: the file as it will be written, hashed with both digest slots zero; then the
+    // digests go into the note and the same walk writes the file.
+    var hashed = sink(true, -1)
+    file(mut hashed, l, header, phdrs, shdrs, shoff, members, m, table)?
+    if hashed.at != total { return Bad("output file write outside reserved span") }
+    let content_digest = sha256.finish(mut hashed.content)
+    let whole_digest = sha256.finish(mut hashed.whole)
+    for i in 0..32 {
+        l.outputs[note_index].data[44 + i] = content_digest[i]
+        l.outputs[note_index].data[76 + i] = whole_digest[i]
+    }
+    let fd = fs_create(p.output) else |_| { return Bad("cannot write {p.output}") }
+    var written = sink(false, fd)
+    file(mut written, l, header, phdrs, shdrs, shoff, members, m, table) else |e| match e {
+        Bad(message) => {
+            fs_close(fd) else |_| {}
+            return Bad(message)
+        },
+    }
+    fs_close(fd) else |_| { return Bad("cannot write {p.output}") }
+    if written.failed { return Bad("cannot write {p.output}") }
     fs_set_mode(p.output, 493) else |_| { return Bad("cannot mark {p.output} executable") }
 }
 

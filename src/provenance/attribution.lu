@@ -22,57 +22,53 @@ fn span(
     )
 }
 
-/// Cover every file byte exactly once, including generated metadata and alignment.
-pub fn ranges(l: layout.Layout, s: resolve.State, total: int) -> List[byte] ! {Bad(str)} {
+/// Cover every file byte exactly once, including generated metadata and alignment. `members`
+/// is each output's atoms in offset order (members_by_offset).
+pub fn ranges(
+    l: layout.Layout,
+    s: resolve.State,
+    total: int,
+    members: List[List[int]],
+) -> List[byte] ! {Bad(str)} {
     var bytes = List[byte]()
     span(mut bytes, 0, 64, "elf-header", -1, 0, 0)
     let phend = 64 + (if l.kernel || l.tls_address != 0 then 4 else 3) * 56
     span(mut bytes, 64, phend, "program-headers", -1, 0, 0)
     var cursor = phend
-    var seen = Map[int, bool]()
+    var seen = List[bool]()
+    for _ in 0..l.outputs.len { (mut seen).push(false) }
     loop {
         var next: int = 0
         for i in 1..l.outputs.len {
-            if l.outputs[i].kind == 8 || l.outputs[i].size == 0 || (seen[i] else false) { continue }
+            if l.outputs[i].kind == 8 || l.outputs[i].size == 0 || seen[i] { continue }
             if next == 0 || l.outputs[i].fileoff < l.outputs[next].fileoff { next = i }
         }
         if next == 0 { break }
         seen[next] = true
-        let o = copy l.outputs[next]
-        if o.fileoff < cursor { return Bad("provenance output sections overlap") }
-        span(mut bytes, cursor, o.fileoff, "padding", -1, 0, 0)
-        cursor = o.fileoff
-        var order = List[int]()
-        for ai in 1..l.atoms.len {
-            if l.atoms[ai].live &&
-                l.atoms[ai].output == next &&
-                l.atoms[ai].kind != 8 &&
-                l.atoms[ai].size != 0 {
-                (mut order).push(ai)
-            }
-        }
-        if l.kernel {
-            for i in 1..order.len {
-                var j = i
-                while j > 0 && l.atoms[order[j]].offset < l.atoms[order[j - 1]].offset {
-                    let old = order[j - 1]
-                    order[j - 1] = order[j]
-                    order[j] = old
-                    j -= 1
-                }
-            }
-        }
-        for ai in order {
-            let a = copy l.atoms[ai]
-            let begin = o.fileoff + a.offset
+        let fileoff = l.outputs[next].fileoff
+        if fileoff < cursor { return Bad("provenance output sections overlap") }
+        span(mut bytes, cursor, fileoff, "padding", -1, 0, 0)
+        cursor = fileoff
+        for ai in members[next] {
+            if l.atoms[ai].kind == 8 || l.atoms[ai].size == 0 { continue }
+            let begin = fileoff + l.atoms[ai].offset
             if begin < cursor { return Bad("provenance input sections overlap") }
             span(mut bytes, cursor, begin, "padding", -1, 0, 0)
-            let sec = copy s.objects[a.object].image.sections[a.index]
-            span(mut bytes, begin, begin + a.size, "input", a.object, a.index, sec.off)
-            cursor = begin + a.size
+            let o = l.atoms[ai].object
+            let input_offset = s.objects[o].image.sections[l.atoms[ai].index].off
+            span(
+                mut bytes,
+                begin,
+                begin + l.atoms[ai].size,
+                "input",
+                o,
+                l.atoms[ai].index,
+                input_offset,
+            )
+            cursor = begin + l.atoms[ai].size
         }
-        span(mut bytes, cursor, o.fileoff + o.size, o.name, -1, next, 0)
-        cursor = o.fileoff + o.size
+        span(mut bytes, cursor, fileoff + l.outputs[next].size, l.outputs[next].name, -1, next, 0)
+        cursor = fileoff + l.outputs[next].size
     }
     let shoff = total - l.outputs.len * 64
     if cursor > shoff { return Bad("provenance section table overlaps content") }
@@ -81,51 +77,78 @@ pub fn ranges(l: layout.Layout, s: resolve.State, total: int) -> List[byte] ! {B
     bytes
 }
 
-// Lowercase hex of data[from..from + width], the text sha2.to_hex gives, built in one list.
-fn hex(data: List[byte], from: int, width: int) -> str {
-    let digits = "0123456789abcdef"
-    var out = List[byte]()
-    (mut out).reserve(2 * width)
-    for i in from..from + width {
-        let v = data[i] as int
-        (mut out).push(digits.bytes()[v / 16])
-        (mut out).push(digits.bytes()[v % 16])
+/// Each output's live atoms in offset order (stable: equal offsets keep atom order). Output
+/// content and coverage both walk these.
+pub fn members_by_offset(l: layout.Layout) -> List[List[int]] {
+    var members = List[List[int]]()
+    (mut members).reserve(l.outputs.len)
+    for _ in 0..l.outputs.len { (mut members).push(List[int]()) }
+    for ai in 1..l.atoms.len {
+        if l.atoms[ai].live && l.atoms[ai].output > 0 && l.atoms[ai].output < l.outputs.len {
+            (mut members[l.atoms[ai].output]).push(ai)
+        }
     }
-    str_from_utf8(out) else ""
+    for j in 0..members.len {
+        let n = members[j].len
+        for i in 1..n {
+            var k = i
+            while k > 0 && l.atoms[members[j][k]].offset < l.atoms[members[j][k - 1]].offset {
+                let old = members[j][k - 1]
+                members[j][k - 1] = members[j][k]
+                members[j][k] = old
+                k -= 1
+            }
+        }
+    }
+    members
 }
 
-/// Attribute every retained relocation, including TLS call sites consumed by a transition.
-/// Bytes are evidence, not an independent proof: the differential decoder checks them.
-pub fn patches(l: layout.Layout, s: resolve.State) -> PatchTable ! {Bad(str)} {
-    var table = patch_table()
+/// Attribute object oi's retained relocations, including TLS call sites consumed by a
+/// transition, after its atoms are relocated: `original` holds the bytes each patched atom had
+/// before (from relocate.pristine). Bytes are evidence, not an independent proof: the
+/// differential decoder checks them. Rows go out in relocation order, object by object, as
+/// they always have; a row that cannot be attributed marks the table failed.
+pub fn attribute(
+    mut table: Patches,
+    l: layout.Layout,
+    s: resolve.State,
+    oi: int,
+    original: List[List[byte]],
+) -> () ! {Bad(str)} {
+    if table.failed { return }
+    let lo = l.object_relocs[oi]
+    let hi = l.object_relocs[oi + 1]
+    if lo == hi { return }
+    let first = l.object_atoms[oi]
     // The consumer of each TLS call site, by the site's last relocation (last write wins).
-    let sites = layout.site_index(l.relocs)
+    let sites = layout.site_index_range(l.relocs, lo, hi)
     var consumer = List[int]()
-    (mut consumer).reserve(l.relocs.len)
-    for _ in 0..l.relocs.len { (mut consumer).push(-1) }
-    for i in 0..l.relocs.len {
+    (mut consumer).reserve(hi - lo)
+    for _ in lo..hi { (mut consumer).push(-1) }
+    for i in lo..hi {
         let r = copy l.relocs[i]
         if !l.atoms[r.atom].live { continue }
         var call: int = -1
         if r.kind == 19 { call = r.offset + 8 }
         if r.kind == 20 {
-            let indirect = l.atoms[r.atom].data[r.offset + 4] == 255 as byte
+            let indirect = original[r.atom - first][r.offset + 4] == 255 as byte
             call = r.offset + (if indirect then 6 else 5)
         }
         if call < 0 { continue }
-        let at = layout.site_lookup(l.relocs, sites, r.atom, call)
-        if at >= 0 { consumer[at] = i }
+        let at = layout.site_lookup_range(l.relocs, lo, sites, r.atom, call)
+        if at >= 0 { consumer[at - lo] = i }
     }
     var values = List[int]()
     (mut values).reserve(15)
     for _ in 0..15 { (mut values).push(0) }
-    for i in 0..l.relocs.len {
+    for i in lo..hi {
         let r = copy l.relocs[i]
         let ai = r.atom
         if !l.atoms[ai].live { continue }
-        let oi = l.atoms[ai].output
-        let here = layout.site_lookup(l.relocs, sites, r.atom, r.offset)
-        let owner = if here >= 0 then consumer[here] else -1
+        let k = ai - first
+        let oo = l.atoms[ai].output
+        let here = layout.site_lookup_range(l.relocs, lo, sites, r.atom, r.offset)
+        let owner = if here >= 0 then consumer[here - lo] else -1
         var begin = r.offset
         var width = if r.kind == 1 || r.kind == 17 || r.kind == 257 then 8 else 4
         var rule = "field"
@@ -137,22 +160,23 @@ pub fn patches(l: layout.Layout, s: resolve.State) -> PatchTable ! {Bad(str)} {
             rule = "TLSGD-local-exec"
         } else if r.kind == 20 {
             begin -= 3
-            width = if l.atoms[ai].data[r.offset + 4] == 255 as byte then 13 else 12
+            width = if original[k][r.offset + 4] == 255 as byte then 13 else 12
             rule = "TLSLD-local-exec"
         } else if r.kind == 42 || r.kind == 22 {
             begin -= 3
             width = 7
             rule = "GOT-instruction"
         }
-        if begin < 0 || begin + width > l.atoms[ai].data.len {
-            return Bad("provenance patch outside input")
+        if begin < 0 || begin + width > original[k].len {
+            table.failed = true
+            return
         }
         let id = layout.target(s, r.symbol)?
-        let start = l.outputs[oi].fileoff + l.atoms[ai].offset + begin
-        let after_id = intern(mut table, hex(l.outputs[oi].data, l.atoms[ai].offset + begin, width))
-        let before_id = intern(mut table, hex(l.atoms[ai].data, begin, width))
-        let rule_id = intern(mut table, rule)
-        let symbol_id = intern(mut table, quoted_name(s.symbols[id].name))
+        let start = l.outputs[oo].fileoff + l.atoms[ai].offset + begin
+        let after_id = pool_hex(mut table, l.atoms[ai].data, begin, width)
+        let before_id = pool_hex(mut table, original[k], begin, width)
+        let rule_id = pool_text(mut table, rule)
+        let symbol_id = pool_text(mut table, quoted_name(s.symbols[id].name))
         values[0] = r.addend
         values[1] = after_id
         values[2] = before_id
@@ -168,9 +192,8 @@ pub fn patches(l: layout.Layout, s: resolve.State) -> PatchTable ! {Bad(str)} {
         values[12] = s.symbols[id].object
         values[13] = s.symbols[id].index
         values[14] = r.kind
-        patch_row(mut table, values)
+        patches_row(mut table, values)
     }
-    table
 }
 
 fn origin(mut bytes: List[byte], l: layout.Layout, s: resolve.State, id: int, name: str) -> () ! {
@@ -228,12 +251,12 @@ pub fn origins(l: layout.Layout, s: resolve.State) -> List[byte] ! {Bad(str)} {
 pub fn memory_ranges(l: layout.Layout) -> List[byte] {
     var bytes = List[byte]()
     for i in 1..l.outputs.len {
-        let o = copy l.outputs[i]
-        if o.kind != 8 || o.size == 0 { continue }
+        if l.outputs[i].kind != 8 || l.outputs[i].size == 0 { continue }
+        let address = l.outputs[i].address
         if bytes.len != 0 { emit(mut bytes, ",") }
         emit(
             mut bytes,
-            "{{\"end\":{address_json(o.address + o.size as u64)},\"section_index\":{i},\"start\":{address_json(o.address)},\"tls\":{o.flags & 1024 != 0}}}",
+            "{{\"end\":{address_json(address + l.outputs[i].size as u64)},\"section_index\":{i},\"start\":{address_json(address)},\"tls\":{l.outputs[i].flags & 1024 != 0}}}",
         )
     }
     bytes

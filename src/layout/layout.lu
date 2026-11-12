@@ -5,7 +5,8 @@ use front
 use resolve
 use script
 
-/// An input section and its final output placement.
+/// An input section and its final output placement. A live section's data is its bytes, read
+/// once and relocated in place; the output's file content is assembled from these at write time.
 pub struct Atom {
     object: int,
     index: int,
@@ -24,7 +25,9 @@ pub struct Atom {
 /// An explicit-addend input relocation with stable symbol identity.
 pub struct Reloc { atom: int, offset: int, symbol: int, kind: int, addend: int }
 
-/// One merged output section, assigned a section header index by list order.
+/// One merged output section, assigned a section header index by list order. Sections built
+/// from input atoms keep no data of their own; generated tables (symbols, names, relocations,
+/// the note) carry theirs.
 pub struct Output {
     name: str,
     kind: int,
@@ -42,13 +45,15 @@ pub struct Output {
 /// Layout and reachability data; slot zero is the ELF null section.
 /// locations[object][section] is the input section's atom, or 0. Object o's atoms are
 /// atoms[object_atoms[o]..object_atoms[o + 1]] and its relocations
-/// relocs[object_relocs[o]..object_relocs[o + 1]].
+/// relocs[object_relocs[o]..object_relocs[o + 1]]. got_data is the GOT's bytes, placed at
+/// got_offset in output got_output.
 pub struct Layout {
     atoms: List[Atom],
     locations: List[List[int]],
     relocs: List[Reloc],
     object_atoms: List[int],
     object_relocs: List[int],
+    got_data: List[byte],
     outputs: List[Output],
     got: Map[str, int],
     got_symbols: List[int],
@@ -230,6 +235,7 @@ pub fn read_for(s: resolve.State, kernel: bool) -> Layout ! {Bad(str)} {
         relocs: List[Reloc](),
         object_atoms: List[int](),
         object_relocs: List[int](),
+        got_data: List[byte](),
         outputs: List[Output](),
         got: Map[str, int](),
         got_symbols: List[int](),
@@ -664,20 +670,13 @@ pub fn place(mut l: Layout, s: resolve.State) -> () ! {Bad(str)} {
         l.synthetics["__{pair}_array_end"] = end
     }
     for o in l.outputs { if o.name == ".got" { l.synthetics["_GLOBAL_OFFSET_TABLE_"] = o.address } }
-    fill(mut l)
+    got_bytes(mut l)
 }
 
-/// Zero-fill each output's bytes at exact capacity, then copy the live input sections in.
-pub fn fill(mut l: Layout) {
-    for j in 1..l.outputs.len {
-        if l.outputs[j].kind == 8 { continue }
-        (mut l.outputs[j].data).reserve(l.outputs[j].size)
-        for _ in 0..l.outputs[j].size { (mut l.outputs[j].data).push(0 as byte) }
-    }
-    for a in l.atoms {
-        if !a.live || a.kind == 8 { continue }
-        for k in 0..a.data.len { l.outputs[a.output].data[a.offset + k] = a.data[k] }
-    }
+/// The GOT's zeroed bytes at exact capacity; relocation writes its entries.
+pub fn got_bytes(mut l: Layout) {
+    (mut l.got_data).reserve(l.got_symbols.len * 8)
+    for _ in 0..l.got_symbols.len * 8 { (mut l.got_data).push(0 as byte) }
 }
 
 /// Get a final symbol value. Dead debug/FDE references use a zero tombstone.

@@ -104,11 +104,15 @@ fn witness() -> () ! {Bad(str)} {
     placed.synthetics["_GLOBAL_OFFSET_TABLE_"] = layout.bits(base + 4096)
     placed.got_output = 2
     (mut placed.relocs).push(layout.Reloc { atom: 1, offset: 3, symbol: 0, kind: 42, addend: -4 })
+    // One object: atoms 1 and 2, relocation 0; the GOT's one entry starts zero.
+    placed.object_atoms = [1, 3]
+    placed.object_relocs = [0, 1]
+    placed.got_data = binary.encode([0], [8])?
     assert(far - 4 - (base + 3) == -2147483652)
     relocate.apply(mut placed, state)?
-    assert(placed.outputs[1].data[1] == 139 as byte)
-    assert(binary.decode(placed.outputs[1].data, 3, 4)? == 4089)
-    assert(binary.decode(placed.outputs[2].data, 0, 8)? == 0xffffffff00000003)
+    assert(placed.atoms[1].data[1] == 139 as byte)
+    assert(binary.decode(placed.atoms[1].data, 3, 4)? == 4089)
+    assert(binary.decode(placed.got_data, 0, 8)? == 0xffffffff00000003)
     print("kernel relocation: high-half out-of-range direct reference retains GOT load, 0 SKIP")
 }
 

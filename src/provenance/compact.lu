@@ -194,45 +194,6 @@ pub fn patches_size(metadata: int, t: Patches) -> int {
     layout.align(40 + metadata + t.pool.len + t.rows.len, 4096)
 }
 
-/// end is stored as width. Addends are absolute signed values; other columns are deltas.
-/// Allocates only as the table's own data grows.
-pub fn patch_row(mut table: PatchTable, values: List[int]) {
-    var mask: int = 0
-    for i in 0..15 {
-        let d = if i == 0 then values[i] else values[i] - table.previous[i]
-        if d != 0 { mask |= 1 << i }
-    }
-    (mut table.data).push((mask & 255) as byte)
-    (mut table.data).push((mask >> 8) as byte)
-    for i in 0..15 {
-        let d = if i == 0 then values[i] else values[i] - table.previous[i]
-        if d == 0 { continue }
-        let z = if d < 0 then -(d + 1) as u64 * 2 + 1 else d as u64 * 2
-        put_uint(mut table.data, z)
-    }
-    for i in 0..15 { table.previous[i] = values[i] }
-    table.count += 1
-}
-
-/// Encode metadata and patches, reserving zero padding for layout convergence.
-pub fn compact(metadata: List[byte], table: PatchTable) -> List[byte] ! {Bad(str)} {
-    var out = List[byte]()
-    emit(mut out, "WLPATCH2")
-    for b in binary.encode(
-        [metadata.len as u64, table.strings.len as u64, table.count as u64, table.data.len as u64],
-        [8, 8, 8, 8],
-    )? { (mut out).push(b) }
-    for b in metadata { (mut out).push(b) }
-    for s in table.strings {
-        put_uint(mut out, s.len as u64)
-        emit(mut out, s)
-    }
-    for b in table.data { (mut out).push(b) }
-    let end = layout.align(out.len, 4096)
-    while out.len < end { (mut out).push(0 as byte) }
-    out
-}
-
 struct Cursor { bytes: List[byte], at: int }
 
 fn varint(mut c: Cursor) -> u64 ! {Bad(str)} {

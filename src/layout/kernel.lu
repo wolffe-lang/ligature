@@ -143,5 +143,5 @@ pub fn kernel_place(mut l: Layout, s: resolve.State) -> () ! {Bad(str)} {
         l.outputs[j].fileoff = cursor
         cursor += l.outputs[j].size
     }
-    fill(mut l)
+    got_bytes(mut l)
 }
