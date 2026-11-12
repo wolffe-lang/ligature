@@ -40,11 +40,15 @@ pub struct Output {
 }
 
 /// Layout and reachability data; slot zero is the ELF null section.
-/// locations[object][section] is the input section's atom, or 0.
+/// locations[object][section] is the input section's atom, or 0. Object o's atoms are
+/// atoms[object_atoms[o]..object_atoms[o + 1]] and its relocations
+/// relocs[object_relocs[o]..object_relocs[o + 1]].
 pub struct Layout {
     atoms: List[Atom],
     locations: List[List[int]],
     relocs: List[Reloc],
+    object_atoms: List[int],
+    object_relocs: List[int],
     outputs: List[Output],
     got: Map[str, int],
     got_symbols: List[int],
@@ -224,6 +228,8 @@ pub fn read_for(s: resolve.State, kernel: bool) -> Layout ! {Bad(str)} {
         atoms: List[Atom](),
         locations: List[List[int]](),
         relocs: List[Reloc](),
+        object_atoms: List[int](),
+        object_relocs: List[int](),
         outputs: List[Output](),
         got: Map[str, int](),
         got_symbols: List[int](),
@@ -266,7 +272,11 @@ pub fn read_for(s: resolve.State, kernel: bool) -> Layout ! {Bad(str)} {
     }
     (mut l.relocs).reserve(entries)
     (mut l.locations).reserve(s.objects.len)
+    (mut l.object_atoms).reserve(s.objects.len + 1)
+    (mut l.object_relocs).reserve(s.objects.len + 1)
     for oi in 0..s.objects.len {
+        (mut l.object_atoms).push(l.atoms.len)
+        (mut l.object_relocs).push(l.relocs.len)
         var here = List[int]()
         (mut here).reserve(s.objects[oi].image.sections.len)
         for _ in 0..s.objects[oi].image.sections.len { (mut here).push(0) }
@@ -336,36 +346,49 @@ pub fn read_for(s: resolve.State, kernel: bool) -> Layout ! {Bad(str)} {
             let atom = location(l, oi, sec.info)
             if atom == 0 { continue }
             if sec.entsize != 24 { return Bad("invalid Elf64_Rela size") }
-            let raw = binary.read(s.objects[oi].file, sec.off, sec.size)?
-            for i in 0..sec.size / 24 {
-                let info = binary.decode(raw, i * 24 + 8, 8)?
-                let kind = (info & 4294967295) as int
-                if !supported(l.machine, kind) {
-                    if l.machine == 183 {
-                        return Bad(
-                            "unsupported AArch64 relocation {kind} (AAELF64 2025Q1 section 6)",
-                        )
-                    }
-                    return Bad("unsupported R_X86_64 relocation {kind} (AMD64 psABI table 4.9)")
-                }
-                let symbol = resolve.symbol_id(s.objects[oi], sec.link as u64, info >> 32)
-                if symbol < 0 { return Bad("relocation symbol index outside table") }
-                let width = if kind == 1 || kind == 17 || kind == 257 then 8 else 4
-                let offset = binary.bounded(binary.decode(raw, i * 24, 8)?, l.atoms[atom].size)?
-                if width > l.atoms[atom].size - offset {
-                    return Bad("relocation extends past section")
-                }
-                (mut l.relocs).push(Reloc {
-                    atom: atom,
-                    offset: offset,
-                    symbol: symbol,
-                    kind: kind,
-                    addend: signed(binary.decode(raw, i * 24 + 16, 8)?),
-                })
+            // Each table's bytes are freed with its region; only the records stay.
+            region table {
+                let raw = binary.read(s.objects[oi].file, sec.off, sec.size)?
+                rela_records(mut l, s, oi, atom, sec.link, raw)?
             }
         }
     }
+    (mut l.object_atoms).push(l.atoms.len)
+    (mut l.object_relocs).push(l.relocs.len)
     l
+}
+
+// Decode one RELA table's entries for atom, refusing unsupported forms in entry order.
+fn rela_records(
+    mut l: Layout,
+    s: resolve.State,
+    oi: int,
+    atom: int,
+    link: int,
+    raw: List[byte],
+) -> () ! {Bad(str)} {
+    for i in 0..raw.len / 24 {
+        let info = binary.decode(raw, i * 24 + 8, 8)?
+        let kind = (info & 4294967295) as int
+        if !supported(l.machine, kind) {
+            if l.machine == 183 {
+                return Bad("unsupported AArch64 relocation {kind} (AAELF64 2025Q1 section 6)")
+            }
+            return Bad("unsupported R_X86_64 relocation {kind} (AMD64 psABI table 4.9)")
+        }
+        let symbol = resolve.symbol_id(s.objects[oi], link as u64, info >> 32)
+        if symbol < 0 { return Bad("relocation symbol index outside table") }
+        let width = if kind == 1 || kind == 17 || kind == 257 then 8 else 4
+        let offset = binary.bounded(binary.decode(raw, i * 24, 8)?, l.atoms[atom].size)?
+        if width > l.atoms[atom].size - offset { return Bad("relocation extends past section") }
+        (mut l.relocs).push(Reloc {
+            atom: atom,
+            offset: offset,
+            symbol: symbol,
+            kind: kind,
+            addend: signed(binary.decode(raw, i * 24 + 16, 8)?),
+        })
+    }
 }
 
 fn mark(mut l: Layout, s: resolve.State, id: int) -> bool ! {Bad(str)} {
