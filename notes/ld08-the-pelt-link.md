@@ -133,6 +133,7 @@ Every output byte-identical to trunk's Linux outputs.
 | the output's symbols and retained relocations encoded in place | `9560db7`, `462e516` | retained 37 → 17 MB |
 | the metadata: one list, reserved; the stable round's kept | `88e03f9`, `9241803` | one metadata build fewer |
 | collection by worklist | `eac3c56`, `2c3652d` | |
+| `tests/link-cost.py`'s control refrozen: the original Map lookup in today's relocate module, which the old control (written against output-section buffers) cannot build beside | `5e9a4cd`, `ccb477b` | the row's byte identity kept |
 
 ### Rows
 
