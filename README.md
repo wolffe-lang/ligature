@@ -149,6 +149,11 @@ example sites, extraction traces and output observations. See
 [the link map](docs/MAP.md), [sources and binary pins](docs/SOURCES.md), and
 [formats](docs/FORMATS.md).
 
+The program's own version is named once, in `src/wolf.pkg`, and `ligature --version`
+prints it; `tools/check-version` fails if they differ. Release tags of the program
+are `vX.Y.Z`. The tags that start `link-bundle-` are the link bundles: their numbers
+are the wolf version a bundle serves, not the program's.
+
 The exact PAX LLD control, musl runtime and sysroot are available as the
 [link-bundle-wolf-0.2.38 release](https://github.com/wolffe-lang/ligature/releases/tag/link-bundle-wolf-0.2.38).
 The licensed archive is named `musl-link-bundle-sha256-4cff0af6a27d200def3651bf3caee77f9bd9452be715ce878e2f0197a0516a36.tar.gz`.
