@@ -1,6 +1,6 @@
 pkg {
     name: "ligature",
-    version: "0.0.2",
+    version: "0.1.0",
     edition: "1",
     capabilities: [env, fs],
 }
