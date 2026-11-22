@@ -8,9 +8,14 @@ use explain
 use script
 use arwrite
 
+/// The product version the program prints; `src/wolf.pkg` names the same number
+/// and `tools/check-version` fails when they differ. The link-bundle release tags
+/// carry the wolf version they serve and are not this number.
+const VERSION: str = "0.0.2"
+
 fn execute(args: List[str]) -> () ! {Bad(str)} {
     if args.len == 1 && args[0] == "--version" {
-        print("ligature 0.0.2 (static ELF; x86-64, AArch64 subset)")
+        print("ligature {VERSION} (static ELF; x86-64, AArch64 subset)")
         return
     }
     if args.len == 2 && (args[0] == "inspect" || args[0] == "verify" || args[0] == "roundtrip") {
