@@ -352,11 +352,16 @@ pub fn read_for(s: resolve.State, kernel: bool) -> Layout ! {Bad(str)} {
             let atom = location(l, oi, sec.info)
             if atom == 0 { continue }
             if sec.entsize != 24 { return Bad("invalid Elf64_Rela size") }
-            // Each table's bytes are freed with its region; only the records stay.
+            // Each table's bytes are freed with its region; only the records stay. An error
+            // built there is copied out before the region is freed.
+            var failure = List[str]()
             region table {
                 let raw = binary.read(s.objects[oi].file, sec.off, sec.size)?
-                rela_records(mut l, s, oi, atom, sec.link, raw)?
+                rela_records(mut l, s, oi, atom, sec.link, raw) else |e| match e {
+                    Bad(why) => { (mut failure).push(copy why) },
+                }
             }
+            if failure.len > 0 { return Bad(failure[0]) }
         }
     }
     (mut l.object_atoms).push(l.atoms.len)
@@ -460,7 +465,13 @@ pub fn collect(mut l: Layout, s: resolve.State, p: front.Plan) -> () ! {Bad(str)
         // Without --defsym aliases no target can be refused, so the order relocations are
         // followed in cannot change the outcome: a worklist reaches the same live set in one
         // visit per live atom, its working lists freed with the region.
-        region reaching { reach(mut l, s, p, fdes)? }
+        var failure = List[str]()
+        region reaching {
+            reach(mut l, s, p, fdes) else |e| match e {
+                Bad(why) => { (mut failure).push(copy why) },
+            }
+        }
+        if failure.len > 0 { return Bad(failure[0]) }
         return
     }
     loop {
