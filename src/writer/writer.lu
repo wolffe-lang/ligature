@@ -455,6 +455,8 @@ pub fn link(s: resolve.State, p: front.Plan) -> () ! {Bad(str)} {
     var live: int = 0
     for r in l.relocs { if l.atoms[r.atom].live { live += 1 } }
     var table = provenance.patches_start(live, s.symbols.len)
+    // An error built inside an object's region is copied out before the region is freed.
+    var failure = List[str]()
     for oi in 0..l.object_relocs.len - 1 {
         region relocating {
             let original = relocate.pristine(l, oi)
@@ -463,10 +465,15 @@ pub fn link(s: resolve.State, p: front.Plan) -> () ! {Bad(str)} {
                 l.object_relocs[oi],
                 l.object_relocs[oi + 1],
             )
-            relocate.object(mut l, s, oi, original, sites)?
-            provenance.attribute(mut table, l, s, oi, original, sites)?
+            relocate.object(mut l, s, oi, original, sites) else |e| match e {
+                Bad(why) => { (mut failure).push(copy why); break },
+            }
+            provenance.attribute(mut table, l, s, oi, original, sites) else |e| match e {
+                Bad(why) => { (mut failure).push(copy why); break },
+            }
         }
     }
+    if failure.len > 0 { return Bad(failure[0]) }
     relocate.got(mut l, s)?
     let symtab = l.outputs.len
     let indices = symbols(mut l, s)?
@@ -513,8 +520,11 @@ pub fn link(s: resolve.State, p: front.Plan) -> () ! {Bad(str)} {
         let total = shoff + l.outputs.len * 64
         let hint = metadata.len
         metadata = copy region manifesting {
-            provenance.metadata(l, s, inputs, total, members, hint)?
+            provenance.metadata(l, s, inputs, total, members, hint) else |e| match e {
+                Bad(why) => { (mut failure).push(copy why); List[byte]() },
+            }
         }
+        if failure.len > 0 { return Bad(failure[0]) }
         if !embed {
             fixed = true
             break
