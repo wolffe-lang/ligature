@@ -262,12 +262,19 @@ pub fn rela(f: binary.Input, image: Image, s: Section, table: int, emit: bool) -
     if s.info >= image.sections.len { return Bad("RELA sh_info outside section table") }
     let count = s.size / 24
     var first: int = 0
+    // An error built inside a chunk's region is copied out before the region is freed.
+    var failure = List[str]()
     while first < count {
         let n = if count - first > 43690 then 43690 else count - first
         region relocations {
             let raw = binary.read(f, s.off + first * 24, n * 24)?
-            for k in 0..n { relocation(image, s, syms, table, first + k, raw, k * 24, emit)? }
+            for k in 0..n {
+                relocation(image, s, syms, table, first + k, raw, k * 24, emit) else |e| match e {
+                    Bad(why) => { (mut failure).push(copy why); break },
+                }
+            }
         }
+        if failure.len > 0 { return Bad(failure[0]) }
         first += n
     }
 }
@@ -289,6 +296,8 @@ pub fn walk(f: binary.Input, image: Image, emit: bool) -> () ! {Bad(str)} {
             )
         }
     }
+    // An error built inside a section's region is copied out before the region is freed.
+    var failure = List[str]()
     for i in 0..image.sections.len {
         region section {
             let s = copy image.sections[i]
@@ -323,7 +332,9 @@ pub fn walk(f: binary.Input, image: Image, emit: bool) -> () ! {Bad(str)} {
                     first += n
                 }
             } else if s.kind == 4 {
-                rela(f, image, s, i, emit)?
+                rela(f, image, s, i, emit) else |e| match e {
+                    Bad(why) => { (mut failure).push(copy why); break },
+                }
             } else if s.kind == 17 {
                 let syms = linked(image, s, 2)?
                 if s.entsize != 4 || s.size < 4 || syms.entsize != 24 || s.info >= syms.size / 24 {
@@ -386,4 +397,5 @@ pub fn walk(f: binary.Input, image: Image, emit: bool) -> () ! {Bad(str)} {
             }
         }
     }
+    if failure.len > 0 { return Bad(failure[0]) }
 }
