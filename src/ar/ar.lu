@@ -116,6 +116,8 @@ pub fn walk(f: binary.Input, archive: Archive, emit: bool) -> () ! {Bad(str)} {
             if pad[0] != 0 as byte { return Bad("nonzero ar symbol-index pad") }
         }
     }
+    // An error built inside a member's region is copied out before the region is freed.
+    var failure = List[str]()
     for m in archive.members {
         region member {
             if emit {
@@ -124,8 +126,13 @@ pub fn walk(f: binary.Input, archive: Archive, emit: bool) -> () ! {Bad(str)} {
                 )
             }
             let input = binary.Input { fd: f.fd, base: f.base + m.off, size: m.size }
-            let image = elf.parse(input)?
-            elf.walk(input, image, emit)?
+            let image = elf.parse(input) else |e| match e {
+                Bad(why) => { (mut failure).push(copy why); break },
+            }
+            elf.walk(input, image, emit) else |e| match e {
+                Bad(why) => { (mut failure).push(copy why); break },
+            }
         }
     }
+    if failure.len > 0 { return Bad(failure[0]) }
 }
