@@ -276,8 +276,21 @@ fn object(mut s: State, f: binary.Input, label: str) -> () ! {Bad(str)} {
     let first = s.symbols.len
     let machine = if s.objects.len == 0 then -1 else s.objects[0].image.machine
     // The parse's reads and temporaries are freed with its region; what the link keeps leaves
-    // it in one copy.
-    var parsed = copy region parsing { parse(f, label, obj, first, machine)? }
+    // it in one copy. An error built in the region is copied out with a failed parse's empty
+    // box, before the region is freed.
+    var failure = List[str]()
+    var kept = copy region parsing {
+        var box = List[Parsed]()
+        for _ in 0..1 {
+            let p = parse(f, label, obj, first, machine) else |e| match e {
+                Bad(why) => { (mut failure).push(copy why); break },
+            }
+            (mut box).push(p)
+        }
+        box
+    }
+    if failure.len > 0 { return Bad(failure[0]) }
+    var parsed = kept[0]
     for i in 0..parsed.symbols.len { (mut s.symbols).push(copy parsed.symbols[i]) }
     // Group selection precedes symbol resolution: duplicate COMDAT definitions are not errors.
     var at: int = 0
@@ -318,7 +331,19 @@ fn member_at(archive: ar.Archive, header: int) -> int {
 fn library(mut s: State, f: binary.Input, path: str) -> int ! {Bad(str)} {
     // The member headers and the symbol index are read in a region; the library leaves it in
     // one copy.
-    let parsed = copy region archive { library_index(f, path)? }
+    var failure = List[str]()
+    let kept = copy region archive {
+        var box = List[Library]()
+        for _ in 0..1 {
+            let lib = library_index(f, path) else |e| match e {
+                Bad(why) => { (mut failure).push(copy why); break },
+            }
+            (mut box).push(lib)
+        }
+        box
+    }
+    if failure.len > 0 { return Bad(failure[0]) }
+    let parsed = kept[0]
     let id = s.libraries.len
     (mut s.libraries).push(parsed)
     id
