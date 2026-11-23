@@ -84,6 +84,8 @@ pub fn relocation_lookup(
 /// object (each object's pristine bytes freed with its region), then fill the GOT.
 pub fn apply(mut l: layout.Layout, s: resolve.State) -> () ! {Bad(str)} {
     prepare(l, s)?
+    // An error built inside an object's region is copied out before the region is freed.
+    var failure = List[str]()
     for oi in 0..l.object_relocs.len - 1 {
         region relocating {
             let original = pristine(l, oi)
@@ -92,8 +94,11 @@ pub fn apply(mut l: layout.Layout, s: resolve.State) -> () ! {Bad(str)} {
                 l.object_relocs[oi],
                 l.object_relocs[oi + 1],
             )
-            object(mut l, s, oi, original, sites)?
+            object(mut l, s, oi, original, sites) else |e| match e {
+                Bad(why) => { (mut failure).push(copy why) },
+            }
         }
+        if failure.len > 0 { return Bad(failure[0]) }
     }
     got(mut l, s)?
 }
