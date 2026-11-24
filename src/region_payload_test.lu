@@ -143,7 +143,7 @@ fn rows() -> () ! {Bad(str)} {
 
     // metadata reads this synthetic extraction edge before emitting ranges.
     var metadata_state = resolve.empty()
-    metadata_state.pulls = ["{}"]
+    metadata_state.pulls = ["{{}}"]
     let empty = layout.read(resolve.empty())?
     let metadata = provenance.metadata(
         empty,
