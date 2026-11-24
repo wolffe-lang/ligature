@@ -1,0 +1,185 @@
+//! member: false
+
+// Read payloads after scratch reuse, including a test-only handled boundary.
+// tools/check-candidate-wolf must discover this main without a hand-written list.
+use binary
+use elf
+use front
+use layout
+use provenance
+use relocate
+use resolve
+
+fn reuse() {
+    for i in 0..64 {
+        region scratch {
+            let text = "{i} ZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZ"
+            assert(text.len > 60)
+        }
+    }
+}
+
+fn check(name: str, message: str, expected: str) {
+    reuse()
+    assert(message == expected)
+    print("ROW {name} PASS")
+}
+
+fn origin(message: str) -> () ! {Bad(str)} { Bad("{message}") }
+
+fn relay(message: str) -> () ! {Bad(str)} {
+    var failure = List[str]()
+    region payload {
+        origin(message) else |e| match e {
+            Bad(why) => { (mut failure).push(copy why) },
+        }
+    }
+    if failure.len > 0 { return Bad(failure[0]) }
+}
+
+fn section(kind: int, size: int) -> elf.Section {
+    elf.Section {
+        name_index: 0,
+        kind: kind,
+        flags: 0,
+        addr: 0,
+        off: 0,
+        size: size,
+        link: 0,
+        info: 0,
+        align: 1,
+        entsize: 0,
+    }
+}
+
+fn object() -> resolve.Object {
+    resolve.Object {
+        label: "payload.o",
+        file: binary.Input { fd: -1, base: 0, size: 4 },
+        image: elf.Image {
+            kind: 1,
+            machine: 62,
+            entry: 0,
+            names: 0,
+            sections: [section(0, 0), section(1, 8)],
+            programs: List[elf.Program](),
+        },
+        names: ["", ".text"],
+        symbol_base: [-1, -1],
+        discarded: [false, false],
+    }
+}
+
+fn symbol() -> resolve.Symbol {
+    resolve.Symbol {
+        name: "item",
+        object: 0,
+        table: 0,
+        index: 1,
+        section: 65521,
+        binding: 1,
+        kind: 1,
+        other: 0,
+        value: 0,
+        size: 0,
+    }
+}
+
+fn rows() -> () ! {Bad(str)} {
+    relay("") else |e| match e { Bad(message) => { check("empty", message, "") } }
+    var long = ""
+    for i in 0..512 { long += "{i}:payload;" }
+    relay(long) else |e| match e { Bad(message) => { check("long", message, long) } }
+
+    var state = resolve.empty()
+    var placed = layout.read(state)?
+    (mut state.objects).push(object())
+    (mut state.symbols).push(symbol())
+    resolve.set_global(mut state, "item", 0)
+    state.alias_names = ["item", "cycle"]
+    state.aliases["item"] = "cycle"
+    state.aliases["cycle"] = "item"
+    (mut placed.atoms).push(layout.Atom {
+        object: 0,
+        index: 1,
+        name: ".text",
+        kind: 1,
+        flags: 6,
+        align: 1,
+        size: 8,
+        data: binary.encode([0], [8])?,
+        records: List[int](),
+        live: true,
+        output: 1,
+        offset: 0,
+    })
+    var text = layout.output(".text", 1, 6, 1)
+    text.address = 2097152
+    text.fileoff = 4096
+    text.size = 8
+    (mut placed.outputs).push(text)
+    placed.object_atoms = [1, 2]
+    placed.object_relocs = [0, 1]
+    (mut placed.relocs).push(layout.Reloc { atom: 1, offset: 0, symbol: 0, kind: 1, addend: 0 })
+    var saw_apply = false
+    relocate.apply(mut placed, state) else |e| match e {
+        Bad(message) => {
+            check("apply-cycle", message, "cyclic --defsym alias item")
+            saw_apply = true
+        },
+    }
+    assert(saw_apply)
+    var patches = provenance.patches_start(1, 1)
+    let original = relocate.pristine(placed, 0)
+    let sites = layout.site_index(placed.relocs)
+    var saw_attribute = false
+    provenance.attribute(mut patches, placed, state, 0, original, sites) else |e| match e {
+        Bad(message) => {
+            check("attribute-cycle", message, "cyclic --defsym alias item")
+            saw_attribute = true
+        },
+    }
+    assert(saw_attribute)
+
+    // metadata reads this synthetic extraction edge before emitting ranges.
+    var metadata_state = resolve.empty()
+    metadata_state.pulls = ["{}"]
+    let empty = layout.read(resolve.empty())?
+    let metadata = provenance.metadata(
+        empty,
+        metadata_state,
+        List[byte](),
+        0,
+        List[List[int]](),
+        0,
+    ) else |e| match e {
+        Bad(message) => {
+            check("metadata-field", message, "provenance missing field archive")
+            List[byte]()
+        },
+    }
+    assert(metadata.len == 0)
+
+    // The no-alias worklist reaches the bad group's read inside reaching, not an earlier FDE pass.
+    state.alias_names = List[str]()
+    state.aliases = Map[str, str]()
+    resolve.set_global(mut state, "_start", 0)
+    state.objects[0].image.sections = [section(17, 4)]
+    placed.relocs = List[layout.Reloc]()
+    let plan = front.parse(["-nostdlib", "fixture.o"])?
+    var saw_collect = false
+    layout.collect(mut placed, state, plan) else |e| match e {
+        Bad(message) => {
+            check("collect-read", message, "positional read failed")
+            saw_collect = true
+        },
+    }
+    assert(saw_collect)
+}
+
+fn main() -> int {
+    rows() else |e| match e {
+        Bad(message) => { eprint(message); return 1 },
+    }
+    0
+}
