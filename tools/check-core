@@ -3,6 +3,8 @@ set -euo pipefail
 cd "$(dirname "$0")/.."
 python3 -I tests/tiers.py
 python3 -I ci/local-gate-test.py
+python3 -I tests/candidate-wolf.py
+python3 -I tests/record-steps.py
 export WOLF_STD=${WOLF_STD:-$PWD/.wolf-bin/std}
 wolf=${WOLF:-$PWD/.wolf-bin/wolf}
 python3 -I tests/sha256-source.py
@@ -40,11 +42,4 @@ python3 -I tests/findings.py
 python3 -I tests/kernel-edge.py
 python3 -I tests/layout-controls.py
 # Read the public runtime too; it is glibc-targeted, not the PAX runtime.
-if [ -n "${WOLF_RT_FOR_TEST:-}" ]; then
-    target/ligature roundtrip "$WOLF_RT_FOR_TEST"
-elif [ -f .wolf-bin/libwolf_rt.a ]; then
-    target/ligature roundtrip .wolf-bin/libwolf_rt.a
-else
-    echo 'SKIP public-runtime roundtrip: set WOLF_RT_FOR_TEST or stage .wolf-bin' >&2
-    exit 1
-fi
+tools/check-runtime

@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+# The public GNU runtime is a separate required input, not the musl link runtime.
+set -euo pipefail
+cd "$(dirname "$0")/.."
+if [ -n "${WOLF_RT_FOR_TEST:-}" ]; then
+    target/ligature roundtrip "$WOLF_RT_FOR_TEST"
+elif [ -f .wolf-bin/libwolf_rt.a ]; then
+    target/ligature roundtrip .wolf-bin/libwolf_rt.a
+else
+    echo 'SKIP public-runtime roundtrip: set WOLF_RT_FOR_TEST or stage .wolf-bin' >&2
+    exit 1
+fi
