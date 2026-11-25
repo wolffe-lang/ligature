@@ -30,9 +30,7 @@ fn origin(message: str) -> () ! {Bad(str)} { Bad("{message}") }
 fn relay(message: str) -> () ! {Bad(str)} {
     var failure = List[str]()
     region payload {
-        origin(message) else |e| match e {
-            Bad(why) => { (mut failure).push(copy why) },
-        }
+        origin(message)?
     }
     if failure.len > 0 { return Bad(failure[0]) }
 }
