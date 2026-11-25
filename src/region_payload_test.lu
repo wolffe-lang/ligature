@@ -86,10 +86,14 @@ fn symbol() -> resolve.Symbol {
 }
 
 fn rows() -> () ! {Bad(str)} {
-    relay("") else |e| match e { Bad(message) => { check("empty", message, "") } }
+    relay("") else |e| match e {
+        Bad(message) => { check("empty", message, "") },
+    }
     var long = ""
     for i in 0..512 { long += "{i}:payload;" }
-    relay(long) else |e| match e { Bad(message) => { check("long", message, long) } }
+    relay(long) else |e| match e {
+        Bad(message) => { check("long", message, long) },
+    }
 
     var state = resolve.empty()
     var placed = layout.read(state)?
