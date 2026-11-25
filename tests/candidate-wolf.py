@@ -10,6 +10,7 @@ import hashlib
 import json
 import os
 from pathlib import Path
+import re
 import shutil
 import subprocess
 import sys
@@ -36,6 +37,15 @@ def main():
     say(CHECK.is_file() and FETCH.is_file(), 'runner-present')
     if not CHECK.is_file() or not FETCH.is_file():
         return 1
+    # env_get has missing/utf8, not env_set's invalid row. An unknown bare
+    # pattern binds the error and shadows the next arm (E0802 with deny-warnings).
+    host = (ROOT / 'tests/corpus/pax/host.lu').read_text()
+    home = re.search(r'^fn home\(\) -> str \{.*?^\}', host, re.M | re.S)
+    arms = re.findall(r'(\w+)\s*=>\s*"([^"]*)"', home[0]) if home else []
+    say(sorted(arms) == [('missing', 'missing'), ('utf8', 'utf8')], 'pax-host-env-row')
+    image = (ROOT / 'ci/oracle.Containerfile').read_text()
+    say('clang-17=1:17.0.6-9ubuntu1' in image and 'WOLF_CLANG=/usr/bin/clang-17' in image,
+        'release-image-clang')
     (ROOT / 'target').mkdir(exist_ok=True)
     with tempfile.TemporaryDirectory(prefix='candidate-test-', dir=ROOT / 'target') as tmp:
         work = Path(tmp)
