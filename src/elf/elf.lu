@@ -269,9 +269,7 @@ pub fn rela(f: binary.Input, image: Image, s: Section, table: int, emit: bool) -
         region relocations {
             let raw = binary.read(f, s.off + first * 24, n * 24)?
             for k in 0..n {
-                relocation(image, s, syms, table, first + k, raw, k * 24, emit) else |e| match e {
-                    Bad(why) => { (mut failure).push(copy why); break },
-                }
+                relocation(image, s, syms, table, first + k, raw, k * 24, emit)?
             }
         }
         if failure.len > 0 { return Bad(failure[0]) }
