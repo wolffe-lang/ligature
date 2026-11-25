@@ -80,6 +80,40 @@ refused by name, not compared with a stale census.
 
 ## Tests and reference tools
 
+### Next compiler
+
+The production pin remains wolf 0.2.38. Separately, `candidate-wolf.toml` names
+the release-workflow build of wolf `1add9bb36f08d4546f7c0882decd484685728794`
+(run 45097601683, `wolf 0.2.40+dev.1add9bb`) and its bundled std, with archive
+SHA-256 digests. `tools/fetch-candidate-wolf` stages that exact artifact, or the
+same archive supplied with `LIGATURE_CANDIDATE_ARCHIVE`, and checks its digest,
+version and std. The stage receipt also detects changes to extracted files.
+
+`tools/check-candidate-wolf` discovers main programs recursively in `src/` and
+`tests/` each time it runs, including nested `*_test.lu` programs and corpus and
+fixture programs. Shipped programs build on native and release; tests build on
+native. There are currently 26 programs and 27 build cells, including the new
+payload probe. New programs are covered without editing a list. Complete
+compiler diagnostics are retained; a missing input or compile error is a named
+failure, never a skip. `candidate-wolf-tier-independent` compares E1010 counts
+on the shipped programs built on both tiers. `--program NAME --tier native`
+selects a real single-build dry; an explicit test-program release selection is
+also available for diagnostic censuses. `--list` prints the discovered cells.
+
+The real candidate leaf runs in the local record, whose full command inventory
+is `tools/record-steps`. Hosted `tools/check-core` runs its offline self-tests,
+not the candidate itself: a workflow's own token cannot fetch another
+repository's workflow artifacts. No extra token is required. The artifact
+expires on 2027-02-21; after a release contains this compiler, retiring this
+candidate in favor of a release check is a separate change.
+
+`tests/region-payload.py` holds ten malformed ELF/archive diagnostics to their
+complete stderr bytes, status, stdout and untouched destination/sidecar bytes.
+`tests/region-payload-api.py` reads empty, long, relocation, attribution,
+metadata and reachability errors after scratch-region reuse, on native,
+release and the actual checked machine. These extend the existing substring
+refusal rows; imports and compile-only checks are not called runtime coverage.
+
 ```sh
 docker build -t ligature-oracle -f ci/oracle.Containerfile ci
 docker run --rm -v "$PWD:/work" ligature-oracle bash -c 'tools/fetch-toolchain && tools/fetch-bundle && tools/check --require-licensed-bundle'
