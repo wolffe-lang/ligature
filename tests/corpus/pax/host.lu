@@ -35,8 +35,8 @@ fn print_sorted(dir: str, xs: List[str]) {
 fn home() -> str {
     let h = env_get("HOME") else |e| {
         return match e {
-            invalid => "invalid",
             missing => "missing",
+            utf8 => "utf8",
         }
     }
     h
