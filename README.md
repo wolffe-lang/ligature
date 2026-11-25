@@ -99,6 +99,10 @@ failure, never a skip. `candidate-wolf-tier-independent` compares E1010 counts
 on the shipped programs built on both tiers. `--program NAME --tier native`
 selects a real single-build dry; an explicit test-program release selection is
 also available for diagnostic censuses. `--list` prints the discovered cells.
+The Linux test image provides pinned clang 17, selected with
+`WOLF_CLANG=/usr/bin/clang-17`, for actual release builds; LLD alone is not a
+release compiler. Missing clang must fail preflight, not be mistaken for a
+source rejection.
 
 The real candidate leaf runs in the local record, whose full command inventory
 is `tools/record-steps`. Hosted `tools/check-core` runs its offline self-tests,
