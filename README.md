@@ -127,7 +127,7 @@ musl-dev/musl-tools `1.2.4-2`; a live archive can remove an exact package pin.
 expiry for that historical snapshot. There is no fallback to a live archive.
 This is a test image, not an automatically security-updated deployment base.
 Snapshot retention is a service dependency, not a promise of perpetual storage;
-[the service](https://snapshot.ubuntu.com/) promises at least two years.
+[the service](https://snapshot.ubuntu.com/) targets at least two years.
 Refreshing the snapshot requires explicit reference-tool requalification.
 
 The minimal base has no CA certificates. `ci/oracle-bootstrap-ca.crt` is the
