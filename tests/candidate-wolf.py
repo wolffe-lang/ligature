@@ -46,6 +46,31 @@ def main():
     image = (ROOT / 'ci/oracle.Containerfile').read_text()
     say('clang-17=1:17.0.6-9ubuntu1' in image and 'WOLF_CLANG=/usr/bin/clang-17' in image,
         'release-image-clang')
+    # A pinned base image does not freeze its apt archive. Keep the measured
+    # tools, including the retired .10 binutils, in a dated, signed snapshot.
+    source = ROOT / 'ci/oracle.sources'
+    sources = source.read_text() if source.is_file() else ''
+    say(sources.strip() == '''Types: deb
+URIs: https://snapshot.ubuntu.com/ubuntu/20261125T000000Z/
+Suites: noble noble-updates noble-backports noble-security
+Components: main universe restricted multiverse
+Signed-By: /usr/share/keyrings/ubuntu-archive-keyring.gpg
+Check-Valid-Until: no''', 'oracle-snapshot-sources')
+    pins = dict(re.findall(r'\b([\w-]+)=([\w.:+~-]+)', image))
+    expected_pins = {'build-essential': '12.10ubuntu1', 'binutils': '2.42-4ubuntu2.10',
+                     'lld-17': '1:17.0.6-9ubuntu1', 'clang-17': '1:17.0.6-9ubuntu1',
+                     'musl-dev': '1.2.4-2', 'musl-tools': '1.2.4-2'}
+    say(all(pins.get(k) == v for k, v in expected_pins.items()), 'oracle-version-pins')
+    copies = ('COPY oracle.sources /etc/apt/sources.list.d/ubuntu.sources',
+              'COPY oracle-bootstrap-ca.crt /etc/ssl/certs/ca-certificates.crt')
+    say(all(copy in image and image.index(copy) < image.index('RUN apt-get update') for copy in copies)
+        and not re.search(r'(?i)trusted\s*[=:]\s*yes|allow-unauthenticated|Verify-Peer', image + sources),
+        'oracle-snapshot-wiring')
+    # Public ISRG Root X1, not a private key or an unverified TLS bypass. The
+    # pinned minimal base has no ca-certificates package; apt installs it later.
+    root = ROOT / 'ci/oracle-bootstrap-ca.crt'
+    say(root.is_file() and sha(root) == '22b557a27055b33606b6559f37703928d3e4ad79f110b407d04986e1843543d1',
+        'oracle-tls-bootstrap')
     (ROOT / 'target').mkdir(exist_ok=True)
     with tempfile.TemporaryDirectory(prefix='candidate-test-', dir=ROOT / 'target') as tmp:
         work = Path(tmp)
