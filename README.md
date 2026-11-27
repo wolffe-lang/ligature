@@ -118,6 +118,32 @@ metadata and reachability errors after scratch-region reuse, on native,
 release and the actual checked machine. These extend the existing substring
 refusal rows; imports and compile-only checks are not called runtime coverage.
 
+The oracle image freezes all four Ubuntu noble apt pockets at
+[`20261125T000000Z`](https://snapshot.ubuntu.com/ubuntu/20261125T000000Z/),
+not merely the base image digest. It retains binutils `2.42-4ubuntu2.10`,
+LLD/clang `1:17.0.6-9ubuntu1`, build-essential `12.10ubuntu1`, and
+musl-dev/musl-tools `1.2.4-2`; a live archive can remove an exact package pin.
+`ci/oracle.sources` keeps apt signatures enabled and disables only metadata
+expiry for that historical snapshot. There is no fallback to a live archive.
+This is a test image, not an automatically security-updated deployment base.
+Snapshot retention is a service dependency, not a promise of perpetual storage;
+[the service](https://snapshot.ubuntu.com/) promises at least two years.
+Refreshing the snapshot requires explicit reference-tool requalification.
+
+The minimal base has no CA certificates. `ci/oracle-bootstrap-ca.crt` is the
+public [ISRG Root X1](https://letsencrypt.org/certs/isrgrootx1.pem), PEM SHA-256
+`22b557a27055b33606b6559f37703928d3e4ad79f110b407d04986e1843543d1`.
+It bootstraps verified snapshot HTTPS; apt then installs the normal signed
+`ca-certificates` package. Neither TLS nor apt signature verification is bypassed.
+
+GNU assembler/archive fixtures, GNU/LLD resolution and relocation controls,
+writer relinks, and layout/kernel structural observations depend on the
+reference tools. Deterministic relinks compare one tool with itself; bootstrap
+and baseline/head identity compare ligature on fixed inputs. They do not demand
+identical GNU and LLD executable bytes, nor promise identity across tool upgrades.
+Keeping the measured versions avoids changing those inputs and observations
+while repairing error payload lifetimes.
+
 ```sh
 docker build -t ligature-oracle -f ci/oracle.Containerfile ci
 docker run --rm -v "$PWD:/work" ligature-oracle bash -c 'tools/fetch-toolchain && tools/fetch-bundle && tools/check --require-licensed-bundle'
